@@ -1,0 +1,1075 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CloudForCash V2 — UX/UI Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                yellow: "#FFD400",
+                yellowLight: "#FFE863",
+                blue: "#2D6FE3",
+                blueDark: "#1E4FB8",
+                purple: "#7B68EE",
+                green: "#10B981",
+                red: "#EF4444",
+                redLight: "#FCA5A5",
+              },
+            },
+            fontFamily: { sans: ["Sarabun", "system-ui", "sans-serif"] },
+          },
+        },
+      };
+    </script>
+    <style>
+      body { font-family: Sarabun, system-ui, sans-serif; background:#F7F8FA; color:#1F2937; }
+      .card { background:#fff; border:1px solid #E5E7EB; border-radius:8px; }
+      .input { width:100%; height:38px; border:1px solid #D1D5DB; border-radius:6px; padding:0 10px; font-size:14px; background:#fff; color:#111; }
+      .input:focus { outline:none; border-color:#2D6FE3; box-shadow:0 0 0 3px rgba(45,111,227,.15); }
+      .label { display:block; font-size:12px; font-weight:500; color:#374151; margin-bottom:4px; }
+      .btn { display:inline-flex; align-items:center; justify-content:center; height:38px; padding:0 14px; border-radius:6px; font-size:14px; font-weight:500; cursor:pointer; transition:background .15s; }
+      .btn-primary { background:#2D6FE3; color:#fff; }
+      .btn-primary:hover { background:#1E4FB8; }
+      .btn-ghost { background:#F3F4F6; color:#111; border:1px solid #D1D5DB; }
+      .btn-ghost:hover { background:#E5E7EB; }
+      .btn-search { background:#5B5BD6; color:#fff; padding:0 16px; }
+      .table-base { width:100%; font-size:14px; text-align:left; }
+      .table-base th { background:#F9FAFB; padding:10px 12px; font-size:12px; font-weight:600; color:#6B7280; text-transform:uppercase; letter-spacing:.04em; border-bottom:1px solid #E5E7EB; }
+      .table-base td { padding:12px; border-bottom:1px solid #F3F4F6; color:#111827; }
+      .table-base tr:hover td { background:#FAFBFC; }
+      .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:600; }
+      .badge-green { background:#D1FAE5; color:#065F46; }
+      .badge-red { background:#FEE2E2; color:#991B1B; }
+      .badge-yellow { background:#FEF3C7; color:#92400E; }
+      .badge-blue { background:#DBEAFE; color:#1E40AF; }
+      .badge-gray { background:#E5E7EB; color:#374151; }
+      .page { display:none; }
+      .page.active { display:block; animation: fadeIn .15s ease-out; }
+      @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+
+      /* SIDEBAR */
+      .sidebar { background:#FFD400; }
+      .sidebar-group-header { padding:14px 20px 6px; font-weight:700; font-size:14px; color:#111; }
+      .sidebar-link { display:block; padding:7px 20px 7px 36px; font-size:14px; color:#1F2937; cursor:pointer; text-decoration:none; }
+      .sidebar-link:hover { background:rgba(0,0,0,.06); }
+      .sidebar-link.active { background:#111; color:#FFD400; font-weight:600; }
+      .sidebar-single { display:block; padding:10px 20px; font-size:14px; font-weight:600; color:#111; cursor:pointer; text-decoration:none; }
+      .sidebar-single:hover { background:rgba(0,0,0,.06); }
+      .sidebar-single.active { background:#111; color:#FFD400; }
+
+      /* Topbar */
+      .topbar-stripe { height:4px; background:#FFD400; }
+
+      /* KPI */
+      .kpi-card { background:#fff; border:1px solid #E5E7EB; border-radius:8px; padding:18px 20px; }
+      .kpi-label { font-size:13px; color:#3B82F6; font-weight:500; }
+      .kpi-value { font-size:32px; font-weight:700; color:#2D6FE3; margin-top:4px; }
+      .kpi-delta { font-size:12px; color:#6B7280; margin-top:6px; }
+    </style>
+  </head>
+  <body>
+    <!-- ============= LOGIN ============= -->
+    <div id="page-login" class="page" style="min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFE863 0%,#FFD400 100%);">
+      <div class="card" style="width:100%; max-width:380px; padding:32px;">
+        <div class="flex items-center gap-3 mb-6">
+          <div style="width:42px;height:42px;background:#E63946;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">CP</div>
+          <div>
+            <div class="text-lg font-bold" style="color:#111">Central Phone Leasing</div>
+            <div class="text-xs text-gray-500">ระบบจัดการสัญญาผ่อนชำระ</div>
+          </div>
+        </div>
+        <label class="label">ชื่อผู้ใช้</label>
+        <input class="input mb-3" value="centralphone" />
+        <label class="label">รหัสผ่าน</label>
+        <input class="input mb-5" type="password" value="••••••••••" />
+        <button class="btn btn-primary w-full" onclick="go('home')">เข้าสู่ระบบ</button>
+        <div class="mt-4 text-center text-xs text-gray-500">CloudForCash V2 — Preview</div>
+      </div>
+    </div>
+
+    <!-- ============= APP SHELL ============= -->
+    <div id="app-shell" style="display:none">
+      <!-- Top bar -->
+      <header style="background:#fff; border-bottom:1px solid #E5E7EB;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 24px;">
+          <div class="flex items-center gap-3">
+            <div style="width:36px;height:36px;background:#E63946;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;">CP</div>
+            <div>
+              <div class="text-sm font-bold" style="color:#111">CENTRAL</div>
+              <div class="text-[10px] text-gray-500 -mt-1">PHONE LEASING</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 text-sm text-gray-700">
+            <span>ยินดีต้อนรับ <span class="font-semibold">Central Phone Leasing</span></span>
+            <button class="text-gray-500 hover:text-gray-800">🌐 ▾</button>
+            <button class="text-red-500 hover:text-red-700 text-xl" onclick="go('login')" title="ออกจากระบบ">⎋</button>
+          </div>
+        </div>
+        <div class="topbar-stripe"></div>
+      </header>
+
+      <div style="display:flex; min-height:calc(100vh - 56px);">
+        <!-- Sidebar -->
+        <aside class="sidebar" style="width:220px; flex-shrink:0;">
+          <nav id="sidebar-nav">
+            <a class="sidebar-single nav-link" data-route="home">แดชบอร์ด</a>
+
+            <div class="sidebar-group-header">POS</div>
+            <a class="sidebar-link nav-link" data-route="products">สินค้า</a>
+            <a class="sidebar-link nav-link" data-route="customers">ลูกค้า</a>
+            <a class="sidebar-link nav-link" data-route="contracts">สัญญา</a>
+            <a class="sidebar-link nav-link" data-route="new-contract">สร้างสัญญาใหม่</a>
+
+            <div class="sidebar-group-header">การชำระเงิน</div>
+            <a class="sidebar-link nav-link" data-route="payments">รายการชำระเงิน</a>
+
+            <div class="sidebar-group-header">LINE</div>
+            <a class="sidebar-link nav-link" data-route="messages">ข้อความ LINE</a>
+            <a class="sidebar-link nav-link" data-route="connections">การเชื่อมต่อ LINE</a>
+            <a class="sidebar-link nav-link" data-route="broadcast">กระจายข้อความ</a>
+
+            <div class="sidebar-group-header">รายงาน &amp; Audit</div>
+            <a class="sidebar-link nav-link" data-route="analytics">Analytics</a>
+            <a class="sidebar-link nav-link" data-route="audit">Audit Log</a>
+
+            <div class="sidebar-group-header">หน้าลูกค้า (preview)</div>
+            <a class="sidebar-link nav-link" data-route="customer-pay">/pay (LIFF)</a>
+            <a class="sidebar-link nav-link" data-route="payment-qr">QR ชำระเงิน</a>
+
+            <a class="sidebar-single nav-link" data-route="flex">Flex Messages</a>
+            <a class="sidebar-single nav-link" data-route="settings">ตั้งค่า</a>
+          </nav>
+        </aside>
+
+        <!-- Main -->
+        <main style="flex:1; padding:24px 28px;">
+
+          <!-- ===== DASHBOARD ===== -->
+          <section id="page-home" class="page">
+            <h1 class="text-xl font-bold mb-4">แดชบอร์ด</h1>
+
+            <!-- Filter bar -->
+            <div class="grid grid-cols-12 gap-3 mb-5">
+              <input class="input col-span-3" placeholder="เลขที่สัญญา" />
+              <input class="input col-span-2" type="text" placeholder="เลือกวันที่" onfocus="this.type='date'" />
+              <select class="input col-span-3"><option>ทั้งหมด</option><option>ปกติ</option><option>ค้างชำระ</option></select>
+              <select class="input col-span-3"><option>ทั้งหมด</option><option>ล็อค</option><option>ปลดล็อค</option></select>
+              <button class="btn btn-search col-span-1"><span>🔍</span></button>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-12 gap-4 mb-5">
+              <div class="card col-span-8 p-4">
+                <div class="text-sm font-semibold text-gray-700 mb-2">สัญญารายวัน</div>
+                <canvas id="chartBar" height="120"></canvas>
+              </div>
+              <div class="card col-span-4 p-4">
+                <div class="text-sm font-semibold text-gray-700 mb-2">สถานะสัญญา (149 ราย)</div>
+                <canvas id="chartPie" height="180"></canvas>
+              </div>
+            </div>
+
+            <!-- KPI grid row 1: คาดการณ์ -->
+            <div class="grid grid-cols-3 gap-4 mb-4">
+              <div class="kpi-card">
+                <div class="kpi-label">ยอดชำระคาดการณ์</div>
+                <div class="kpi-value">8,679,360</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">ดอกเบี้ยคาดการณ์</div>
+                <div class="kpi-value">4,813,635</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">หนี้เสียคาดการณ์</div>
+                <div class="kpi-value">0</div>
+              </div>
+            </div>
+
+            <!-- KPI grid row 2: สินเชื่อ -->
+            <div class="grid grid-cols-3 gap-4 mb-4">
+              <div class="kpi-card">
+                <div class="kpi-label text-gray-500" style="color:#6B7280">สินเชื่อรวม</div>
+                <div class="kpi-value" style="color:#111">3,865,725</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label text-gray-500" style="color:#6B7280">สินเชื่อสุทธิ</div>
+                <div class="kpi-value" style="color:#111">3,865,725</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label text-gray-500" style="color:#6B7280">ถือร่วม</div>
+                <div class="kpi-value" style="color:#111">0</div>
+              </div>
+            </div>
+
+            <!-- KPI grid row 3: ดอกเบี้ย พร้อม delta -->
+            <div class="grid grid-cols-3 gap-4 mb-4">
+              <div class="kpi-card">
+                <div class="flex items-center justify-between">
+                  <div class="kpi-label text-gray-500" style="color:#6B7280">ดอกเบี้ย</div>
+                  <span class="badge badge-green">↑ 7.51%</span>
+                </div>
+                <div class="kpi-value" style="color:#111">690,549.92</div>
+                <div class="kpi-delta">+48,218.67 จากสัปดาห์ที่แล้ว</div>
+              </div>
+              <div class="kpi-card">
+                <div class="flex items-center justify-between">
+                  <div class="kpi-label text-gray-500" style="color:#6B7280">ดอกเบี้ยสุทธิ</div>
+                  <span class="badge badge-green">↑ 7.51%</span>
+                </div>
+                <div class="kpi-value" style="color:#111">690,549.92</div>
+                <div class="kpi-delta">+48,218.67 จากสัปดาห์ที่แล้ว</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label text-gray-500" style="color:#6B7280">ดอกเบี้ยถือร่วม</div>
+                <div class="kpi-value" style="color:#111">0</div>
+              </div>
+            </div>
+
+            <!-- KPI grid row 4: สรุปเพิ่มเติม -->
+            <div class="grid grid-cols-4 gap-4">
+              <div class="kpi-card">
+                <div class="kpi-label text-gray-500" style="color:#6B7280">สัญญาทั้งหมด</div>
+                <div class="text-2xl font-bold mt-1">152</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label" style="color:#10B981">ปกติ</div>
+                <div class="text-2xl font-bold mt-1" style="color:#10B981">98</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label" style="color:#EF4444">ค้างชำระ</div>
+                <div class="text-2xl font-bold mt-1" style="color:#EF4444">37</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label" style="color:#2D6FE3">ปิดสัญญา</div>
+                <div class="text-2xl font-bold mt-1" style="color:#2D6FE3">17</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== PRODUCTS ===== -->
+          <section id="page-products" class="page">
+            <div class="flex justify-between items-center mb-4">
+              <h1 class="text-xl font-bold">สินค้า</h1>
+              <button class="btn btn-primary">+ เพิ่มสินค้า</button>
+            </div>
+            <div class="card overflow-hidden">
+              <div class="p-3 border-b flex gap-3">
+                <input class="input" style="max-width:280px" placeholder="ค้นหา SKU / ชื่อสินค้า" />
+                <select class="input" style="max-width:180px"><option>ทุกหมวด</option></select>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>SKU</th><th>ชื่อ</th><th>หมวด</th><th class="text-right">ทุน</th><th class="text-right">ราคาขาย</th><th class="text-right">คงเหลือ</th><th>สถานะ</th></tr></thead>
+                  <tbody>
+                    <tr><td class="font-mono">IP15P-256</td><td>iPhone 15 Pro 256GB</td><td>smartphone</td><td class="text-right">38,000.00</td><td class="text-right">45,900.00</td><td class="text-right">7</td><td><span class="badge badge-green">active</span></td></tr>
+                    <tr><td class="font-mono">IP15-128</td><td>iPhone 15 128GB</td><td>smartphone</td><td class="text-right">28,500.00</td><td class="text-right">32,900.00</td><td class="text-right">12</td><td><span class="badge badge-green">active</span></td></tr>
+                    <tr><td class="font-mono">SAM-S24U</td><td>Samsung S24 Ultra</td><td>smartphone</td><td class="text-right">36,000.00</td><td class="text-right">42,900.00</td><td class="text-right">3</td><td><span class="badge badge-green">active</span></td></tr>
+                    <tr><td class="font-mono">IPAD-AIR</td><td>iPad Air M2 11"</td><td>tablet</td><td class="text-right">21,000.00</td><td class="text-right">25,900.00</td><td class="text-right">5</td><td><span class="badge badge-green">active</span></td></tr>
+                    <tr><td class="font-mono">OPPO-RN12</td><td>OPPO Reno 12</td><td>smartphone</td><td class="text-right">12,500.00</td><td class="text-right">15,990.00</td><td class="text-right">9</td><td><span class="badge badge-green">active</span></td></tr>
+                    <tr><td class="font-mono">AIRPODS4</td><td>AirPods 4</td><td>accessory</td><td class="text-right">3,800.00</td><td class="text-right">4,990.00</td><td class="text-right">0</td><td><span class="badge badge-gray">inactive</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== CUSTOMERS ===== -->
+          <section id="page-customers" class="page">
+            <div class="flex justify-between items-center mb-4">
+              <h1 class="text-xl font-bold">ลูกค้า</h1>
+              <div class="flex gap-2">
+                <button class="btn btn-ghost">ดาวน์โหลด CSV</button>
+                <button class="btn btn-primary">+ เพิ่มลูกค้า</button>
+              </div>
+            </div>
+            <div class="card overflow-hidden">
+              <div class="p-3 border-b">
+                <input class="input" style="max-width:320px" placeholder="ค้นหา ชื่อ / บัตรประชาชน / เบอร์" />
+              </div>
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>ชื่อ</th><th>เลขบัตร</th><th>เบอร์โทร</th><th>LINE</th><th>Bot</th><th>สร้างเมื่อ</th></tr></thead>
+                  <tbody>
+                    <tr><td>สมชาย ใจดี</td><td class="font-mono text-xs">1102003456789</td><td>081-234-5678</td><td>Somchai J.</td><td><span class="badge badge-green">on</span></td><td class="text-xs text-gray-500">12 พ.ค. 2569 14:32</td></tr>
+                    <tr><td>มาลี ทองคำ</td><td class="font-mono text-xs">3401005123456</td><td>089-876-5432</td><td>Malee T.</td><td><span class="badge badge-green">on</span></td><td class="text-xs text-gray-500">10 พ.ค. 2569 09:15</td></tr>
+                    <tr><td>วิชัย พิทักษ์</td><td class="font-mono text-xs">1100400999888</td><td>063-555-0011</td><td>-</td><td><span class="badge badge-gray">off</span></td><td class="text-xs text-gray-500">08 พ.ค. 2569 16:48</td></tr>
+                    <tr><td>พิมพ์ใจ ศรีสุข</td><td class="font-mono text-xs">5230600111222</td><td>092-100-2030</td><td>Pim S.</td><td><span class="badge badge-green">on</span></td><td class="text-xs text-gray-500">02 พ.ค. 2569 11:00</td></tr>
+                    <tr><td>เอกชัย ภูมิใจ</td><td class="font-mono text-xs">1849900222333</td><td>085-444-7788</td><td>-</td><td><span class="badge badge-gray">off</span></td><td class="text-xs text-gray-500">28 เม.ย. 2569 13:21</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== CONTRACTS ===== -->
+          <section id="page-contracts" class="page">
+            <div class="flex justify-between items-center mb-4">
+              <h1 class="text-xl font-bold">สัญญาผ่อนชำระ</h1>
+              <div class="flex gap-2">
+                <button class="btn btn-ghost">ดาวน์โหลด CSV</button>
+                <button class="btn btn-primary" data-route="new-contract">+ สร้างสัญญา</button>
+              </div>
+            </div>
+            <div class="card overflow-hidden">
+              <div class="p-3 border-b flex gap-3">
+                <input class="input" style="max-width:260px" placeholder="ค้นหาเลขสัญญา" />
+                <select class="input" style="max-width:200px"><option>ทุกสถานะ</option><option>ปกติ</option><option>ค้างชำระ</option><option>ปิดสัญญา</option></select>
+                <select class="input" style="max-width:200px"><option>ทุกการล็อค</option><option>ล็อค</option><option>ปลดล็อค</option></select>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>เลขสัญญา</th><th>ลูกค้า</th><th class="text-right">ราคาเครื่อง</th><th class="text-right">ค่างวด</th><th class="text-center">งวด</th><th>เริ่ม</th><th>สถานะ</th><th>ล็อค</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td class="font-mono text-brand-blue">CF-26041700001</td><td>สมชาย ใจดี</td><td class="text-right">45,900.00</td><td class="text-right">3,500.00</td><td class="text-center">12</td><td>17 เม.ย. 2569</td><td><span class="badge badge-green">ปกติ</span></td><td><span class="badge badge-gray">ปลดล็อค</span></td><td><a class="text-brand-blue text-sm cursor-pointer" onclick="go('contract-detail')">ดู</a></td></tr>
+                    <tr><td class="font-mono text-brand-blue">CF-26041500003</td><td>มาลี ทองคำ</td><td class="text-right">32,900.00</td><td class="text-right">2,500.00</td><td class="text-center">12</td><td>15 เม.ย. 2569</td><td><span class="badge badge-red">ค้างชำระ</span></td><td><span class="badge badge-red">ล็อค</span></td><td><a class="text-brand-blue text-sm cursor-pointer" onclick="go('contract-detail')">ดู</a></td></tr>
+                    <tr><td class="font-mono text-brand-blue">CF-26033000007</td><td>วิชัย พิทักษ์</td><td class="text-right">25,900.00</td><td class="text-right">2,000.00</td><td class="text-center">12</td><td>30 มี.ค. 2569</td><td><span class="badge badge-red">ค้างชำระ</span></td><td><span class="badge badge-red">ล็อค</span></td><td><a class="text-brand-blue text-sm cursor-pointer" onclick="go('contract-detail')">ดู</a></td></tr>
+                    <tr><td class="font-mono text-brand-blue">CF-26031500002</td><td>พิมพ์ใจ ศรีสุข</td><td class="text-right">15,990.00</td><td class="text-right">1,300.00</td><td class="text-center">12</td><td>15 มี.ค. 2569</td><td><span class="badge badge-green">ปกติ</span></td><td><span class="badge badge-gray">ปลดล็อค</span></td><td><a class="text-brand-blue text-sm cursor-pointer" onclick="go('contract-detail')">ดู</a></td></tr>
+                    <tr><td class="font-mono text-brand-blue">CF-26022000012</td><td>เอกชัย ภูมิใจ</td><td class="text-right">42,900.00</td><td class="text-right">3,000.00</td><td class="text-center">12</td><td>20 ก.พ. 2569</td><td><span class="badge badge-blue">ปิดสัญญา</span></td><td><span class="badge badge-gray">ปลดล็อค</span></td><td><a class="text-brand-blue text-sm cursor-pointer" onclick="go('contract-detail')">ดู</a></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== NEW CONTRACT ===== -->
+          <section id="page-new-contract" class="page">
+            <div class="flex items-center gap-3 mb-4">
+              <button class="text-sm text-gray-500 hover:text-gray-800" onclick="go('contracts')">← กลับ</button>
+              <h1 class="text-xl font-bold">สร้างสัญญาใหม่</h1>
+            </div>
+            <div class="card p-5 grid grid-cols-2 gap-4">
+              <div><label class="label">สินค้า</label><select class="input"><option>iPhone 15 Pro 256GB (SKU IP15P-256, คงเหลือ 7)</option></select></div>
+              <div><label class="label">ลูกค้า</label><select class="input"><option>สมชาย ใจดี (1102003456789)</option></select></div>
+              <div><label class="label">ราคาเครื่อง (บาท)</label><input class="input" value="45900" /></div>
+              <div><label class="label">เงินดาวน์ (บาท)</label><input class="input" value="5000" /></div>
+              <div><label class="label">จำนวนงวด</label><input class="input" value="12" /></div>
+              <div><label class="label">ค่างวด/เดือน (auto: 3,408.33)</label><input class="input" placeholder="3408.33" /></div>
+              <div><label class="label">ค่าปรับ/วัน</label><input class="input" value="100" /></div>
+              <div><label class="label">ค่าปลดล็อค</label><input class="input" value="500" /></div>
+              <div><label class="label">วันเริ่มสัญญา</label><input class="input" type="date" value="2026-05-12" /></div>
+              <div></div>
+              <div class="col-span-2 pt-3 border-t text-sm space-y-1">
+                <div>ยอดผ่อนทั้งหมด: <span class="font-semibold text-brand-blue">40,900.00 บาท</span></div>
+                <div>งวด × ค่างวด: <span class="font-semibold text-brand-blue">12 × 3,408.33 = 40,899.96 บาท</span></div>
+              </div>
+              <div class="col-span-2 flex justify-end gap-2">
+                <button class="btn btn-ghost" onclick="go('contracts')">ยกเลิก</button>
+                <button class="btn btn-primary" onclick="go('contract-detail')">สร้างสัญญา</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== CONTRACT DETAIL ===== -->
+          <section id="page-contract-detail" class="page">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <button class="text-sm text-gray-500 hover:text-gray-800" onclick="go('contracts')">← กลับ</button>
+                <h1 class="text-xl font-bold mt-1">สัญญา <span class="font-mono text-brand-blue">CF-26041500003</span></h1>
+                <div class="text-sm text-gray-600 mt-1">มาลี ทองคำ • iPhone 15 128GB</div>
+              </div>
+              <div class="flex gap-2">
+                <span class="badge badge-red">ค้างชำระ</span>
+                <span class="badge badge-red">🔒 ล็อค</span>
+              </div>
+            </div>
+
+            <div class="card mb-4 p-3 flex flex-wrap gap-2 items-center" style="background:#FFF8E1;border-color:#FFD400">
+              <span class="text-xs font-semibold text-gray-700 mr-1">Admin actions:</span>
+              <button class="btn btn-ghost" style="height:32px;font-size:12px" onclick="openModal('status')">เปลี่ยนสถานะ</button>
+              <button class="btn btn-ghost" style="height:32px;font-size:12px" onclick="openModal('lock')">ปลดล็อค</button>
+              <button class="btn btn-ghost" style="height:32px;font-size:12px" onclick="openModal('discount')">ให้ส่วนลด</button>
+              <span class="text-xs text-gray-500 ml-2">คลิกเพื่อดู modal — ทุก action ต้องกรอกเหตุผลก่อนยืนยัน</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 mb-5">
+              <div class="card p-3"><div class="text-xs text-gray-500">ราคาเครื่อง</div><div class="text-base font-semibold mt-0.5">32,900.00 บาท</div></div>
+              <div class="card p-3"><div class="text-xs text-gray-500">เงินดาวน์</div><div class="text-base font-semibold mt-0.5">3,000.00 บาท</div></div>
+              <div class="card p-3"><div class="text-xs text-gray-500">ยอดผ่อนทั้งหมด</div><div class="text-base font-semibold mt-0.5">29,900.00 บาท</div></div>
+              <div class="card p-3"><div class="text-xs text-gray-500">ค่างวด/เดือน</div><div class="text-base font-semibold mt-0.5">2,500.00 บาท</div></div>
+              <div class="card p-3"><div class="text-xs text-gray-500">จำนวนงวด</div><div class="text-base font-semibold mt-0.5">12</div></div>
+              <div class="card p-3"><div class="text-xs text-gray-500">ค่าปรับ/วัน</div><div class="text-base font-semibold mt-0.5">100.00 บาท</div></div>
+              <div class="card p-3"><div class="text-xs text-gray-500">ค่าปลดล็อค</div><div class="text-base font-semibold mt-0.5">500.00 บาท</div></div>
+              <div class="card p-3"><div class="text-xs text-gray-500">วันเริ่ม</div><div class="text-base font-semibold mt-0.5">15 เม.ย. 2569</div></div>
+              <div class="card p-3"><div class="text-xs text-gray-500">สถานะ</div><div class="text-base font-semibold mt-0.5">ค้างชำระ 3 วัน</div></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-5">
+              <div class="kpi-card">
+                <div class="text-sm text-gray-500">ต่อดอก (ค่างวด + ค่าปรับ)</div>
+                <div class="kpi-value" style="color:#10B981; font-size:28px">2,800.00 บาท</div>
+                <div class="text-xs text-gray-500 mt-1">ค่างวด 2,500 + ค่าปรับ 300 (3 วัน × 100) = 2,800 บาท</div>
+              </div>
+              <div class="kpi-card">
+                <div class="text-sm text-gray-500">ปิดยอด (ทั้งหมด)</div>
+                <div class="kpi-value" style="font-size:28px">36,200.00 บาท</div>
+                <div class="text-xs text-gray-500 mt-1">ราคาเครื่อง 32,900 + ค่างวด 2,500 + ค่าปรับ 300 + ค่าปลดล็อค 500</div>
+              </div>
+            </div>
+
+            <div class="flex justify-between items-center mb-2">
+              <h2 class="text-lg font-bold">ตารางงวด</h2>
+              <button class="btn btn-primary">+ บันทึกรับชำระ</button>
+            </div>
+            <div class="card overflow-hidden mb-5">
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>งวด</th><th>วันครบกำหนด</th><th class="text-right">ยอดต้องจ่าย</th><th class="text-right">จ่ายแล้ว</th><th class="text-right">คงเหลือ</th><th class="text-right">ค่าปรับ</th><th>สถานะ</th></tr></thead>
+                  <tbody>
+                    <tr><td>1</td><td>15 พ.ค. 2569</td><td class="text-right">2,500.00</td><td class="text-right">2,500.00</td><td class="text-right">0.00</td><td class="text-right">0.00</td><td><span class="badge badge-blue">paid</span></td></tr>
+                    <tr><td>2</td><td>15 มิ.ย. 2569</td><td class="text-right">2,500.00</td><td class="text-right">1,500.00</td><td class="text-right">1,000.00</td><td class="text-right">0.00</td><td><span class="badge badge-yellow">partial</span></td></tr>
+                    <tr style="background:#FEF2F2"><td>3</td><td>15 ก.ค. 2569</td><td class="text-right">2,500.00</td><td class="text-right">0.00</td><td class="text-right">2,500.00</td><td class="text-right">300.00</td><td><span class="badge badge-red">overdue</span></td></tr>
+                    <tr><td>4</td><td>15 ส.ค. 2569</td><td class="text-right">2,500.00</td><td class="text-right">0.00</td><td class="text-right">2,500.00</td><td class="text-right">0.00</td><td><span class="badge badge-gray">pending</span></td></tr>
+                    <tr><td>5</td><td>15 ก.ย. 2569</td><td class="text-right">2,500.00</td><td class="text-right">0.00</td><td class="text-right">2,500.00</td><td class="text-right">0.00</td><td><span class="badge badge-gray">pending</span></td></tr>
+                    <tr><td>6</td><td>15 ต.ค. 2569</td><td class="text-right">2,500.00</td><td class="text-right">0.00</td><td class="text-right">2,500.00</td><td class="text-right">0.00</td><td><span class="badge badge-gray">pending</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <h2 class="text-lg font-bold mb-2">ประวัติการชำระ</h2>
+            <div class="card overflow-hidden mb-5">
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>วันที่</th><th class="text-center">งวด</th><th class="text-right">ยอด</th><th>สถานะ</th><th>หมายเหตุ</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td>14 พ.ค. 2569</td><td class="text-center">1</td><td class="text-right">2,500.00</td><td><span class="badge badge-green">verified</span></td><td class="text-xs text-gray-500">slip:exact_installment</td>
+                      <td class="text-xs"><a class="text-brand-blue cursor-pointer mr-2" onclick="openModal('edit-amount')">แก้</a><a class="text-red-600 cursor-pointer" onclick="openModal('void')">ยกเลิก</a></td></tr>
+                    <tr><td>20 มิ.ย. 2569</td><td class="text-center">2</td><td class="text-right">1,500.00</td><td><span class="badge badge-green">verified</span></td><td class="text-xs text-gray-500">slip:underpaid</td>
+                      <td class="text-xs"><a class="text-brand-blue cursor-pointer mr-2" onclick="openModal('edit-amount')">แก้</a><a class="text-red-600 cursor-pointer" onclick="openModal('void')">ยกเลิก</a></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <h2 class="text-lg font-bold mb-2">ส่วนลด</h2>
+            <div class="card overflow-hidden mb-5">
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>วันที่</th><th>ประเภท</th><th class="text-right">ราคาเดิม</th><th class="text-right">ส่วนลด</th><th class="text-right">สุทธิ</th><th>เหตุผล</th><th>สถานะ</th></tr></thead>
+                  <tbody>
+                    <tr><td class="text-xs">10 ก.ค. 2569</td><td>penalty</td><td class="text-right">300.00</td><td class="text-right">150.00</td><td class="text-right">150.00</td><td class="text-xs">ลูกค้าแจ้งเหตุพ่อป่วย</td><td class="text-xs"><span class="badge badge-green">active</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <h2 class="text-lg font-bold mb-2">Audit Log</h2>
+            <div class="card overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>เวลา</th><th>action</th><th>คำอธิบาย</th><th>โดย</th></tr></thead>
+                  <tbody>
+                    <tr><td class="text-xs">15 เม.ย. 2569</td><td class="font-mono text-xs">contract_created</td><td class="text-xs">สร้างสัญญา CF-26041500003</td><td class="text-xs text-gray-500">admin</td></tr>
+                    <tr><td class="text-xs">15 เม.ย. 2569</td><td class="font-mono text-xs">installment_generated</td><td class="text-xs">สร้างตารางงวด 12 งวด</td><td class="text-xs text-gray-500">admin</td></tr>
+                    <tr><td class="text-xs">14 พ.ค. 2569</td><td class="font-mono text-xs">payment_received</td><td class="text-xs">งวดที่ 1 รับชำระ 2,500</td><td class="text-xs text-gray-500">line-bot</td></tr>
+                    <tr><td class="text-xs">20 มิ.ย. 2569</td><td class="font-mono text-xs">payment_received</td><td class="text-xs">งวดที่ 2 รับชำระ 1,500</td><td class="text-xs text-gray-500">line-bot</td></tr>
+                    <tr><td class="text-xs">18 ก.ค. 2569</td><td class="font-mono text-xs">reminder_sent</td><td class="text-xs">ส่งทวงหนี้ระดับ OVERDUE_3</td><td class="text-xs text-gray-500">scheduler</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== PAYMENTS ===== -->
+          <section id="page-payments" class="page">
+            <div class="flex justify-between items-center mb-4">
+              <h1 class="text-xl font-bold">รายการชำระเงิน</h1>
+              <button class="btn btn-ghost">ดาวน์โหลด Excel</button>
+            </div>
+            <div class="card overflow-hidden">
+              <div class="p-3 border-b flex gap-3">
+                <input class="input" style="max-width:240px" placeholder="ค้นหาเลขสัญญา / ผู้โอน" />
+                <select class="input" style="max-width:200px"><option>ทุกสถานะ</option><option>verified</option><option>pending</option></select>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>วันที่</th><th>เลขสัญญา</th><th>ผู้โอน</th><th>ธนาคาร</th><th class="text-right">ยอด</th><th>สถานะ</th><th>หมายเหตุ</th></tr></thead>
+                  <tbody>
+                    <tr><td class="text-xs">12 พ.ค. 15:10</td><td class="font-mono text-brand-blue">CF-26041500003</td><td>มาลี ทองคำ</td><td>KBANK</td><td class="text-right">2,500.00</td><td><span class="badge badge-green">verified</span></td><td class="text-xs text-gray-500">slip:exact_installment</td></tr>
+                    <tr><td class="text-xs">12 พ.ค. 11:48</td><td class="font-mono text-brand-blue">CF-26041700001</td><td>สมชาย ใจดี</td><td>SCB</td><td class="text-right">3,500.00</td><td><span class="badge badge-green">verified</span></td><td class="text-xs text-gray-500">slip:exact_installment</td></tr>
+                    <tr><td class="text-xs">11 พ.ค. 19:32</td><td class="font-mono text-brand-blue">CF-26031500002</td><td>พิมพ์ใจ ศรีสุข</td><td>BBL</td><td class="text-right">1,300.00</td><td><span class="badge badge-green">verified</span></td><td class="text-xs text-gray-500">slip:exact_installment</td></tr>
+                    <tr><td class="text-xs">10 พ.ค. 22:01</td><td class="font-mono text-brand-blue">CF-26041500003</td><td>มาลี ทองคำ</td><td>KBANK</td><td class="text-right">1,500.00</td><td><span class="badge badge-yellow">underpaid</span></td><td class="text-xs text-gray-500">ขาด 1,000 บาท</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== MESSAGES ===== -->
+          <section id="page-messages" class="page">
+            <h1 class="text-xl font-bold mb-4">ข้อความ LINE</h1>
+            <div class="card overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>เวลา</th><th>ทิศทาง</th><th>ประเภท</th><th>LINE userId</th><th>เนื้อหา</th></tr></thead>
+                  <tbody>
+                    <tr><td class="text-xs">12 พ.ค. 14:32</td><td><span class="badge badge-gray">incoming</span></td><td class="font-mono text-xs">text</td><td class="font-mono text-xs">U1234567890…</td><td class="text-xs">CF-26041500003</td></tr>
+                    <tr><td class="text-xs">12 พ.ค. 14:32</td><td><span class="badge badge-blue">outgoing</span></td><td class="font-mono text-xs">text</td><td class="font-mono text-xs">U1234567890…</td><td class="text-xs">ผูกสัญญา CF-26041500003 สำเร็จ</td></tr>
+                    <tr><td class="text-xs">12 พ.ค. 15:10</td><td><span class="badge badge-gray">incoming</span></td><td class="font-mono text-xs">image</td><td class="font-mono text-xs">U1234567890…</td><td class="text-xs">(slip image)</td></tr>
+                    <tr><td class="text-xs">12 พ.ค. 15:10</td><td><span class="badge badge-blue">outgoing</span></td><td class="font-mono text-xs">flex</td><td class="font-mono text-xs">U1234567890…</td><td class="text-xs">✅ ตรวจสลิปสำเร็จ</td></tr>
+                    <tr><td class="text-xs">12 พ.ค. 16:02</td><td><span class="badge badge-gray">incoming</span></td><td class="font-mono text-xs">text</td><td class="font-mono text-xs">U9876543210…</td><td class="text-xs">ขอดูยอดหน่อย</td></tr>
+                    <tr><td class="text-xs">12 พ.ค. 16:02</td><td><span class="badge badge-blue">outgoing</span></td><td class="font-mono text-xs">text</td><td class="font-mono text-xs">U9876543210…</td><td class="text-xs">สัญญา CF-26033000007 งวดที่ 3 ครบกำหนด 15 ก.ค. 2569 ยอด 2,500 บาท</td></tr>
+                    <tr><td class="text-xs">11 พ.ค. 09:00</td><td><span class="badge badge-blue">outgoing</span></td><td class="font-mono text-xs">flex</td><td class="font-mono text-xs">U5555000111…</td><td class="text-xs">⚠️ เกินกำหนด 3 วัน มีค่าปรับ</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== CONNECTIONS ===== -->
+          <section id="page-connections" class="page">
+            <h1 class="text-xl font-bold mb-4">ผู้ใช้ LINE ที่ผูกแล้ว</h1>
+            <div class="card overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>ลูกค้า</th><th>เลขบัตร</th><th>LINE Display Name</th><th>userId</th><th>Bot</th><th>อัพเดต</th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td>สมชาย ใจดี</td><td class="font-mono text-xs">1102003456789</td><td>Somchai J.</td><td class="font-mono text-xs">U1234567890abcdef…</td><td><span class="badge badge-green">on</span></td><td class="text-xs text-gray-500">12 พ.ค. 14:32</td><td><button class="btn btn-ghost" style="height:30px;font-size:12px;">ปิด bot</button></td></tr>
+                    <tr><td>มาลี ทองคำ</td><td class="font-mono text-xs">3401005123456</td><td>Malee T.</td><td class="font-mono text-xs">U9876543210fedcba…</td><td><span class="badge badge-green">on</span></td><td class="text-xs text-gray-500">12 พ.ค. 16:02</td><td><button class="btn btn-ghost" style="height:30px;font-size:12px;">ปิด bot</button></td></tr>
+                    <tr><td>พิมพ์ใจ ศรีสุข</td><td class="font-mono text-xs">5230600111222</td><td>Pim S.</td><td class="font-mono text-xs">Uabcdefabcdef1234…</td><td><span class="badge badge-gray">off</span></td><td class="text-xs text-gray-500">02 พ.ค. 11:00</td><td><button class="btn btn-ghost" style="height:30px;font-size:12px;">เปิด bot</button></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== BROADCAST ===== -->
+          <section id="page-broadcast" class="page">
+            <div class="flex items-center justify-between mb-4">
+              <h1 class="text-xl font-bold">กระจายข้อความ / ทวงหนี้</h1>
+              <button class="btn btn-ghost">Dry-run daily sync</button>
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div class="card p-4">
+                <div class="text-sm font-semibold mb-3">เงื่อนไขผู้รับ</div>
+                <label class="label">สถานะ</label>
+                <select class="input mb-3"><option>ค้างชำระ</option><option>ทุกสถานะ (botActive=1)</option><option>ปกติ</option></select>
+                <label class="label">ค้างขั้นต่ำ (วัน)</label>
+                <input class="input mb-3" type="number" value="3" />
+                <div class="text-xs text-gray-500 mt-2">ผู้รับที่ตรงเงื่อนไข: <span class="font-semibold text-brand-blue">23 ราย</span></div>
+              </div>
+              <div class="card p-4">
+                <div class="text-sm font-semibold mb-3">ข้อความ</div>
+                <label class="label">ตัวแปร: {name}, {contractNumber}, {remaining}</label>
+                <textarea class="input" rows="6" style="height:140px">เรียนคุณ {name}
+สัญญา {contractNumber} มียอดค้างชำระ {remaining} บาท
+กรุณาชำระภายในวันนี้ค่ะ</textarea>
+                <div class="flex gap-2 justify-end mt-3">
+                  <button class="btn btn-ghost">Dry-run</button>
+                  <button class="btn btn-primary">ส่งจริง</button>
+                </div>
+              </div>
+            </div>
+            <div class="card overflow-hidden">
+              <div class="px-3 py-2 border-b text-sm font-semibold">รายชื่อผู้รับ (preview)</div>
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>เลขสัญญา</th><th>ลูกค้า</th><th class="text-right">ค้าง (วัน)</th><th class="text-right">ยอดคงเหลือ</th><th>LINE userId</th></tr></thead>
+                  <tbody>
+                    <tr><td class="font-mono text-brand-blue">CF-26022000099</td><td>วิรัตน์ เจริญสุข</td><td class="text-right text-red-600 font-semibold">12</td><td class="text-right">3,500.00</td><td class="font-mono text-xs">Ua0b1c2d3e4f5g6h7…</td></tr>
+                    <tr><td class="font-mono text-brand-blue">CF-26033000007</td><td>วิชัย พิทักษ์</td><td class="text-right text-red-600 font-semibold">7</td><td class="text-right">2,700.00</td><td class="font-mono text-xs">U5555000111aaa222…</td></tr>
+                    <tr><td class="font-mono text-brand-blue">CF-26041500003</td><td>มาลี ทองคำ</td><td class="text-right text-red-600 font-semibold">3</td><td class="text-right">2,800.00</td><td class="font-mono text-xs">U9876543210fedcba…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== ANALYTICS ===== -->
+          <section id="page-analytics" class="page">
+            <h1 class="text-xl font-bold mb-4">Analytics</h1>
+            <div class="grid grid-cols-4 gap-4 mb-4">
+              <div class="kpi-card"><div class="kpi-label" style="color:#10B981">ยอดเก็บได้รวม</div><div class="kpi-value" style="color:#10B981">2,418,560</div></div>
+              <div class="kpi-card"><div class="kpi-label">Collection rate</div><div class="kpi-value">63%</div></div>
+              <div class="kpi-card"><div class="kpi-label" style="color:#6B7280">ตรวจสลิปแล้ว</div><div class="kpi-value" style="color:#111">847</div></div>
+              <div class="kpi-card"><div class="kpi-label" style="color:#F39C12">ยกเลิก / รอตรวจ</div><div class="kpi-value" style="color:#F39C12">12 / 5</div></div>
+            </div>
+            <div class="card p-4 mb-4">
+              <div class="text-sm font-semibold text-gray-700 mb-2">ยอดชำระรายวัน (30 วันล่าสุด)</div>
+              <canvas id="chartAnalytics" height="100"></canvas>
+            </div>
+            <div class="card p-4">
+              <div class="text-sm font-semibold mb-3">สถานะสัญญา</div>
+              <div class="grid grid-cols-5 gap-3 text-center">
+                <div><div class="text-xs text-gray-500">active</div><div class="text-3xl font-bold text-emerald-600 mt-1">98</div></div>
+                <div><div class="text-xs text-gray-500">overdue</div><div class="text-3xl font-bold text-red-500 mt-1">37</div></div>
+                <div><div class="text-xs text-gray-500">paid</div><div class="text-3xl font-bold text-blue-500 mt-1">17</div></div>
+                <div><div class="text-xs text-gray-500">defaulted</div><div class="text-3xl font-bold text-gray-700 mt-1">0</div></div>
+                <div><div class="text-xs text-gray-500">closed</div><div class="text-3xl font-bold text-gray-400 mt-1">0</div></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== AUDIT LOG ===== -->
+          <section id="page-audit" class="page">
+            <h1 class="text-xl font-bold mb-4">Audit Log</h1>
+            <div class="card overflow-hidden">
+              <div class="p-3 border-b flex gap-3">
+                <input class="input" style="max-width:280px" placeholder="ค้นหา action / สัญญา / โดย" />
+                <select class="input" style="max-width:200px"><option>ทุก action</option><option>edit_amount</option><option>void_transaction</option><option>status_override</option></select>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="table-base">
+                  <thead><tr><th>เวลา</th><th>action</th><th>สัญญา</th><th>คำอธิบาย</th><th>เดิม → ใหม่</th><th>หมายเหตุ</th><th>โดย</th></tr></thead>
+                  <tbody>
+                    <tr><td class="text-xs">12 พ.ค. 15:10</td><td class="font-mono text-xs">payment_received</td><td class="font-mono text-xs">CF-26041500003</td><td class="text-xs">งวดที่ 2 รับชำระ 1,500</td><td class="text-xs"><span class="text-gray-500">0</span> → <span>1,500</span></td><td class="text-xs">-</td><td class="text-xs text-gray-500">line-bot</td></tr>
+                    <tr><td class="text-xs">12 พ.ค. 14:32</td><td class="font-mono text-xs">other</td><td class="font-mono text-xs">CF-26041500003</td><td class="text-xs">bind LINE userId</td><td class="text-xs">-</td><td class="text-xs">-</td><td class="text-xs text-gray-500">line-bot</td></tr>
+                    <tr style="background:#FFF8E1"><td class="text-xs">11 พ.ค. 09:15</td><td class="font-mono text-xs">discount_applied</td><td class="font-mono text-xs">CF-26033000007</td><td class="text-xs">ส่วนลด penalty: 150 (เหลือ 150)</td><td class="text-xs"><span class="text-gray-500">300</span> → <span>150</span></td><td class="text-xs">ลูกค้าแจ้งเหตุพ่อป่วย</td><td class="text-xs text-gray-500">admin</td></tr>
+                    <tr><td class="text-xs">10 พ.ค. 17:00</td><td class="font-mono text-xs">reminder_sent</td><td class="font-mono text-xs">CF-26022000099</td><td class="text-xs">ส่งทวงหนี้ระดับ OVERDUE_7</td><td class="text-xs">-</td><td class="text-xs">-</td><td class="text-xs text-gray-500">scheduler</td></tr>
+                    <tr style="background:#FEF2F2"><td class="text-xs">09 พ.ค. 14:22</td><td class="font-mono text-xs">void_transaction</td><td class="font-mono text-xs">CF-26041700001</td><td class="text-xs">ยกเลิกรายการชำระ 3,500 บาท</td><td class="text-xs"><span class="text-gray-500">3,500</span> → <span>0</span></td><td class="text-xs">โอนผิดบัญชี</td><td class="text-xs text-gray-500">admin</td></tr>
+                    <tr style="background:#FFF8E1"><td class="text-xs">08 พ.ค. 11:00</td><td class="font-mono text-xs">lock_override</td><td class="font-mono text-xs">CF-26022000099</td><td class="text-xs">ล็อคเครื่อง</td><td class="text-xs"><span class="text-gray-500">unlocked</span> → <span>locked</span></td><td class="text-xs">ลูกค้าค้างเกิน 10 วัน</td><td class="text-xs text-gray-500">admin</td></tr>
+                    <tr><td class="text-xs">05 พ.ค. 09:48</td><td class="font-mono text-xs">contract_created</td><td class="font-mono text-xs">CF-26050500003</td><td class="text-xs">สร้างสัญญา CF-26050500003</td><td class="text-xs">-</td><td class="text-xs">-</td><td class="text-xs text-gray-500">admin</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== SETTINGS ===== -->
+          <section id="page-settings" class="page">
+            <h1 class="text-xl font-bold mb-4">ตั้งค่าระบบ</h1>
+            <div class="card p-5 grid grid-cols-2 gap-5">
+              <div>
+                <label class="label">ชื่อเจ้าของร้าน <span class="text-gray-400 font-mono text-[10px] ml-1">owner_name</span></label>
+                <div class="flex gap-2"><input class="input" value="Central Phone Leasing" /><button class="btn btn-primary">บันทึก</button></div>
+              </div>
+              <div>
+                <label class="label">ค่าปรับ/วัน (default) <span class="text-gray-400 font-mono text-[10px] ml-1">default_penalty_rate</span></label>
+                <div class="flex gap-2"><input class="input" value="100" /><button class="btn btn-primary">บันทึก</button></div>
+                <div class="text-[11px] text-gray-500 mt-1">ใช้กับสัญญาใหม่ที่ไม่ระบุ</div>
+              </div>
+              <div>
+                <label class="label">ค่าปลดล็อค (default) <span class="text-gray-400 font-mono text-[10px] ml-1">default_unlock_fee</span></label>
+                <div class="flex gap-2"><input class="input" value="500" /><button class="btn btn-primary">บันทึก</button></div>
+              </div>
+              <div>
+                <label class="label">จำนวนงวด (default) <span class="text-gray-400 font-mono text-[10px] ml-1">default_total_periods</span></label>
+                <div class="flex gap-2"><input class="input" value="12" /><button class="btn btn-primary">บันทึก</button></div>
+              </div>
+              <div class="col-span-2">
+                <label class="label">ลายเซ็นท้ายข้อความ broadcast <span class="text-gray-400 font-mono text-[10px] ml-1">broadcast_signature</span></label>
+                <div class="flex gap-2"><input class="input" value="— Central Phone Leasing" /><button class="btn btn-primary">บันทึก</button></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== CUSTOMER LIFF /pay ===== -->
+          <section id="page-customer-pay" class="page">
+            <h1 class="text-xl font-bold mb-1">หน้าลูกค้า: /pay (LIFF)</h1>
+            <div class="text-sm text-gray-500 mb-4">หน้าจอที่ลูกค้าจะเห็นเมื่อเปิด LIFF URL ใน LINE — ปกติเปิดแบบ mobile-only</div>
+            <div class="flex justify-center">
+              <div style="width:380px;background:#0F172A;border-radius:32px;padding:16px;color:#E2E8F0;border:8px solid #1E293B;box-shadow:0 16px 40px rgba(0,0,0,.4)">
+                <div class="text-center py-2 mb-3">
+                  <div style="color:#2196F3" class="font-bold">CloudForCash</div>
+                  <div class="text-xs" style="color:#64748B">ตรวจยอด · ชำระเงิน · ผ่านระบบ LINE</div>
+                </div>
+                <div class="rounded-lg p-3 mb-3" style="background:#1E293B;border:1px solid #334155">
+                  <div class="text-xs" style="color:#94A3B8">สวัสดี คุณ Malee T.</div>
+                  <div class="text-sm">มาลี ทองคำ</div>
+                  <div class="text-xs mt-2" style="color:#94A3B8">เลขสัญญา</div>
+                  <div class="font-mono text-lg" style="color:#2196F3">CF-26041500003</div>
+                </div>
+                <div class="rounded-lg p-3 mb-3" style="background:#1E293B;border:1px solid #334155">
+                  <div class="text-xs" style="color:#94A3B8">งวดปัจจุบัน</div>
+                  <div class="font-semibold text-lg">งวดที่ 3 / 12</div>
+                  <div class="text-xs mt-2" style="color:#94A3B8">ครบกำหนด 15 ก.ค. 2569</div>
+                  <div class="text-xs mt-1" style="color:#EF4444">เกินกำหนด 3 วัน</div>
+                </div>
+                <div class="rounded-lg p-3 mb-3" style="background:#1E293B;border:1px solid #334155">
+                  <div class="text-xs" style="color:#94A3B8">ต่อดอก (ค่างวด + ค่าปรับ)</div>
+                  <div class="text-3xl font-bold mt-1" style="color:#10B981">2,800.00 ฿</div>
+                  <div class="text-[10px] mt-1" style="color:#64748B">ค่างวด 2,500 + ค่าปรับ 300 = 2,800 บาท</div>
+                  <button class="w-full mt-3 py-2 rounded-md font-semibold text-white" style="background:#10B981">ชำระเงิน (2,800.00 ฿)</button>
+                </div>
+                <div class="rounded-lg p-3 mb-3" style="background:#1E293B;border:1px solid #334155">
+                  <div class="text-xs" style="color:#94A3B8">ปิดยอด (จบสัญญา)</div>
+                  <div class="text-3xl font-bold mt-1" style="color:#60A5FA">36,200.00 ฿</div>
+                  <div class="text-[10px] mt-1" style="color:#64748B">ราคาเครื่อง 32,900 + ค่างวด 2,500 + ค่าปรับ 300 + ค่าปลดล็อค 500</div>
+                  <button class="w-full mt-3 py-2 rounded-md font-semibold text-white" style="background:#2196F3">ชำระเงิน (36,200.00 ฿)</button>
+                </div>
+                <div class="text-[11px] text-center mt-4" style="color:#64748B">
+                  เมื่อชำระแล้ว ส่งสลิปกลับมาในแชท LINE<br/>ระบบจะตรวจอัตโนมัติ
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== CUSTOMER PAYMENT QR ===== -->
+          <section id="page-payment-qr" class="page">
+            <h1 class="text-xl font-bold mb-1">หน้าลูกค้า: QR ชำระเงิน</h1>
+            <div class="text-sm text-gray-500 mb-4">หน้าจอ QR PromptPay ที่ลูกค้าจะเห็นหลังกดปุ่ม "ชำระเงิน"</div>
+            <div class="flex justify-center">
+              <div style="width:380px;background:#0F172A;border-radius:32px;padding:16px;color:#E2E8F0;border:8px solid #1E293B;box-shadow:0 16px 40px rgba(0,0,0,.4)">
+                <div class="mb-2"><a class="text-sm" style="color:#94A3B8">← กลับ</a></div>
+                <div class="rounded-lg p-3 text-center mb-3" style="background:#1E293B;border:1px solid #334155">
+                  <div class="text-xs" style="color:#94A3B8">เลขสัญญา</div>
+                  <div class="font-mono" style="color:#2196F3">CF-26041500003</div>
+                  <div class="text-xs mt-3" style="color:#94A3B8">ต่อดอก (ค่างวด + ค่าปรับ)</div>
+                  <div class="text-3xl font-bold mt-1">2,800.00 ฿</div>
+                  <div class="text-[10px] mt-1" style="color:#64748B">ค่างวด 2,500 + ค่าปรับ 300 = 2,800 บาท</div>
+                  <button class="text-xs mt-2" style="color:#2196F3">📋 คัดลอกยอด</button>
+                </div>
+                <div class="rounded-lg p-4 mb-3" style="background:#1E293B;border:1px solid #334155">
+                  <div style="background:white;border-radius:8px;padding:12px;display:flex;justify-content:center;align-items:center">
+                    <!-- placeholder QR pattern -->
+                    <svg width="240" height="240" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                      <rect width="25" height="25" fill="white"/>
+                      <g fill="black">
+                        <!-- finder patterns -->
+                        <rect x="0" y="0" width="7" height="7"/>
+                        <rect x="1" y="1" width="5" height="5" fill="white"/>
+                        <rect x="2" y="2" width="3" height="3"/>
+                        <rect x="18" y="0" width="7" height="7"/>
+                        <rect x="19" y="1" width="5" height="5" fill="white"/>
+                        <rect x="20" y="2" width="3" height="3"/>
+                        <rect x="0" y="18" width="7" height="7"/>
+                        <rect x="1" y="19" width="5" height="5" fill="white"/>
+                        <rect x="2" y="20" width="3" height="3"/>
+                        <!-- random data scatter to look like a QR -->
+                        <rect x="9" y="2" width="1" height="1"/><rect x="11" y="3" width="1" height="1"/>
+                        <rect x="13" y="2" width="1" height="1"/><rect x="14" y="4" width="1" height="1"/>
+                        <rect x="10" y="5" width="1" height="1"/><rect x="12" y="6" width="1" height="1"/>
+                        <rect x="8" y="9" width="1" height="1"/><rect x="9" y="10" width="1" height="1"/>
+                        <rect x="11" y="9" width="1" height="1"/><rect x="13" y="10" width="1" height="1"/>
+                        <rect x="14" y="11" width="1" height="1"/><rect x="15" y="9" width="1" height="1"/>
+                        <rect x="17" y="10" width="1" height="1"/><rect x="19" y="9" width="1" height="1"/>
+                        <rect x="21" y="11" width="1" height="1"/><rect x="22" y="12" width="1" height="1"/>
+                        <rect x="2" y="9" width="1" height="1"/><rect x="3" y="10" width="1" height="1"/>
+                        <rect x="5" y="11" width="1" height="1"/><rect x="6" y="9" width="1" height="1"/>
+                        <rect x="8" y="13" width="1" height="1"/><rect x="9" y="15" width="1" height="1"/>
+                        <rect x="11" y="14" width="1" height="1"/><rect x="12" y="13" width="1" height="1"/>
+                        <rect x="13" y="15" width="1" height="1"/><rect x="14" y="14" width="1" height="1"/>
+                        <rect x="16" y="13" width="1" height="1"/><rect x="18" y="14" width="1" height="1"/>
+                        <rect x="20" y="15" width="1" height="1"/><rect x="21" y="13" width="1" height="1"/>
+                        <rect x="22" y="14" width="1" height="1"/><rect x="23" y="16" width="1" height="1"/>
+                        <rect x="9" y="17" width="1" height="1"/><rect x="11" y="18" width="1" height="1"/>
+                        <rect x="13" y="17" width="1" height="1"/><rect x="14" y="19" width="1" height="1"/>
+                        <rect x="15" y="18" width="1" height="1"/><rect x="17" y="17" width="1" height="1"/>
+                        <rect x="19" y="18" width="1" height="1"/><rect x="20" y="19" width="1" height="1"/>
+                        <rect x="22" y="18" width="1" height="1"/>
+                        <rect x="9" y="20" width="1" height="1"/><rect x="10" y="22" width="1" height="1"/>
+                        <rect x="12" y="21" width="1" height="1"/><rect x="14" y="22" width="1" height="1"/>
+                        <rect x="16" y="20" width="1" height="1"/><rect x="18" y="21" width="1" height="1"/>
+                        <rect x="20" y="22" width="1" height="1"/><rect x="22" y="20" width="1" height="1"/>
+                        <rect x="24" y="22" width="1" height="1"/>
+                        <!-- alignment pattern -->
+                        <rect x="16" y="16" width="5" height="5"/>
+                        <rect x="17" y="17" width="3" height="3" fill="white"/>
+                        <rect x="18" y="18" width="1" height="1"/>
+                        <!-- timing rows -->
+                        <rect x="8" y="6" width="1" height="1"/><rect x="10" y="6" width="1" height="1"/>
+                        <rect x="12" y="6" width="1" height="1"/><rect x="14" y="6" width="1" height="1"/>
+                        <rect x="6" y="8" width="1" height="1"/><rect x="6" y="10" width="1" height="1"/>
+                        <rect x="6" y="12" width="1" height="1"/><rect x="6" y="14" width="1" height="1"/>
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="text-center mt-3">
+                    <span class="inline-block text-white text-[11px] px-3 py-1 rounded-full" style="background:#10B981">PromptPay ✓ ยอดล็อค</span>
+                  </div>
+                </div>
+                <div class="rounded-lg p-3 text-sm" style="background:#1E293B;border:1px solid #334155">
+                  <div class="font-semibold mb-2">วิธีชำระ</div>
+                  <ol class="text-[11px] list-decimal list-inside space-y-1" style="color:#CBD5E1">
+                    <li>เปิดแอปธนาคาร → สแกน QR ด้านบน</li>
+                    <li>ยอดเงินจะถูกล็อคให้อัตโนมัติ (2,800.00 ฿) — ห้ามแก้</li>
+                    <li>โอนเงินตามขั้นตอนปกติ</li>
+                    <li>ส่งสลิปกลับมาในแชท LINE — ระบบจะตรวจอัตโนมัติ</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== FLEX ===== -->
+          <section id="page-flex" class="page">
+            <h1 class="text-xl font-bold mb-1">Flex Messages (preview ในแชท LINE)</h1>
+            <div class="text-sm text-gray-500 mb-4">บับเบิ้ลที่ลูกค้าจะเห็นใน LINE chat — ทุกบับเบิ้ลใช้ขนาด <code class="px-1 bg-gray-100 rounded">nano</code></div>
+            <div class="rounded-xl p-6 flex flex-wrap gap-5" style="background:#7d9bd8">
+              <div style="width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+                <div style="background:#27AE60;color:#fff;padding:10px 12px;font-weight:600;font-size:13px">✅ ตรวจสลิปสำเร็จ</div>
+                <div style="padding:10px 12px;font-size:11px;color:#111">
+                  <div class="flex"><div style="color:#888;width:78px">เลขสัญญา</div><div class="font-semibold">CF-26041500003</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ยอดโอน</div><div>2,500.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ผล</div><div>ตรงค่างวด</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">เวลา</div><div>12 พ.ค. 15:10</div></div>
+                </div>
+              </div>
+              <div style="width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+                <div style="background:#F39C12;color:#fff;padding:10px 12px;font-weight:600;font-size:13px">⚠️ สลิปซ้ำ</div>
+                <div style="padding:10px 12px;font-size:11px;color:#111">
+                  <div class="flex"><div style="color:#888;width:78px">เลขสัญญา</div><div class="font-semibold">CF-26041500003</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ยอดโอน</div><div>2,500.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">หมายเหตุ</div><div>สลิปนี้เคยใช้แล้ว</div></div>
+                </div>
+              </div>
+              <div style="width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+                <div style="background:#E74C3C;color:#fff;padding:10px 12px;font-weight:600;font-size:13px">❌ สลิปไม่ถูกต้อง</div>
+                <div style="padding:10px 12px;font-size:11px;color:#111">
+                  <div class="flex"><div style="color:#888;width:78px">หมายเหตุ</div><div>อ่าน QR ไม่ได้</div></div>
+                </div>
+              </div>
+              <div style="width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+                <div style="background:#95A5A6;color:#fff;padding:10px 12px;font-weight:600;font-size:13px">ระบบขัดข้อง</div>
+                <div style="padding:10px 12px;font-size:11px;color:#111">
+                  <div class="flex"><div style="color:#888;width:78px">หมายเหตุ</div><div>กรุณาลองใหม่</div></div>
+                </div>
+              </div>
+              <div style="width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+                <div style="background:#27AE60;color:#fff;padding:10px 12px;font-weight:600;font-size:13px">✅ ตรวจสลิปสำเร็จ</div>
+                <div style="padding:10px 12px;font-size:11px;color:#111">
+                  <div class="flex"><div style="color:#888;width:78px">เลขสัญญา</div><div class="font-semibold">CF-26041500003</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ยอดโอน</div><div>2,000.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ผล</div><div>ขาด</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ที่ต้องชำระ</div><div>2,500.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ยอดคงเหลือ</div><div class="font-semibold" style="color:#dc2626">500.00 บาท</div></div>
+                </div>
+                <div style="padding:8px;background:#f9fafb">
+                  <button style="width:100%;background:#27AE60;color:#fff;padding:8px;border-radius:6px;font-size:11px;font-weight:600;">ชำระยอดคงเหลือ</button>
+                </div>
+              </div>
+              <div style="width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+                <div style="background:#E67E22;color:#fff;padding:10px 12px;font-weight:600;font-size:13px">⚠️ เกินกำหนด 3 วัน มีค่าปรับ</div>
+                <div style="padding:10px 12px;font-size:11px;color:#111">
+                  <div class="flex"><div style="color:#888;width:78px">เลขสัญญา</div><div class="font-semibold">CF-26041500003</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ครบกำหนด</div><div>15 ก.ค. 2569</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ค่างวด</div><div>2,500.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ค่าปรับ</div><div>300.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">รวม</div><div class="font-semibold">2,800.00 บาท</div></div>
+                </div>
+                <div style="padding:8px;background:#f9fafb">
+                  <button style="width:100%;background:#E67E22;color:#fff;padding:8px;border-radius:6px;font-size:11px;font-weight:600;">ชำระเงิน</button>
+                </div>
+              </div>
+              <div style="width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+                <div style="background:#C0392B;color:#fff;padding:10px 12px;font-weight:600;font-size:13px">🚨 เกิน 7 วัน — แจ้งล็อคเครื่อง</div>
+                <div style="padding:10px 12px;font-size:11px;color:#111">
+                  <div class="flex"><div style="color:#888;width:78px">เลขสัญญา</div><div class="font-semibold">CF-26033000007</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ค่างวด</div><div>2,000.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ค่าปรับ</div><div>700.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">รวม</div><div class="font-semibold">2,700.00 บาท</div></div>
+                </div>
+                <div style="padding:8px;background:#f9fafb">
+                  <button style="width:100%;background:#C0392B;color:#fff;padding:8px;border-radius:6px;font-size:11px;font-weight:600;">ชำระเงิน</button>
+                </div>
+              </div>
+              <div style="width:240px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15)">
+                <div style="background:#922B21;color:#fff;padding:10px 12px;font-weight:600;font-size:13px">🚨 เกิน 10 วัน — ดำเนินการตามกฎหมาย</div>
+                <div style="padding:10px 12px;font-size:11px;color:#111">
+                  <div class="flex"><div style="color:#888;width:78px">เลขสัญญา</div><div class="font-semibold">CF-26022000099</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">ค่าปรับ</div><div>1,000.00 บาท</div></div>
+                  <div class="flex"><div style="color:#888;width:78px">รวม</div><div class="font-semibold">3,500.00 บาท</div></div>
+                </div>
+                <div style="padding:8px;background:#f9fafb">
+                  <button style="width:100%;background:#922B21;color:#fff;padding:8px;border-radius:6px;font-size:11px;font-weight:600;">ชำระเงิน</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- ===== OVERRIDE MODAL OVERLAY ===== -->
+    <div id="override-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:50;padding:16px">
+      <div class="card" style="width:100%;max-width:420px;padding:24px" onclick="event.stopPropagation()">
+        <h3 id="modal-title" class="text-lg font-bold mb-3">เปลี่ยนสถานะสัญญา</h3>
+        <div id="modal-body" class="mb-3"></div>
+        <label class="label">เหตุผล / หมายเหตุ (จำเป็น)</label>
+        <textarea class="input mb-3" rows="2" placeholder="เช่น ลูกค้าจ่ายเงินสดที่ร้าน"></textarea>
+        <div class="flex justify-end gap-2">
+          <button class="btn btn-ghost" onclick="closeModal()">ยกเลิก</button>
+          <button class="btn btn-primary">ยืนยัน</button>
+        </div>
+        <div class="text-[11px] text-gray-500 mt-3">บันทึก audit log อัตโนมัติเมื่อยืนยัน (previous → new + เหตุผล)</div>
+      </div>
+    </div>
+
+    <script>
+      const MODAL_CONFIGS = {
+        status: {
+          title: "เปลี่ยนสถานะสัญญา",
+          body: `<select class="input"><option>-- เลือก --</option><option>ปกติ (active)</option><option>ค้างชำระ (overdue)</option><option>ปิดสัญญา (paid)</option><option>หนี้สูญ (defaulted)</option><option>ปิดแล้ว (closed)</option></select>`,
+        },
+        lock: {
+          title: "ล็อค / ปลดล็อคเครื่อง",
+          body: `<select class="input"><option>-- เลือก --</option><option>ล็อคเครื่อง</option><option>ปลดล็อค</option></select>`,
+        },
+        discount: {
+          title: "ให้ส่วนลด",
+          body: `
+            <label class="label">ประเภทส่วนลด</label>
+            <select class="input" style="margin-bottom:8px"><option>-- เลือก --</option><option>ลดค่าปรับ (penalty)</option><option>ลดยอดปิด (closing)</option><option>ลดค่างวด (installment)</option></select>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div><label class="label">ราคาเดิม</label><input class="input" value="300" /></div>
+              <div><label class="label">ส่วนลด</label><input class="input" value="150" /></div>
+            </div>
+          `,
+        },
+        "edit-amount": {
+          title: "แก้ไขยอดชำระ",
+          body: `<div class="text-xs text-gray-500 mb-1">ยอดเดิม: 1,500.00 บาท</div><input class="input" placeholder="ยอดใหม่" />`,
+        },
+        void: {
+          title: "ยกเลิกรายการชำระ",
+          body: `<div class="text-sm text-gray-700">ยกเลิกการชำระ <span class="font-semibold">1,500.00 บาท</span>?<br/><span class="text-xs text-gray-500">ระบบจะ reverse ยอดที่ apply กับงวดที่ 2 ให้อัตโนมัติ</span></div>`,
+        },
+      };
+
+      function openModal(kind) {
+        const cfg = MODAL_CONFIGS[kind];
+        if (!cfg) return;
+        document.getElementById("modal-title").textContent = cfg.title;
+        document.getElementById("modal-body").innerHTML = cfg.body;
+        const m = document.getElementById("override-modal");
+        m.style.display = "flex";
+      }
+      function closeModal() {
+        document.getElementById("override-modal").style.display = "none";
+      }
+      document.getElementById("override-modal").addEventListener("click", (e) => {
+        if (e.target.id === "override-modal") closeModal();
+      });
+
+
+      const ROUTES = [
+        "login","home","products","customers","contracts","new-contract","contract-detail",
+        "payments","messages","connections","broadcast",
+        "analytics","audit","customer-pay","payment-qr","flex","settings"
+      ];
+
+      function go(route) {
+        if (!ROUTES.includes(route)) route = "home";
+        location.hash = route;
+      }
+
+      function render() {
+        const route = (location.hash || "#home").slice(1);
+        const target = ROUTES.includes(route) ? route : "home";
+        const shell = document.getElementById("app-shell");
+        const loginPage = document.getElementById("page-login");
+        if (target === "login") {
+          shell.style.display = "none";
+          loginPage.classList.add("active");
+        } else {
+          shell.style.display = "block";
+          loginPage.classList.remove("active");
+          document.querySelectorAll(".page").forEach(el => el.classList.remove("active"));
+          const page = document.getElementById("page-" + target);
+          if (page) page.classList.add("active");
+        }
+        document.querySelectorAll("#sidebar-nav .nav-link").forEach(a => {
+          a.classList.toggle("active", a.dataset.route === target);
+        });
+        if (target === "home") drawCharts();
+        if (target === "analytics") drawAnalyticsChart();
+        window.scrollTo(0, 0);
+      }
+
+      let analyticsDrawn = false;
+      function drawAnalyticsChart() {
+        if (analyticsDrawn) return;
+        const ctx = document.getElementById("chartAnalytics");
+        if (!ctx || !window.Chart) return;
+        const days = [];
+        const data = [];
+        const start = new Date();
+        start.setDate(start.getDate() - 29);
+        for (let i = 0; i < 30; i++) {
+          const d = new Date(start.getTime() + i*86400000);
+          days.push(`${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}`);
+          // Realistic-ish shape: weekend dips, mid-month spike
+          const dow = d.getDay();
+          const weekend = dow === 0 || dow === 6 ? 0.4 : 1;
+          const trend = 30000 + (i % 7 === 3 ? 80000 : 0) + Math.random()*40000;
+          data.push(Math.round(trend * weekend));
+        }
+        new Chart(ctx, {
+          type: "bar",
+          data: { labels: days, datasets: [{ data, backgroundColor: "#2D6FE3", borderRadius: 3 }] },
+          options: {
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.parsed.y.toLocaleString("th-TH")} ฿` } } },
+            scales: {
+              x: { ticks: { font: { size: 9 }, color: "#9CA3AF", maxRotation: 0, autoSkip: true, maxTicksLimit: 10 }, grid: { display: false } },
+              y: { beginAtZero: true, ticks: { font: { size: 10 }, color: "#9CA3AF", callback: (v) => `${(v/1000)|0}k` }, grid: { color: "#F3F4F6" } }
+            }
+          }
+        });
+        analyticsDrawn = true;
+      }
+
+      let chartsDrawn = false;
+      function drawCharts() {
+        if (chartsDrawn) return;
+        const barCtx = document.getElementById("chartBar");
+        const pieCtx = document.getElementById("chartPie");
+        if (!barCtx || !pieCtx || !window.Chart) return;
+
+        const days = [];
+        const data = [];
+        const start = new Date(2026, 1, 3);
+        for (let i = 0; i < 45; i++) {
+          const d = new Date(start.getTime() + i*86400000);
+          days.push(`${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}`);
+          // shape: low → spike middle/end
+          const base = i < 25 ? Math.random()*8 : 10 + Math.random()*22;
+          data.push(Math.round(base));
+        }
+
+        new Chart(barCtx, {
+          type: "bar",
+          data: { labels: days, datasets: [{ data, backgroundColor: "#8B7FE8", borderRadius: 2 }] },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { font: { size: 9 }, color: "#9CA3AF", maxRotation: 0, autoSkip: true, maxTicksLimit: 10 }, grid: { display: false } },
+              y: { beginAtZero: true, ticks: { font: { size: 10 }, color: "#9CA3AF" }, grid: { color: "#F3F4F6" } }
+            }
+          }
+        });
+
+        new Chart(pieCtx, {
+          type: "pie",
+          data: {
+            labels: ["ปกติ","ยกเลิก","หนี้เสีย","ล็อค","รอล็อค","ชำระครบ"],
+            datasets: [{
+              data: [48,7,0,40,2,2],
+              backgroundColor: ["#5B3FD1","#2DD4BF","#111111","#F87171","#FB923C","#CBD5E1"],
+              borderWidth: 2,
+              borderColor: "#fff"
+            }]
+          },
+          options: {
+            plugins: {
+              legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 10 }, padding: 8 } }
+            }
+          }
+        });
+        chartsDrawn = true;
+      }
+
+      document.addEventListener("click", (e) => {
+        const t = e.target.closest("[data-route]");
+        if (t) {
+          e.preventDefault();
+          go(t.dataset.route);
+        }
+      });
+      window.addEventListener("hashchange", render);
+      if (!location.hash) location.hash = "home";
+      render();
+    </script>
+  </body>
+</html>

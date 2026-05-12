@@ -9,6 +9,9 @@ const NAV = [
   { href: "/messages", label: "ข้อความ LINE" },
   { href: "/line-connections", label: "การเชื่อมต่อ LINE" },
   { href: "/broadcast", label: "กระจายข้อความ" },
+  { href: "/analytics", label: "Analytics" },
+  { href: "/audit", label: "Audit Log" },
+  { href: "/settings", label: "ตั้งค่า" },
 ];
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {

@@ -10,6 +10,10 @@ import {
 } from "./auth.js";
 import { runDailySyncAndRemind, previewBroadcast, sendBroadcast } from "./escalationApi.js";
 import { generatePromptPayPayload } from "../shared/promptpay.js";
+import * as overrides from "./overrides.js";
+import * as discounts from "./discounts.js";
+import * as analytics from "./analytics.js";
+import * as settings from "./settings.js";
 
 const moneyInput = z.union([z.number(), z.string()]).transform((v) => {
   const n = typeof v === "number" ? v : Number(v);
@@ -217,6 +221,118 @@ const broadcastFilterSchema = z.object({
   customerIds: z.array(z.number().int()).optional(),
 });
 
+const remarkSchema = z.string().min(1, "ต้องระบุเหตุผล / หมายเหตุ").max(500);
+
+const overrideRouter = router({
+  editAmount: adminProcedure
+    .input(
+      z.object({
+        paymentId: z.number().int(),
+        newAmount: moneyInput,
+        remark: remarkSchema,
+      }),
+    )
+    .mutation(({ input, ctx }) =>
+      overrides.editPaymentAmount({ ...input, performedBy: ctx.user.username }),
+    ),
+  voidPayment: adminProcedure
+    .input(z.object({ paymentId: z.number().int(), reason: remarkSchema }))
+    .mutation(({ input, ctx }) =>
+      overrides.voidPayment({ ...input, performedBy: ctx.user.username }),
+    ),
+  statusOverride: adminProcedure
+    .input(
+      z.object({
+        contractId: z.number().int(),
+        newStatus: z.enum(["active", "overdue", "paid", "defaulted", "closed"]),
+        remark: remarkSchema,
+      }),
+    )
+    .mutation(({ input, ctx }) =>
+      overrides.overrideContractStatus({ ...input, performedBy: ctx.user.username }),
+    ),
+  lockOverride: adminProcedure
+    .input(
+      z.object({
+        contractId: z.number().int(),
+        locked: z.boolean(),
+        remark: remarkSchema,
+      }),
+    )
+    .mutation(({ input, ctx }) =>
+      overrides.overrideLockStatus({ ...input, performedBy: ctx.user.username }),
+    ),
+  dateAdjustment: adminProcedure
+    .input(
+      z.object({
+        installmentId: z.number().int(),
+        newDueDate: z.coerce.date(),
+        remark: remarkSchema,
+      }),
+    )
+    .mutation(({ input, ctx }) =>
+      overrides.adjustInstallmentDate({ ...input, performedBy: ctx.user.username }),
+    ),
+  penaltyAdjustment: adminProcedure
+    .input(
+      z.object({
+        installmentId: z.number().int(),
+        newPenalty: moneyInput,
+        remark: remarkSchema,
+      }),
+    )
+    .mutation(({ input, ctx }) =>
+      overrides.adjustPenalty({ ...input, performedBy: ctx.user.username }),
+    ),
+});
+
+const discountRouter = router({
+  listByContract: adminProcedure
+    .input(z.number().int())
+    .query(({ input }) => discounts.listDiscountsByContract(input)),
+  activeTotal: adminProcedure
+    .input(
+      z.object({
+        contractId: z.number().int(),
+        discountType: z.enum(["penalty", "closing", "installment", "other"]),
+      }),
+    )
+    .query(({ input }) => discounts.activeDiscountTotalByType(input.contractId, input.discountType)),
+  create: adminProcedure
+    .input(
+      z.object({
+        contractId: z.number().int(),
+        discountType: z.enum(["penalty", "closing", "installment", "other"]),
+        originalAmount: moneyInput,
+        discountAmount: moneyInput,
+        reason: remarkSchema,
+      }),
+    )
+    .mutation(({ input, ctx }) =>
+      discounts.createDiscount({ ...input, approvedBy: ctx.user.username }),
+    ),
+  revoke: adminProcedure
+    .input(z.object({ discountId: z.number().int(), remark: remarkSchema }))
+    .mutation(({ input, ctx }) =>
+      discounts.revokeDiscount({ ...input, performedBy: ctx.user.username }),
+    ),
+});
+
+const analyticsRouter = router({
+  paymentStats: adminProcedure.query(() => analytics.paymentStatsSummary()),
+  daily: adminProcedure
+    .input(z.object({ days: z.number().int().min(1).max(180).optional() }).optional())
+    .query(({ input }) => analytics.dailyPaymentTotals(input?.days ?? 30)),
+  statusBreakdown: adminProcedure.query(() => analytics.contractStatusBreakdown()),
+});
+
+const settingsRouter = router({
+  list: adminProcedure.query(() => settings.listSettings()),
+  set: adminProcedure
+    .input(z.object({ key: z.string().min(1), value: z.string() }))
+    .mutation(({ input, ctx }) => settings.setSetting(input.key, input.value, ctx.user.username)),
+});
+
 const customerPayRouter = router({
   lookupByLine: publicProcedure
     .input(z.object({ lineUserId: z.string().min(1) }))
@@ -332,6 +448,10 @@ export const appRouter = router({
   broadcast: broadcastRouter,
   customerPay: customerPayRouter,
   qrPayment: qrPaymentRouter,
+  override: overrideRouter,
+  discount: discountRouter,
+  analytics: analyticsRouter,
+  settings: settingsRouter,
 });
 
 export type AppRouter = typeof appRouter;

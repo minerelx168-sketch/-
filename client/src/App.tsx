@@ -16,6 +16,9 @@ import { LineConnectionsPage } from "./pages/LineConnections";
 import { BroadcastPage } from "./pages/Broadcast";
 import { CustomerPayPage } from "./pages/CustomerPay";
 import { PaymentQRPage } from "./pages/PaymentQR";
+import { AnalyticsPage } from "./pages/Analytics";
+import { AuditLogPage } from "./pages/AuditLog";
+import { SettingsPage } from "./pages/Settings";
 
 export function App() {
   const [queryClient] = useState(() => new QueryClient({
@@ -52,6 +55,9 @@ export function App() {
                   <Route path="/messages" component={MessagesPage} />
                   <Route path="/line-connections" component={LineConnectionsPage} />
                   <Route path="/broadcast" component={BroadcastPage} />
+                  <Route path="/analytics" component={AnalyticsPage} />
+                  <Route path="/audit" component={AuditLogPage} />
+                  <Route path="/settings" component={SettingsPage} />
                   <Route>
                     <Redirect to="/" />
                   </Route>

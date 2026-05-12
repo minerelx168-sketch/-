@@ -14,6 +14,8 @@ import { NewContractPage } from "./pages/NewContract";
 import { MessagesPage } from "./pages/Messages";
 import { LineConnectionsPage } from "./pages/LineConnections";
 import { BroadcastPage } from "./pages/Broadcast";
+import { CustomerPayPage } from "./pages/CustomerPay";
+import { PaymentQRPage } from "./pages/PaymentQR";
 
 export function App() {
   const [queryClient] = useState(() => new QueryClient({
@@ -26,6 +28,15 @@ export function App() {
       <QueryClientProvider client={queryClient}>
         <Switch>
           <Route path="/login" component={LoginPage} />
+          <Route path="/pay" component={CustomerPayPage} />
+          <Route path="/pay/:contractNumber/:type">
+            {(params) => (
+              <PaymentQRPage
+                contractNumber={decodeURIComponent(params.contractNumber)}
+                type={params.type === "full" ? "full" : "installment"}
+              />
+            )}
+          </Route>
           <Route>
             <AuthGuard>
               <DashboardLayout>

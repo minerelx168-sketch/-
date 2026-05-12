@@ -9,6 +9,7 @@ import {
   signSession,
 } from "./auth.js";
 import { runDailySyncAndRemind, previewBroadcast, sendBroadcast } from "./escalationApi.js";
+import { generatePromptPayPayload } from "../shared/promptpay.js";
 
 const moneyInput = z.union([z.number(), z.string()]).transform((v) => {
   const n = typeof v === "number" ? v : Number(v);
@@ -216,6 +217,53 @@ const broadcastFilterSchema = z.object({
   customerIds: z.array(z.number().int()).optional(),
 });
 
+const customerPayRouter = router({
+  lookupByLine: publicProcedure
+    .input(z.object({ lineUserId: z.string().min(1) }))
+    .query(({ input }) => dbApi.lookupContractForLineUser(input.lineUserId)),
+  paymentHistory: publicProcedure
+    .input(z.object({ lineUserId: z.string().min(1), limit: z.number().int().optional() }))
+    .query(({ input }) => dbApi.publicPaymentHistory(input.lineUserId, input.limit)),
+});
+
+const qrPaymentRouter = router({
+  generate: publicProcedure
+    .input(
+      z.object({
+        contractNumber: z.string().min(1),
+        type: z.enum(["installment", "full"]),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const contract = await dbApi.getContractByNumber(input.contractNumber);
+      if (!contract) throw new TRPCError({ code: "NOT_FOUND", message: "ไม่พบสัญญา" });
+      const quote = await dbApi.quoteContract(contract.id, input.type);
+      const msisdn = process.env.PROMPTPAY_MSISDN;
+      if (!msisdn) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: "PROMPTPAY_MSISDN not configured",
+        });
+      }
+      const payload = generatePromptPayPayload({
+        payee: { kind: "msisdn", value: msisdn },
+        amount: quote.total,
+      });
+      return {
+        payload,
+        amount: quote.total,
+        breakdown: quote.breakdown,
+        type: input.type,
+        contractNumber: contract.contractNumber,
+        installmentDue: quote.installmentDue,
+        penalty: quote.penalty,
+        unlockFee: quote.unlockFee,
+        devicePrice: quote.devicePrice,
+        overdueDays: quote.overdueDays,
+      };
+    }),
+});
+
 const scheduledRouter = router({
   runDailySync: adminProcedure
     .input(z.object({ dryRun: z.boolean().default(false) }).optional())
@@ -282,6 +330,8 @@ export const appRouter = router({
   line: lineRouter,
   scheduled: scheduledRouter,
   broadcast: broadcastRouter,
+  customerPay: customerPayRouter,
+  qrPayment: qrPaymentRouter,
 });
 
 export type AppRouter = typeof appRouter;

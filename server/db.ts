@@ -482,6 +482,53 @@ export async function recordAudit(entry: schema.NewAuditLog) {
   await db.insert(schema.auditLogs).values(entry);
 }
 
+/**
+ * Public LIFF lookup — given a LINE userId, return the bound customer,
+ * latest non-closed contract, the current installment, and both pricing quotes.
+ * Returns null when the customer has no binding yet.
+ */
+export async function lookupContractForLineUser(lineUserId: string) {
+  if (!lineUserId) return null;
+  const db = getDb();
+  const customer = await getCustomerByLineUserId(lineUserId);
+  if (!customer) return null;
+  const [contract] = await db
+    .select()
+    .from(schema.contracts)
+    .where(eq(schema.contracts.customerId, customer.id))
+    .orderBy(desc(schema.contracts.createdAt))
+    .limit(1);
+  if (!contract) return { customer, contract: null, currentInstallment: null, quotes: null };
+  const currentInstallment = await getCurrentInstallment(contract.id);
+  const installmentQuote = await quoteContract(contract.id, "installment");
+  const fullQuote = await quoteContract(contract.id, "full");
+  return {
+    customer,
+    contract,
+    currentInstallment,
+    quotes: { installment: installmentQuote, full: fullQuote },
+  };
+}
+
+export async function publicPaymentHistory(lineUserId: string, limit = 10) {
+  const db = getDb();
+  const customer = await getCustomerByLineUserId(lineUserId);
+  if (!customer) return [];
+  return await db
+    .select({
+      id: schema.payments.id,
+      amount: schema.payments.amount,
+      paymentDate: schema.payments.paymentDate,
+      verificationStatus: schema.payments.verificationStatus,
+      period: schema.payments.period,
+      contractId: schema.payments.contractId,
+    })
+    .from(schema.payments)
+    .where(eq(schema.payments.customerId, customer.id))
+    .orderBy(desc(schema.payments.paymentDate))
+    .limit(limit);
+}
+
 export async function listLineMessages(
   opts: { customerId?: number; lineUserId?: string; limit?: number } = {},
 ) {

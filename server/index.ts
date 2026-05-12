@@ -10,24 +10,37 @@ import {
   exportProductsCsv,
   importCustomersCsv,
 } from "./csv.js";
+import { handleLineWebhook } from "./lineWebhook.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
 const app = express();
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
-app.use(express.json({ limit: "5mb" }));
+
+// Capture raw body for LINE webhook signature verification.
+app.use(
+  express.json({
+    limit: "5mb",
+    verify: (req, _res, buf) => {
+      (req as express.Request & { rawBody?: string }).rawBody = buf.toString("utf-8");
+    },
+  }),
+);
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, ts: Date.now() });
 });
+
+// LINE webhook — MUST be before tRPC + return 200 immediately.
+app.post("/api/line/webhook", handleLineWebhook);
 
 app.use(
   "/api/trpc",
   createExpressMiddleware({ router: appRouter, createContext }),
 );
 
-// CSV import/export (multipart-light: raw text upload)
+// CSV import/export
 app.get("/api/csv/customers", exportCustomersCsv);
 app.get("/api/csv/contracts", exportContractsCsv);
 app.get("/api/csv/products", exportProductsCsv);

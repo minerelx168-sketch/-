@@ -209,6 +209,24 @@ const paymentRouter = router({
     ),
 });
 
+const lineRouter = router({
+  messages: adminProcedure
+    .input(
+      z
+        .object({
+          customerId: z.number().int().optional(),
+          lineUserId: z.string().optional(),
+          limit: z.number().int().max(500).optional(),
+        })
+        .optional(),
+    )
+    .query(({ input }) => dbApi.listLineMessages(input ?? {})),
+  connections: adminProcedure.query(() => dbApi.listCustomersWithLine()),
+  toggleBot: adminProcedure
+    .input(z.object({ customerId: z.number().int(), botActive: z.number().int().min(0).max(1) }))
+    .mutation(({ input }) => dbApi.updateCustomer(input.customerId, { botActive: input.botActive })),
+});
+
 const auditRouter = router({
   listByContract: adminProcedure
     .input(z.number().int())
@@ -226,6 +244,7 @@ export const appRouter = router({
   installment: installmentRouter,
   payment: paymentRouter,
   audit: auditRouter,
+  line: lineRouter,
 });
 
 export type AppRouter = typeof appRouter;

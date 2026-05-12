@@ -3,19 +3,23 @@
 ระบบทวงหนี้และตรวจสลิปผ่าน LINE OA สำหรับธุรกิจขายสินค้าผ่อนชำระ พร้อม Mini POS ในตัว
 ดู spec แบบเต็มได้ที่ docs/spec.md (หรือไฟล์อ้างอิงเดิมจากผู้สั่งงาน).
 
-## สถานะปัจจุบัน — Phase 1 + 2 (POS Core)
+## สถานะปัจจุบัน — Phase 1 + 2 + 3
 
 - ✅ Drizzle schema: products, customers, contracts, installment_schedule, payments,
   audit_logs, payment_adjustments, discounts, line_messages, webhook_logs, system_settings
 - ✅ Business logic (shared/): safeNum, round2, calculatePaymentAmount, matchAmount,
-  generateSchedule, generateContractNumber พร้อม Vitest tests
-- ✅ tRPC routers: auth, product, customer, contract, installment, payment, audit
-- ✅ Express server + JWT cookie auth + CSV import/export endpoints
-- ✅ React 19 + Vite + Tailwind admin UI: Home, Products, Customers, Contracts,
-  New Contract, Contract Detail (พร้อม pricing quote / ตารางงวด / manual payment / audit log)
+  generateSchedule, generateContractNumber, parseLineText, TtlSet, LINE signature
+  verify — ทั้งหมดมี Vitest tests
+- ✅ tRPC routers: auth, product, customer, contract, installment, payment, audit, line
+- ✅ Express server + JWT cookie auth + CSV import/export + **LINE webhook**
+  (HMAC verify, respond 200 first, async dedup processing)
+- ✅ LINE flow: contract binding (`CF-…` text), balance query, slip verification
+  via Thunder API v2, Flex Message replies (nano bubbles, สี: เขียว/ส้ม/แดง/เทา)
+- ✅ React UI: Home, Products, Customers, Contracts, New Contract, Contract Detail,
+  Messages, LINE Connections (พร้อม bot on/off toggle)
 
-ยังไม่ทำในเฟสนี้: LINE webhook, slip verify, escalation, LIFF /pay, broadcast.
-รออนุมัติก่อนเริ่ม Phase 3+.
+ยังไม่ทำในเฟสถัดไป: escalation ladder (Phase 4), LIFF /pay (Phase 5),
+admin override system (Phase 6).
 
 ## Quickstart
 

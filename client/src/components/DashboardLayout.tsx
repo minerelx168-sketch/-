@@ -6,6 +6,8 @@ const NAV = [
   { href: "/products", label: "สินค้า" },
   { href: "/customers", label: "ลูกค้า" },
   { href: "/contracts", label: "สัญญา" },
+  { href: "/messages", label: "ข้อความ LINE" },
+  { href: "/line-connections", label: "การเชื่อมต่อ LINE" },
 ];
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {

@@ -482,6 +482,27 @@ export async function recordAudit(entry: schema.NewAuditLog) {
   await db.insert(schema.auditLogs).values(entry);
 }
 
+export async function listLineMessages(
+  opts: { customerId?: number; lineUserId?: string; limit?: number } = {},
+) {
+  const db = getDb();
+  const q = db.select().from(schema.lineMessages).orderBy(desc(schema.lineMessages.createdAt));
+  const conds = [];
+  if (opts.customerId) conds.push(eq(schema.lineMessages.customerId, opts.customerId));
+  if (opts.lineUserId) conds.push(eq(schema.lineMessages.lineUserId, opts.lineUserId));
+  const limit = opts.limit ?? 200;
+  return conds.length ? await q.where(and(...conds)).limit(limit) : await q.limit(limit);
+}
+
+export async function listCustomersWithLine() {
+  const db = getDb();
+  return await db
+    .select()
+    .from(schema.customers)
+    .where(sql`${schema.customers.lineUserId} IS NOT NULL`)
+    .orderBy(desc(schema.customers.updatedAt));
+}
+
 export async function listAuditLogs(opts: { contractId?: number; limit?: number } = {}) {
   const db = getDb();
   const q = db.select().from(schema.auditLogs).orderBy(desc(schema.auditLogs.createdAt));

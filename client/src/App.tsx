@@ -11,6 +11,8 @@ import { CustomersPage } from "./pages/Customers";
 import { ContractsPage } from "./pages/Contracts";
 import { ContractDetailPage } from "./pages/ContractDetail";
 import { NewContractPage } from "./pages/NewContract";
+import { MessagesPage } from "./pages/Messages";
+import { LineConnectionsPage } from "./pages/LineConnections";
 
 export function App() {
   const [queryClient] = useState(() => new QueryClient({
@@ -35,6 +37,8 @@ export function App() {
                   <Route path="/contracts/:id">
                     {(params) => <ContractDetailPage id={Number(params.id)} />}
                   </Route>
+                  <Route path="/messages" component={MessagesPage} />
+                  <Route path="/line-connections" component={LineConnectionsPage} />
                   <Route>
                     <Redirect to="/" />
                   </Route>

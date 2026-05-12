@@ -11,6 +11,7 @@ import {
   importCustomersCsv,
 } from "./csv.js";
 import { handleLineWebhook } from "./lineWebhook.js";
+import { handleDailySync, handleEscalationScan } from "./escalationApi.js";
 
 const PORT = Number(process.env.PORT ?? 3000);
 const app = express();
@@ -34,6 +35,10 @@ app.get("/api/health", (_req, res) => {
 
 // LINE webhook — MUST be before tRPC + return 200 immediately.
 app.post("/api/line/webhook", handleLineWebhook);
+
+// Scheduled endpoints (cron-friendly; secured with X-SCHEDULED-SECRET).
+app.post("/api/scheduled/daily-sync-and-remind", handleDailySync);
+app.post("/api/scheduled/escalation", handleEscalationScan);
 
 app.use(
   "/api/trpc",

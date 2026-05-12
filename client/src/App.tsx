@@ -13,6 +13,7 @@ import { ContractDetailPage } from "./pages/ContractDetail";
 import { NewContractPage } from "./pages/NewContract";
 import { MessagesPage } from "./pages/Messages";
 import { LineConnectionsPage } from "./pages/LineConnections";
+import { BroadcastPage } from "./pages/Broadcast";
 
 export function App() {
   const [queryClient] = useState(() => new QueryClient({
@@ -39,6 +40,7 @@ export function App() {
                   </Route>
                   <Route path="/messages" component={MessagesPage} />
                   <Route path="/line-connections" component={LineConnectionsPage} />
+                  <Route path="/broadcast" component={BroadcastPage} />
                   <Route>
                     <Redirect to="/" />
                   </Route>

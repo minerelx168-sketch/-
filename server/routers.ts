@@ -8,6 +8,7 @@ import {
   setSessionCookie,
   signSession,
 } from "./auth.js";
+import { runDailySyncAndRemind, previewBroadcast, sendBroadcast } from "./escalationApi.js";
 
 const moneyInput = z.union([z.number(), z.string()]).transform((v) => {
   const n = typeof v === "number" ? v : Number(v);
@@ -209,6 +210,40 @@ const paymentRouter = router({
     ),
 });
 
+const broadcastFilterSchema = z.object({
+  status: z.enum(["active", "overdue", "paid", "defaulted", "closed"]).optional(),
+  minOverdueDays: z.number().int().nonnegative().optional(),
+  customerIds: z.array(z.number().int()).optional(),
+});
+
+const scheduledRouter = router({
+  runDailySync: adminProcedure
+    .input(z.object({ dryRun: z.boolean().default(false) }).optional())
+    .mutation(({ input }) => runDailySyncAndRemind(new Date(), { dryRun: input?.dryRun ?? false })),
+});
+
+const broadcastRouter = router({
+  preview: adminProcedure
+    .input(broadcastFilterSchema)
+    .query(({ input }) => previewBroadcast(input)),
+  send: adminProcedure
+    .input(
+      z.object({
+        filter: broadcastFilterSchema,
+        message: z.string().min(1).max(1000),
+        dryRun: z.boolean().default(false),
+      }),
+    )
+    .mutation(({ input, ctx }) =>
+      sendBroadcast({
+        filter: input.filter,
+        message: input.message,
+        performedBy: ctx.user.username,
+        dryRun: input.dryRun,
+      }),
+    ),
+});
+
 const lineRouter = router({
   messages: adminProcedure
     .input(
@@ -245,6 +280,8 @@ export const appRouter = router({
   payment: paymentRouter,
   audit: auditRouter,
   line: lineRouter,
+  scheduled: scheduledRouter,
+  broadcast: broadcastRouter,
 });
 
 export type AppRouter = typeof appRouter;

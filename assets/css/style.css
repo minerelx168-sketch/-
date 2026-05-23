@@ -1247,6 +1247,97 @@ a:hover { color: var(--primary-600); }
     .topup-form { padding: 20px; }
 }
 
+/* ------------------- Filter pills + pagination + secondary btn ------------------- */
+.filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.pill-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 7px 14px;
+    text-decoration: none;
+    color: var(--text-soft);
+    font-size: .88rem;
+    font-weight: 500;
+    transition: border-color .15s, background .15s, color .15s;
+}
+.pill-link:hover { border-color: var(--text-muted); color: var(--text); }
+.pill-link.is-active {
+    background: var(--text-strong);
+    border-color: var(--text-strong);
+    color: #fff;
+}
+.pill-link-count {
+    font-size: .72rem;
+    color: var(--text-muted);
+    background: var(--surface-alt);
+    padding: 1px 8px;
+    border-radius: var(--radius-pill);
+    font-feature-settings: 'tnum';
+    font-weight: 600;
+}
+.pill-link.is-active .pill-link-count {
+    background: rgba(255, 255, 255, .15);
+    color: #fff;
+}
+
+.btn-secondary {
+    background: var(--surface);
+    color: var(--text-strong);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .9rem;
+    transition: background .15s, border-color .15s;
+}
+.btn-secondary:hover {
+    background: var(--surface-alt);
+    border-color: var(--text-muted);
+    color: var(--text-strong);
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 16px;
+    gap: 16px;
+}
+.pagination-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .92rem;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition: background .15s, border-color .15s;
+}
+.pagination-link:hover {
+    background: var(--surface-alt);
+    border-color: var(--text-muted);
+}
+.pagination-link.is-disabled {
+    color: var(--text-muted);
+    opacity: .55;
+    cursor: not-allowed;
+    border-color: var(--surface-line);
+}
+.pagination-info {
+    color: var(--text-muted);
+    font-size: .9rem;
+    font-feature-settings: 'tnum';
+}
+
 /* ------------------- Icon helper ------------------- */
 .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 

@@ -117,8 +117,9 @@ function rewriteLinks(string $html, array $map): string
     $html = preg_replace('#<body>#', "<body>$banner", $html, 1);
 
     // Strip the IMEI form JS reference + inject a static-mode shim that
-    // returns demo results without needing a backend.
-    $html = str_replace('<script src="/assets/js/main.js"></script>',  '<script src="./assets/js/main-static.js"></script>', $html);
+    // returns demo results without needing a backend. The /assets/ prefix
+    // has already been rewritten to ./assets/ above, so match that form.
+    $html = str_replace('src="./assets/js/main.js"', 'src="./assets/js/main-static.js"', $html);
 
     return $html;
 }
@@ -343,7 +344,7 @@ $staticJs = "/* imeicheck static demo — backend-less IMEI lookup */\n"
     . "      }\n"
     . "      return orig.apply(this, arguments);\n"
     . "    };\n"
-    . "  })(window.fetch));\n"
+    . "  })(window.fetch);\n"
     . "})();\n\n"
     . $mainJs;
 

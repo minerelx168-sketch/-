@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 function layout_head(string $title, string $description = ''): void
 {
+    require_once __DIR__ . '/icons.php';
     $cfg = require __DIR__ . '/config.php';
     $appName = htmlspecialchars($cfg['app']['name'], ENT_QUOTES, 'UTF-8');
     $title   = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
@@ -21,6 +22,14 @@ function layout_head(string $title, string $description = ''): void
         ENT_QUOTES,
         'UTF-8'
     );
+
+    // SVG favicon (no emoji). Use single-quote SVG attributes so the
+    // markup can sit safely inside an HTML double-quoted href.
+    $favicon = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>"
+        . "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%230ea5e9'/></linearGradient></defs>"
+        . "<rect width='32' height='32' rx='8' fill='url(%23g)'/>"
+        . "<circle cx='16' cy='9.5' r='2' fill='%23fff'/>"
+        . "<rect x='13.5' y='13' width='5' height='13' rx='1.5' fill='%23fff'/></svg>";
     ?>
 <!doctype html>
 <html lang="en">
@@ -29,14 +38,17 @@ function layout_head(string $title, string $description = ''): void
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= $title ?></title>
 <meta name="description" content="<?= $desc ?>">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='20' font-size='22'>📱</text></svg>">
+<link rel="icon" href="data:image/svg+xml;charset=utf-8,<?= $favicon ?>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 <header class="site-header">
     <div class="container header-inner">
         <a href="/" class="brand">
-            <span class="brand-mark">📱</span>
+            <?= icon('logo', 32, 'brand-mark') ?>
             <span class="brand-text"><?= $appName ?></span>
         </a>
         <nav class="site-nav">

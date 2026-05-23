@@ -6,14 +6,15 @@ declare(strict_types=1);
  * models per brand. Mirrors the baseimei.com /imei/<brand> structure so
  * each entry can render its own page without requiring a DB.
  *
- * Each brand: slug (URL key), name, emoji (placeholder logo), models.
+ * Each brand: slug, name, brand-specific accent color, country, models.
+ * The accent color is used as the background for the brand badge tile.
  */
 
 return [
     [
         'slug'    => 'apple',
         'name'    => 'Apple',
-        'emoji'   => '🍎',
+        'color'   => '#111111',
         'country' => 'United States',
         'models'  => [
             'iPhone 15 Pro Max', 'iPhone 15 Pro', 'iPhone 15 Plus', 'iPhone 15',
@@ -24,7 +25,7 @@ return [
     [
         'slug'    => 'samsung',
         'name'    => 'Samsung',
-        'emoji'   => '📱',
+        'color'   => '#1428a0',
         'country' => 'South Korea',
         'models'  => [
             'Galaxy S24 Ultra', 'Galaxy S24+', 'Galaxy S24', 'Galaxy S23 Ultra',
@@ -35,7 +36,7 @@ return [
     [
         'slug'    => 'huawei',
         'name'    => 'Huawei',
-        'emoji'   => '🌸',
+        'color'   => '#c8102e',
         'country' => 'China',
         'models'  => [
             'P60 Pro', 'P60', 'Mate 60 Pro', 'Mate 60', 'Mate X5',
@@ -45,7 +46,7 @@ return [
     [
         'slug'    => 'xiaomi',
         'name'    => 'Xiaomi',
-        'emoji'   => '🔶',
+        'color'   => '#ff6900',
         'country' => 'China',
         'models'  => [
             'Xiaomi 14 Ultra', 'Xiaomi 14 Pro', 'Xiaomi 14', 'Xiaomi 13T Pro',
@@ -56,7 +57,7 @@ return [
     [
         'slug'    => 'oppo',
         'name'    => 'OPPO',
-        'emoji'   => '🟢',
+        'color'   => '#1a8a3a',
         'country' => 'China',
         'models'  => [
             'Find X7 Ultra', 'Find X7', 'Find N3 Flip', 'Reno 11 Pro',
@@ -66,7 +67,7 @@ return [
     [
         'slug'    => 'vivo',
         'name'    => 'vivo',
-        'emoji'   => '🔵',
+        'color'   => '#005bd0',
         'country' => 'China',
         'models'  => [
             'X100 Pro', 'X100', 'X90 Pro', 'V29 Pro', 'V29', 'V27',
@@ -76,7 +77,7 @@ return [
     [
         'slug'    => 'realme',
         'name'    => 'realme',
-        'emoji'   => '🟡',
+        'color'   => '#ffc500',
         'country' => 'China',
         'models'  => [
             'GT 5 Pro', 'GT Neo 6', '12 Pro+', '12 Pro', '11 Pro+', '11 Pro',
@@ -86,7 +87,7 @@ return [
     [
         'slug'    => 'oneplus',
         'name'    => 'OnePlus',
-        'emoji'   => '🔴',
+        'color'   => '#eb0028',
         'country' => 'China',
         'models'  => [
             '12', '12R', 'Open', '11', '11R', 'Nord 3', 'Nord CE 3 Lite',
@@ -96,7 +97,7 @@ return [
     [
         'slug'    => 'motorola',
         'name'    => 'Motorola',
-        'emoji'   => '🦇',
+        'color'   => '#5c92fa',
         'country' => 'United States',
         'models'  => [
             'Edge 50 Ultra', 'Edge 50 Pro', 'Edge 40 Neo', 'Razr 40 Ultra',
@@ -106,7 +107,7 @@ return [
     [
         'slug'    => 'nokia',
         'name'    => 'Nokia',
-        'emoji'   => '🔷',
+        'color'   => '#124191',
         'country' => 'Finland',
         'models'  => [
             'G42 5G', 'G22', 'X30 5G', 'XR21', 'C32', 'C22', 'C12',
@@ -116,7 +117,7 @@ return [
     [
         'slug'    => 'sony',
         'name'    => 'Sony',
-        'emoji'   => '⚫',
+        'color'   => '#000000',
         'country' => 'Japan',
         'models'  => [
             'Xperia 1 V', 'Xperia 5 V', 'Xperia 10 V', 'Xperia 1 IV',
@@ -126,7 +127,7 @@ return [
     [
         'slug'    => 'google',
         'name'    => 'Google',
-        'emoji'   => '🔍',
+        'color'   => '#4285f4',
         'country' => 'United States',
         'models'  => [
             'Pixel 8 Pro', 'Pixel 8', 'Pixel 8a', 'Pixel 7 Pro', 'Pixel 7',

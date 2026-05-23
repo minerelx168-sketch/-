@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/layout.php';
+require_once __DIR__ . '/includes/icons.php';
 $brands = require __DIR__ . '/data/brands.php';
 
 layout_head(
@@ -10,11 +11,12 @@ layout_head(
 ?>
     <section class="page-hero">
         <div class="container">
-            <h1>Phone brands</h1>
+            <p class="hero-eyebrow">Brand directory</p>
+            <h1>Mobile phone brands</h1>
             <p class="lede">
-                We cover <?= count($brands) ?> major mobile phone brands.
-                Pick one to see common models, or jump straight to the
-                <a href="/">IMEI checker</a> to look up a specific device.
+                We cover <?= count($brands) ?> major mobile phone manufacturers.
+                Pick one to see the models we recognise, or jump straight to the
+                <a href="/">IMEI checker</a>.
             </p>
         </div>
     </section>
@@ -24,7 +26,9 @@ layout_head(
             <div class="brand-grid">
                 <?php foreach ($brands as $b): ?>
                     <a class="brand-tile" href="/brand.php?slug=<?= urlencode($b['slug']) ?>">
-                        <span class="brand-tile-mark"><?= htmlspecialchars($b['emoji'], ENT_QUOTES, 'UTF-8') ?></span>
+                        <span class="brand-tile-mark" style="background:<?= htmlspecialchars($b['color'], ENT_QUOTES) ?>">
+                            <?= htmlspecialchars(brand_initial($b['name']), ENT_QUOTES, 'UTF-8') ?>
+                        </span>
                         <span class="brand-tile-name"><?= htmlspecialchars($b['name'], ENT_QUOTES, 'UTF-8') ?></span>
                         <span class="brand-tile-meta"><?= count($b['models']) ?> models</span>
                     </a>

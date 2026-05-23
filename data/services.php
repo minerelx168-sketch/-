@@ -14,7 +14,7 @@ return [
     [
         'slug'        => 'free-imei-check',
         'name'        => 'Free IMEI Check',
-        'icon'        => '🔍',
+        'icon'        => 'info',
         'tagline'     => 'Brand, model and basic specs from any IMEI.',
         'description' =>
             'The fastest way to identify any mobile phone. Enter the 15-digit '
@@ -27,7 +27,7 @@ return [
     [
         'slug'        => 'blacklist-check',
         'name'        => 'Blacklist Status Check',
-        'icon'        => '⛔',
+        'icon'        => 'ban',
         'tagline'     => 'See if a device is reported lost or stolen.',
         'description' =>
             'Check whether an IMEI has been blacklisted by carriers worldwide. '
@@ -39,7 +39,7 @@ return [
     [
         'slug'        => 'carrier-check',
         'name'        => 'Carrier &amp; SIM-Lock Check',
-        'icon'        => '📶',
+        'icon'        => 'signal',
         'tagline'     => 'Find the original carrier and whether the phone is locked.',
         'description' =>
             'Discover which network the device was originally sold on, the '
@@ -51,7 +51,7 @@ return [
     [
         'slug'        => 'icloud-status',
         'name'        => 'iCloud Activation Lock',
-        'icon'        => '☁️',
+        'icon'        => 'cloud',
         'tagline'     => 'Verify iCloud / Find My iPhone status on Apple devices.',
         'description' =>
             'For Apple devices only. Reveals whether iCloud (Find My iPhone) '
@@ -63,7 +63,7 @@ return [
     [
         'slug'        => 'warranty-check',
         'name'        => 'Warranty &amp; Activation Date',
-        'icon'        => '🛡️',
+        'icon'        => 'shield',
         'tagline'     => 'Activation date, warranty status and coverage info.',
         'description' =>
             'Check when a device was first activated, whether it is still '
@@ -75,7 +75,7 @@ return [
     [
         'slug'        => 'model-info',
         'name'        => 'Full Model Specifications',
-        'icon'        => '📋',
+        'icon'        => 'specs',
         'tagline'     => 'Detailed hardware specs based on the TAC.',
         'description' =>
             'A deeper report on the device hardware: chipset, storage, RAM, '

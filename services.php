@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/layout.php';
+require_once __DIR__ . '/includes/icons.php';
 $services = require __DIR__ . '/data/services.php';
 
 layout_head(
@@ -10,10 +11,11 @@ layout_head(
 ?>
     <section class="page-hero">
         <div class="container">
+            <p class="hero-eyebrow">Service catalog</p>
             <h1>IMEI lookup services</h1>
             <p class="lede">
-                Different checks return different information. Pick the one that
-                matches what you need to know about a device.
+                Different checks return different information.
+                Pick the one that matches what you need to know about a device.
             </p>
         </div>
     </section>
@@ -24,16 +26,16 @@ layout_head(
                 <?php foreach ($services as $s): ?>
                     <a class="service-card" href="/service.php?slug=<?= urlencode($s['slug']) ?>">
                         <div class="service-card-head">
-                            <span class="service-icon"><?= htmlspecialchars($s['icon'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <span class="service-icon"><?= icon((string) $s['icon'], 22) ?></span>
                             <?php if ($s['free']): ?>
                                 <span class="pill pill-free">Free</span>
                             <?php else: ?>
                                 <span class="pill pill-paid">Premium</span>
                             <?php endif; ?>
                         </div>
-                        <h3><?= $s['name'] /* names contain &amp; etc, already entity-encoded */ ?></h3>
+                        <h3><?= $s['name'] ?></h3>
                         <p><?= htmlspecialchars($s['tagline'], ENT_QUOTES, 'UTF-8') ?></p>
-                        <span class="service-link">Run check &rarr;</span>
+                        <span class="service-link">Run check <?= icon('arrow-right', 14) ?></span>
                     </a>
                 <?php endforeach; ?>
             </div>

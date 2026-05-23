@@ -27,6 +27,7 @@ if (!$service) {
     return;
 }
 
+require_once __DIR__ . '/includes/icons.php';
 $name = $service['name'];
 layout_head(
     strip_tags(html_entity_decode($name)) . ' · imeicheck',
@@ -39,13 +40,15 @@ layout_head(
                 <a href="/services.php">Services</a> &rsaquo;
                 <?= strip_tags($name) ?>
             </p>
-            <h1>
-                <span style="margin-right:8px"><?= htmlspecialchars($service['icon'], ENT_QUOTES, 'UTF-8') ?></span>
-                <?= $name ?>
-                <?php if ($service['free']): ?>
-                    <span class="pill pill-free" style="vertical-align:middle">Free</span>
-                <?php endif; ?>
-            </h1>
+            <div class="service-headline">
+                <span class="service-headline-icon"><?= icon((string) $service['icon'], 28) ?></span>
+                <h1>
+                    <?= $name ?>
+                    <?php if ($service['free']): ?>
+                        <span class="pill pill-free">Free</span>
+                    <?php endif; ?>
+                </h1>
+            </div>
             <p class="lede"><?= htmlspecialchars($service['tagline'], ENT_QUOTES, 'UTF-8') ?></p>
 
             <form id="imei-form" class="lookup-form lookup-form--hero" autocomplete="off" novalidate

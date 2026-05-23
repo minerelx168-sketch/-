@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/layout.php';
+require_once __DIR__ . '/includes/icons.php';
 $cfg = require __DIR__ . '/includes/config.php';
 $appName = htmlspecialchars($cfg['app']['name'], ENT_QUOTES, 'UTF-8');
 layout_head(
@@ -10,10 +11,11 @@ layout_head(
 ?>
     <section class="hero" id="checker">
         <div class="container">
-            <h1>Free IMEI Check</h1>
+            <p class="hero-eyebrow">Free phone information lookup</p>
+            <h1>Identify any mobile phone<br>by its IMEI number</h1>
             <p class="lede">
-                Enter the 15-digit IMEI number of any mobile phone to instantly look up
-                its brand, model and full specifications.
+                Enter the 15-digit IMEI of any GSM phone to instantly retrieve
+                its brand, model and full specifications &mdash; no signup required.
             </p>
 
             <form id="imei-form" class="lookup-form" autocomplete="off" novalidate>
@@ -38,43 +40,59 @@ layout_head(
             </form>
 
             <div id="result" class="result" hidden></div>
+
+            <div class="hero-stats">
+                <div><strong>120k+</strong><span>TACs indexed</span></div>
+                <div><strong>12</strong><span>major brands</span></div>
+                <div><strong>&lt; 1s</strong><span>median lookup</span></div>
+            </div>
         </div>
     </section>
 
     <section class="brands-preview">
         <div class="container">
-            <h2>Browse by brand</h2>
-            <p class="lede-soft">Pick a brand to see common models and their TAC ranges.</p>
+            <div class="section-head">
+                <h2>Browse by brand</h2>
+                <p>Pick a manufacturer to see the models we recognise.</p>
+            </div>
             <div class="brand-grid">
                 <?php foreach (array_slice(require __DIR__ . '/data/brands.php', 0, 8) as $b): ?>
                     <a class="brand-tile" href="/brand.php?slug=<?= urlencode($b['slug']) ?>">
-                        <span class="brand-tile-mark"><?= htmlspecialchars($b['emoji'], ENT_QUOTES, 'UTF-8') ?></span>
+                        <span class="brand-tile-mark" style="background:<?= htmlspecialchars($b['color'], ENT_QUOTES) ?>">
+                            <?= htmlspecialchars(brand_initial($b['name']), ENT_QUOTES, 'UTF-8') ?>
+                        </span>
                         <span class="brand-tile-name"><?= htmlspecialchars($b['name'], ENT_QUOTES, 'UTF-8') ?></span>
                     </a>
                 <?php endforeach; ?>
             </div>
-            <p style="text-align:center; margin-top:24px;">
-                <a class="link-more" href="/brands.php">View all brands &rarr;</a>
+            <p class="brand-grid-more">
+                <a class="link-more" href="/brands.php">View all brands <?= icon('arrow-right', 14) ?></a>
             </p>
         </div>
     </section>
 
     <section class="how" id="how">
         <div class="container">
-            <h2>How an IMEI check works</h2>
+            <div class="section-head">
+                <h2>How an IMEI check works</h2>
+                <p>Three steps. About fifteen seconds, including the typing.</p>
+            </div>
             <div class="cards">
                 <article class="card">
-                    <div class="card-num">1</div>
+                    <span class="card-icon"><?= icon('magnifier', 22) ?></span>
+                    <div class="card-num">01</div>
                     <h3>Find your IMEI</h3>
                     <p>Dial <code>*#06#</code> on any phone, or check Settings &rarr; About &rarr; IMEI.</p>
                 </article>
                 <article class="card">
-                    <div class="card-num">2</div>
+                    <span class="card-icon"><?= icon('paste', 22) ?></span>
+                    <div class="card-num">02</div>
                     <h3>Paste &amp; check</h3>
                     <p>Paste the 15-digit number above and press <em>Check IMEI</em>.</p>
                 </article>
                 <article class="card">
-                    <div class="card-num">3</div>
+                    <span class="card-icon"><?= icon('report', 22) ?></span>
+                    <div class="card-num">03</div>
                     <h3>Read the report</h3>
                     <p>We return the brand, model and any device data the provider exposes.</p>
                 </article>

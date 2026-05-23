@@ -27,9 +27,10 @@ if (!$brand) {
     return;
 }
 
-$brandName = htmlspecialchars($brand['name'], ENT_QUOTES, 'UTF-8');
-$brandEmoji = htmlspecialchars($brand['emoji'], ENT_QUOTES, 'UTF-8');
-$country = htmlspecialchars($brand['country'], ENT_QUOTES, 'UTF-8');
+require_once __DIR__ . '/includes/icons.php';
+$brandName  = htmlspecialchars($brand['name'], ENT_QUOTES, 'UTF-8');
+$brandColor = htmlspecialchars($brand['color'], ENT_QUOTES);
+$country    = htmlspecialchars($brand['country'], ENT_QUOTES, 'UTF-8');
 
 layout_head(
     "$brandName IMEI Check · imeicheck",
@@ -41,11 +42,19 @@ layout_head(
             <p class="breadcrumbs">
                 <a href="/brands.php">Brands</a> &rsaquo; <?= $brandName ?>
             </p>
-            <h1><span style="margin-right:8px"><?= $brandEmoji ?></span><?= $brandName ?> phones</h1>
-            <p class="lede">
+            <div class="brand-headline">
+                <span class="brand-tile-mark brand-tile-mark--lg" style="background:<?= $brandColor ?>">
+                    <?= htmlspecialchars(brand_initial($brand['name']), ENT_QUOTES, 'UTF-8') ?>
+                </span>
+                <div>
+                    <h1><?= $brandName ?></h1>
+                    <p class="brand-meta"><?= $country ?> &middot; <?= count($brand['models']) ?> models indexed</p>
+                </div>
+            </div>
+            <p class="lede" style="margin-top:18px">
                 <?= $brandName ?> is a mobile manufacturer from <?= $country ?>.
-                Below are common <?= $brandName ?> models we recognise.
-                Have a specific device? Enter its IMEI on the <a href="/">checker</a>.
+                Have a specific device? Enter its IMEI on the <a href="/">checker</a>
+                to confirm the exact variant.
             </p>
         </div>
     </section>

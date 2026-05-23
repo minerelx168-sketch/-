@@ -51,20 +51,8 @@ layout_head(
             </div>
             <p class="lede"><?= htmlspecialchars($service['tagline'], ENT_QUOTES, 'UTF-8') ?></p>
 
-            <?php
-                $serviceCodeMap = [
-                    'free-imei-check' => 'IMEI_BASIC',
-                    'blacklist-check' => 'BLACKLIST',
-                    'carrier-check'   => 'CARRIER',
-                    'icloud-status'   => 'ICLOUD_STATUS',
-                    'warranty-check'  => 'WARRANTY',
-                    'model-info'      => 'MODEL_SPECS',
-                ];
-                $serviceCode = $serviceCodeMap[$service['slug']] ?? 'IMEI_BASIC';
-            ?>
             <form id="imei-form" class="lookup-form lookup-form--hero" autocomplete="off" novalidate
-                  data-service="<?= htmlspecialchars((string) $service['provider_id'], ENT_QUOTES, 'UTF-8') ?>"
-                  data-code="<?= htmlspecialchars($serviceCode, ENT_QUOTES, 'UTF-8') ?>"
+                  data-code="<?= htmlspecialchars((string) $service['code'], ENT_QUOTES, 'UTF-8') ?>"
                   data-paid="<?= $service['free'] ? '0' : '1' ?>">
                 <label for="imei" class="sr-only">IMEI number</label>
                 <input

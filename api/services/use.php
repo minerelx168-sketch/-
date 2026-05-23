@@ -91,22 +91,21 @@ try {
 $publicId = (string) $usage['public_id'];
 $cost     = (string) $usage['cost'];
 
-// Phase 2: call the provider. Map our service_code to the provider's
-// service ID.  For now everything points at the configured default since
-// the demo provider doesn't differentiate, but the mapping lives here so
-// adding new tiers later is just a hash change.
-$serviceMap = [
-    'IMEI_BASIC'    => null,  // free
-    'BLACKLIST'     => '1',
-    'CARRIER'       => '2',
-    'ICLOUD_STATUS' => '3',
-    'WARRANTY'      => '4',
-    'MODEL_SPECS'   => '5',
-];
+// Phase 2: call the provider. Map our service_code -> unlock-service ID
+// using data/service_provider_map.php (single source of truth). null in
+// the map means "free local lookup" - we parse the TAC ourselves with
+// the demo provider so no API credit is spent.
+$serviceMap        = require __DIR__ . '/../../data/service_provider_map.php';
 $providerServiceId = $serviceMap[$code] ?? null;
 
 try {
-    $result = imei_provider_lookup($imei, $providerServiceId);
+    if ($providerServiceId === null) {
+        // Free tier: local TAC lookup, no external call.
+        require_once __DIR__ . '/../../includes/imei_demo.php';
+        $result = imei_demo_lookup($imei, '0');
+    } else {
+        $result = imei_provider_lookup($imei, (string) $providerServiceId);
+    }
 } catch (Throwable $e) {
     credits_refund_usage($publicId, 'provider exception: ' . $e->getMessage());
     fail(502, 'Lookup failed; your credit has been refunded.', [

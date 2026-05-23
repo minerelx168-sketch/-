@@ -34,6 +34,7 @@ function env(string $key, ?string $default = null): ?string
 return [
     'app' => [
         'name'  => env('APP_NAME', 'imeicheck'),
+        'url'   => rtrim((string) env('APP_URL', 'http://localhost:8080'), '/'),
         'debug' => filter_var(env('APP_DEBUG', 'false'), FILTER_VALIDATE_BOOLEAN),
     ],
     'db' => [
@@ -47,5 +48,18 @@ return [
         'key'             => env('IMEI_API_KEY', ''),
         'url'             => env('IMEI_API_URL', 'https://sickw.com/api.php'),
         'default_service' => env('IMEI_API_DEFAULT_SERVICE', '0'),
+    ],
+    'google' => [
+        'client_id'     => env('GOOGLE_CLIENT_ID', ''),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET', ''),
+    ],
+    'stripe' => [
+        'publishable_key' => env('STRIPE_PUBLISHABLE_KEY', ''),
+        'secret_key'      => env('STRIPE_SECRET_KEY', ''),
+        'webhook_secret'  => env('STRIPE_WEBHOOK_SECRET', ''),
+    ],
+    'session' => [
+        'lifetime_days' => (int) env('SESSION_LIFETIME_DAYS', '30'),
+        'cookie_name'   => env('SESSION_COOKIE_NAME', 'imeicheck_sid'),
     ],
 ];

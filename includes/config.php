@@ -33,7 +33,7 @@ function env(string $key, ?string $default = null): ?string
 
 return [
     'app' => [
-        'name'  => env('APP_NAME', 'Base IMEI Checker'),
+        'name'  => env('APP_NAME', 'imeicheck'),
         'debug' => filter_var(env('APP_DEBUG', 'false'), FILTER_VALIDATE_BOOLEAN),
     ],
     'db' => [

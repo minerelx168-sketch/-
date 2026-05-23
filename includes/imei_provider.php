@@ -57,7 +57,7 @@ function imei_provider_lookup(string $imei, ?string $service = null): array
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 30,
         CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_USERAGENT      => 'BaseImeiChecker/1.0',
+        CURLOPT_USERAGENT      => 'imeicheck/1.0',
         CURLOPT_FOLLOWLOCATION => true,
     ]);
     $body     = curl_exec($ch);

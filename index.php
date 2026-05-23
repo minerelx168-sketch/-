@@ -1,35 +1,13 @@
 <?php
 declare(strict_types=1);
+require __DIR__ . '/includes/layout.php';
 $cfg = require __DIR__ . '/includes/config.php';
 $appName = htmlspecialchars($cfg['app']['name'], ENT_QUOTES, 'UTF-8');
+layout_head(
+    $appName . ' · Free IMEI Check & Phone Info Lookup',
+    'Free IMEI checker. Enter any 15-digit IMEI to instantly look up the brand, model and specs of a mobile phone.'
+);
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title><?= $appName ?> &middot; Free IMEI Check &amp; Phone Info Lookup</title>
-<meta name="description" content="Free IMEI checker. Enter any 15-digit IMEI to instantly look up the brand, model and specs of a mobile phone.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><text y='20' font-size='22'>📱</text></svg>">
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-
-<header class="site-header">
-    <div class="container header-inner">
-        <a href="/" class="brand">
-            <span class="brand-mark">📱</span>
-            <span class="brand-text"><?= $appName ?></span>
-        </a>
-        <nav class="site-nav">
-            <a href="#checker">IMEI Check</a>
-            <a href="#how">How it works</a>
-            <a href="#faq">FAQ</a>
-        </nav>
-    </div>
-</header>
-
-<main>
     <section class="hero" id="checker">
         <div class="container">
             <h1>Free IMEI Check</h1>
@@ -60,6 +38,24 @@ $appName = htmlspecialchars($cfg['app']['name'], ENT_QUOTES, 'UTF-8');
             </form>
 
             <div id="result" class="result" hidden></div>
+        </div>
+    </section>
+
+    <section class="brands-preview">
+        <div class="container">
+            <h2>Browse by brand</h2>
+            <p class="lede-soft">Pick a brand to see common models and their TAC ranges.</p>
+            <div class="brand-grid">
+                <?php foreach (array_slice(require __DIR__ . '/data/brands.php', 0, 8) as $b): ?>
+                    <a class="brand-tile" href="/brand.php?slug=<?= urlencode($b['slug']) ?>">
+                        <span class="brand-tile-mark"><?= htmlspecialchars($b['emoji'], ENT_QUOTES, 'UTF-8') ?></span>
+                        <span class="brand-tile-name"><?= htmlspecialchars($b['name'], ENT_QUOTES, 'UTF-8') ?></span>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+            <p style="text-align:center; margin-top:24px;">
+                <a class="link-more" href="/brands.php">View all brands &rarr;</a>
+            </p>
         </div>
     </section>
 
@@ -116,14 +112,4 @@ $appName = htmlspecialchars($cfg['app']['name'], ENT_QUOTES, 'UTF-8');
             </details>
         </div>
     </section>
-</main>
-
-<footer class="site-footer">
-    <div class="container">
-        <p>&copy; <?= date('Y') ?> <?= $appName ?>. For informational use only.</p>
-    </div>
-</footer>
-
-<script src="assets/js/main.js"></script>
-</body>
-</html>
+<?php layout_foot(); ?>

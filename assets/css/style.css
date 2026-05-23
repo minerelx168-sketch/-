@@ -315,6 +315,113 @@ body {
     color: var(--text-soft);
 }
 
+/* Brands */
+.brands-preview, .brands-list, .model-list {
+    padding: 64px 0;
+    background: var(--surface);
+}
+.brands-preview { background: var(--surface-alt); }
+.brands-preview h2, .brands-list h2, .model-list h2 {
+    text-align: center;
+    font-size: 1.7rem;
+    margin: 0 0 8px;
+    letter-spacing: -.01em;
+}
+.lede-soft {
+    text-align: center;
+    color: var(--text-soft);
+    margin: 0 auto 28px;
+    max-width: 560px;
+}
+.brand-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 14px;
+}
+.brand-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 16px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color .15s, transform .1s, box-shadow .15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.brand-tile:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -16px rgba(37, 99, 235, .45);
+}
+.brand-tile-mark {
+    font-size: 32px;
+    line-height: 1;
+}
+.brand-tile-name {
+    font-weight: 700;
+    font-size: 1rem;
+}
+.brand-tile-meta {
+    color: var(--muted);
+    font-size: .8rem;
+}
+.link-more {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+.link-more:hover { text-decoration: underline; }
+
+/* Page hero (used on /brands.php and /brand.php) */
+.page-hero {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+    color: #fff;
+    padding: 56px 0 64px;
+    text-align: center;
+}
+.page-hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+}
+.page-hero .lede {
+    color: #cbd5e1;
+    max-width: 640px;
+    margin: 0 auto;
+}
+.page-hero .lede a { color: #93c5fd; }
+.breadcrumbs {
+    color: #94a3b8;
+    font-size: .9rem;
+    margin: 0 0 12px;
+}
+.breadcrumbs a {
+    color: #cbd5e1;
+    text-decoration: none;
+}
+.breadcrumbs a:hover { color: #fff; }
+
+/* Model list */
+.models {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+}
+.models li {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-weight: 500;
+}
+
 /* Footer */
 .site-footer {
     background: var(--bg);

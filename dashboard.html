@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard · imeicheck</title>
+<meta name="description" content="Your imeicheck account dashboard.">
+<link rel="icon" href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%230ea5e9'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='9.5' r='2' fill='%23fff'/><rect x='13.5' y='13' width='5' height='13' rx='1.5' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body><div style="background:#fbbf24;color:#0b1220;padding:8px 12px;font-size:.85rem;text-align:center;font-family:Inter,sans-serif;">Static demo - IMEI lookups run on a bundled TAC database. Real Stripe top-ups + Google sign-in require the PHP backend.</div>
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="./index.html" class="brand">
+            <svg width="32" height="32" class="brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs><rect x="2" y="2" width="28" height="28" rx="8" fill="url(#lg)"/><path d="M16 9.5v2.2M11 13.5h10M11 18h10M11 22.5h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="22.5" r="0" fill="#fff"/></svg>            <span class="brand-text">imeicheck</span>
+        </a>
+        <nav class="site-nav">
+            <a href="./index.html">IMEI Check</a>
+            <a href="./services.html">Services</a>
+            <a href="./brands.html">Brands</a>
+            <a href="./articles.html">Articles</a>
+            <a href="./about.html">About</a>
+        </nav>
+                <div class="site-account">
+                            <a href="./dashboard.html" class="account-chip">
+                    <span class="account-balance">฿250.00</span>
+                                            <span class="account-avatar account-avatar--initial">D</span>
+                                    </a>
+                    </div>
+    </div>
+</header>
+<main>
+        <section class="dashboard">
+        <div class="container">
+            <header class="dashboard-head">
+                <div>
+                    <p class="hero-eyebrow" style="color:var(--text-muted);border-color:var(--border);background:var(--surface-alt)">Dashboard</p>
+                    <h1>Hi, Demo User</h1>
+                    <p class="dashboard-subtitle">Manage your credits, run lookups, and review your usage.</p>
+                </div>
+                <a href="./index.html" class="link-quiet">Sign out</a>
+            </header>
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <span class="stat-card-label">Credit balance</span>
+                    <strong class="stat-card-value">฿250.00</strong>
+                    <a href="./topup.html" class="btn-primary">Top up credit</a>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-card-label">Lookups this month</span>
+                    <strong class="stat-card-value">12</strong>
+                    <span class="stat-card-meta">3 free, 9 paid</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-card-label">Spent this month</span>
+                    <strong class="stat-card-value">฿217.00</strong>
+                    <span class="stat-card-meta"><a href="./dashboard.html">View full history &rarr;</a></span>
+                </div>
+            </div>
+            <section class="dashboard-block">
+                <div class="dashboard-block-head">
+                    <h2>Recent lookups</h2>
+                    <a href="./dashboard.html" class="link-more">View all <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+                </div>
+                <table class="ledger-table">
+                    <thead><tr><th>Service</th><th>Status</th><th class="num">Cost</th><th>Date</th></tr></thead>
+                    <tbody>
+                                            <tr>
+                            <td>
+                                <strong>Blacklist Status Check</strong>
+                                <span class="ledger-sub">BLACKLIST</span>
+                            </td>
+                            <td><span class="status status--success">SUCCESS</span></td>
+                            <td class="num">฿15.00</td>
+                            <td class="muted">2026-05-23 06:34:05</td>
+                        </tr>
+                                            <tr>
+                            <td>
+                                <strong>iCloud Activation Lock</strong>
+                                <span class="ledger-sub">ICLOUD_STATUS</span>
+                            </td>
+                            <td><span class="status status--success">SUCCESS</span></td>
+                            <td class="num">฿39.00</td>
+                            <td class="muted">2026-05-23 05:54:05</td>
+                        </tr>
+                                            <tr>
+                            <td>
+                                <strong>Free IMEI Check</strong>
+                                <span class="ledger-sub">IMEI_BASIC</span>
+                            </td>
+                            <td><span class="status status--success">SUCCESS</span></td>
+                            <td class="num">฿0.00</td>
+                            <td class="muted">2026-05-22 06:39:05</td>
+                        </tr>
+                                            <tr>
+                            <td>
+                                <strong>Carrier &amp; SIM-Lock Check</strong>
+                                <span class="ledger-sub">CARRIER</span>
+                            </td>
+                            <td><span class="status status--refunded">REFUNDED</span></td>
+                            <td class="num">฿29.00</td>
+                            <td class="muted">2026-05-22 05:39:05</td>
+                        </tr>
+                                            <tr>
+                            <td>
+                                <strong>Warranty &amp; Activation Date</strong>
+                                <span class="ledger-sub">WARRANTY</span>
+                            </td>
+                            <td><span class="status status--success">SUCCESS</span></td>
+                            <td class="num">฿29.00</td>
+                            <td class="muted">2026-05-21 06:39:05</td>
+                        </tr>
+                                        </tbody>
+                </table>
+            </section>
+        </div>
+    </section>
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="footer-col">
+            <strong>imeicheck</strong>
+            <p>Free IMEI lookup for any GSM mobile phone.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Tools</h4>
+            <a href="./index.html">IMEI Check</a>
+            <a href="./services.html">All services</a>
+            <a href="./brands.html">Brands</a>
+        </div>
+        <div class="footer-col">
+            <h4>Site</h4>
+            <a href="./articles.html">Articles</a>
+            <a href="./about.html">About</a>
+            <a href="./contact.html">Contact</a>
+            <a href="./privacy.html">Privacy</a>
+        </div>
+        <div class="footer-col footer-col--bottom">
+            <p>&copy; 2026 imeicheck. For informational use only.</p>
+        </div>
+    </div>
+</footer>
+<script src="./assets/js/main-static.js"></script>
+</body>
+</html>

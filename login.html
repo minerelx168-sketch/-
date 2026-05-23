@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in · imeicheck</title>
+<meta name="description" content="Sign in to imeicheck with your Google account.">
+<link rel="icon" href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%230ea5e9'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='9.5' r='2' fill='%23fff'/><rect x='13.5' y='13' width='5' height='13' rx='1.5' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body><div style="background:#fbbf24;color:#0b1220;padding:8px 12px;font-size:.85rem;text-align:center;font-family:Inter,sans-serif;">Static demo - IMEI lookups run on a bundled TAC database. Real Stripe top-ups + Google sign-in require the PHP backend.</div>
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="./index.html" class="brand">
+            <svg width="32" height="32" class="brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs><rect x="2" y="2" width="28" height="28" rx="8" fill="url(#lg)"/><path d="M16 9.5v2.2M11 13.5h10M11 18h10M11 22.5h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="22.5" r="0" fill="#fff"/></svg>            <span class="brand-text">imeicheck</span>
+        </a>
+        <nav class="site-nav">
+            <a href="./index.html">IMEI Check</a>
+            <a href="./services.html">Services</a>
+            <a href="./brands.html">Brands</a>
+            <a href="./articles.html">Articles</a>
+            <a href="./about.html">About</a>
+        </nav>
+                <div class="site-account">
+                            <a href="./login.html" class="btn-signin">Sign in</a>
+                    </div>
+    </div>
+</header>
+<main>
+        <section class="auth-shell">
+        <div class="container container--narrow">
+            <div class="auth-card">
+                <div class="auth-card-head">
+                    <h1>Sign in</h1>
+                    <p>Use your Google account to access top-ups and paid lookups.</p>
+                </div>
+
+                <a class="btn-google" href="./login.html">
+                    <svg width="20" height="20" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path fill="#EA4335" d="M9 3.48c1.7 0 3.22.59 4.42 1.74l3.3-3.3C14.78.86 12.13 0 9 0 5.48 0 2.44 2.02.96 4.96l3.84 2.98C5.52 5.45 7.05 3.48 9 3.48z"/>
+                        <path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.17-1.83H9v3.47h4.84c-.21 1.13-.85 2.08-1.81 2.72l2.94 2.28c1.72-1.58 2.67-3.92 2.67-6.64z"/>
+                        <path fill="#FBBC05" d="M4.79 10.66c-.18-.55-.29-1.13-.29-1.66s.1-1.11.29-1.66L.96 4.36C.35 5.57 0 6.95 0 9c0 2.05.35 3.43.96 4.64l3.83-2.98z"/>
+                        <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.94-2.28c-.83.56-1.93.88-3.02.88-1.95 0-3.48-1.97-4.21-3.96L.96 13.44C2.44 16.39 5.48 18 9 18z"/>
+                    </svg>
+                    <span>Continue with Google</span>
+                </a>
+
+                <p class="auth-fineprint">
+                    By signing in you agree to our
+                    <a href="./privacy.html">Privacy Policy</a>.
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="footer-col">
+            <strong>imeicheck</strong>
+            <p>Free IMEI lookup for any GSM mobile phone.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Tools</h4>
+            <a href="./index.html">IMEI Check</a>
+            <a href="./services.html">All services</a>
+            <a href="./brands.html">Brands</a>
+        </div>
+        <div class="footer-col">
+            <h4>Site</h4>
+            <a href="./articles.html">Articles</a>
+            <a href="./about.html">About</a>
+            <a href="./contact.html">Contact</a>
+            <a href="./privacy.html">Privacy</a>
+        </div>
+        <div class="footer-col footer-col--bottom">
+            <p>&copy; 2026 imeicheck. For informational use only.</p>
+        </div>
+    </div>
+</footer>
+<script src="./assets/js/main-static.js"></script>
+</body>
+</html>

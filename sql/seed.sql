@@ -1,76 +1,99 @@
--- Seed: service price catalog (THB)
+-- Seed: service price catalog (USD)
 --
--- Pricing rule applied below:
---   thb = max(15, ceil(credit_cost * 50 / 5) * 5)
--- i.e. wholesale credit * 50, floor at ฿15, round up to nearest ฿5.
--- The (credit) values in the trailing comment let you re-derive the
--- selling price with a different markup later by re-running this file.
+-- Prices below are taken DIRECTLY from the operator's selling-price
+-- sheet (selling_price.xlsx). The trailing  -- sheet  comment notes
+-- the exact line from the spreadsheet so the catalog is auditable.
 --
--- Provider IDs (the integer the unlock-service.net API expects)
--- live in data/service_provider_map.php so the database stays
--- provider-agnostic and the same catalog can be served by a different
--- backend later.
+-- Provider IDs (the integer the unlock-service.net API expects) live
+-- in data/service_provider_map.php. Codes marked TODO below need an
+-- unlock-service ID before they can serve real lookups - they're
+-- inserted as active = 0 so credits_deduct() refuses to charge for
+-- them in the meantime. Flip to 1 after wiring the ID.
+--
+-- Idempotent: ON DUPLICATE KEY UPDATE - safe to re-run.
 
 USE `imei_checker`;
 
 INSERT INTO `service_prices` (`code`, `name`, `description`, `cost`, `active`) VALUES
-    -- Free local lookup (no provider call)
-    ('IMEI_BASIC',                'Free IMEI Check',                          'Brand, model and basic specs - resolved locally from the TAC.',                                 0.00, 1),
+    -- Free local TAC lookup (no provider call, no charge).
+    ('IMEI_BASIC',                'Free IMEI Check',                          'Brand, model and basic specs - resolved locally from the TAC.',                                  0.00, 1),
 
-    -- ----- Apple -----
-    ('APPLE_BASIC',               'Apple Basic Info',                         'iPhone / iPad brand, model and basic specs.',                                                  15.00, 1), -- credit 0.03
-    ('APPLE_CARRIER_LITE',        'Apple Carrier (Lite)',                     'Original carrier the iPhone was sold on.',                                                     15.00, 1), -- credit 0.04
-    ('APPLE_CARRIER_PRO',         'Apple Carrier (Pro)',                      'Carrier + country + SIM-lock status, deeper detail than Lite.',                                15.00, 1), -- credit 0.08
-    ('APPLE_CARRIER_PRO_PLUS',    'Apple Carrier (Pro Plus)',                 'Most detailed carrier report available, includes purchase date.',                              15.00, 1), -- credit 0.13
-    ('APPLE_MAX_INFO',            'Apple Max Info (Premium)',                 'Premium combined report: model, carrier, warranty, activation, sold-by.',                       20.00, 1), -- credit 0.35
-    ('APPLE_WARRANTY',            'Apple Warranty (Activation Info)',         'Activation date and remaining warranty coverage.',                                              15.00, 1), -- credit 0.02
-    ('APPLE_WARRANTY_SN',         'Apple Warranty by Serial Number',          'Same as Apple Warranty but accepts SN instead of IMEI.',                                        15.00, 1), -- credit 0.008
-    ('APPLE_PART_NUMBER',         'Apple Part Number / MPN',                  'Returns the Apple part number / MPN of the device.',                                            15.00, 1), -- credit 0.07
-    ('APPLE_ICLOUD_ID_HINT',      'Apple iCloud ID Hint',                     'Reveals the masked Apple ID the device is signed in to.',                                       20.00, 1), -- credit 0.40
-    ('APPLE_MAC_ICLOUD_STATUS',   'Apple iCloud MacBook/iMac (ON/OFF)',       'Find My status for MacBook / iMac devices.',                                                    15.00, 1), -- credit 0.10
-    ('APPLE_MAC_ICLOUD_CLEAN',    'Apple iCloud MacBook/iMac (Clean/Lost)',   'Lost-mode status for MacBook / iMac devices.',                                                  15.00, 1), -- credit 0.20
-    ('APPLE_ICLOUD_STATUS',       'Apple iCloud (ON/OFF)',                    'Find My iPhone activation lock status.',                                                        15.00, 1), -- credit 0.008
-    ('APPLE_ICLOUD_CLEAN',        'Apple iCloud (Clean/Lost)',                'Lost-mode / blacklist status as reported by Apple iCloud.',                                     15.00, 1), -- credit 0.02
-    ('APPLE_ICLOUD_CLEAN_SN',     'Apple iCloud (Clean/Lost) by SN',          'Same as Apple iCloud Clean/Lost but accepts serial number.',                                    15.00, 1), -- credit 0.05
-    ('APPLE_MDM',                 'Apple MDM (ON/OFF)',                       'Mobile Device Management enrollment status.',                                                   15.00, 1), -- credit 0.15
-    ('APPLE_MDM_SN',              'Apple MDM by Serial Number',               'MDM status check accepting SN.',                                                                15.00, 1), -- credit 0.15
-    ('APPLE_MDM_FMI',             'Apple MDM + Find My iPhone',               'Combined MDM + Find My iPhone status.',                                                         15.00, 1), -- credit 0.25
-    ('APPLE_SIM_LOCK',            'Apple SIM-Lock Status',                    'Whether the SIM slot is locked to a carrier.',                                                  15.00, 1), -- credit 0.018
-    ('APPLE_GSX_TETHER',          'Apple GSX Next Tether Policy',             'Apple GSX next tether policy lookup.',                                                          15.00, 1), -- credit 0.10
-    ('APPLE_CASE_REPAIR_HISTORY', 'Apple Case & Repair History',              'Full Apple case and repair history report.',                                                    75.00, 1), -- credit 1.45
-    ('APPLE_SOLD_BY_COVERAGE',    'Apple Sold By, Coverage (Max Info)',       'Original retailer, coverage status and max info report.',                                       85.00, 1), -- credit 1.70
-    ('APPLE_SOLD_BY_HISTORY',     'Apple Sold By, Case History, Activation',  'Sold-by + case history + activation policy.',                                                  105.00, 1), -- credit 2.10
-    ('APPLE_FULL_GSX',            'Apple Full GSX Report',                    'Sold-by + case history + replacement + activation policy with ICCID & MAC.',                  110.00, 1), -- credit 2.20
-    ('APPLE_GSX_LIGHT',           'Apple GSX (Light)',                        'Sold-by + case history + replacement + GSX activation policy.',                                 40.00, 1), -- credit 0.75
-    ('APPLE_GSX_MAX',             'Apple GSX (Max Info)',                     'Sold-by + case history + replacement + repair + GSX activation (max info).',                    65.00, 1), -- credit 1.30
+    -- ----- Featured Apple tiers (Mini / Basic / Pro / Ultimate) -----
+    ('APPLE_MINI',                'Apple Check Mini',                         'Cheapest Apple tier - basic model info only.',                                                   0.05, 0), -- sheet: Apple Check Mini  TODO provider id
+    ('APPLE_BASIC',               'Apple Check Basic',                        'Apple basic info: model, color, storage.',                                                       0.10, 1), -- sheet: Apple Check Basic
+    ('APPLE_PRO',                 'Apple Check Pro',                          'Apple Pro tier: model + carrier + warranty.',                                                    0.15, 0), -- sheet: Apple Check Pro  TODO provider id
+    ('APPLE_ULTIMATE',            'Apple Check Ultimate',                     'Apple Ultimate: model + carrier + warranty + sold-by.',                                          0.40, 0), -- sheet: Apple Check Ultimate  TODO provider id
+    ('UNIVERSAL_CHECK',           'Universal Check Service',                  'Generic IMEI lookup across any GSM brand.',                                                      0.10, 0), -- sheet: Universal Check Service  TODO provider id
 
-    -- ----- Blacklist -----
-    ('BLACKLIST_SIMPLE',          'WorldWide Blacklist (Simple)',             'Quick yes/no blacklist status across worldwide carriers.',                                      15.00, 1), -- credit 0.008
-    ('BLACKLIST_FULL',            'WorldWide Blacklist (Full Info)',          'Full blacklist report with reporting carrier and date.',                                        15.00, 1), -- credit 0.04
-
-    -- ----- Android brands -----
-    ('PIXEL_INFO',                'Google Pixel Info',                        'Brand, model and basic specs for Google Pixel devices.',                                        15.00, 1), -- credit 0.10
-    ('XIAOMI_STATUS',             'Xiaomi (ON/OFF)',                          'Mi Account / Find Device status for Xiaomi phones.',                                            15.00, 1), -- credit 0.01
-    ('HUAWEI_INFO',               'Huawei Info',                              'Brand, model, color and basic specs for Huawei phones.',                                        15.00, 1), -- credit 0.04
-    ('HONOR_INFO',                'Honor Info',                               'Brand, model, color and basic specs for Honor phones.',                                         15.00, 1), -- credit 0.04
-    ('SAMSUNG_INFO',              'Samsung Info',                             'Brand, model, color and IMEI info for Samsung Galaxy phones.',                                  15.00, 1), -- credit 0.03
-    ('SAMSUNG_KNOX',              'Samsung Knox Guard Status',                'Knox Guard / Samsung Lock status (ON/OFF).',                                                    15.00, 1), -- credit 0.10
-    ('MOTOROLA_INFO',             'Motorola Info',                            'Brand, model and basic specs for Motorola phones.',                                             15.00, 1), -- credit 0.03
-    ('LENOVO_INFO',               'Lenovo Info',                              'Brand, model and basic specs for Lenovo devices.',                                              15.00, 1), -- credit 0.04
+    -- ----- Apple iCloud / MDM / status -----
+    ('APPLE_ICLOUD_STATUS',       'Apple FMI iCloud (ON/OFF)',                'Find My iPhone activation-lock status.',                                                         0.01, 1), -- sheet: Apple Check Service - FMI iCloud (ON/OFF)
+    ('APPLE_ICLOUD_CLEAN',        'Apple iCloud (Clean/Lost)',                'iCloud Clean / Lost status (primary server).',                                                   0.03, 1), -- sheet: Apple Check Service - iCloud (Clean/Lost)
+    ('APPLE_ICLOUD_CLEAN_S2',     'Apple iCloud (Clean/Lost) Server 2',       'iCloud Clean / Lost via fallback server.',                                                       0.30, 0), -- sheet: Apple Check Service - iCloud (Clean/Lost) Server 2  TODO provider id
+    ('APPLE_MAC_ICLOUD_STATUS',   'Apple iCloud MacBook/iMac (ON/OFF)',       'Find My status for MacBook / iMac devices.',                                                     0.30, 1), -- sheet: Apple Check Service - MacBook, iMac iCloud (ON/OFF)
+    ('APPLE_MAC_ICLOUD_CLEAN',    'Apple iCloud MacBook/iMac (Clean/Lost)',   'iCloud Clean / Lost status for Macs.',                                                           0.40, 1), -- sheet: Apple Check Service - MacBook, iMac iCloud (Clean/Lost)
+    ('APPLE_MDM',                 'Apple MDM (ON/OFF)',                       'Mobile Device Management enrollment status.',                                                    0.35, 1), -- sheet: Apple Check Service - MDM (ON/OFF)
+    ('APPLE_WARRANTY',            'Apple Warranty / Activation',              'Activation date and remaining warranty.',                                                        0.04, 1), -- sheet: Apple Check Service - Warranty/Activation Status
+    ('APPLE_PART_NUMBER',         'Apple Part Number (MPN)',                  'Apple Part Number / MPN of the device.',                                                         0.10, 1), -- sheet: Apple Check Service - Part Number (MPN)
+    ('APPLE_SIM_LOCK',            'Apple SIM-Lock Status',                    'Whether the SIM slot is locked to a carrier.',                                                   0.03, 1), -- sheet: Apple Check Service - SimLock Status
+    ('APPLE_BLACKLIST_SIMPLE',    'Apple GSMA Blacklist (Simple)',            'Quick yes/no GSMA blacklist status (Apple devices).',                                            0.01, 0), -- sheet: Apple Check Service - GSMA Blacklist Status  TODO provider id
+    ('APPLE_BLACKLIST_FULL',      'Apple GSMA Blacklist (Full Report)',       'Detailed GSMA blacklist report (Apple devices).',                                                0.06, 0), -- sheet: Apple Check Service - GSMA Blacklist Full Report  TODO provider id
 
     -- ----- US carriers -----
-    ('TMOBILE_USA',               'T-Mobile USA Status',                      'T-Mobile USA iPhone / generic IMEI status.',                                                    15.00, 1), -- credit 0.01
-    ('TMOBILE_USA_PRO',           'T-Mobile USA Status (Pro)',                'T-Mobile USA status with extra detail (Pro tier).',                                             15.00, 1), -- credit 0.03
-    ('VERIZON_USA_PRO',           'Verizon USA Status (Pro)',                 'Verizon USA iPhone / generic status (Pro tier).',                                               15.00, 1), -- credit 0.03
+    ('TMOBILE_USA',               'T-Mobile USA Clean/Blocked/Unpaid Status', 'T-Mobile USA IMEI status (Clean / Blocked / Unpaid).',                                           0.10, 1), -- sheet: Check Service - T-Mobile USA
 
-    -- ----- Misc / Number lookups -----
-    ('YANDEX_ALICE',              'Yandex Alice Info',                        'Phone owner info from Yandex Alice.',                                                           15.00, 1), -- credit 0.30
-    ('HLR_LOOKUP',                'HLR Lookup',                               'Home Location Register lookup for a phone number.',                                             15.00, 1), -- credit 0.01
-    ('NUMBER_TYPE',               'Number Type (NT) Lookup',                  'Determines if a number is mobile, landline, VoIP, etc.',                                        15.00, 1), -- credit 0.07
-    ('PING_SMS',                  'Ping-SMS',                                 'Silent SMS ping to verify a number is active.',                                                 15.00, 1), -- credit 0.10
-    ('PING_SMS_S2',               'Ping-SMS (Server 2)',                      'Silent SMS ping via secondary server (different routing).',                                     20.00, 1)  -- credit 0.35
+    -- ----- Other brands -----
+    ('ITEL_INFO',                 'Itel / Tecno / Sonim / Infinix Info',      'Model + warranty info for entry-level African / SEA brands.',                                    0.10, 0), -- sheet: Itel / Tecno / Sonim / Infinix  TODO provider id
+    ('SAMSUNG_INFO',              'Samsung Info + Knox Guard',                'Samsung Galaxy: model + warranty + carrier + country + Knox Guard (ON/OFF).',                    0.10, 1), -- sheet: Samsung Check Service - Model, Warranty, Carrier, Country, Knox Guard
+    ('XIAOMI_STATUS',             'Xiaomi Info + Mi ID',                      'Xiaomi: model + warranty + country + Mi ID (ON/OFF).',                                           0.10, 1), -- sheet: Xiaomi Check Service - Model, Warranty, Country, Mi ID
+    ('ACER_INFO',                 'Acer Info',                                'Acer: model + warranty.',                                                                        0.10, 0), -- sheet: Acer Check Service  TODO provider id
+    ('LG_INFO',                   'LG Info',                                  'LG: model + carrier + country.',                                                                 0.10, 0), -- sheet: LG Check Service  TODO provider id
+    ('LENOVO_INFO',               'Lenovo Info',                              'Lenovo: model + warranty + country.',                                                            0.10, 1), -- sheet: Lenovo Check Service - Model, Warranty, Country
+    ('OPPO_INFO',                 'OPPO Info',                                'OPPO: model + warranty + country.',                                                              0.23, 0), -- sheet: Oppo Check Service  TODO provider id
+    ('ONEPLUS_INFO',              'OnePlus Info',                             'OnePlus: model + warranty + country.',                                                           0.23, 0), -- sheet: OnePlus Check Service  TODO provider id
+    ('PIXEL_INFO',                'Google Pixel Info',                        'Google Pixel: model + warranty + country.',                                                      0.10, 1), -- sheet: Google Pixel Check Service
+    ('MOTOROLA_INFO',             'Motorola Info',                            'Motorola: model + warranty + country.',                                                          0.10, 1), -- sheet: Motorola Check Service
+    ('KYOCERA_INFO',              'Kyocera Info',                             'Kyocera: model + warranty + country + carrier.',                                                 0.10, 0), -- sheet: Kyocera Check Service  TODO provider id
+    ('HUAWEI_INFO',               'Huawei Info',                              'Huawei: model + warranty + country.',                                                            0.03, 1), -- sheet: Huawei Check Service
+    ('HONOR_INFO',                'Honor Info',                               'Honor: model + warranty + country.',                                                             0.10, 1), -- sheet: Honor Check Service
+    ('ZTE_INFO',                  'ZTE Info',                                 'ZTE: model + warranty.',                                                                         0.10, 0), -- sheet: ZTE Check Service  TODO provider id
+
+    -- ----- Generic blacklist (any brand) -----
+    ('BLACKLIST_SIMPLE',          'WorldWide Blacklist (Simple)',             'Quick yes/no GSMA blacklist status across worldwide carriers.',                                  0.01, 1), -- sheet: Check Service - GSMA Blacklist Status
+    ('BLACKLIST_FULL',            'WorldWide Blacklist (Full Info)',          'Full GSMA blacklist report with reporting carrier and date.',                                    0.10, 1), -- sheet: Check Service - GSMA Blacklist Full Report
+
+    -- ----- Apple GSX (premium) -----
+    ('APPLE_CASE_REPAIR_HISTORY', 'Apple GSX: Case &amp; Repair History',     'Apple case and repair history from GSX.',                                                        1.20, 1), -- sheet: GSX - Case History, Repair History
+    ('APPLE_SOLD_BY_COVERAGE',    'Apple GSX: Sold By, Coverage',             'Original retailer + coverage status from GSX.',                                                  2.00, 1), -- sheet: GSX - Sold By, Coverage
+    ('APPLE_GSX_LIGHT',           'Apple GSX: Sold By, Case, Replacement',    'Sold-by + case + replacement + activation policy.',                                              1.00, 1), -- sheet: GSX - Sold By, Case History, Replacement, Activation Policy
+    ('APPLE_FULL_GSX',            'Apple GSX: Full Report',                   'Full GSX report: sold-by + case + replacement + activation policy + extended info.',             2.30, 1)  -- sheet: GSX - ... Activation Policy (FULL INFO)
 ON DUPLICATE KEY UPDATE
     `name`        = VALUES(`name`),
     `description` = VALUES(`description`),
     `cost`        = VALUES(`cost`),
     `active`      = VALUES(`active`);
+
+-- Codes that used to exist but are not on the current selling sheet.
+-- Hidden from the menu so they can't be sold, but rows are kept in the
+-- table so existing service_usages references stay valid.
+UPDATE `service_prices` SET `active` = 0 WHERE `code` IN (
+    'APPLE_CARRIER_LITE',
+    'APPLE_CARRIER_PRO',
+    'APPLE_CARRIER_PRO_PLUS',
+    'APPLE_MAX_INFO',
+    'APPLE_WARRANTY_SN',
+    'APPLE_ICLOUD_ID_HINT',
+    'APPLE_ICLOUD_CLEAN_SN',
+    'APPLE_MDM_SN',
+    'APPLE_MDM_FMI',
+    'APPLE_GSX_TETHER',
+    'APPLE_SOLD_BY_HISTORY',
+    'APPLE_GSX_MAX',
+    'SAMSUNG_KNOX',
+    'TMOBILE_USA_PRO',
+    'VERIZON_USA_PRO',
+    'YANDEX_ALICE',
+    'HLR_LOOKUP',
+    'NUMBER_TYPE',
+    'PING_SMS',
+    'PING_SMS_S2'
+);

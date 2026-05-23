@@ -21,7 +21,7 @@ $strict = credits_get_balance((int) $user['id'], true);
 echo json_encode([
     'ok'        => true,
     'balance'   => $strict,
-    'currency'  => 'THB',
+    'currency'  => 'USD',
     'cached'    => $cached,
     'drift'     => $cached !== $strict,
 ]);

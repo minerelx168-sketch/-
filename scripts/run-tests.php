@@ -98,7 +98,7 @@ function with_topup_order(int $userId, float $amount, callable $fn): void
     db()->prepare(
         'INSERT INTO topup_orders
             (public_id, user_id, amount, currency, status, provider, idempotency_key)
-         VALUES (?, ?, ?, "THB", "PENDING", "stripe", ?)'
+         VALUES (?, ?, ?, "USD", "PENDING", "stripe", ?)'
     )->execute([$publicId, $userId, number_format($amount, 2, '.', ''), $idemKey]);
     $fn($publicId);
 }

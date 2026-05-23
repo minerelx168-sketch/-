@@ -94,7 +94,7 @@ php scripts/run-tests.php
 Covers: signup → balance 0, top-up happy path, webhook replay safety
 (no double credit), deduct happy path, insufficient-balance rejection,
 provider-failure auto-refund (with idempotent re-call), concurrent
-deduct (10 forked workers on a 100 ฿ wallet). Every test re-checks the
+deduct (10 forked workers on a 100 $ wallet). Every test re-checks the
 `users.cached_balance == SUM(credit_transactions)` invariant.
 
 Exit code: 0 = all pass, 1 = any failure.

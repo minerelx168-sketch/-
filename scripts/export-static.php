@@ -141,7 +141,7 @@ function auth_user(): ?array {
 }
 function auth_require(): array { return auth_user(); }
 function credits_get_balance(int \$u, bool \$s = false): string { return '250.00'; }
-function credits_format_thb(string|float|int \$a): string { return '฿' . number_format((float) \$a, 2); }
+function credits_format_usd(string|float|int \$a): string { return '$' . number_format((float) \$a, 2); }
 function credits_get_month_stats(int \$u): array {
     return ['lookups_count' => 12, 'lookups_free' => 3, 'lookups_paid' => 9, 'spent' => '217.00'];
 }
@@ -176,7 +176,7 @@ function auth_user(): ?array {
 }
 function auth_require(): array { return auth_user(); }
 function credits_get_balance(int $u, bool $s = false): string { return '250.00'; }
-function credits_format_thb(string|float|int $a): string { return '฿' . number_format((float) $a, 2); }
+function credits_format_usd(string|float|int $a): string { return '$' . number_format((float) $a, 2); }
 function credits_get_month_stats(int $u): array {
     return ['lookups_count' => 12, 'lookups_free' => 3, 'lookups_paid' => 9, 'spent' => '217.00'];
 }
@@ -212,7 +212,7 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
             <div class="dashboard-grid">
                 <div class="stat-card">
                     <span class="stat-card-label">Credit balance</span>
-                    <strong class="stat-card-value"><?= credits_format_thb($balance) ?></strong>
+                    <strong class="stat-card-value"><?= credits_format_usd($balance) ?></strong>
                     <a href="/topup.php" class="btn-primary">Top up credit</a>
                 </div>
                 <div class="stat-card">
@@ -222,7 +222,7 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
                 </div>
                 <div class="stat-card">
                     <span class="stat-card-label">Spent this month</span>
-                    <strong class="stat-card-value"><?= credits_format_thb($stats['spent']) ?></strong>
+                    <strong class="stat-card-value"><?= credits_format_usd($stats['spent']) ?></strong>
                     <span class="stat-card-meta"><a href="/credits/history.php">View full history &rarr;</a></span>
                 </div>
             </div>
@@ -241,7 +241,7 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
                                 <span class="ledger-sub"><?= htmlspecialchars((string) $r['service_code'], ENT_QUOTES, 'UTF-8') ?></span>
                             </td>
                             <td><span class="status status--<?= strtolower($r['status']) ?>"><?= htmlspecialchars($r['status'], ENT_QUOTES, 'UTF-8') ?></span></td>
-                            <td class="num"><?= credits_format_thb($r['cost']) ?></td>
+                            <td class="num"><?= credits_format_usd($r['cost']) ?></td>
                             <td class="muted"><?= htmlspecialchars((string) $r['created_at'], ENT_QUOTES, 'UTF-8') ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -260,7 +260,7 @@ function auth_user(): ?array {
 }
 function auth_require(): array { return auth_user(); }
 function credits_get_balance(int $u, bool $s = false): string { return '250.00'; }
-function credits_format_thb(string|float|int $a): string { return '฿' . number_format((float) $a, 2); }
+function credits_format_usd(string|float|int $a): string { return '$' . number_format((float) $a, 2); }
 require __DIR__ . '/includes/layout.php';
 require __DIR__ . '/includes/icons.php';
 $user = auth_require();
@@ -271,7 +271,7 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via S
         <div class="container container--narrow">
             <p class="breadcrumbs"><a href="/dashboard.php">Dashboard</a> &rsaquo; Top up</p>
             <h1>Top up credit</h1>
-            <p class="dashboard-subtitle">Current balance: <strong><?= credits_format_thb($balance) ?></strong></p>
+            <p class="dashboard-subtitle">Current balance: <strong><?= credits_format_usd($balance) ?></strong></p>
             <form id="topup-form" class="topup-form" autocomplete="off" onsubmit="event.preventDefault(); alert('In the live app this would redirect to Stripe Checkout.');">
                 <fieldset>
                     <legend>Choose an amount</legend>
@@ -279,12 +279,12 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via S
                         <?php foreach ([100, 300, 500, 1000, 3000, 5000] as $preset): ?>
                             <label>
                                 <input type="radio" name="amount" value="<?= $preset ?>"<?= $preset === 300 ? ' checked' : '' ?>>
-                                <span class="preset-card"><span class="preset-card-amount">฿<?= number_format($preset) ?></span></span>
+                                <span class="preset-card"><span class="preset-card-amount">$<?= number_format($preset) ?></span></span>
                             </label>
                         <?php endforeach; ?>
                     </div>
                     <label class="topup-custom">
-                        <span>Or enter a custom amount (฿50 - ฿10,000)</span>
+                        <span>Or enter a custom amount ($50 - $10,000)</span>
                         <input type="number" name="custom" min="50" max="10000" step="1" placeholder="e.g. 750">
                     </label>
                 </fieldset>

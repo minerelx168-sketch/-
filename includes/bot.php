@@ -310,7 +310,7 @@ function bot_handle_message(
     // 5. balance
     if (in_array($lc, ['balance', '/balance', 'credit'], true)) {
         if (!$userRow) return bot_message_unlinked();
-        return "💰 Balance: " . credits_format_thb($userRow['cached_balance']);
+        return "💰 Balance: " . credits_format_usd($userRow['cached_balance']);
     }
 
     // 6. "<code> <imei>" — paid lookup
@@ -383,7 +383,7 @@ function bot_message_services(): string
 
     $out = "📋 Available checks:\n";
     foreach ($rows as $r) {
-        $price = (float) $r['cost'] === 0.0 ? 'FREE' : '฿' . number_format((float) $r['cost'], 2);
+        $price = (float) $r['cost'] === 0.0 ? 'FREE' : '$' . number_format((float) $r['cost'], 2);
         $code  = strtolower($r['code']);
         $out .= sprintf("\n%s  %s  – %s", str_pad($price, 8), $code, $r['name']);
     }
@@ -464,7 +464,7 @@ function bot_format_result(array $r, string $serviceName, string $cost): string
     $brand = $r['brand'] ?? 'Unknown';
     $model = $r['model'] ?? 'GSM Phone';
     $costNum = (float) $cost;
-    $costLine = $costNum === 0.0 ? '— FREE —' : sprintf('Cost: ฿%.2f', $costNum);
+    $costLine = $costNum === 0.0 ? '— FREE —' : sprintf('Cost: $%.2f', $costNum);
 
     $out  = "🔍 $serviceName\n";
     $out .= "$brand $model\n";

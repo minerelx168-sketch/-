@@ -16,7 +16,7 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via S
 
             <h1>Top up credit</h1>
             <p class="dashboard-subtitle">
-                Current balance: <strong><?= credits_format_thb($balance) ?></strong>
+                Current balance: <strong><?= credits_format_usd($balance) ?></strong>
             </p>
 
             <?php if ($cancelled): ?>
@@ -29,19 +29,19 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via S
                 <fieldset>
                     <legend>Choose an amount</legend>
                     <div class="topup-presets">
-                        <?php foreach ([100, 300, 500, 1000, 3000, 5000] as $preset): ?>
+                        <?php foreach ([5, 10, 25, 50, 100, 250] as $preset): ?>
                             <label>
-                                <input type="radio" name="amount" value="<?= $preset ?>"<?= $preset === 300 ? ' checked' : '' ?>>
+                                <input type="radio" name="amount" value="<?= $preset ?>"<?= $preset === 25 ? ' checked' : '' ?>>
                                 <span class="preset-card">
-                                    <span class="preset-card-amount">฿<?= number_format($preset) ?></span>
+                                    <span class="preset-card-amount">$<?= number_format($preset) ?></span>
                                 </span>
                             </label>
                         <?php endforeach; ?>
                     </div>
 
                     <label class="topup-custom">
-                        <span>Or enter a custom amount (฿50 - ฿10,000)</span>
-                        <input type="number" name="custom" min="50" max="10000" step="1" placeholder="e.g. 750">
+                        <span>Or enter a custom amount ($2 - $500)</span>
+                        <input type="number" name="custom" min="2" max="500" step="1" placeholder="e.g. 20">
                     </label>
                 </fieldset>
 
@@ -49,7 +49,7 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via S
                     <legend>Payment method</legend>
                     <p class="dashboard-subtitle" style="margin:0 0 10px;">
                         You'll be redirected to Stripe's secure checkout. Pay with
-                        <strong>credit / debit card</strong> or <strong>PromptPay</strong>.
+                        any <strong>credit or debit card</strong>.
                     </p>
                 </fieldset>
 
@@ -107,8 +107,8 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via S
             error.textContent = '';
 
             var amount = selectedAmount();
-            if (!amount || amount < 50 || amount > 10000) {
-                error.textContent = 'Please choose an amount between ฿50 and ฿10,000.';
+            if (!amount || amount < 2 || amount > 500) {
+                error.textContent = 'Please choose an amount between $2 and $500.';
                 error.hidden = false;
                 return;
             }

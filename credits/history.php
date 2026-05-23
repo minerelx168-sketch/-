@@ -60,7 +60,7 @@ layout_head('Credit history · imeihub', 'Every credit movement on your imeihub 
                     <p class="hero-eyebrow" style="color:var(--text-muted);border-color:var(--border);background:var(--surface-alt)">Account</p>
                     <h1>Credit history</h1>
                     <p class="dashboard-subtitle">
-                        Current balance: <strong><?= credits_format_thb($balance) ?></strong>
+                        Current balance: <strong><?= credits_format_usd($balance) ?></strong>
                         &middot; <?= $total ?> transactions on record
                     </p>
                 </div>

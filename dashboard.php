@@ -27,7 +27,7 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
             <div class="dashboard-grid">
                 <div class="stat-card">
                     <span class="stat-card-label">Credit balance</span>
-                    <strong class="stat-card-value" id="balance"><?= credits_format_thb($balance) ?></strong>
+                    <strong class="stat-card-value" id="balance"><?= credits_format_usd($balance) ?></strong>
                     <a href="/topup.php" class="btn-primary">Top up credit</a>
                 </div>
                 <div class="stat-card">
@@ -40,7 +40,7 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
                 </div>
                 <div class="stat-card">
                     <span class="stat-card-label">Spent this month</span>
-                    <strong class="stat-card-value"><?= credits_format_thb($stats['spent']) ?></strong>
+                    <strong class="stat-card-value"><?= credits_format_usd($stats['spent']) ?></strong>
                     <span class="stat-card-meta">
                         <a href="/credits/history.php">View full history &rarr;</a>
                     </span>
@@ -86,7 +86,7 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
                                     <?php $statusClass = strtolower($r['status']); ?>
                                     <span class="status status--<?= htmlspecialchars($statusClass, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars((string) $r['status'], ENT_QUOTES, 'UTF-8') ?></span>
                                 </td>
-                                <td class="num"><?= credits_format_thb($r['cost']) ?></td>
+                                <td class="num"><?= credits_format_usd($r['cost']) ?></td>
                                 <td class="muted"><?= htmlspecialchars((string) $r['created_at'], ENT_QUOTES, 'UTF-8') ?></td>
                             </tr>
                         <?php endforeach; ?>
@@ -106,7 +106,7 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
             fetch('/api/credits/balance.php', { credentials: 'same-origin' })
                 .then(function (r) { return r.ok ? r.json() : null; })
                 .then(function (j) {
-                    if (j && j.ok) el.textContent = '฿' + parseFloat(j.balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    if (j && j.ok) el.textContent = '$' + parseFloat(j.balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 })
                 .catch(function () {});
         }

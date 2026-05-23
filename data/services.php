@@ -17,8 +17,9 @@ declare(strict_types=1);
  * We deliberately do NOT keep a separate slug -> code map here -
  * service.php just reads `code` straight off the matched entry.
  *
- * The full price catalog (43+ services) lives in sql/seed.sql; this file
- * is just the curated short list we surface on the marketing nav.
+ * The full price catalog (~40 services) lives in sql/seed.sql; this
+ * file is the curated short list we surface on the marketing nav.
+ * All codes here must be active = 1 in service_prices.
  */
 
 return [
@@ -38,44 +39,43 @@ return [
     [
         'slug'        => 'apple-basic',
         'code'        => 'APPLE_BASIC',
-        'name'        => 'Apple Basic Info',
+        'name'        => 'Apple Check Basic',
         'icon'        => 'phone',
-        'tagline'     => 'iPhone / iPad brand, model and base specs.',
+        'tagline'     => 'iPhone / iPad model, colour and storage.',
         'description' =>
-            'A targeted lookup for Apple devices that returns the exact model, '
-            . 'colour, storage, year of release and base spec sheet. Works on '
-            . 'every iPhone and iPad ever sold worldwide.',
+            'A targeted basic lookup for Apple devices. Returns the exact iPhone '
+            . 'or iPad model, colour and storage tier. Works on every Apple '
+            . 'device ever sold worldwide.',
         'free'        => false,
     ],
     [
         'slug'        => 'apple-icloud',
         'code'        => 'APPLE_ICLOUD_CLEAN',
-        'name'        => 'iCloud Activation Lock',
+        'name'        => 'iCloud Activation Lock (Clean / Lost)',
         'icon'        => 'cloud',
         'tagline'     => 'Find My iPhone status: Clean or Lost.',
         'description' =>
-            'For Apple devices only. Returns the iCloud activation lock status '
-            . '(Clean / Lost) as reported by Apple. A device flagged Lost has '
-            . 'been reported missing and cannot be re-activated without the '
-            . 'original Apple ID.',
+            'Returns the iCloud activation-lock status (Clean / Lost) as '
+            . 'reported by Apple. A device flagged Lost has been reported '
+            . 'missing and cannot be re-activated without the original Apple ID.',
         'free'        => false,
     ],
     [
-        'slug'        => 'apple-carrier',
-        'code'        => 'APPLE_CARRIER_PRO',
-        'name'        => 'Apple Carrier &amp; SIM-Lock',
-        'icon'        => 'signal',
-        'tagline'     => 'Original carrier, country and SIM-lock status.',
+        'slug'        => 'apple-icloud-status',
+        'code'        => 'APPLE_ICLOUD_STATUS',
+        'name'        => 'iCloud (ON / OFF)',
+        'icon'        => 'cloud',
+        'tagline'     => 'Quick check: is Find My iPhone enabled?',
         'description' =>
-            'Reveals which carrier the iPhone was originally sold on, the country '
-            . 'of purchase and whether the SIM is locked to that carrier. Essential '
-            . 'before buying second-hand to avoid an unusable phone.',
+            'The cheapest iCloud check we offer. Just tells you whether Find My '
+            . 'iPhone activation lock is ON or OFF, no Clean/Lost detail. Useful '
+            . 'as a pre-purchase tripwire.',
         'free'        => false,
     ],
     [
         'slug'        => 'apple-warranty',
         'code'        => 'APPLE_WARRANTY',
-        'name'        => 'Apple Warranty &amp; Activation Date',
+        'name'        => 'Apple Warranty &amp; Activation',
         'icon'        => 'shield',
         'tagline'     => 'Activation date and remaining warranty coverage.',
         'description' =>
@@ -97,14 +97,15 @@ return [
         'free'        => false,
     ],
     [
-        'slug'        => 'apple-max-info',
-        'code'        => 'APPLE_MAX_INFO',
-        'name'        => 'Apple Max Info (Premium)',
-        'icon'        => 'report',
-        'tagline'     => 'Full Apple report: model, carrier, warranty, sold-by.',
+        'slug'        => 'apple-mdm',
+        'code'        => 'APPLE_MDM',
+        'name'        => 'Apple MDM (ON / OFF)',
+        'icon'        => 'shield',
+        'tagline'     => 'Is the device enrolled in Mobile Device Management?',
         'description' =>
-            'Our most popular Apple report. Combines model, carrier, warranty, '
-            . 'activation date and sold-by retailer in a single response.',
+            'Reveals whether the device is enrolled in an MDM (Mobile Device '
+            . 'Management) profile - common on corporate / school devices. '
+            . 'MDM-enrolled devices can be remotely wiped or restricted.',
         'free'        => false,
     ],
     [
@@ -112,11 +113,12 @@ return [
         'code'        => 'APPLE_FULL_GSX',
         'name'        => 'Apple Full GSX Report',
         'icon'        => 'report',
-        'tagline'     => 'Full GSX dump: case history, replacement, ICCID &amp; MAC.',
+        'tagline'     => 'The full GSX dataset Apple gives to service providers.',
         'description' =>
             'The full GSX dataset Apple gives to authorised service providers. '
             . 'Includes original retailer, case + repair history, replacement '
-            . 'flags, activation policy, ICCID and MAC address.',
+            . 'flags, activation policy, ICCID and MAC address. Most '
+            . 'comprehensive Apple check we offer.',
         'free'        => false,
     ],
     [
@@ -135,24 +137,13 @@ return [
     [
         'slug'        => 'samsung-info',
         'code'        => 'SAMSUNG_INFO',
-        'name'        => 'Samsung Info',
+        'name'        => 'Samsung Info + Knox Guard',
         'icon'        => 'phone',
-        'tagline'     => 'Galaxy brand, model, colour and IMEI info.',
+        'tagline'     => 'Galaxy model, warranty, carrier &amp; Knox Guard status.',
         'description' =>
-            'Returns the exact Samsung Galaxy model, colour, storage and base '
-            . 'specs. Covers Galaxy S, Note, A, M, Z Fold/Flip and Tab lines.',
-        'free'        => false,
-    ],
-    [
-        'slug'        => 'samsung-knox',
-        'code'        => 'SAMSUNG_KNOX',
-        'name'        => 'Samsung Knox Guard Status',
-        'icon'        => 'shield',
-        'tagline'     => 'Knox Guard / Samsung Lock: ON or OFF.',
-        'description' =>
-            'Knox Guard is Samsung\'s carrier-side lock equivalent to iCloud '
-            . 'activation lock. A Knox-locked Galaxy cannot be reset and '
-            . 'remains tied to the original carrier or enterprise.',
+            'Combined Samsung Galaxy report: exact model, warranty, original '
+            . 'carrier, country of purchase, and Knox Guard (the Samsung '
+            . 'equivalent of iCloud lock) ON/OFF status.',
         'free'        => false,
     ],
     [
@@ -162,20 +153,32 @@ return [
         'icon'        => 'phone',
         'tagline'     => 'Huawei brand, model, colour and base specs.',
         'description' =>
-            'Identifies any Huawei device by IMEI: model, colour, storage '
-            . 'and base specs. Covers P, Mate, Nova and Y series.',
+            'Identifies any Huawei device by IMEI: model, warranty and country '
+            . 'of origin. Covers P, Mate, Nova and Y series.',
         'free'        => false,
     ],
     [
         'slug'        => 'xiaomi-status',
         'code'        => 'XIAOMI_STATUS',
-        'name'        => 'Xiaomi (ON / OFF)',
+        'name'        => 'Xiaomi Info + Mi ID',
         'icon'        => 'cloud',
-        'tagline'     => 'Mi Account / Find Device lock status.',
+        'tagline'     => 'Model, warranty, country and Mi Account lock status.',
         'description' =>
-            'Returns the Mi Account / Find Device status (ON / OFF) for '
-            . 'Xiaomi, Redmi and POCO phones. A locked device cannot be '
-            . 'reset without the original Mi credentials.',
+            'Returns the Xiaomi / Redmi / POCO model, warranty, country of '
+            . 'origin, plus the Mi Account / Find Device status (ON / OFF). '
+            . 'A locked device cannot be reset without the original Mi '
+            . 'credentials.',
+        'free'        => false,
+    ],
+    [
+        'slug'        => 'pixel-info',
+        'code'        => 'PIXEL_INFO',
+        'name'        => 'Google Pixel Info',
+        'icon'        => 'phone',
+        'tagline'     => 'Pixel model, warranty and country of origin.',
+        'description' =>
+            'Identifies any Google Pixel device by IMEI: model, warranty and '
+            . 'country of purchase. Covers Pixel 1 through the latest releases.',
         'free'        => false,
     ],
 ];

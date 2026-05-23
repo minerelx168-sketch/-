@@ -63,7 +63,7 @@ function layout_head(string $title, string $description = ''): void
         <div class="site-account">
             <?php if ($u): ?>
                 <a href="/dashboard.php" class="account-chip">
-                    <span class="account-balance">฿<?= number_format((float) $u['cached_balance'], 2) ?></span>
+                    <span class="account-balance">$<?= number_format((float) $u['cached_balance'], 2) ?></span>
                     <?php if (!empty($u['image'])): ?>
                         <img src="<?= htmlspecialchars((string) $u['image'], ENT_QUOTES, 'UTF-8') ?>"
                              alt="" width="28" height="28" class="account-avatar" referrerpolicy="no-referrer">

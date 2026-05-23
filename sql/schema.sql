@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `topup_orders` (
     `user_id`          BIGINT UNSIGNED NOT NULL,
 
     `amount`           DECIMAL(12, 2) NOT NULL,            -- credit value
-    `currency`         CHAR(3) NOT NULL DEFAULT 'THB',
+    `currency`         CHAR(3) NOT NULL DEFAULT 'USD',
 
     `status`           ENUM('PENDING','PAID','CREDITED','FAILED','EXPIRED','REFUNDED')
                        NOT NULL DEFAULT 'PENDING',

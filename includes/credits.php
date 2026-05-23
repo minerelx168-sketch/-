@@ -142,9 +142,9 @@ function credits_get_month_stats(int $userId): array
 }
 }
 
-if (!function_exists('credits_format_thb')) {
-function credits_format_thb(string|float|int $amount): string
+if (!function_exists('credits_format_usd')) {
+function credits_format_usd(string|float|int $amount): string
 {
-    return '฿' . number_format((float) $amount, 2);
+    return '$' . number_format((float) $amount, 2);
 }
 }

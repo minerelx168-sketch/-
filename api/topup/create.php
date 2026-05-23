@@ -41,9 +41,9 @@ if (!preg_match('/^\d+(\.\d{1,2})?$/', $amount)) {
 }
 $amountFloat = (float) $amount;
 
-// Business rules: min 50, max 10,000 per top-up. Tweak in config later if needed.
-if ($amountFloat < 50 || $amountFloat > 10000) {
-    fail(422, 'Top-up must be between ฿50 and ฿10,000.');
+// Business rules: min 2, max 500 USD per top-up. Tweak as needed.
+if ($amountFloat < 2 || $amountFloat > 500) {
+    fail(422, 'Top-up must be between $2 and $500.');
 }
 
 // Idempotency: trust an explicit header from the client if provided
@@ -61,7 +61,7 @@ try {
     $order = credits_create_topup_order(
         (int) $user['id'],
         number_format($amountFloat, 2, '.', ''),
-        'THB',
+        'USD',
         $idempotencyKey
     );
 
@@ -83,20 +83,21 @@ try {
         }
     }
 
-    $amountSatang = (int) round($amountFloat * 100); // Stripe wants minor units
+    $amountCents = (int) round($amountFloat * 100); // Stripe wants minor units (cents)
 
     $session = stripe_create_checkout_session([
         'mode'                 => 'payment',
         'client_reference_id'  => $order['public_id'],
         'customer_email'       => $user['email'],
-        'payment_method_types' => ['card', 'promptpay'],
+        // Card is supported globally for USD; promptpay is THB-only so drop it.
+        'payment_method_types' => ['card'],
         'line_items'           => [[
             'price_data' => [
-                'currency'     => 'thb',
-                'unit_amount'  => $amountSatang,
+                'currency'     => 'usd',
+                'unit_amount'  => $amountCents,
                 'product_data' => [
                     'name'        => 'imeihub credit top-up',
-                    'description' => 'Adds ฿' . number_format($amountFloat, 2) . ' to your imeihub wallet.',
+                    'description' => 'Adds $' . number_format($amountFloat, 2) . ' to your imeihub wallet.',
                 ],
             ],
             'quantity' => 1,

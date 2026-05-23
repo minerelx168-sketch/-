@@ -45,7 +45,7 @@ layout_head('Top-up status · imeihub', 'Your top-up is being processed.');
                      data-public-id="<?= htmlspecialchars($order['public_id'], ENT_QUOTES, 'UTF-8') ?>">
                     <?php if ($status === 'CREDITED'): ?>
                         <h1>Top-up successful</h1>
-                        <p class="topup-amount">฿<?= number_format((float) $order['amount'], 2) ?> added to your wallet.</p>
+                        <p class="topup-amount">$<?= number_format((float) $order['amount'], 2) ?> added to your wallet.</p>
                         <p class="dashboard-subtitle">Credited <?= htmlspecialchars((string) $order['credited_at'], ENT_QUOTES, 'UTF-8') ?>.</p>
                         <a href="/dashboard.php" class="btn-primary">Go to dashboard</a>
                     <?php elseif ($status === 'FAILED'): ?>
@@ -55,7 +55,7 @@ layout_head('Top-up status · imeihub', 'Your top-up is being processed.');
                     <?php else: ?>
                         <h1>Almost there&hellip;</h1>
                         <p>Stripe has accepted your payment. We're waiting for the final confirmation
-                            to credit ฿<?= number_format((float) $order['amount'], 2) ?> to your wallet.</p>
+                            to credit $<?= number_format((float) $order['amount'], 2) ?> to your wallet.</p>
                         <p class="dashboard-subtitle">This page refreshes automatically.</p>
                     <?php endif; ?>
                 </div>

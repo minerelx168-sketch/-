@@ -6,3 +6,4 @@ vendor/
 node_modules/
 .DS_Store
 includes/config.local.php
+storage/

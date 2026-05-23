@@ -41,9 +41,10 @@ function layout_head(string $title, string $description = ''): void
         </a>
         <nav class="site-nav">
             <a href="/">IMEI Check</a>
+            <a href="/services.php">Services</a>
             <a href="/brands.php">Brands</a>
-            <a href="/#how">How it works</a>
-            <a href="/#faq">FAQ</a>
+            <a href="/articles.php">Articles</a>
+            <a href="/about.php">About</a>
         </nav>
     </div>
 </header>
@@ -58,8 +59,27 @@ function layout_foot(): void
     ?>
 </main>
 <footer class="site-footer">
-    <div class="container">
-        <p>&copy; <?= date('Y') ?> <?= $appName ?>. For informational use only.</p>
+    <div class="container footer-inner">
+        <div class="footer-col">
+            <strong><?= $appName ?></strong>
+            <p>Free IMEI lookup for any GSM mobile phone.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Tools</h4>
+            <a href="/">IMEI Check</a>
+            <a href="/services.php">All services</a>
+            <a href="/brands.php">Brands</a>
+        </div>
+        <div class="footer-col">
+            <h4>Site</h4>
+            <a href="/articles.php">Articles</a>
+            <a href="/about.php">About</a>
+            <a href="/contact.php">Contact</a>
+            <a href="/privacy.php">Privacy</a>
+        </div>
+        <div class="footer-col footer-col--bottom">
+            <p>&copy; <?= date('Y') ?> <?= $appName ?>. For informational use only.</p>
+        </div>
     </div>
 </footer>
 <script src="/assets/js/main.js"></script>

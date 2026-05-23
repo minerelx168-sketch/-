@@ -7,16 +7,37 @@ $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' :
 $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
 $base   = $scheme . '://' . $host;
 
-$brands = require __DIR__ . '/data/brands.php';
-$now    = date('c');
+$brands   = require __DIR__ . '/data/brands.php';
+$services = require __DIR__ . '/data/services.php';
+$articles = require __DIR__ . '/data/articles.php';
+$now      = date('c');
 
 $urls = [
-    ['loc' => $base . '/',          'priority' => '1.0', 'changefreq' => 'daily'],
-    ['loc' => $base . '/brands.php','priority' => '0.8', 'changefreq' => 'weekly'],
+    ['loc' => $base . '/',            'priority' => '1.0', 'changefreq' => 'daily'],
+    ['loc' => $base . '/services.php','priority' => '0.9', 'changefreq' => 'weekly'],
+    ['loc' => $base . '/brands.php',  'priority' => '0.8', 'changefreq' => 'weekly'],
+    ['loc' => $base . '/articles.php','priority' => '0.8', 'changefreq' => 'weekly'],
+    ['loc' => $base . '/about.php',   'priority' => '0.4', 'changefreq' => 'yearly'],
+    ['loc' => $base . '/contact.php', 'priority' => '0.4', 'changefreq' => 'yearly'],
+    ['loc' => $base . '/privacy.php', 'priority' => '0.3', 'changefreq' => 'yearly'],
 ];
+foreach ($services as $s) {
+    $urls[] = [
+        'loc'        => $base . '/service.php?slug=' . urlencode($s['slug']),
+        'priority'   => '0.7',
+        'changefreq' => 'monthly',
+    ];
+}
 foreach ($brands as $b) {
     $urls[] = [
         'loc'        => $base . '/brand.php?slug=' . urlencode($b['slug']),
+        'priority'   => '0.6',
+        'changefreq' => 'monthly',
+    ];
+}
+foreach ($articles as $a) {
+    $urls[] = [
+        'loc'        => $base . '/article.php?slug=' . urlencode($a['slug']),
         'priority'   => '0.6',
         'changefreq' => 'monthly',
     ];

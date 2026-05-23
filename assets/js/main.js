@@ -102,8 +102,10 @@
 
         var body = new URLSearchParams();
         body.set('imei', imei);
+        var serviceId = form.getAttribute('data-service');
+        if (serviceId) body.set('service', serviceId);
 
-        fetch('api/check.php', {
+        fetch('/api/check.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: body.toString()

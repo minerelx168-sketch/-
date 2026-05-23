@@ -28,7 +28,10 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
                 <div class="stat-card">
                     <span class="stat-card-label">Credit balance</span>
                     <strong class="stat-card-value" id="balance"><?= credits_format_usd($balance) ?></strong>
-                    <a href="/topup.php" class="btn-primary">Top up credit</a>
+                    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+                        <a href="/check.php" class="btn-primary">Run a check</a>
+                        <a href="/topup.php" class="btn-secondary">Top up</a>
+                    </div>
                 </div>
                 <div class="stat-card">
                     <span class="stat-card-label">Lookups this month</span>

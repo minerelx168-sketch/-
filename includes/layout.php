@@ -52,14 +52,18 @@ function layout_head(string $title, string $description = ''): void
             <?= icon('logo', 32, 'brand-mark') ?>
             <span class="brand-text"><?= $appName ?></span>
         </a>
+        <?php $u = auth_user(); ?>
         <nav class="site-nav">
-            <a href="/">IMEI Check</a>
+            <?php if ($u): ?>
+                <a href="/check.php">Check</a>
+            <?php else: ?>
+                <a href="/">IMEI Check</a>
+            <?php endif; ?>
             <a href="/services.php">Services</a>
             <a href="/brands.php">Brands</a>
             <a href="/articles.php">Articles</a>
             <a href="/about.php">About</a>
         </nav>
-        <?php $u = auth_user(); ?>
         <div class="site-account">
             <?php if ($u): ?>
                 <a href="/dashboard.php" class="account-chip">

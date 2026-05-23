@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>What is an IMEI number, and what is it used for? · imeihub</title>
-<meta name="description" content="A plain-English guide to the 15-digit number that uniquely identifies every mobile phone.">
+<title>Huawei Info · imeihub</title>
+<meta name="description" content="Huawei brand, model, colour and base specs.">
 <link rel="icon" href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%230ea5e9'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='9.5' r='2' fill='%23fff'/><rect x='13.5' y='13' width='5' height='13' rx='1.5' fill='%23fff'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,38 +30,54 @@
     </div>
 </header>
 <main>
-        <article class="article-page">
-        <header class="page-hero">
-            <div class="container">
-                <p class="breadcrumbs">
-                    <a href="./articles.html">Articles</a> &rsaquo;
-                    Basics                </p>
-                <h1>What is an IMEI number, and what is it used for?</h1>
-                <p class="lede">A plain-English guide to the 15-digit number that uniquely identifies every mobile phone.</p>
-                <p class="article-date">
-                    Published 2026-05-01                </p>
+        <section class="page-hero">
+        <div class="container">
+            <p class="breadcrumbs">
+                <a href="./services.html">Services</a> &rsaquo;
+                Huawei Info            </p>
+            <div class="service-headline">
+                <span class="service-headline-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><circle cx="12" cy="18" r=".8" fill="currentColor" stroke="none"/></svg></span>
+                <h1>
+                    Huawei Info                                    </h1>
             </div>
-        </header>
+            <p class="lede">Huawei brand, model, colour and base specs.</p>
 
-        <section class="article-body">
-            <div class="container container--prose">
-                <h2>What does IMEI stand for?</h2>
-<p>IMEI is short for <strong>International Mobile Equipment Identity</strong>. It is a 15-digit serial number assigned to every GSM-capable mobile phone or tablet. The number identifies the device itself — not the SIM card, not the user account.</p>
-<h2>Why do networks care?</h2>
-<p>When a phone connects to a cellular network, it transmits its IMEI as part of the handshake. Carriers can use this to:</p>
-<ul><li>recognise the device model and apply network-specific settings;</li><li>block stolen devices from making calls or using data;</li><li>enforce manufacturer or carrier-specific lock policies;</li><li>generate usage reports tied to a device rather than a SIM.</li></ul>
-<h2>How to find your IMEI</h2>
-<p>The fastest way is to dial **<code>*#06#</code>** on the phone keypad — the IMEI appears on screen straight away. You can also find it in:</p>
-<ul><li><strong>Settings &rarr; About phone &rarr; IMEI</strong> (Android &amp; iOS)</li><li>The printed label on the box, or</li><li>The metal SIM tray on most iPhones.</li></ul>
-<h2>What can someone do with my IMEI?</h2>
-<p>Not much, on its own. An IMEI is not a password — it does not unlock your accounts, your SIM, or your data. Treat it like a serial number: fine to share with your carrier or insurance company, but no need to post it publicly.</p>
-                <hr>
-                <p class="article-cta">
-                    Ready to try it? <a href="./index.html">Run a free IMEI check &rarr;</a>
-                </p>
-            </div>
-        </section>
-    </article>
+            <form id="imei-form" class="lookup-form lookup-form--hero" autocomplete="off" novalidate
+                  data-code="HUAWEI_INFO"
+                  data-paid="1">
+                <label for="imei" class="sr-only">IMEI number</label>
+                <input
+                    id="imei"
+                    name="imei"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="\d*"
+                    maxlength="17"
+                    placeholder="Enter 15-digit IMEI"
+                    required>
+                <button type="submit" id="submit-btn">
+                    <span class="btn-label">Run paid check</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+            </form>
+
+            <div id="result" class="result" hidden></div>
+        </div>
+    </section>
+
+    <section class="service-body">
+        <div class="container">
+            <h2>About this check</h2>
+            <p>Identifies any Huawei device by IMEI: model, warranty and country of origin. Covers P, Mate, Nova and Y series.</p>
+
+            <h3>How to find your IMEI</h3>
+            <ul>
+                <li>Dial <code>*#06#</code> on the phone &mdash; the IMEI shows up immediately.</li>
+                <li>Or open <em>Settings &rarr; About phone &rarr; IMEI</em>.</li>
+                <li>Or check the printed label inside the SIM tray / on the box.</li>
+            </ul>
+        </div>
+    </section>
 </main>
 <footer class="site-footer">
     <div class="container footer-inner">

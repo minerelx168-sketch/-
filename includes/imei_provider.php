@@ -94,6 +94,15 @@ function imei_provider_build_url(array $api, string $imei, string $service): str
         );
     }
 
+    if ($provider === 'unlock-service' || $provider === 'unlockservice') {
+        // Query-based: https://api.unlock-service.net/?service=X&imei=Y&key=Z
+        return $base . '/?' . http_build_query([
+            'service' => $service,
+            'imei'    => $imei,
+            'key'     => $api['key'],
+        ]);
+    }
+
     // sickw and other query-string providers
     return $base . '?' . http_build_query([
         'format'  => 'beta',

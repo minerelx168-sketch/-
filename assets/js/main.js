@@ -100,8 +100,20 @@
         form.classList.add('loading');
         button.disabled = true;
 
-        var paid = form.getAttribute('data-paid') === '1';
-        var code = form.getAttribute('data-code');
+        // If the form has a <select name="code">, use the selected option's
+        // data-cost to decide between the free (IMEI_BASIC) and paid paths.
+        // Otherwise fall back to the static data-paid + data-code attributes
+        // that per-service landing pages use.
+        var paid, code;
+        var select = form.querySelector('select[name="code"]');
+        if (select) {
+            code = select.value;
+            var opt = select.options[select.selectedIndex];
+            paid = parseFloat(opt && opt.getAttribute('data-cost') || '0') > 0;
+        } else {
+            paid = form.getAttribute('data-paid') === '1';
+            code = form.getAttribute('data-code');
+        }
         var fetchPromise;
 
         if (paid && code) {

@@ -79,3 +79,39 @@ To plug in a different provider, extend `imei_provider_lookup()` and
 - The Luhn check rejects mistyped IMEIs before we ever hit the API.
 - Cached responses are flagged in the UI with a blue "Cached" badge.
 - `.env` is git-ignored — never commit your API key.
+
+## Operations
+
+### Integration tests
+
+`scripts/run-tests.php` exercises the financial invariants the brief
+calls out:
+
+```bash
+php scripts/run-tests.php
+```
+
+Covers: signup → balance 0, top-up happy path, webhook replay safety
+(no double credit), deduct happy path, insufficient-balance rejection,
+provider-failure auto-refund (with idempotent re-call), concurrent
+deduct (10 forked workers on a 100 ฿ wallet). Every test re-checks the
+`users.cached_balance == SUM(credit_transactions)` invariant.
+
+Exit code: 0 = all pass, 1 = any failure.
+
+### Balance reconciliation
+
+`scripts/reconcile-balance.php` detects drift between
+`users.cached_balance` and the ledger. Run nightly:
+
+```bash
+# report only
+php scripts/reconcile-balance.php
+
+# repair drift (writes cached_balance from SUM(ledger))
+php scripts/reconcile-balance.php --fix
+```
+
+If `--fix` ever has work to do, that points at a code bug somewhere in
+`includes/credits_write.php`, not a finance problem - the ledger is
+always source of truth.

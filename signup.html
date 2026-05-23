@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sign in · imeihub</title>
-<meta name="description" content="Sign in to imeihub with email or Google.">
+<title>Create account · imeihub</title>
+<meta name="description" content="Sign up to imeihub with your email address.">
 <link rel="icon" href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%230ea5e9'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='9.5' r='2' fill='%23fff'/><rect x='13.5' y='13' width='5' height='13' rx='1.5' fill='%23fff'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,25 +34,48 @@
     <div class="container container--narrow">
         <div class="auth-card">
             <div class="auth-card-head">
-                <h1>Sign in</h1>
-                <p>Use your imeihub account or sign in with Google.</p>
+                <h1>Create account</h1>
+                <p>Sign up with email and verify with a 6-digit code.</p>
             </div>
 
-            <form id="login-form" class="auth-form" autocomplete="off" novalidate>
+            <!-- Step 1: email + password -->
+            <form id="signup-form" class="auth-form" autocomplete="off" novalidate>
                 <label>
                     <span>Email</span>
                     <input type="email" name="email" required autocomplete="email" placeholder="you@example.com">
                 </label>
                 <label>
-                    <span>Password</span>
-                    <input type="password" name="password" required autocomplete="current-password">
+                    <span>Password (8+ characters)</span>
+                    <input type="password" name="password" required minlength="8" autocomplete="new-password">
                 </label>
-                <input type="hidden" name="next" value="/dashboard.php">
                 <button type="submit" class="btn-primary-block">
-                    <span class="btn-label">Sign in</span>
+                    <span class="btn-label">Send verification code</span>
                     <span class="btn-spinner" aria-hidden="true"></span>
                 </button>
-                <p id="login-error" class="field-error" hidden></p>
+                <p id="signup-error" class="field-error" hidden></p>
+            </form>
+
+            <!-- Step 2: OTP entry (hidden until step 1 succeeds) -->
+            <form id="otp-form" class="auth-form" autocomplete="off" novalidate hidden>
+                <p class="otp-info">
+                    A 6-digit code was sent to <strong id="otp-email"></strong>.
+                    It expires in 10 minutes.
+                </p>
+                <label>
+                    <span>Verification code</span>
+                    <input type="text" name="otp" required maxlength="6" inputmode="numeric"
+                           autocomplete="one-time-code" class="otp-input"
+                           pattern="\d{6}" placeholder="000000">
+                </label>
+                <button type="submit" class="btn-primary-block">
+                    <span class="btn-label">Verify &amp; sign in</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+                <p id="otp-error" class="field-error" hidden></p>
+                <p class="auth-fineprint">
+                    Didn't get the code?
+                    <a href="#" id="resend-otp">Resend it</a>
+                </p>
             </form>
 
             <div class="auth-divider"><span>or</span></div>
@@ -68,9 +91,7 @@
             </a>
 
             <p class="auth-fineprint">
-                New here? <a href="./signup.html">Create an account</a>
-                &middot; By signing in you agree to our
-                <a href="./privacy.html">Privacy Policy</a>.
+                Already have an account? <a href="./login.html">Sign in</a>
             </p>
         </div>
     </div>
@@ -78,37 +99,82 @@
 
 <script>
 (function () {
-    var form = document.getElementById('login-form');
-    var err  = document.getElementById('login-error');
-    if (!form) return;
+    var signupForm = document.getElementById('signup-form');
+    var otpForm    = document.getElementById('otp-form');
+    var signupErr  = document.getElementById('signup-error');
+    var otpErr     = document.getElementById('otp-error');
+    var otpEmail   = document.getElementById('otp-email');
+    var resendLink = document.getElementById('resend-otp');
+    var pendingEmail = '';
 
-    form.addEventListener('submit', function (e) {
+    function showError(el, msg) {
+        el.textContent = msg;
+        el.hidden = false;
+    }
+    function clearError(el) { el.hidden = true; el.textContent = ''; }
+    function setLoading(form, on) {
+        form.classList.toggle('loading', on);
+        form.querySelectorAll('input, button').forEach(function (i) { i.disabled = on; });
+    }
+
+    signupForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        err.hidden = true; err.textContent = '';
-        form.classList.add('loading');
-        form.querySelectorAll('input, button').forEach(function (i) { i.disabled = true; });
-
-        var fd = new FormData(form);
-        fetch('/api/auth/login.php', {
+        clearError(signupErr);
+        setLoading(signupForm, true);
+        var fd = new FormData(signupForm);
+        fetch('/api/auth/signup.php', {
             method: 'POST',
-            credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email:    fd.get('email'),
-                password: fd.get('password'),
-                next:     fd.get('next'),
-            })
+            body: JSON.stringify({ email: fd.get('email'), password: fd.get('password') })
         })
         .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
         .then(function (resp) {
-            if (!resp.body.ok) throw new Error(resp.body.error || 'Sign in failed.');
+            if (!resp.body.ok) throw new Error(resp.body.error || 'Could not create account.');
+            pendingEmail = resp.body.email;
+            otpEmail.textContent = pendingEmail;
+            signupForm.hidden = true;
+            otpForm.hidden    = false;
+            otpForm.querySelector('input[name="otp"]').focus();
+        })
+        .catch(function (e) { showError(signupErr, e.message); })
+        .finally(function () { setLoading(signupForm, false); });
+    });
+
+    otpForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearError(otpErr);
+        setLoading(otpForm, true);
+        var fd = new FormData(otpForm);
+        fetch('/api/auth/verify-email.php', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: pendingEmail, otp: (fd.get('otp') || '').trim() })
+        })
+        .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
+        .then(function (resp) {
+            if (!resp.body.ok) throw new Error(resp.body.error || 'Verification failed.');
             window.location.href = resp.body.next || '/dashboard.php';
         })
-        .catch(function (e) {
-            err.textContent = e.message;
-            err.hidden = false;
-            form.classList.remove('loading');
-            form.querySelectorAll('input, button').forEach(function (i) { i.disabled = false; });
+        .catch(function (e) { showError(otpErr, e.message); })
+        .finally(function () { setLoading(otpForm, false); });
+    });
+
+    resendLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (!pendingEmail) return;
+        clearError(otpErr);
+        resendLink.textContent = 'Sending...';
+        fetch('/api/auth/resend-otp.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: pendingEmail })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+            resendLink.textContent = j.ok ? 'Code resent ✓' : 'Resend it';
+            if (!j.ok) showError(otpErr, j.error || 'Could not resend.');
+            setTimeout(function () { resendLink.textContent = 'Resend it'; }, 4000);
         });
     });
 })();

@@ -17,16 +17,16 @@
         <a href="./index.html" class="brand">
             <svg width="32" height="32" class="brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs><rect x="2" y="2" width="28" height="28" rx="8" fill="url(#lg)"/><path d="M16 9.5v2.2M11 13.5h10M11 18h10M11 22.5h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="22.5" r="0" fill="#fff"/></svg>            <span class="brand-text">imeihub</span>
         </a>
-        <nav class="site-nav">
-            <a href="./index.html">IMEI Check</a>
-            <a href="./services.html">Services</a>
+                <nav class="site-nav">
+                            <a href="./index.html">Check</a>
+                        <a href="./services.html">Services</a>
             <a href="./brands.html">Brands</a>
             <a href="./articles.html">Articles</a>
             <a href="./about.html">About</a>
         </nav>
-                <div class="site-account">
+        <div class="site-account">
                             <a href="./dashboard.html" class="account-chip">
-                    <span class="account-balance">฿250.00</span>
+                    <span class="account-balance">$250.00</span>
                                             <span class="account-avatar account-avatar--initial">D</span>
                                     </a>
                     </div>
@@ -37,38 +37,38 @@
         <div class="container container--narrow">
             <p class="breadcrumbs"><a href="./dashboard.html">Dashboard</a> &rsaquo; Top up</p>
             <h1>Top up credit</h1>
-            <p class="dashboard-subtitle">Current balance: <strong>฿250.00</strong></p>
+            <p class="dashboard-subtitle">Current balance: <strong>$250.00</strong></p>
             <form id="topup-form" class="topup-form" autocomplete="off" onsubmit="event.preventDefault(); alert('In the live app this would redirect to Stripe Checkout.');">
                 <fieldset>
                     <legend>Choose an amount</legend>
                     <div class="topup-presets">
                                                     <label>
                                 <input type="radio" name="amount" value="100">
-                                <span class="preset-card"><span class="preset-card-amount">฿100</span></span>
+                                <span class="preset-card"><span class="preset-card-amount">$100</span></span>
                             </label>
                                                     <label>
                                 <input type="radio" name="amount" value="300" checked>
-                                <span class="preset-card"><span class="preset-card-amount">฿300</span></span>
+                                <span class="preset-card"><span class="preset-card-amount">$300</span></span>
                             </label>
                                                     <label>
                                 <input type="radio" name="amount" value="500">
-                                <span class="preset-card"><span class="preset-card-amount">฿500</span></span>
+                                <span class="preset-card"><span class="preset-card-amount">$500</span></span>
                             </label>
                                                     <label>
                                 <input type="radio" name="amount" value="1000">
-                                <span class="preset-card"><span class="preset-card-amount">฿1,000</span></span>
+                                <span class="preset-card"><span class="preset-card-amount">$1,000</span></span>
                             </label>
                                                     <label>
                                 <input type="radio" name="amount" value="3000">
-                                <span class="preset-card"><span class="preset-card-amount">฿3,000</span></span>
+                                <span class="preset-card"><span class="preset-card-amount">$3,000</span></span>
                             </label>
                                                     <label>
                                 <input type="radio" name="amount" value="5000">
-                                <span class="preset-card"><span class="preset-card-amount">฿5,000</span></span>
+                                <span class="preset-card"><span class="preset-card-amount">$5,000</span></span>
                             </label>
                                             </div>
                     <label class="topup-custom">
-                        <span>Or enter a custom amount (฿50 - ฿10,000)</span>
+                        <span>Or enter a custom amount ($50 - $10,000)</span>
                         <input type="number" name="custom" min="50" max="10000" step="1" placeholder="e.g. 750">
                     </label>
                 </fieldset>

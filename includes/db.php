@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+if (!function_exists('db')) {
 function db(): PDO
 {
     static $pdo = null;
@@ -21,4 +22,5 @@ function db(): PDO
         PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
     return $pdo;
+}
 }

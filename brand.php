@@ -14,7 +14,7 @@ foreach ($brands as $b) {
 
 if (!$brand) {
     http_response_code(404);
-    layout_head('Brand not found · imeicheck');
+    layout_head('Brand not found · imeihub');
     ?>
     <section class="page-hero">
         <div class="container">
@@ -33,7 +33,7 @@ $brandColor = htmlspecialchars($brand['color'], ENT_QUOTES);
 $country    = htmlspecialchars($brand['country'], ENT_QUOTES, 'UTF-8');
 
 layout_head(
-    "$brandName IMEI Check · imeicheck",
+    "$brandName IMEI Check · imeihub",
     "Look up any $brandName phone by IMEI. Common $brandName models and how to find the IMEI on your device."
 );
 ?>

@@ -71,7 +71,7 @@ function fetch(string $url): string
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 10,
-        CURLOPT_USERAGENT      => 'imeicheck-static-exporter',
+        CURLOPT_USERAGENT      => 'imeihub-static-exporter',
     ]);
     $body = curl_exec($ch);
     $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -197,7 +197,7 @@ $userId  = (int) $user['id'];
 $balance = credits_get_balance($userId);
 $stats   = credits_get_month_stats($userId);
 $recent  = credits_get_recent_usages($userId);
-layout_head('Dashboard · imeicheck', 'Your imeicheck account dashboard.');
+layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
 ?>
     <section class="dashboard">
         <div class="container">
@@ -265,7 +265,7 @@ require __DIR__ . '/includes/layout.php';
 require __DIR__ . '/includes/icons.php';
 $user = auth_require();
 $balance = credits_get_balance((int) $user['id'], true);
-layout_head('Top up credit · imeicheck', 'Add credit to your imeicheck wallet via Stripe.');
+layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via Stripe.');
 ?>
     <section class="topup-shell">
         <div class="container container--narrow">
@@ -321,7 +321,7 @@ $mainJs = file_get_contents(__DIR__ . '/../assets/js/main.js');
 $demoFile = __DIR__ . '/../includes/imei_demo.php';
 require_once $demoFile;
 $demoDb = imei_demo_tac_db();
-$staticJs = "/* imeicheck static demo — backend-less IMEI lookup */\n"
+$staticJs = "/* imeihub static demo — backend-less IMEI lookup */\n"
     . "(function () {\n"
     . "  var DEMO_DB = " . json_encode($demoDb, JSON_PRETTY_PRINT) . ";\n"
     . "  window.fetch = (function (orig) {\n"

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/layout.php';
-layout_head('Privacy policy · imeicheck', 'How imeicheck handles IMEI lookups, caching and personal data.');
+layout_head('Privacy policy · imeihub', 'How imeihub handles IMEI lookups, caching and personal data.');
 ?>
     <section class="page-hero">
         <div class="container">

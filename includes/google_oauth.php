@@ -112,7 +112,7 @@ function google_oauth_exchange_code(string $code): array
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 15,
         CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_USERAGENT      => 'imeicheck/1.0',
+        CURLOPT_USERAGENT      => 'imeihub/1.0',
     ]);
     $resp = curl_exec($ch);
     $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -140,7 +140,7 @@ function google_oauth_fetch_userinfo(string $accessToken): array
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 15,
         CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_USERAGENT      => 'imeicheck/1.0',
+        CURLOPT_USERAGENT      => 'imeihub/1.0',
     ]);
     $resp = curl_exec($ch);
     $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

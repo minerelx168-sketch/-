@@ -1,4 +1,4 @@
-# imeicheck
+# imeihub
 
 A baseimei.com-style IMEI lookup site built with **PHP + MySQL**.
 Users enter a 15-digit IMEI, the backend calls an external provider

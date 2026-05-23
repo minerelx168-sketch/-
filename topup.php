@@ -8,7 +8,7 @@ $user    = auth_require();
 $balance = credits_get_balance((int) $user['id'], true);
 $cancelled = isset($_GET['cancelled']);
 
-layout_head('Top up credit · imeicheck', 'Add credit to your imeicheck wallet via Stripe.');
+layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via Stripe.');
 ?>
     <section class="topup-shell">
         <div class="container container--narrow">

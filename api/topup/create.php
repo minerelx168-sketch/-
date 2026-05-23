@@ -95,8 +95,8 @@ try {
                 'currency'     => 'thb',
                 'unit_amount'  => $amountSatang,
                 'product_data' => [
-                    'name'        => 'imeicheck credit top-up',
-                    'description' => 'Adds ฿' . number_format($amountFloat, 2) . ' to your imeicheck wallet.',
+                    'name'        => 'imeihub credit top-up',
+                    'description' => 'Adds ฿' . number_format($amountFloat, 2) . ' to your imeihub wallet.',
                 ],
             ],
             'quantity' => 1,

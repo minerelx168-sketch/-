@@ -33,7 +33,7 @@ function env(string $key, ?string $default = null): ?string
 
 return [
     'app' => [
-        'name'  => env('APP_NAME', 'imeicheck'),
+        'name'  => env('APP_NAME', 'imeihub'),
         'url'   => rtrim((string) env('APP_URL', 'http://localhost:8080'), '/'),
         'debug' => filter_var(env('APP_DEBUG', 'false'), FILTER_VALIDATE_BOOLEAN),
     ],
@@ -60,6 +60,6 @@ return [
     ],
     'session' => [
         'lifetime_days' => (int) env('SESSION_LIFETIME_DAYS', '30'),
-        'cookie_name'   => env('SESSION_COOKIE_NAME', 'imeicheck_sid'),
+        'cookie_name'   => env('SESSION_COOKIE_NAME', 'imeihub_sid'),
     ],
 ];

@@ -6,7 +6,7 @@ $articles = require __DIR__ . '/data/articles.php';
 usort($articles, fn($a, $b) => strcmp($b['date'], $a['date']));
 
 layout_head(
-    'Articles · imeicheck',
+    'Articles · imeihub',
     'Guides and explainers about IMEI numbers, blacklist checks, and buying used phones safely.'
 );
 ?>

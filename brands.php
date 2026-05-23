@@ -5,7 +5,7 @@ require_once __DIR__ . '/includes/icons.php';
 $brands = require __DIR__ . '/data/brands.php';
 
 layout_head(
-    'Phone brands · imeicheck',
+    'Phone brands · imeihub',
     'Browse mobile phone brands. Pick a brand to see common models and their IMEI/TAC info.'
 );
 ?>

@@ -1,5 +1,5 @@
 -- =============================================================================
--- imeicheck database schema
+-- imeihub database schema
 --
 -- Append-only ledger for credits: NEVER UPDATE credit_transactions after insert.
 -- Every mutation that affects credits must run inside a SERIALIZABLE transaction.

@@ -11,7 +11,7 @@ foreach ($services as $s) {
 
 if (!$service) {
     http_response_code(404);
-    layout_head('Service not found · imeicheck');
+    layout_head('Service not found · imeihub');
     ?>
     <section class="page-hero">
         <div class="container">
@@ -30,7 +30,7 @@ if (!$service) {
 require_once __DIR__ . '/includes/icons.php';
 $name = $service['name'];
 layout_head(
-    strip_tags(html_entity_decode($name)) . ' · imeicheck',
+    strip_tags(html_entity_decode($name)) . ' · imeihub',
     strip_tags($service['tagline'])
 );
 ?>

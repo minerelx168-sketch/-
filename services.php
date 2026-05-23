@@ -5,7 +5,7 @@ require_once __DIR__ . '/includes/icons.php';
 $services = require __DIR__ . '/data/services.php';
 
 layout_head(
-    'IMEI lookup services · imeicheck',
+    'IMEI lookup services · imeihub',
     'All IMEI lookup services — free phone info check, blacklist, carrier, iCloud activation lock, warranty status and more.'
 );
 ?>

@@ -51,7 +51,7 @@ function history_qs(array $overrides): string
     return $q ? '?' . http_build_query($q) : '';
 }
 
-layout_head('Credit history · imeicheck', 'Every credit movement on your imeicheck account.');
+layout_head('Credit history · imeihub', 'Every credit movement on your imeihub account.');
 ?>
     <section class="dashboard">
         <div class="container">

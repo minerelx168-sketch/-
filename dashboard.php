@@ -11,7 +11,7 @@ $balance = credits_get_balance($userId, true);    // strict, from ledger
 $stats   = credits_get_month_stats($userId);
 $recent  = credits_get_recent_usages($userId, 10);
 
-layout_head('Dashboard · imeicheck', 'Your imeicheck account dashboard.');
+layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
 ?>
     <section class="dashboard">
         <div class="container">

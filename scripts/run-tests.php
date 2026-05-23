@@ -1,6 +1,6 @@
 <?php
 /**
- * imeicheck integration test suite.
+ * imeihub integration test suite.
  *
  * Covers every assertion in section 8 of the brief:
  *   T1. user signup -> balance = 0

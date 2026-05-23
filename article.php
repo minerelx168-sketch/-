@@ -13,7 +13,7 @@ foreach ($articles as $a) {
 
 if (!$article) {
     http_response_code(404);
-    layout_head('Article not found · imeicheck');
+    layout_head('Article not found · imeihub');
     ?>
     <section class="page-hero">
         <div class="container">
@@ -29,7 +29,7 @@ if (!$article) {
 }
 
 layout_head(
-    htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') . ' · imeicheck',
+    htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') . ' · imeihub',
     $article['excerpt']
 );
 ?>

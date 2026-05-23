@@ -38,7 +38,7 @@ try {
     exit;
 }
 
-$filename = 'imeicheck-credits-' . date('Y-m-d') . ($type !== '' ? '-' . strtolower($type) : '') . '.csv';
+$filename = 'imeihub-credits-' . date('Y-m-d') . ($type !== '' ? '-' . strtolower($type) : '') . '.csv';
 
 header('Content-Type: text/csv; charset=utf-8');
 header('Content-Disposition: attachment; filename="' . $filename . '"');

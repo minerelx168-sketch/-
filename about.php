@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/includes/layout.php';
-layout_head('About · imeicheck', 'About imeicheck — a free tool for looking up the brand, model and specifications of any mobile phone by its IMEI number.');
+layout_head('About · imeihub', 'About imeihub — a free tool for looking up the brand, model and specifications of any mobile phone by its IMEI number.');
 ?>
     <section class="page-hero">
         <div class="container">
-            <h1>About imeicheck</h1>
+            <h1>About imeihub</h1>
             <p class="lede">
                 We help people identify mobile phones quickly and safely &mdash;
                 using nothing but the 15-digit IMEI on the back of the device.
@@ -17,7 +17,7 @@ layout_head('About · imeicheck', 'About imeicheck — a free tool for looking u
         <div class="container container--prose">
             <h2>What we do</h2>
             <p>
-                imeicheck is a free tool for looking up the brand, model and
+                imeihub is a free tool for looking up the brand, model and
                 specifications of any mobile phone using its IMEI number. We
                 also offer premium checks for blacklist status, carrier lock,
                 iCloud activation lock and warranty information.
@@ -28,7 +28,7 @@ layout_head('About · imeicheck', 'About imeicheck — a free tool for looking u
                 The second-hand phone market is huge &mdash; and so is the
                 market for stolen and blacklisted devices. A 15-second IMEI
                 check before you hand over money can save you from buying a
-                brick. We built imeicheck so that this check takes one
+                brick. We built imeihub so that this check takes one
                 paste and one click.
             </p>
 

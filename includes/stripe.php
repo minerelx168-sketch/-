@@ -30,7 +30,7 @@ function stripe_request(string $method, string $path, array $params = [], array 
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 30,
         CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_USERAGENT      => 'imeicheck/1.0',
+        CURLOPT_USERAGENT      => 'imeihub/1.0',
         CURLOPT_HTTPHEADER     => array_merge([
             'Authorization: Bearer ' . $key,
             'Stripe-Version: 2024-12-18.acacia',

@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-layout_head('Contact · imeicheck', 'Get in touch with the imeicheck team. We respond to all inquiries within two business days.');
+layout_head('Contact · imeihub', 'Get in touch with the imeihub team. We respond to all inquiries within two business days.');
 ?>
     <section class="page-hero">
         <div class="container">

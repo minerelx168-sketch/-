@@ -24,7 +24,7 @@ if ($sessionId !== '' && preg_match('/^cs_[A-Za-z0-9_]+$/', $sessionId)) {
     }
 }
 
-layout_head('Top-up status · imeicheck', 'Your top-up is being processed.');
+layout_head('Top-up status · imeihub', 'Your top-up is being processed.');
 ?>
     <section class="topup-shell">
         <div class="container container--narrow">

@@ -12,7 +12,7 @@ if (auth_user()) {
 $next = auth_safe_next($_GET['next'] ?? null);
 $startUrl = '/api/auth/google/start.php?next=' . urlencode($next);
 
-layout_head('Sign in · imeicheck', 'Sign in to imeicheck with your Google account.');
+layout_head('Sign in · imeihub', 'Sign in to imeihub with your Google account.');
 ?>
     <section class="auth-shell">
         <div class="container container--narrow">

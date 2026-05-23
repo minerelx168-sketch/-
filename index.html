@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>imeihub · Free IMEI Check &amp; Phone Info Lookup</title>
-<meta name="description" content="Free IMEI checker. Enter any 15-digit IMEI to instantly look up the brand, model and specs of a mobile phone.">
+<meta name="description" content="Free IMEI checker. Pick a check, paste any 15-digit IMEI, and we instantly look up the brand, model and specs.">
 <link rel="icon" href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%230ea5e9'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='9.5' r='2' fill='%23fff'/><rect x='13.5' y='13' width='5' height='13' rx='1.5' fill='%23fff'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,11 +35,151 @@
             <p class="hero-eyebrow">Free phone information lookup</p>
             <h1>Identify any mobile phone<br>by its IMEI number</h1>
             <p class="lede">
-                Enter the 15-digit IMEI of any GSM phone to instantly retrieve
-                its brand, model and full specifications &mdash; no signup required.
+                Pick a check, paste a 15-digit IMEI, and we'll run it instantly.
+                Free brand &amp; model lookup &mdash; premium reports for signed-in customers.
             </p>
 
-            <form id="imei-form" class="lookup-form" autocomplete="off" novalidate>
+            <form id="imei-form" class="hero-lookup" autocomplete="off" novalidate>
+                <label for="service-select" class="sr-only">Service</label>
+                <select id="service-select" name="code" class="hero-select" required>
+                                            <optgroup label="Free">
+                                                            <option value="IMEI_BASIC"
+                                        data-cost="0"
+                                        selected>
+                                    Free IMEI Check &mdash; FREE &mdash; ⚡
+                                </option>
+                                                    </optgroup>
+                                            <optgroup label="Featured Apple Checks">
+                                                            <option value="APPLE_BASIC"
+                                        data-cost="0.1"
+                                        >
+                                    Apple Check Basic &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                    </optgroup>
+                                            <optgroup label="Apple iCloud Status">
+                                                            <option value="APPLE_ICLOUD_STATUS"
+                                        data-cost="0.01"
+                                        >
+                                    Apple FMI iCloud (ON/OFF) &mdash; $0.01 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_ICLOUD_CLEAN"
+                                        data-cost="0.03"
+                                        >
+                                    Apple iCloud (Clean/Lost) &mdash; $0.03 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_MAC_ICLOUD_STATUS"
+                                        data-cost="0.3"
+                                        >
+                                    Apple iCloud MacBook/iMac (ON/OFF) &mdash; $0.30 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_MAC_ICLOUD_CLEAN"
+                                        data-cost="0.4"
+                                        >
+                                    Apple iCloud MacBook/iMac (Clean/Lost) &mdash; $0.40 &mdash; ⚡
+                                </option>
+                                                    </optgroup>
+                                            <optgroup label="Apple Device Info">
+                                                            <option value="APPLE_WARRANTY"
+                                        data-cost="0.04"
+                                        >
+                                    Apple Warranty / Activation &mdash; $0.04 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_SIM_LOCK"
+                                        data-cost="0.03"
+                                        >
+                                    Apple SIM-Lock Status &mdash; $0.03 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_PART_NUMBER"
+                                        data-cost="0.1"
+                                        >
+                                    Apple Part Number (MPN) &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_MDM"
+                                        data-cost="0.35"
+                                        >
+                                    Apple MDM (ON/OFF) &mdash; $0.35 &mdash; ⚡
+                                </option>
+                                                    </optgroup>
+                                            <optgroup label="Apple GSX (Premium)">
+                                                            <option value="APPLE_GSX_LIGHT"
+                                        data-cost="1"
+                                        >
+                                    Apple GSX: Sold By, Case, Replacement &mdash; $1.00 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_CASE_REPAIR_HISTORY"
+                                        data-cost="1.2"
+                                        >
+                                    Apple GSX: Case &amp; Repair History &mdash; $1.20 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_SOLD_BY_COVERAGE"
+                                        data-cost="2"
+                                        >
+                                    Apple GSX: Sold By, Coverage &mdash; $2.00 &mdash; ⚡
+                                </option>
+                                                            <option value="APPLE_FULL_GSX"
+                                        data-cost="2.3"
+                                        >
+                                    Apple GSX: Full Report &mdash; $2.30 &mdash; ⚡
+                                </option>
+                                                    </optgroup>
+                                            <optgroup label="Brand Checks">
+                                                            <option value="SAMSUNG_INFO"
+                                        data-cost="0.1"
+                                        >
+                                    Samsung Info + Knox Guard &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                            <option value="HUAWEI_INFO"
+                                        data-cost="0.03"
+                                        >
+                                    Huawei Info &mdash; $0.03 &mdash; ⚡
+                                </option>
+                                                            <option value="XIAOMI_STATUS"
+                                        data-cost="0.1"
+                                        >
+                                    Xiaomi Info + Mi ID &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                            <option value="HONOR_INFO"
+                                        data-cost="0.1"
+                                        >
+                                    Honor Info &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                            <option value="PIXEL_INFO"
+                                        data-cost="0.1"
+                                        >
+                                    Google Pixel Info &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                            <option value="MOTOROLA_INFO"
+                                        data-cost="0.1"
+                                        >
+                                    Motorola Info &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                            <option value="LENOVO_INFO"
+                                        data-cost="0.1"
+                                        >
+                                    Lenovo Info &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                    </optgroup>
+                                            <optgroup label="Carrier Checks">
+                                                            <option value="TMOBILE_USA"
+                                        data-cost="0.1"
+                                        >
+                                    T-Mobile USA Status &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                    </optgroup>
+                                            <optgroup label="Worldwide Blacklist">
+                                                            <option value="BLACKLIST_SIMPLE"
+                                        data-cost="0.01"
+                                        >
+                                    WorldWide Blacklist (Simple) &mdash; $0.01 &mdash; ⚡
+                                </option>
+                                                            <option value="BLACKLIST_FULL"
+                                        data-cost="0.1"
+                                        >
+                                    WorldWide Blacklist (Full Info) &mdash; $0.10 &mdash; ⚡
+                                </option>
+                                                    </optgroup>
+                                    </select>
+
                 <label for="imei" class="sr-only">IMEI number</label>
                 <input
                     id="imei"
@@ -49,14 +189,14 @@
                     pattern="\d*"
                     maxlength="17"
                     placeholder="Enter 15-digit IMEI (e.g. 359152060000003)"
-                    required
-                    aria-describedby="imei-hint">
+                    required>
                 <button type="submit" id="submit-btn">
                     <span class="btn-label">Check IMEI</span>
                     <span class="btn-spinner" aria-hidden="true"></span>
                 </button>
                 <p id="imei-hint" class="hint">
                     Dial <code>*#06#</code> on your phone to display the IMEI.
+                    Premium checks require <a href="./login.html">sign-in</a>.
                 </p>
             </form>
 

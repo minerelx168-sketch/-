@@ -92,25 +92,34 @@
         "model_no": "CPH2581"
     }
 };
+  function buildResp(imei, cost) {
+    var tac  = imei.substr(0, 8);
+    var info = DEMO_DB[tac] || { brand: 'Unknown', model: 'GSM Phone', release: '-', os: '-' };
+    var details = {
+      'Brand Name': info.brand, 'Model Name': info.model,
+      'Model Number': info.model_no || '-',
+      'IMEI': imei, 'TAC': tac,
+      'Serial Number': imei.substr(8, 6),
+      'Color': info.color || '-', 'Storage': info.storage || '-',
+      'Release Year': info.release || '-', 'Operating System': info.os || '-'
+    };
+    return { ok: true, cached: false, imei: imei, tac: tac, brand: info.brand, model: info.model, cost: cost, details: details };
+  }
   window.fetch = (function (orig) {
     return function (url, opts) {
-      if (typeof url === 'string' && url.indexOf('/api/check.php') !== -1) {
-        var body = opts && opts.body ? new URLSearchParams(opts.body) : new URLSearchParams();
-        var imei = body.get('imei') || '';
-        var tac  = imei.substr(0, 8);
-        var info = DEMO_DB[tac] || { brand: 'Unknown', model: 'GSM Phone', release: '-', os: '-' };
-        var details = {
-          'Brand Name': info.brand, 'Model Name': info.model,
-          'Model Number': info.model_no || '-',
-          'IMEI': imei, 'TAC': tac,
-          'Serial Number': imei.substr(8, 6),
-          'Color': info.color || '-', 'Storage': info.storage || '-',
-          'Release Year': info.release || '-', 'Operating System': info.os || '-'
-        };
-        var resp = { ok: true, cached: false, imei: imei, tac: tac, brand: info.brand, model: info.model, details: details };
-        return Promise.resolve(new Response(JSON.stringify(resp), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+      var isCheck = typeof url === 'string' && url.indexOf('/api/check.php') !== -1;
+      var isUse   = typeof url === 'string' && url.indexOf('/api/services/use.php') !== -1;
+      if (!isCheck && !isUse) return orig.apply(this, arguments);
+      var imei = '';
+      if (isUse) {
+        try { var b = JSON.parse((opts && opts.body) || '{}'); imei = (b.input && b.input.imei) || ''; }
+        catch (e) {}
+      } else {
+        var qs = opts && opts.body ? new URLSearchParams(opts.body) : new URLSearchParams();
+        imei = qs.get('imei') || '';
       }
-      return orig.apply(this, arguments);
+      var resp = buildResp(imei, isUse ? '0.10' : '0.00');
+      return Promise.resolve(new Response(JSON.stringify(resp), { status: 200, headers: { 'Content-Type': 'application/json' } }));
     };
   })(window.fetch);
 })();
@@ -217,8 +226,20 @@
         form.classList.add('loading');
         button.disabled = true;
 
-        var paid = form.getAttribute('data-paid') === '1';
-        var code = form.getAttribute('data-code');
+        // If the form has a <select name="code">, use the selected option's
+        // data-cost to decide between the free (IMEI_BASIC) and paid paths.
+        // Otherwise fall back to the static data-paid + data-code attributes
+        // that per-service landing pages use.
+        var paid, code;
+        var select = form.querySelector('select[name="code"]');
+        if (select) {
+            code = select.value;
+            var opt = select.options[select.selectedIndex];
+            paid = parseFloat(opt && opt.getAttribute('data-cost') || '0') > 0;
+        } else {
+            paid = form.getAttribute('data-paid') === '1';
+            code = form.getAttribute('data-code');
+        }
         var fetchPromise;
 
         if (paid && code) {

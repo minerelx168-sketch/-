@@ -1133,6 +1133,99 @@ a:hover { color: var(--primary-600); }
     .check-summary-cost { text-align: left; }
 }
 
+/* ------------------- Hero dropdown (homepage) ------------------- */
+.hero-lookup {
+    background: var(--surface);
+    color: var(--text);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 8px;
+    max-width: 720px;
+    margin: 0 auto;
+    border: 1px solid var(--hairline);
+}
+.hero-lookup .hero-select,
+.hero-lookup input[type="text"] {
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 1rem;
+    font-family: var(--font);
+    font-feature-settings: 'tnum';
+    width: 100%;
+    outline: none;
+    color: var(--text-strong);
+    appearance: none;
+    -webkit-appearance: none;
+}
+.hero-lookup .hero-select {
+    cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+                      linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+    background-position: calc(100% - 16px) center, calc(100% - 11px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+    font-weight: 500;
+}
+.hero-lookup .hero-select optgroup {
+    font-weight: 700;
+    color: var(--text-strong);
+    background: var(--surface-alt);
+}
+.hero-lookup .hero-select option { color: var(--text); font-weight: 500; }
+.hero-lookup input[type="text"]::placeholder { color: var(--text-muted); }
+.hero-lookup:focus-within {
+    box-shadow: var(--shadow-lg), var(--ring-primary);
+    border-color: var(--primary);
+}
+.hero-lookup button {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0 22px;
+    font-size: .98rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, transform .05s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 140px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), inset 0 -1px 0 rgba(0,0,0,.15);
+}
+.hero-lookup button:hover { background: var(--primary-600); }
+.hero-lookup button[disabled] { opacity: .7; cursor: progress; }
+.hero-lookup.loading .btn-label { opacity: .85; }
+.hero-lookup.loading .btn-spinner { display: inline-block; }
+.hero-lookup .btn-spinner { display: none; }
+.hero-lookup .hint {
+    grid-column: 1 / -1;
+    margin: 6px 4px 2px;
+    color: var(--on-dark-soft);
+    font-size: .85rem;
+    text-align: center;
+}
+.hero-lookup .hint code {
+    background: rgba(255,255,255,.08);
+    color: #cbd5e1;
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-family: var(--font-mono);
+}
+.hero-lookup .hint a { color: #93c5fd; }
+
+@media (max-width: 760px) {
+    .hero-lookup { grid-template-columns: 1fr; }
+    .hero-lookup button { width: 100%; padding: 14px; }
+}
+
 /* ------------------- Dashboard ------------------- */
 .dashboard { padding: 56px 0 80px; background: var(--surface-alt); min-height: 70vh; }
 .dashboard-head {

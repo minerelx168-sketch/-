@@ -185,6 +185,7 @@ body {
     margin: 28px auto 0;
     padding: 28px 28px 24px;
     text-align: left;
+    scroll-margin-top: 80px; /* keep title clear of the sticky header */
 }
 .result.error {
     border-left: 4px solid var(--danger);

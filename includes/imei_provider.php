@@ -24,6 +24,13 @@ function imei_provider_lookup(string $imei, ?string $service = null): array
     $cfg = require __DIR__ . '/config.php';
     $api = $cfg['api'];
 
+    // Offline demo / simulator - no external call, returns realistic data
+    // from a small TAC database. Useful for previews and screenshots.
+    if (strtolower((string) $api['provider']) === 'demo') {
+        require_once __DIR__ . '/imei_demo.php';
+        return imei_demo_lookup($imei, $service ?: (string) $api['default_service']);
+    }
+
     if ($api['key'] === '' || str_starts_with($api['key'], 'replace-with')) {
         return [
             'status' => 'failed',

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TAC vs IMEI: how the first 8 digits identify your phone model · imeicheck</title>
+<meta name="description" content="The TAC is a sub-section of every IMEI that tells you who made the phone and what model it is — before any database lookup.">
+<link rel="icon" href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%230ea5e9'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='9.5' r='2' fill='%23fff'/><rect x='13.5' y='13' width='5' height='13' rx='1.5' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body><div style="background:#fbbf24;color:#0b1220;padding:8px 12px;font-size:.85rem;text-align:center;font-family:Inter,sans-serif;">Static demo - IMEI lookups run on a bundled TAC database. Real Stripe top-ups + Google sign-in require the PHP backend.</div>
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="./index.html" class="brand">
+            <svg width="32" height="32" class="brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs><rect x="2" y="2" width="28" height="28" rx="8" fill="url(#lg)"/><path d="M16 9.5v2.2M11 13.5h10M11 18h10M11 22.5h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="22.5" r="0" fill="#fff"/></svg>            <span class="brand-text">imeicheck</span>
+        </a>
+        <nav class="site-nav">
+            <a href="./index.html">IMEI Check</a>
+            <a href="./services.html">Services</a>
+            <a href="./brands.html">Brands</a>
+            <a href="./articles.html">Articles</a>
+            <a href="./about.html">About</a>
+        </nav>
+                <div class="site-account">
+                            <a href="./login.html" class="btn-signin">Sign in</a>
+                    </div>
+    </div>
+</header>
+<main>
+        <article class="article-page">
+        <header class="page-hero">
+            <div class="container">
+                <p class="breadcrumbs">
+                    <a href="./articles.html">Articles</a> &rsaquo;
+                    Technical                </p>
+                <h1>TAC vs IMEI: how the first 8 digits identify your phone model</h1>
+                <p class="lede">The TAC is a sub-section of every IMEI that tells you who made the phone and what model it is — before any database lookup.</p>
+                <p class="article-date">
+                    Published 2026-04-04                </p>
+            </div>
+        </header>
+
+        <section class="article-body">
+            <div class="container container--prose">
+                <h2>Breaking down a 15-digit IMEI</h2>
+<p>An IMEI is actually three numbers stitched together:</p>
+<table><thead><tr><th>Digits</th><th>Section</th><th>What it means</th></tr></thead><tbody><tr><td>1&ndash;8</td><td><strong>TAC</strong> (Type Allocation Code)</td><td>Identifies the manufacturer and model.</td></tr><tr><td>9&ndash;14</td><td><strong>Serial</strong></td><td>Unique to this device within that model.</td></tr><tr><td>15</td><td><strong>Check digit</strong></td><td>Luhn checksum to catch typos.</td></tr></tbody></table>
+<h2>What is the TAC?</h2>
+<p>The Type Allocation Code is assigned by the <strong>GSMA</strong> to manufacturers when they certify a device. Every iPhone 15 Pro, for example, shares the same set of TACs — different production batches and regional variants may each get a different TAC, but they all decode to the same brand and model.</p>
+<h2>Why the TAC is enough for most lookups</h2>
+<p>When you &quot;check an IMEI&quot; for the model name, the lookup tool is usually just consulting a TAC-to-model database. The remaining 7 digits are not needed.</p>
+<p>The remaining digits <strong>are</strong> needed for blacklist checks, carrier checks and warranty checks — those tie back to a specific device.</p>
+<h2>The check digit, briefly</h2>
+<p>The 15th digit is a Luhn checksum computed over the first 14. It catches single-digit typos but nothing more clever — so a Luhn-valid IMEI is not necessarily a real one.</p>
+                <hr>
+                <p class="article-cta">
+                    Ready to try it? <a href="./index.html">Run a free IMEI check &rarr;</a>
+                </p>
+            </div>
+        </section>
+    </article>
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="footer-col">
+            <strong>imeicheck</strong>
+            <p>Free IMEI lookup for any GSM mobile phone.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Tools</h4>
+            <a href="./index.html">IMEI Check</a>
+            <a href="./services.html">All services</a>
+            <a href="./brands.html">Brands</a>
+        </div>
+        <div class="footer-col">
+            <h4>Site</h4>
+            <a href="./articles.html">Articles</a>
+            <a href="./about.html">About</a>
+            <a href="./contact.html">Contact</a>
+            <a href="./privacy.html">Privacy</a>
+        </div>
+        <div class="footer-col footer-col--bottom">
+            <p>&copy; 2026 imeicheck. For informational use only.</p>
+        </div>
+    </div>
+</footer>
+<script src="./assets/js/main-static.js"></script>
+</body>
+</html>

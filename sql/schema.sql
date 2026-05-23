@@ -51,6 +51,10 @@ CREATE TABLE IF NOT EXISTS `users` (
     `image`          VARCHAR(512) DEFAULT NULL,
     `email_verified` TIMESTAMP NULL DEFAULT NULL,
 
+    -- Set when the user signed up with email + password. NULL means
+    -- they're OAuth-only and can't log in with a password.
+    `password_hash`  VARCHAR(255) DEFAULT NULL,
+
     -- Denormalized balance cache. SOURCE OF TRUTH IS THE LEDGER.
     -- Stored as DECIMAL(12,2) so we can hold up to 9,999,999,999.99.
     `cached_balance` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
@@ -61,6 +65,24 @@ CREATE TABLE IF NOT EXISTS `users` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `uniq_email` (`email`),
     KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Email-OTP verifications (signup confirmation, password resets later).
+-- Append rows on send; consumed_at flips on first successful verify.
+-- A single user can have multiple unconsumed rows if they resent.
+CREATE TABLE IF NOT EXISTS `email_verifications` (
+    `id`           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id`      BIGINT UNSIGNED NOT NULL,
+    `code_hash`    CHAR(64) NOT NULL,                                 -- SHA-256 of the OTP digits
+    `purpose`      ENUM('signup', 'reset') NOT NULL DEFAULT 'signup',
+    `attempts`     INT UNSIGNED NOT NULL DEFAULT 0,                   -- failed verify attempts
+    `consumed_at`  TIMESTAMP NULL DEFAULT NULL,
+    `expires_at`   TIMESTAMP NOT NULL,
+    `created_at`   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `idx_user_unconsumed` (`user_id`, `consumed_at`),
+    KEY `idx_expires` (`expires_at`),
+    CONSTRAINT `fk_emailver_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Linked OAuth identities (one user can link multiple providers later;

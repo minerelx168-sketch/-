@@ -936,6 +936,93 @@ a:hover { color: var(--primary-600); }
     font-size: .82rem;
     line-height: 1.6;
 }
+.auth-form {
+    display: grid;
+    gap: 14px;
+    text-align: left;
+    margin-bottom: 8px;
+}
+.auth-form[hidden] { display: none; }
+.auth-form label { display: grid; gap: 6px; }
+.auth-form label > span {
+    font-weight: 600;
+    font-size: .85rem;
+    color: var(--text-strong);
+}
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form input[type="text"] {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 1rem;
+    font-family: var(--font);
+    background: var(--surface);
+}
+.auth-form input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: var(--ring-primary);
+}
+.auth-form .otp-input {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    letter-spacing: .35em;
+    font-weight: 700;
+}
+.btn-primary-block {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 13px 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font);
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), inset 0 -1px 0 rgba(0,0,0,.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.btn-primary-block:hover { background: var(--primary-600); }
+.btn-primary-block[disabled] { opacity: .7; cursor: progress; }
+.btn-primary-block .btn-spinner { display: none; }
+.auth-form.loading .btn-primary-block .btn-spinner { display: inline-block; }
+
+.auth-divider {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: .82rem;
+    margin: 18px 0;
+    position: relative;
+}
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 38%;
+    border-top: 1px solid var(--border);
+}
+.auth-divider::before { left: 0; }
+.auth-divider::after  { right: 0; }
+.auth-divider span {
+    background: var(--surface);
+    padding: 0 12px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+.otp-info {
+    color: var(--text-soft);
+    font-size: .92rem;
+    line-height: 1.6;
+    margin: 0;
+    text-align: left;
+}
 
 /* ------------------- Dashboard ------------------- */
 .dashboard { padding: 56px 0 80px; background: var(--surface-alt); min-height: 70vh; }

@@ -70,4 +70,8 @@ return [
         'channel_secret'       => env('LINE_CHANNEL_SECRET', ''),
         'channel_access_token' => env('LINE_CHANNEL_ACCESS_TOKEN', ''),
     ],
+    'resend' => [
+        'api_key' => env('RESEND_API_KEY', ''),
+        'from'    => env('RESEND_FROM', 'onboarding@resend.dev'),
+    ],
 ];

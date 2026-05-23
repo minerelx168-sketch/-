@@ -62,4 +62,12 @@ return [
         'lifetime_days' => (int) env('SESSION_LIFETIME_DAYS', '30'),
         'cookie_name'   => env('SESSION_COOKIE_NAME', 'imeihub_sid'),
     ],
+    'telegram' => [
+        'bot_token'      => env('TELEGRAM_BOT_TOKEN', ''),
+        'webhook_secret' => env('TELEGRAM_WEBHOOK_SECRET', ''),
+    ],
+    'line' => [
+        'channel_secret'       => env('LINE_CHANNEL_SECRET', ''),
+        'channel_access_token' => env('LINE_CHANNEL_ACCESS_TOKEN', ''),
+    ],
 ];

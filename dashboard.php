@@ -45,6 +45,12 @@ layout_head('Dashboard · imeihub', 'Your imeihub account dashboard.');
                         <a href="/credits/history.php">View full history &rarr;</a>
                     </span>
                 </div>
+                <div class="stat-card">
+                    <span class="stat-card-label">Bot integrations</span>
+                    <strong class="stat-card-value" style="font-size:1.2rem; font-weight:700;">Telegram / LINE</strong>
+                    <span class="stat-card-meta">Run IMEI checks from a chat — link your shop.</span>
+                    <a href="/bot.php" class="btn-primary" style="margin-top:8px">Set up bot &rarr;</a>
+                </div>
             </div>
 
             <section class="dashboard-block">

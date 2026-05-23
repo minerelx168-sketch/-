@@ -203,6 +203,48 @@ CREATE TABLE IF NOT EXISTS `service_prices` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- -----------------------------------------------------------------------------
+-- Chat bot integration
+--
+-- bot_link_tokens: short-lived single-use tokens the user generates from the
+--   dashboard and pastes into the bot ("token XXXXXX") to bind a chat to
+--   their account. Channel-agnostic: the same token can be redeemed in
+--   either Telegram or LINE; the channel column gets set on consumption.
+--
+-- bot_links: the actual bindings. One user can have many links (one per
+--   chat per channel). Looked up on every inbound message to resolve the
+--   originating user.
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `bot_link_tokens` (
+    `id`          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id`     BIGINT UNSIGNED NOT NULL,
+    `token`       CHAR(10) NOT NULL,         -- short, user-friendly: 10 hex chars
+    `channel`     VARCHAR(16) DEFAULT NULL,  -- "telegram" / "line", set on consume
+    `consumed_at` TIMESTAMP NULL DEFAULT NULL,
+    `expires_at`  TIMESTAMP NOT NULL,
+    `created_at`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_token` (`token`),
+    KEY `idx_user_created` (`user_id`, `created_at`),
+    KEY `idx_expires` (`expires_at`),
+    CONSTRAINT `fk_botlink_token_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `bot_links` (
+    `id`               BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id`          BIGINT UNSIGNED NOT NULL,
+    `channel`          VARCHAR(16) NOT NULL,        -- "telegram" / "line"
+    `channel_chat_id`  VARCHAR(128) NOT NULL,       -- Telegram chat_id, LINE userId
+    `channel_user_id`  VARCHAR(128) DEFAULT NULL,   -- sender id when different
+    `display_name`     VARCHAR(128) DEFAULT NULL,
+    `created_at`       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `last_used_at`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_channel_chat` (`channel`, `channel_chat_id`),
+    KEY `idx_user` (`user_id`),
+    CONSTRAINT `fk_botlink_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- -----------------------------------------------------------------------------
 -- Webhook log (raw store of every inbound webhook before processing).
 -- Used for replay, debugging, and audit.
 -- -----------------------------------------------------------------------------

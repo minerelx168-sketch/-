@@ -1005,6 +1005,89 @@ a:hover { color: var(--primary-600); }
     text-align: center;
 }
 
+.dashboard-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+}
+.dashboard-block-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+}
+.dashboard-block-head h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: -.005em;
+    color: var(--text-strong);
+}
+
+.empty-state {
+    padding: 36px 20px;
+    text-align: center;
+    color: var(--text-muted);
+}
+.empty-state p { margin: 0 0 6px; }
+.empty-state strong { color: var(--text); }
+
+.ledger-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .92rem;
+}
+.ledger-table thead th {
+    text-align: left;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-muted);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+}
+.ledger-table tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--surface-line);
+    color: var(--text);
+    vertical-align: middle;
+}
+.ledger-table tbody tr:last-child td { border-bottom: none; }
+.ledger-table .num {
+    text-align: right;
+    font-feature-settings: 'tnum';
+    font-weight: 600;
+}
+.ledger-table .muted { color: var(--text-muted); font-family: var(--font-mono); font-size: .85rem; }
+.ledger-sub {
+    display: block;
+    font-size: .78rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-weight: normal;
+    margin-top: 2px;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.status--success  { background: rgba(22, 163, 74, .12); color: var(--success); }
+.status--pending  { background: rgba(217, 119, 6, .12); color: var(--warning); }
+.status--failed   { background: rgba(220, 38, 38, .12); color: var(--danger); }
+.status--refunded { background: rgba(100, 116, 139, .15); color: var(--text-soft); }
+
+.amount {
+    font-feature-settings: 'tnum';
+    font-weight: 600;
+}
+.amount--positive { color: var(--success); }
+.amount--negative { color: var(--text); }
+
 /* ------------------- Icon helper ------------------- */
 .icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
 

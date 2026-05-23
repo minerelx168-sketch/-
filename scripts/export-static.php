@@ -48,6 +48,7 @@ $routes = [
     '/contact.php'  => 'contact.html',
     '/privacy.php'  => 'privacy.html',
     '/login.php'    => 'login.html',
+    '/signup.php'   => 'signup.html',
 ];
 foreach ($brands as $b) {
     $routes['/brand.php?slug=' . $b['slug']] = 'brand-' . $b['slug'] . '.html';
@@ -99,7 +100,12 @@ function rewriteLinks(string $html, array $map): string
     $html = str_replace('href="/logout.php"',          'href="./index.html"',     $html);
     $html = str_replace('href="/credits/history.php"', 'href="./dashboard.html"', $html);
     $html = str_replace('href="/login.php"',           'href="./login.html"',     $html);
+    $html = str_replace('href="/signup.php"',          'href="./signup.html"',    $html);
+    $html = str_replace('href="/check.php"',           'href="./index.html"',     $html);
+    $html = str_replace('href="/bot.php"',             'href="./dashboard.html"', $html);
     $html = str_replace('href="/"',                    'href="./index.html"',     $html);
+    // OAuth & signup form actions can't function statically.
+    $html = preg_replace('~action="/api/auth/[^"]+"~', 'action="./login.html"', $html);
 
     // Fragments (e.g. /#how) - rewrite using ~ as delimiter so the inline # is fine
     $html = preg_replace('~href="/(#[a-z-]+)"~', 'href="./index.html$1"', $html);

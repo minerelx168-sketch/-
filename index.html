@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>imeicheck · Free IMEI Check &amp; Phone Info Lookup</title>
+<meta name="description" content="Free IMEI checker. Enter any 15-digit IMEI to instantly look up the brand, model and specs of a mobile phone.">
+<link rel="icon" href="data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%234f46e5'/><stop offset='1' stop-color='%230ea5e9'/></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23g)'/><circle cx='16' cy='9.5' r='2' fill='%23fff'/><rect x='13.5' y='13' width='5' height='13' rx='1.5' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body><div style="background:#fbbf24;color:#0b1220;padding:8px 12px;font-size:.85rem;text-align:center;font-family:Inter,sans-serif;">Static demo - IMEI lookups run on a bundled TAC database. Real Stripe top-ups + Google sign-in require the PHP backend.</div>
+<header class="site-header">
+    <div class="container header-inner">
+        <a href="./index.html" class="brand">
+            <svg width="32" height="32" class="brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs><rect x="2" y="2" width="28" height="28" rx="8" fill="url(#lg)"/><path d="M16 9.5v2.2M11 13.5h10M11 18h10M11 22.5h10" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="16" cy="22.5" r="0" fill="#fff"/></svg>            <span class="brand-text">imeicheck</span>
+        </a>
+        <nav class="site-nav">
+            <a href="./index.html">IMEI Check</a>
+            <a href="./services.html">Services</a>
+            <a href="./brands.html">Brands</a>
+            <a href="./articles.html">Articles</a>
+            <a href="./about.html">About</a>
+        </nav>
+                <div class="site-account">
+                            <a href="./login.html" class="btn-signin">Sign in</a>
+                    </div>
+    </div>
+</header>
+<main>
+        <section class="hero" id="checker">
+        <div class="container">
+            <p class="hero-eyebrow">Free phone information lookup</p>
+            <h1>Identify any mobile phone<br>by its IMEI number</h1>
+            <p class="lede">
+                Enter the 15-digit IMEI of any GSM phone to instantly retrieve
+                its brand, model and full specifications &mdash; no signup required.
+            </p>
+
+            <form id="imei-form" class="lookup-form" autocomplete="off" novalidate>
+                <label for="imei" class="sr-only">IMEI number</label>
+                <input
+                    id="imei"
+                    name="imei"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="\d*"
+                    maxlength="17"
+                    placeholder="Enter 15-digit IMEI (e.g. 359152060000003)"
+                    required
+                    aria-describedby="imei-hint">
+                <button type="submit" id="submit-btn">
+                    <span class="btn-label">Check IMEI</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+                <p id="imei-hint" class="hint">
+                    Dial <code>*#06#</code> on your phone to display the IMEI.
+                </p>
+            </form>
+
+            <div id="result" class="result" hidden></div>
+
+            <div class="hero-stats">
+                <div><strong>120k+</strong><span>TACs indexed</span></div>
+                <div><strong>12</strong><span>major brands</span></div>
+                <div><strong>&lt; 1s</strong><span>median lookup</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="brands-preview">
+        <div class="container">
+            <div class="section-head">
+                <h2>Browse by brand</h2>
+                <p>Pick a manufacturer to see the models we recognise.</p>
+            </div>
+            <div class="brand-grid">
+                                    <a class="brand-tile" href="./brand-apple.html">
+                        <span class="brand-tile-mark" style="background:#111111">
+                            A                        </span>
+                        <span class="brand-tile-name">Apple</span>
+                    </a>
+                                    <a class="brand-tile" href="./brand-samsung.html">
+                        <span class="brand-tile-mark" style="background:#1428a0">
+                            S                        </span>
+                        <span class="brand-tile-name">Samsung</span>
+                    </a>
+                                    <a class="brand-tile" href="./brand-huawei.html">
+                        <span class="brand-tile-mark" style="background:#c8102e">
+                            H                        </span>
+                        <span class="brand-tile-name">Huawei</span>
+                    </a>
+                                    <a class="brand-tile" href="./brand-xiaomi.html">
+                        <span class="brand-tile-mark" style="background:#ff6900">
+                            X                        </span>
+                        <span class="brand-tile-name">Xiaomi</span>
+                    </a>
+                                    <a class="brand-tile" href="./brand-oppo.html">
+                        <span class="brand-tile-mark" style="background:#1a8a3a">
+                            O                        </span>
+                        <span class="brand-tile-name">OPPO</span>
+                    </a>
+                                    <a class="brand-tile" href="./brand-vivo.html">
+                        <span class="brand-tile-mark" style="background:#005bd0">
+                            V                        </span>
+                        <span class="brand-tile-name">vivo</span>
+                    </a>
+                                    <a class="brand-tile" href="./brand-realme.html">
+                        <span class="brand-tile-mark" style="background:#ffc500">
+                            R                        </span>
+                        <span class="brand-tile-name">realme</span>
+                    </a>
+                                    <a class="brand-tile" href="./brand-oneplus.html">
+                        <span class="brand-tile-mark" style="background:#eb0028">
+                            O                        </span>
+                        <span class="brand-tile-name">OnePlus</span>
+                    </a>
+                            </div>
+            <p class="brand-grid-more">
+                <a class="link-more" href="./brands.html">View all brands <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </p>
+        </div>
+    </section>
+
+    <section class="how" id="how">
+        <div class="container">
+            <div class="section-head">
+                <h2>How an IMEI check works</h2>
+                <p>Three steps. About fifteen seconds, including the typing.</p>
+            </div>
+            <div class="cards">
+                <article class="card">
+                    <span class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+                    <div class="card-num">01</div>
+                    <h3>Find your IMEI</h3>
+                    <p>Dial <code>*#06#</code> on any phone, or check Settings &rarr; About &rarr; IMEI.</p>
+                </article>
+                <article class="card">
+                    <span class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true"><rect x="6" y="5" width="12" height="15" rx="2"/><rect x="9" y="3" width="6" height="4" rx="1.2" fill="currentColor" stroke="none"/></svg></span>
+                    <div class="card-num">02</div>
+                    <h3>Paste &amp; check</h3>
+                    <p>Paste the 15-digit number above and press <em>Check IMEI</em>.</p>
+                </article>
+                <article class="card">
+                    <span class="card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="icon" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M9 11h6M9 15h6M9 7h3"/></svg></span>
+                    <div class="card-num">03</div>
+                    <h3>Read the report</h3>
+                    <p>We return the brand, model and any device data the provider exposes.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <div class="container">
+            <h2>Frequently asked questions</h2>
+
+            <details>
+                <summary>What is an IMEI number?</summary>
+                <p>The IMEI (International Mobile Equipment Identity) is a unique 15-digit
+                number that identifies a mobile device on cellular networks.</p>
+            </details>
+
+            <details>
+                <summary>Is checking my IMEI safe?</summary>
+                <p>Yes. An IMEI alone does not give anyone access to your account or data.
+                It only identifies the hardware. Still, treat it like any other ID and
+                avoid posting it publicly.</p>
+            </details>
+
+            <details>
+                <summary>What is a TAC?</summary>
+                <p>The first 8 digits of an IMEI form the Type Allocation Code (TAC), which
+                identifies the brand and model of the device.</p>
+            </details>
+
+            <details>
+                <summary>Why did my IMEI fail validation?</summary>
+                <p>IMEIs must be exactly 15 digits and pass the Luhn checksum. If you
+                typed it from a screen, double-check for missing or duplicated digits.</p>
+            </details>
+        </div>
+    </section>
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <div class="footer-col">
+            <strong>imeicheck</strong>
+            <p>Free IMEI lookup for any GSM mobile phone.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Tools</h4>
+            <a href="./index.html">IMEI Check</a>
+            <a href="./services.html">All services</a>
+            <a href="./brands.html">Brands</a>
+        </div>
+        <div class="footer-col">
+            <h4>Site</h4>
+            <a href="./articles.html">Articles</a>
+            <a href="./about.html">About</a>
+            <a href="./contact.html">Contact</a>
+            <a href="./privacy.html">Privacy</a>
+        </div>
+        <div class="footer-col footer-col--bottom">
+            <p>&copy; 2026 imeicheck. For informational use only.</p>
+        </div>
+    </div>
+</footer>
+<script src="./assets/js/main-static.js"></script>
+</body>
+</html>

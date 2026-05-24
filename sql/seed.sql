@@ -1,11 +1,12 @@
 -- Seed: service price catalog (USD)
 --
--- ANCHORED on unlock-service.net's live API catalog (43 services, IDs
--- as of last sync). One row per upstream service; the API name is
--- copied VERBATIM into the `name` column so the dropdown matches what
--- the provider shows. Internal `code` is our own opaque ID.
+-- ANCHORED on the upstream provider's live IMEI Check catalog
+-- (60 services total: 43 ACTIVE + 17 PENDING activation). One row per
+-- upstream service; the API name is copied VERBATIM into the `name`
+-- column so the dropdown matches what the provider shows. Internal
+-- `code` is our own opaque ID.
 --
--- Pricing rule:
+-- Pricing rule (active rows):
 --   - If the operator's selling sheet (selling_price.xlsx) sets a price
 --     for the matching service, use it directly (trailing -- sheet ...
 --     comment marks these).
@@ -13,14 +14,20 @@
 --     Comment shows the wholesale credit so you can re-derive at any
 --     time with a different markup.
 --
--- All 43 catalog rows are active = 1 - the provider IDs are known and
--- the wallet is allowed to charge for them.
+-- Pricing rule (pending rows):
+--   - cost = 0.00 placeholder, active = 0 (hidden from dropdowns).
+--   - Operator must (a) get the upstream Service ID, (b) decide
+--     wholesale + retail, then update both this row's cost / active
+--     AND data/service_provider_map.php's matching entry before the
+--     service can be sold.
 --
 -- IMEI_BASIC stays at $0.00 / null provider for the always-free local
--- TAC lookup. The 13 phantom codes that lived here pre-anchor (Apple
+-- TAC lookup. The phantom codes that lived here pre-anchor (Apple
 -- Mini / Pro / Ultimate / Universal Check / Apple iCloud S2 / Apple
--- GSMA Blacklist x2 / Itel / Acer / LG / Oppo / OnePlus / Kyocera /
--- ZTE) have been removed - unlock-service.net does not carry them.
+-- GSMA Blacklist x2 / Itel / Acer / LG / Oppo / OnePlus / Kyocera)
+-- have been removed - the upstream provider does not carry them.
+-- ZTE was previously deactivated as phantom but is brought back below
+-- as a pending row (the provider does carry it).
 --
 -- Idempotent: ON DUPLICATE KEY UPDATE - safe to re-run.
 
@@ -89,7 +96,44 @@ INSERT INTO `service_prices` (`code`, `name`, `description`, `cost`, `active`) V
     ('HLR_LOOKUP',                'Home Location Register (HLR) Lookup',                                                            'HLR lookup for a phone number.',                                                 0.05, 1), -- wholesale 0.01 (×2 capped at min 0.05)
     ('NUMBER_TYPE',               'Number Type (NT) Lookup',                                                                        'Mobile / landline / VoIP classification.',                                       0.14, 1), -- wholesale 0.07 (×2)
     ('PING_SMS',                  'Ping-SMS',                                                                                       'Silent SMS ping.',                                                               0.20, 1), -- wholesale 0.10 (×2)
-    ('PING_SMS_S2',               'Ping-SMS (Server 2)',                                                                            'Silent SMS ping via secondary route.',                                           0.70, 1)  -- wholesale 0.35 (×2)
+    ('PING_SMS_S2',               'Ping-SMS (Server 2)',                                                                            'Silent SMS ping via secondary route.',                                           0.70, 1), -- wholesale 0.35 (×2)
+
+    -- ----- PENDING activation (awaiting provider Service ID + wholesale) -----
+    -- All 17 rows below: active = 0, cost = 0.00 placeholder. They are
+    -- anchored from a full catalog dump but the provider Service IDs
+    -- haven't been wired yet, so they're hidden from the dropdown
+    -- (check.php WHERE active=1) and credits_deduct() will throw
+    -- "Unknown or inactive service" if anyone POSTs them directly.
+    --
+    -- To activate one: edit cost/active here AND add the matching ID
+    -- in data/service_provider_map.php, then re-run this seed.
+
+    -- Apple IMEI Check (2 pending)
+    ('APPLE_OWNER_ID_INFO',       'Apple Owner ID Info - (Read Description)',                                                       'Apple Owner ID info lookup.',                                                    0.00, 0),
+    ('APPLE_IMEI_SN_CONVERT',     'Apple IMEI <-> SN <-> IMEI2 CONVERT',                                                            'Convert between Apple IMEI / Serial Number / IMEI2.',                            0.00, 0),
+
+    -- GSX Services (Instant) (2 pending)
+    ('APPLE_GSX_CASE_REPLACE',    'Apple Case History, Replacement',                                                                'GSX case history + replacement details (instant).',                              0.00, 0),
+    ('APPLE_GSX_SOLD_BY',         'Apple Sold By Info',                                                                             'GSX sold-by retailer info (instant).',                                           0.00, 0),
+
+    -- GSX Services (server 2 / non-instant) (6 pending)
+    ('APPLE_GSX_CASE_S2',         'Apple Case History',                                                                             'GSX case history (server 2).',                                                   0.00, 0),
+    ('APPLE_GSX_REPAIRS_S2',      'Apple Repairs, Replacement Details',                                                             'GSX repair + replacement details (server 2).',                                   0.00, 0),
+    ('APPLE_GSX_CASE_DIAG_S2',    'Apple Case History, Repairs, Replacements, Diagnostics',                                         'GSX case + repair + replacement + diagnostics (server 2).',                      0.00, 0),
+    ('APPLE_GSX_SOLD_POLICY_S2',  'Apple Sold By, Activation Policy',                                                               'GSX sold-by + activation policy (server 2).',                                    0.00, 0),
+    ('APPLE_GSX_FULL_LITE_S2',    'Apple Sold By, Case History, Replacement, Activation Policy',                                    'GSX sold-by + case + replacement + activation policy (server 2).',               0.00, 0),
+    ('APPLE_FULL_GSX_S2',         'Apple Sold By, Case History, Replacement, Activation Policy [ICCID & MAC] (FULL GSX) S2',        'Full GSX dataset including ICCID & MAC (server 2).',                             0.00, 0),
+
+    -- GSX Services (Picture) (5 pending)
+    ('APPLE_GSX_CASE_PIC',        'Apple Case History (Picture)',                                                                   'GSX case history report with picture.',                                          0.00, 0),
+    ('APPLE_GSX_CASE_REPAIR_PIC', 'Apple Case History, Repairs, Replacements (Picture)',                                            'GSX case + repair + replacement report with picture.',                           0.00, 0),
+    ('APPLE_GSX_SOLD_REPLACE_PIC','Apple Sold By, Case History, Replacement (Picture)',                                             'GSX sold-by + case + replacement report with picture.',                          0.00, 0),
+    ('APPLE_GSX_SOLD_DIAG_PIC',   'Apple Sold By, Case History, Repairs, Replacement, Diagnostics (Picture)',                       'GSX sold-by + case + repair + replacement + diagnostics with picture.',          0.00, 0),
+    ('APPLE_FULL_GSX_PIC',        'Apple Full GSX (Picture)',                                                                       'Full GSX report with picture.',                                                  0.00, 0),
+
+    -- Other IMEI Check (2 pending)
+    ('ZTE_INFO',                  'ZTE INFO',                                                                                       'ZTE: model + warranty + country.',                                               0.00, 0),
+    ('SAMSUNG_INFO_S2',           'SAMSUNG INFO (Server 2)',                                                                        'Samsung: model + warranty (server 2).',                                          0.00, 0)
 ON DUPLICATE KEY UPDATE
     `name`        = VALUES(`name`),
     `description` = VALUES(`description`),
@@ -98,9 +142,11 @@ ON DUPLICATE KEY UPDATE
 
 -- Hard-deactivate any phantom codes that lived here pre-anchor.
 -- (Rows stay so historical service_usages refs remain valid.)
+-- ZTE_INFO was previously in this list but is now a legit pending row
+-- above (provider catalog confirms it exists), so it's been removed.
 UPDATE `service_prices` SET `active` = 0 WHERE `code` IN (
     'APPLE_MINI','APPLE_PRO','APPLE_ULTIMATE','UNIVERSAL_CHECK',
     'APPLE_ICLOUD_CLEAN_S2','APPLE_BLACKLIST_SIMPLE','APPLE_BLACKLIST_FULL',
     'ITEL_INFO','ACER_INFO','LG_INFO','OPPO_INFO','ONEPLUS_INFO',
-    'KYOCERA_INFO','ZTE_INFO'
+    'KYOCERA_INFO'
 );

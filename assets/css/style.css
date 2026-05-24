@@ -194,42 +194,42 @@ a:hover { color: var(--primary-600); }
 .hero-stats--counters {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
-    max-width: 920px;
-    margin: 48px auto 0;
+    gap: 14px;
+    max-width: 780px;
+    margin: 40px auto 0;
 }
 .hero-stats--counters .stat {
     background: rgba(255, 255, 255, .04);
     border: 1px solid rgba(255, 255, 255, .08);
-    border-radius: 14px;
-    padding: 22px 14px;
+    border-radius: 12px;
+    padding: 16px 12px;
     text-align: center;
     backdrop-filter: blur(6px);
 }
 .hero-stats--counters .stat-num {
     display: block;
-    font-size: 2.1rem;
-    font-weight: 800;
+    font-size: 1.35rem;
+    font-weight: 700;
     color: #fff;
-    letter-spacing: -.02em;
+    letter-spacing: -.01em;
     font-variant-numeric: tabular-nums;
-    line-height: 1.1;
-    margin-bottom: 6px;
+    line-height: 1.15;
+    margin-bottom: 4px;
 }
 .hero-stats--counters span {
     color: var(--on-dark-soft);
-    font-size: .76rem;
+    font-size: .7rem;
     text-transform: uppercase;
-    letter-spacing: .1em;
+    letter-spacing: .08em;
     font-weight: 600;
 }
 @media (max-width: 720px) {
     .hero-stats--counters {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 10px;
     }
-    .hero-stats--counters .stat { padding: 18px 10px; }
-    .hero-stats--counters .stat-num { font-size: 1.55rem; }
+    .hero-stats--counters .stat { padding: 14px 8px; }
+    .hero-stats--counters .stat-num { font-size: 1.15rem; }
 }
 
 /* ------------------- Lookup form ------------------- */
@@ -476,6 +476,23 @@ a:hover { color: var(--primary-600); }
 }
 .brand-tile-name { font-weight: 600; font-size: .98rem; }
 .brand-tile-meta { color: var(--text-muted); font-size: .8rem; }
+
+/* Name-only variant (compact wordmark tiles) */
+.brand-grid--names {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+}
+.brand-tile--name-only {
+    padding: 18px 14px;
+    min-height: 64px;
+    justify-content: center;
+}
+.brand-tile--name-only .brand-tile-name {
+    font-size: 1.02rem;
+    letter-spacing: -.005em;
+    color: var(--text-strong);
+}
+.brand-tile--name-only:hover .brand-tile-name { color: var(--primary); }
 
 .brand-headline {
     display: flex;

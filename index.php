@@ -172,23 +172,9 @@ layout_head(
                 <h2>Supported Brands</h2>
                 <p>Official brand logos for every manufacturer we recognise.</p>
             </div>
-            <div class="brand-grid">
+            <div class="brand-grid brand-grid--names">
                 <?php foreach (array_slice(require __DIR__ . '/data/brands.php', 0, 12) as $b): ?>
-                    <a class="brand-tile" href="/brand.php?slug=<?= urlencode($b['slug']) ?>">
-                        <?php if (!empty($b['icon_slug'])): ?>
-                            <span class="brand-tile-logo">
-                                <img
-                                    src="https://cdn.simpleicons.org/<?= htmlspecialchars((string) $b['icon_slug'], ENT_QUOTES, 'UTF-8') ?>/111111"
-                                    alt="<?= htmlspecialchars((string) $b['name'], ENT_QUOTES, 'UTF-8') ?> logo"
-                                    width="36" height="36"
-                                    loading="lazy"
-                                    referrerpolicy="no-referrer">
-                            </span>
-                        <?php else: ?>
-                            <span class="brand-tile-mark" style="background:<?= htmlspecialchars($b['color'], ENT_QUOTES) ?>">
-                                <?= htmlspecialchars(brand_initial($b['name']), ENT_QUOTES, 'UTF-8') ?>
-                            </span>
-                        <?php endif; ?>
+                    <a class="brand-tile brand-tile--name-only" href="/brand.php?slug=<?= urlencode($b['slug']) ?>">
                         <span class="brand-tile-name"><?= htmlspecialchars($b['name'], ENT_QUOTES, 'UTF-8') ?></span>
                     </a>
                 <?php endforeach; ?>

@@ -40,16 +40,30 @@ if ($apiKey === '' || str_starts_with($apiKey, 'replace-with')) {
 $outPrefix = $argv[1] ?? '/tmp/unlock-service-catalog';
 
 /* =========================================================================
- *  1. Try a few DHRU "list services" endpoint shapes and keep the first
+ *  1. Try a few "list services" endpoint shapes and keep the first
  *     one whose response we can parse.
+ *
+ *  The PHP API endpoint documented by the provider is:
+ *      {base}/?key={apikey}&accountinfo=servicelist
+ *  Response shape:
+ *      { "status": true, "response": "", "object": {
+ *            "343": {"service":"343","name":"Apple Warranty Info",
+ *                    "price":"0.02","time":"Instant","description":""},
+ *            ...
+ *      }}
+ *
+ *  The DHRU Fusion-style endpoints are kept as fallbacks in case the
+ *  operator's account exposes a different shape.
  * ========================================================================= */
 $candidates = [
-    // DHRU Fusion standard.
+    // Provider-documented PHP API endpoint (preferred).
+    sprintf('%s/?key=%s&accountinfo=servicelist', $apiUrl, rawurlencode($apiKey)),
+    // DHRU Fusion standard (fallback).
     sprintf('%s/?username=%s&apiaccesskey=%s&action=imeiservicelist',
             $apiUrl, rawurlencode($username), rawurlencode($apiKey)),
     sprintf('%s/?username=%s&apiaccesskey=%s&action=ImeiAllServices',
             $apiUrl, rawurlencode($username), rawurlencode($apiKey)),
-    // Simpler variants some installs expose.
+    // Older simpler variants.
     sprintf('%s/?key=%s&action=services', $apiUrl, rawurlencode($apiKey)),
     sprintf('%s/?key=%s&action=listservices', $apiUrl, rawurlencode($apiKey)),
 ];
@@ -84,14 +98,15 @@ if (!$services) {
 $csvPath = $outPrefix . '.csv';
 $fp = fopen($csvPath, 'w');
 fwrite($fp, "\xEF\xBB\xBF"); // UTF-8 BOM so Excel opens Thai/Unicode cleanly
-fputcsv($fp, ['Service ID', 'Service Name', 'Credit (USD)', 'Category', 'Delivery']);
+fputcsv($fp, ['Service ID', 'Service Name', 'Credit (USD)', 'Delivery Time', 'API Type', 'Description']);
 foreach ($services as $row) {
     fputcsv($fp, [
         $row['id'],
         $row['name'],
         $row['credit'],
-        $row['category'] ?? '',
         $row['delivery'] ?? '',
+        $row['category'] ?? '',  // API type (PHP | DHRU)
+        $row['desc']     ?? '',
     ]);
 }
 fclose($fp);
@@ -128,17 +143,22 @@ function http_get(string $url): ?string
 }
 
 /**
- * DHRU Fusion typically replies with one of:
+ * Provider response shapes we support:
  *
- *   { "SUCCESS": [{ "ALLSERVICES": {
- *       "1": { "SERVICEID":"1","SERVICENAME":"...","CREDIT":"0.05", ...},
- *       ...
- *   }}]}
+ *  A. Provider-documented PHP API (preferred):
+ *       { "status": true, "response": "", "object": {
+ *           "343": {"service":"343","name":"Apple Warranty Info",
+ *                   "price":"0.02","time":"Instant","description":""},
+ *           ...
+ *       }}
  *
- *   { "ERROR": [{ "FULL_DESCRIPTION":"..." }] }
+ *  B. DHRU Fusion:
+ *       { "SUCCESS": [{ "ALLSERVICES": {
+ *           "1": {"SERVICEID":"1","SERVICENAME":"...","CREDIT":"0.05",...},
+ *           ...
+ *       }}]}
  *
- * Some installs put the catalog under data.imeiservices etc. We try a
- * few common shapes and bail out if none yield rows.
+ *  C. Misc shapes some installs expose (data.imeiservices, services, ...).
  */
 function parse_services_response(string $body): array
 {
@@ -147,6 +167,7 @@ function parse_services_response(string $body): array
 
     $allServices = null;
     foreach ([
+        ['object'],                  // PHP API (preferred)
         ['SUCCESS', 0, 'ALLSERVICES'],
         ['SUCCESS', 0, 'LIST'],
         ['data', 'imeiservices'],
@@ -165,14 +186,25 @@ function parse_services_response(string $body): array
     $rows = [];
     foreach ($allServices as $key => $svc) {
         if (!is_array($svc)) continue;
-        $id       = (string) ($svc['SERVICEID']   ?? $svc['ID']         ?? $svc['id']     ?? $key);
-        $name     = (string) ($svc['SERVICENAME'] ?? $svc['NAME']       ?? $svc['name']   ?? $svc['title'] ?? '');
-        $credit   = (string) ($svc['CREDIT']      ?? $svc['PRICE']      ?? $svc['credit'] ?? $svc['cost']  ?? '');
-        $category = (string) ($svc['CATEGORY']    ?? $svc['SERVICETYPE']?? $svc['category'] ?? '');
-        $delivery = (string) ($svc['TIME']        ?? $svc['DELIVERYTIME']?? $svc['delivery'] ?? '');
+        $id       = (string) ($svc['service']     ?? $svc['SERVICEID']   ?? $svc['ID']         ?? $svc['id']     ?? $key);
+        $name     = (string) ($svc['name']        ?? $svc['SERVICENAME'] ?? $svc['NAME']       ?? $svc['title']  ?? '');
+        $credit   = (string) ($svc['price']       ?? $svc['CREDIT']      ?? $svc['PRICE']      ?? $svc['credit'] ?? $svc['cost'] ?? '');
+        $delivery = (string) ($svc['time']        ?? $svc['TIME']        ?? $svc['DELIVERYTIME']?? $svc['delivery'] ?? '');
+        $desc     = (string) ($svc['description'] ?? $svc['DESCRIPTION'] ?? $svc['desc']       ?? '');
+        // Derive API type from delivery time string. Anything that takes
+        // more than ~60s (minutes / hours / manual) lives in the DHRU
+        // queue; sub-minute jobs run via the PHP API.
+        $apiType  = preg_match('/min|hour|manual|day/i', $delivery) ? 'DHRU' : 'PHP';
 
         if ($name === '') continue;
-        $rows[] = compact('id', 'name', 'credit', 'category', 'delivery');
+        $rows[] = [
+            'id'       => $id,
+            'name'     => $name,
+            'credit'   => $credit,
+            'delivery' => $delivery,
+            'category' => $apiType,   // re-use the "category" column for the API type
+            'desc'     => $desc,
+        ];
     }
     usort($rows, fn ($a, $b) => strcmp($a['category'] . $a['name'], $b['category'] . $b['name']));
     return $rows;
@@ -184,7 +216,7 @@ function parse_services_response(string $body): array
  */
 function write_minimal_xlsx(string $path, array $services): void
 {
-    $headers = ['Service ID', 'Service Name', 'Credit (USD)', 'Category', 'Delivery'];
+    $headers = ['Service ID', 'Service Name', 'Credit (USD)', 'Delivery Time', 'API Type', 'Description'];
 
     $rowsXml = '';
     $rowsXml .= xlsx_row(1, $headers, true);
@@ -193,8 +225,9 @@ function write_minimal_xlsx(string $path, array $services): void
             $r['id'],
             $r['name'],
             $r['credit'],
-            $r['category'] ?? '',
             $r['delivery'] ?? '',
+            $r['category'] ?? '',  // API type (PHP | DHRU)
+            $r['desc']     ?? '',
         ], false);
     }
 
@@ -204,8 +237,9 @@ function write_minimal_xlsx(string $path, array $services): void
         .   '<col min="1" max="1" width="11" customWidth="1"/>'
         .   '<col min="2" max="2" width="68" customWidth="1"/>'
         .   '<col min="3" max="3" width="14" customWidth="1"/>'
-        .   '<col min="4" max="4" width="22" customWidth="1"/>'
-        .   '<col min="5" max="5" width="18" customWidth="1"/>'
+        .   '<col min="4" max="4" width="18" customWidth="1"/>'
+        .   '<col min="5" max="5" width="11" customWidth="1"/>'
+        .   '<col min="6" max="6" width="44" customWidth="1"/>'
         . '</cols>'
         . '<sheetData>' . $rowsXml . '</sheetData>'
         . '</worksheet>';

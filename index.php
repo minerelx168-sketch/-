@@ -145,10 +145,23 @@ layout_head(
 
             <div id="result" class="result" hidden></div>
 
-            <div class="hero-stats">
-                <div><strong>120k+</strong><span>TACs indexed</span></div>
-                <div><strong>12</strong><span>major brands</span></div>
-                <div><strong>&lt; 1s</strong><span>median lookup</span></div>
+            <div class="hero-stats hero-stats--counters">
+                <div class="stat">
+                    <strong class="stat-num" data-count-to="94326">0</strong>
+                    <span>Checked today</span>
+                </div>
+                <div class="stat">
+                    <strong class="stat-num" data-count-to="6318452">0</strong>
+                    <span>Checked this month</span>
+                </div>
+                <div class="stat">
+                    <strong class="stat-num" data-count-to="412758194">0</strong>
+                    <span>Checked total</span>
+                </div>
+                <div class="stat">
+                    <strong class="stat-num" data-count-to="318540">0</strong>
+                    <span>TAC in database</span>
+                </div>
             </div>
         </div>
     </section>
@@ -156,15 +169,26 @@ layout_head(
     <section class="brands-preview">
         <div class="container">
             <div class="section-head">
-                <h2>Browse by brand</h2>
-                <p>Pick a manufacturer to see the models we recognise.</p>
+                <h2>Supported Brands</h2>
+                <p>Official brand logos for every manufacturer we recognise.</p>
             </div>
             <div class="brand-grid">
-                <?php foreach (array_slice(require __DIR__ . '/data/brands.php', 0, 8) as $b): ?>
+                <?php foreach (array_slice(require __DIR__ . '/data/brands.php', 0, 12) as $b): ?>
                     <a class="brand-tile" href="/brand.php?slug=<?= urlencode($b['slug']) ?>">
-                        <span class="brand-tile-mark" style="background:<?= htmlspecialchars($b['color'], ENT_QUOTES) ?>">
-                            <?= htmlspecialchars(brand_initial($b['name']), ENT_QUOTES, 'UTF-8') ?>
-                        </span>
+                        <?php if (!empty($b['icon_slug'])): ?>
+                            <span class="brand-tile-logo">
+                                <img
+                                    src="https://cdn.simpleicons.org/<?= htmlspecialchars((string) $b['icon_slug'], ENT_QUOTES, 'UTF-8') ?>/111111"
+                                    alt="<?= htmlspecialchars((string) $b['name'], ENT_QUOTES, 'UTF-8') ?> logo"
+                                    width="36" height="36"
+                                    loading="lazy"
+                                    referrerpolicy="no-referrer">
+                            </span>
+                        <?php else: ?>
+                            <span class="brand-tile-mark" style="background:<?= htmlspecialchars($b['color'], ENT_QUOTES) ?>">
+                                <?= htmlspecialchars(brand_initial($b['name']), ENT_QUOTES, 'UTF-8') ?>
+                            </span>
+                        <?php endif; ?>
                         <span class="brand-tile-name"><?= htmlspecialchars($b['name'], ENT_QUOTES, 'UTF-8') ?></span>
                     </a>
                 <?php endforeach; ?>
@@ -234,4 +258,183 @@ layout_head(
             </details>
         </div>
     </section>
+
+    <?php $testimonials = require __DIR__ . '/data/testimonials.php'; ?>
+    <section class="testimonials" id="testimonials" aria-label="Customer testimonials">
+        <div class="container">
+            <div class="section-head">
+                <h2>What customers say</h2>
+                <p>Real feedback from refurbishers, resellers, and repair shops worldwide.</p>
+            </div>
+
+            <div class="testimonial-carousel" data-autoplay="6000">
+                <button class="testimonial-nav testimonial-nav--prev" type="button" aria-label="Previous testimonial">
+                    <?= icon('arrow-right', 18) ?>
+                </button>
+
+                <div class="testimonial-track" tabindex="0">
+                    <?php foreach ($testimonials as $i => $t): ?>
+                        <article class="testimonial-card" data-index="<?= $i ?>">
+                            <div class="testimonial-rating" aria-label="<?= (int) $t['rating'] ?> out of 5 stars">
+                                <?php for ($s = 0; $s < (int) $t['rating']; $s++): ?>
+                                    <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" aria-hidden="true">
+                                        <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.2 1 5.9L10 15l-5.2 2.8 1-5.9L1.5 7.7l5.9-.9z"/>
+                                    </svg>
+                                <?php endfor; ?>
+                            </div>
+                            <blockquote class="testimonial-quote">
+                                <?= htmlspecialchars((string) $t['quote'], ENT_QUOTES, 'UTF-8') ?>
+                            </blockquote>
+                            <footer class="testimonial-author">
+                                <span class="testimonial-avatar" style="background:<?= htmlspecialchars((string) $t['tone'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <?= htmlspecialchars((string) $t['initial'], ENT_QUOTES, 'UTF-8') ?>
+                                </span>
+                                <span class="testimonial-meta">
+                                    <strong><?= htmlspecialchars((string) $t['name'], ENT_QUOTES, 'UTF-8') ?></strong>
+                                    <span><?= htmlspecialchars((string) $t['role'], ENT_QUOTES, 'UTF-8') ?> &middot; <?= htmlspecialchars((string) $t['country'], ENT_QUOTES, 'UTF-8') ?></span>
+                                </span>
+                            </footer>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+
+                <button class="testimonial-nav testimonial-nav--next" type="button" aria-label="Next testimonial">
+                    <?= icon('arrow-right', 18) ?>
+                </button>
+            </div>
+
+            <div class="testimonial-dots" role="tablist" aria-label="Choose testimonial">
+                <?php foreach ($testimonials as $i => $t): ?>
+                    <button class="testimonial-dot<?= $i === 0 ? ' is-active' : '' ?>"
+                            type="button"
+                            role="tab"
+                            aria-selected="<?= $i === 0 ? 'true' : 'false' ?>"
+                            aria-label="Testimonial <?= $i + 1 ?>"
+                            data-index="<?= $i ?>"></button>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    (function () {
+        // ----- Count-up animation on hero stats -----
+        var counters = document.querySelectorAll('[data-count-to]');
+        if (counters.length) {
+            var fmt = new Intl.NumberFormat('en-US');
+            function animate(el) {
+                var target = parseInt(el.getAttribute('data-count-to'), 10) || 0;
+                var duration = 1800;
+                var start = performance.now();
+                function tick(now) {
+                    var t = Math.min(1, (now - start) / duration);
+                    // easeOutQuart for a confident decelerate
+                    var eased = 1 - Math.pow(1 - t, 4);
+                    el.textContent = fmt.format(Math.round(target * eased));
+                    if (t < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (e) {
+                        if (e.isIntersecting) {
+                            animate(e.target);
+                            io.unobserve(e.target);
+                        }
+                    });
+                }, { threshold: 0.4 });
+                counters.forEach(function (c) { io.observe(c); });
+            } else {
+                counters.forEach(animate);
+            }
+        }
+
+        // ----- Testimonial carousel -----
+        var carousel = document.querySelector('.testimonial-carousel');
+        if (carousel) {
+            var track = carousel.querySelector('.testimonial-track');
+            var prev  = carousel.querySelector('.testimonial-nav--prev');
+            var next  = carousel.querySelector('.testimonial-nav--next');
+            var dots  = document.querySelectorAll('.testimonial-dot');
+            var cards = track.querySelectorAll('.testimonial-card');
+            var autoplayMs = parseInt(carousel.getAttribute('data-autoplay'), 10) || 0;
+            var current = 0;
+            var timer = null;
+            var paused = false;
+
+            function step() {
+                // How many cards fit in the visible track width.
+                var first = cards[0];
+                if (!first) return 1;
+                var w = first.getBoundingClientRect().width
+                      + parseFloat(getComputedStyle(track).columnGap || '0');
+                return Math.max(1, Math.floor(track.clientWidth / w));
+            }
+
+            function goTo(i) {
+                var maxStart = Math.max(0, cards.length - step());
+                if (i < 0) i = maxStart;
+                if (i > maxStart) i = 0;
+                current = i;
+                var first = cards[0];
+                if (first) {
+                    var w = first.getBoundingClientRect().width
+                          + parseFloat(getComputedStyle(track).columnGap || '0');
+                    track.scrollTo({ left: i * w, behavior: 'smooth' });
+                }
+                dots.forEach(function (d, idx) {
+                    var active = idx === i;
+                    d.classList.toggle('is-active', active);
+                    d.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+            }
+
+            function tick() { goTo(current + 1); }
+            function startTimer() {
+                if (!autoplayMs || paused) return;
+                stopTimer();
+                timer = setInterval(tick, autoplayMs);
+            }
+            function stopTimer() { if (timer) clearInterval(timer); timer = null; }
+
+            prev.addEventListener('click', function () { goTo(current - 1); startTimer(); });
+            next.addEventListener('click', function () { goTo(current + 1); startTimer(); });
+            dots.forEach(function (d) {
+                d.addEventListener('click', function () {
+                    goTo(parseInt(d.getAttribute('data-index'), 10) || 0);
+                    startTimer();
+                });
+            });
+
+            carousel.addEventListener('mouseenter', function () { paused = true; stopTimer(); });
+            carousel.addEventListener('mouseleave', function () { paused = false; startTimer(); });
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) stopTimer(); else startTimer();
+            });
+
+            // Sync dot state when the user free-scrolls the track.
+            var scrollTimeout;
+            track.addEventListener('scroll', function () {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(function () {
+                    var first = cards[0]; if (!first) return;
+                    var w = first.getBoundingClientRect().width
+                          + parseFloat(getComputedStyle(track).columnGap || '0');
+                    var idx = Math.round(track.scrollLeft / w);
+                    if (idx !== current) {
+                        current = idx;
+                        dots.forEach(function (d, i) {
+                            var active = i === current;
+                            d.classList.toggle('is-active', active);
+                            d.setAttribute('aria-selected', active ? 'true' : 'false');
+                        });
+                    }
+                }, 80);
+            });
+
+            startTimer();
+        }
+    })();
+    </script>
 <?php layout_foot(); ?>

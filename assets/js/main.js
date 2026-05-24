@@ -42,42 +42,62 @@
         });
     }
 
+    // Pick a color class for a field based on both the key (context) and
+    // the value. We need the key because "Yes" / "ON" / "OFF" flip
+    // meaning depending on what is being asked - "Find My iPhone: ON" is
+    // a problem for a buyer; "Activation Status: Activated" is fine;
+    // "Refurbished: No" is good; "Open Repair Case: Yes" is a warning.
+    function classifyValue(key, val) {
+        var v = String(val).trim();
+        var k = String(key).toLowerCase();
+
+        // Unambiguous "danger" tokens.
+        if (/^(blacklisted|stolen|lost|fraud|denied|expired|invalid|sold)/i.test(v)) return 'danger';
+        if (/^(locked)$/i.test(v)) return 'danger';
+
+        // Unambiguous "success" tokens.
+        if (/^(activated|active|clean|unlocked|covered|in warranty)$/i.test(v)) return 'success';
+
+        // ON / OFF - depends on what is being toggled.
+        var alertKey = /(find\s*my|fmi|icloud|mdm|sim.?lock|activation\s*lock|locked|jailbreak)/i;
+        if (/^on$/i.test(v))  return alertKey.test(k) ? 'danger'  : 'success';
+        if (/^off$/i.test(v)) return alertKey.test(k) ? 'success' : 'muted';
+
+        // Yes / No - the "yes is a problem" set is small and explicit.
+        var warnYesKey = /(repair|blacklist|fraud|lost|stolen|replaced|refurbished|demo|jailbreak|loaner)/i;
+        if (/^yes$/i.test(v)) return warnYesKey.test(k) ? 'warn'    : 'success';
+        if (/^no$/i.test(v))  return warnYesKey.test(k) ? 'success' : null;
+
+        return null;
+    }
+
     function renderResult(data) {
-        var brand = data.brand || (data.details && (data.details.Brand || data.details['Brand Name'])) || 'Unknown';
-        var model = data.model || (data.details && (data.details.Model || data.details['Model Name'])) || 'Unknown';
+        var details = data.details || {};
+        var brand = data.brand || details.Brand || details['Brand Name'] || details.Manufacturer || 'Unknown';
+        var model = data.model || details.Model || details['Model Name'] || details['Model Description'] || 'Unknown';
 
         var html = '';
         html += '<h2>' + escapeHtml(brand) + ' ' + escapeHtml(model);
         html += ' <span class="badge' + (data.cached ? ' cached' : '') + '">' +
                 (data.cached ? 'Cached' : 'Verified') + '</span></h2>';
         html += '<p class="imei-meta">IMEI <code>' + escapeHtml(data.imei) + '</code>' +
-                ' · TAC <code>' + escapeHtml(data.tac || '') + '</code></p>';
+                ' &middot; TAC <code>' + escapeHtml(data.tac || '') + '</code></p>';
 
-        var details = data.details || {};
-        // Promote the common keys to the top of the grid.
-        var ordered = {};
-        ['Brand', 'Brand Name', 'Manufacturer', 'Model', 'Model Name',
-         'Model Description', 'Model Number', 'IMEI', 'Serial Number',
-         'Network', 'Carrier', 'Country', 'Color', 'Storage', 'Warranty Status',
-         'Activation Status', 'iCloud Status', 'Find My iPhone'].forEach(function (k) {
-            if (details[k]) ordered[k] = details[k];
-        });
-        Object.keys(details).forEach(function (k) {
-            if (!ordered[k]) ordered[k] = details[k];
-        });
-
-        var keys = Object.keys(ordered);
+        var keys = Object.keys(details);
         if (keys.length === 0) {
-            html += '<p>No additional details were returned.</p>';
+            html += '<p class="result-empty">No additional details were returned.</p>';
         } else {
-            html += '<div class="result-grid">';
+            html += '<dl class="result-fields">';
             keys.forEach(function (k) {
-                html += '<div class="result-item">';
-                html +=   '<span class="k">' + escapeHtml(k) + '</span>';
-                html +=   '<span class="v">' + escapeHtml(ordered[k]) + '</span>';
+                var v = details[k];
+                if (v === null || v === undefined || v === '') return;
+                var cls = classifyValue(k, v);
+                html += '<div class="result-field">';
+                html +=   '<dt>' + escapeHtml(k) + '</dt>';
+                html +=   '<dd' + (cls ? ' class="rv-' + cls + '"' : '') + '>' + escapeHtml(v) + '</dd>';
                 html += '</div>';
             });
-            html += '</div>';
+            html += '</dl>';
         }
 
         resultEl.hidden = false;

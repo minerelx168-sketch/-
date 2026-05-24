@@ -23,30 +23,59 @@ try {
     // demo (and any deploy with a temporarily down DB) still shows the full
     // dropdown. Prices match the operator's selling sheet, USD.
     $services = [
-        'IMEI_BASIC'                => ['name' => 'Free IMEI Check',                                                              'cost' => '0.00'],
-        'APPLE_BASIC'               => ['name' => 'Apple Check Basic',                                                            'cost' => '0.10'],
-        'APPLE_ICLOUD_STATUS'       => ['name' => 'Apple Check Service - FMI iCloud (ON/OFF)',                                    'cost' => '0.01'],
-        'APPLE_ICLOUD_CLEAN'        => ['name' => 'Apple Check Service - iCloud (Clean/Lost)',                                    'cost' => '0.03'],
-        'APPLE_MAC_ICLOUD_STATUS'   => ['name' => 'Apple Check Service - MacBook, iMac iCloud (ON/OFF)',                          'cost' => '0.30'],
-        'APPLE_MAC_ICLOUD_CLEAN'    => ['name' => 'Apple Check Service - MacBook, iMac iCloud (Clean/Lost)',                      'cost' => '0.40'],
-        'APPLE_WARRANTY'            => ['name' => 'Apple Check Service - Warranty/Activation Status',                             'cost' => '0.04'],
-        'APPLE_SIM_LOCK'            => ['name' => 'Apple Check Service - SimLock Status',                                         'cost' => '0.03'],
-        'APPLE_PART_NUMBER'         => ['name' => 'Apple Check Service - Part Number (MPN)',                                      'cost' => '0.10'],
-        'APPLE_MDM'                 => ['name' => 'Apple Check Service - MDM (ON/OFF)',                                           'cost' => '0.35'],
-        'APPLE_GSX_LIGHT'           => ['name' => 'GSX - Sold By, Case History, Replacement History, Activation Policy',          'cost' => '1.00'],
-        'APPLE_CASE_REPAIR_HISTORY' => ['name' => 'GSX - Case History, Repair History',                                           'cost' => '1.20'],
-        'APPLE_SOLD_BY_COVERAGE'    => ['name' => 'GSX - Sold By, Coverage',                                                      'cost' => '2.00'],
-        'APPLE_FULL_GSX'            => ['name' => 'GSX - Sold By, Case History, Replacement History, Activation Policy (FULL INFO)', 'cost' => '2.30'],
-        'SAMSUNG_INFO'              => ['name' => 'Samsung Check Service - Model, Warranty, Carrier, Country, Knox Guard (ON/OFF)','cost' => '0.10'],
-        'HUAWEI_INFO'               => ['name' => 'Huawei Check Service - Model, Warranty, Country',                              'cost' => '0.03'],
-        'XIAOMI_STATUS'             => ['name' => 'Xiaomi Check Service - Model, Warranty, Country, Mi ID (ON/OFF)',              'cost' => '0.10'],
-        'HONOR_INFO'                => ['name' => 'Honor Check Service - Model, Warranty, Country',                               'cost' => '0.10'],
-        'PIXEL_INFO'                => ['name' => 'Google Pixel Check Service - Model, Warranty, Country',                        'cost' => '0.10'],
-        'MOTOROLA_INFO'             => ['name' => 'Motorola Check Service - Model, Warranty, Country',                            'cost' => '0.10'],
-        'LENOVO_INFO'               => ['name' => 'Lenovo Check Service - Model, Warranty, Country',                              'cost' => '0.10'],
-        'TMOBILE_USA'               => ['name' => 'Check Service - T-Mobile USA Clean/Blocked/Unpaid Status',                     'cost' => '0.10'],
-        'BLACKLIST_SIMPLE'          => ['name' => 'Check Service - GSMA Blacklist Status',                                        'cost' => '0.01'],
-        'BLACKLIST_FULL'            => ['name' => 'Check Service - GSMA Blacklist Full Report',                                   'cost' => '0.10'],
+        'IMEI_BASIC'                => ['name' => 'Free IMEI Check',                                                                       'cost' => '0.00'],
+        // Apple Featured
+        'APPLE_BASIC'               => ['name' => 'Apple Basic Info',                                                                      'cost' => '0.10'],
+        'APPLE_CARRIER_LITE'        => ['name' => 'Apple Carrier (Lite)',                                                                  'cost' => '0.08'],
+        'APPLE_CARRIER_PRO'         => ['name' => 'Apple Carrier (Pro)',                                                                   'cost' => '0.16'],
+        'APPLE_CARRIER_PRO_PLUS'    => ['name' => 'Apple Carrier (Pro Plus)',                                                              'cost' => '0.26'],
+        'APPLE_MAX_INFO'            => ['name' => 'Apple Max Info (Premium)',                                                              'cost' => '0.70'],
+        // Apple iCloud
+        'APPLE_ICLOUD_STATUS'       => ['name' => 'Apple iCloud (ON / OFF)',                                                               'cost' => '0.01'],
+        'APPLE_ICLOUD_CLEAN'        => ['name' => 'Apple iCloud (Clean / Lost)',                                                           'cost' => '0.03'],
+        'APPLE_ICLOUD_CLEAN_SN'     => ['name' => 'Apple iCloud (Clean / Lost) SN',                                                        'cost' => '0.10'],
+        'APPLE_ICLOUD_ID_HINT'      => ['name' => 'Apple iCloud ID Hint',                                                                  'cost' => '0.80'],
+        'APPLE_MAC_ICLOUD_STATUS'   => ['name' => 'Apple iCloud MACBOOK/iMAC (ON / OFF)',                                                  'cost' => '0.30'],
+        'APPLE_MAC_ICLOUD_CLEAN'    => ['name' => 'Apple iCloud MACBOOK/iMAC (Clean / Lost)',                                              'cost' => '0.40'],
+        // Apple MDM
+        'APPLE_MDM'                 => ['name' => 'Apple MDM (ON / OFF)',                                                                  'cost' => '0.35'],
+        'APPLE_MDM_SN'              => ['name' => 'Apple MDM (ON / OFF) SN',                                                               'cost' => '0.30'],
+        'APPLE_MDM_FMI'             => ['name' => 'Apple MDM + FMI (ON / OFF)',                                                            'cost' => '0.50'],
+        // Apple Device Info
+        'APPLE_WARRANTY'            => ['name' => 'Apple Warranty (Activation Info)',                                                      'cost' => '0.04'],
+        'APPLE_WARRANTY_SN'         => ['name' => 'Apple Warranty (Activation Info) SN',                                                   'cost' => '0.05'],
+        'APPLE_PART_NUMBER'         => ['name' => 'Apple Part Number / MPN',                                                               'cost' => '0.14'],
+        'APPLE_SIM_LOCK'            => ['name' => 'Apple SIM-LOCK Status',                                                                 'cost' => '0.05'],
+        'APPLE_GSX_TETHER'          => ['name' => 'Apple GSX Next Tether Policy',                                                          'cost' => '0.20'],
+        // Apple GSX
+        'APPLE_CASE_REPAIR_HISTORY' => ['name' => 'Apple Case History, Repair History',                                                    'cost' => '1.20'],
+        'APPLE_SOLD_BY_COVERAGE'    => ['name' => 'Apple Sold By, Coverage (Max Info)',                                                    'cost' => '2.00'],
+        'APPLE_SOLD_BY_HISTORY'     => ['name' => 'Apple Sold By, Case History, Activation Policy',                                        'cost' => '4.20'],
+        'APPLE_GSX_LIGHT'           => ['name' => 'Apple Sold By, Case History, Replacement, GSX Activation Policy',                       'cost' => '1.00'],
+        'APPLE_FULL_GSX'            => ['name' => 'Apple Sold By, Case History, Replacement, Activation Policy [ICCID & MAC] (Full GSX)',  'cost' => '2.30'],
+        'APPLE_GSX_MAX'             => ['name' => 'Apple Sold By, Case History, Replacement, Repair, GSX Activation Policy (Max Info)',    'cost' => '2.60'],
+        // Worldwide Blacklist
+        'BLACKLIST_SIMPLE'          => ['name' => 'WorldWide Blacklist Status (SIMPLE INFO)',                                              'cost' => '0.05'],
+        'BLACKLIST_FULL'            => ['name' => 'WorldWide Blacklist Status (FULL INFO)',                                                'cost' => '0.10'],
+        // Other Brands
+        'SAMSUNG_INFO'              => ['name' => 'SAMSUNG INFO',                                                                          'cost' => '0.10'],
+        'SAMSUNG_KNOX'              => ['name' => 'SAMSUNG (Knox Guard Status, Samsung Lock - ON/OFF)',                                    'cost' => '0.20'],
+        'XIAOMI_STATUS'             => ['name' => 'XIAOMI (ON / OFF)',                                                                     'cost' => '0.10'],
+        'HUAWEI_INFO'               => ['name' => 'HUAWEI INFO',                                                                           'cost' => '0.08'],
+        'HONOR_INFO'                => ['name' => 'HONOR INFO',                                                                            'cost' => '0.10'],
+        'MOTOROLA_INFO'             => ['name' => 'MOTOROLA INFO',                                                                         'cost' => '0.10'],
+        'LENOVO_INFO'               => ['name' => 'LENOVO INFO',                                                                           'cost' => '0.10'],
+        'PIXEL_INFO'                => ['name' => 'Google Pixel Info',                                                                     'cost' => '0.20'],
+        // US Carriers
+        'TMOBILE_USA'               => ['name' => 'T-Mobile - USA iPhone/Generic Status',                                                  'cost' => '0.10'],
+        'TMOBILE_USA_PRO'           => ['name' => 'T-Mobile - USA iPhone/Generic Status [PRO]',                                            'cost' => '0.06'],
+        'VERIZON_USA_PRO'           => ['name' => 'Verizon - USA iPhone/Generic Status [PRO]',                                             'cost' => '0.06'],
+        // Phone number lookup
+        'YANDEX_ALICE'              => ['name' => 'Yandex Alice Info',                                                                     'cost' => '0.60'],
+        'HLR_LOOKUP'                => ['name' => 'Home Location Register (HLR) Lookup',                                                   'cost' => '0.05'],
+        'NUMBER_TYPE'               => ['name' => 'Number Type (NT) Lookup',                                                               'cost' => '0.14'],
+        'PING_SMS'                  => ['name' => 'Ping-SMS',                                                                              'cost' => '0.20'],
+        'PING_SMS_S2'               => ['name' => 'Ping-SMS (Server 2)',                                                                   'cost' => '0.70'],
     ];
     foreach ($services as $code => &$svc) $svc['code'] = $code;
     unset($svc);

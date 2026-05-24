@@ -91,12 +91,26 @@ try {
 $publicId = (string) $usage['public_id'];
 $cost     = (string) $usage['cost'];
 
-// Phase 2: call the provider. Map our service_code -> unlock-service ID
-// using data/service_provider_map.php (single source of truth). null in
-// the map means "free local lookup" - we parse the TAC ourselves with
-// the demo provider so no API credit is spent.
-$serviceMap        = require __DIR__ . '/../../data/service_provider_map.php';
-$providerServiceId = $serviceMap[$code] ?? null;
+// Phase 2: call the provider. Map our service_code -> upstream service.
+// Entry shapes (data/service_provider_map.php):
+//   null                          -> free local TAC lookup, no API call
+//   123                           -> PHP API (sync)
+//   ['id'=>123,'type'=>'dhru']    -> DHRU API (async), place order +
+//                                    return status=processing; the
+//                                    client then polls api/services/status.php
+$serviceMap = require __DIR__ . '/../../data/service_provider_map.php';
+$entry      = $serviceMap[$code] ?? null;
+
+if ($entry === null) {
+    $providerServiceId = null;
+    $apiType           = 'php';
+} elseif (is_array($entry)) {
+    $providerServiceId = (string) ($entry['id']   ?? '');
+    $apiType           = strtolower((string) ($entry['type'] ?? 'php'));
+} else {
+    $providerServiceId = (string) $entry;
+    $apiType           = 'php';
+}
 
 try {
     if ($providerServiceId === null) {
@@ -104,7 +118,7 @@ try {
         require_once __DIR__ . '/../../includes/imei_demo.php';
         $result = imei_demo_lookup($imei, '0');
     } else {
-        $result = imei_provider_lookup($imei, (string) $providerServiceId);
+        $result = imei_provider_lookup($imei, $providerServiceId, $apiType);
     }
 } catch (Throwable $e) {
     credits_refund_usage($publicId, 'provider exception: ' . $e->getMessage());
@@ -114,7 +128,31 @@ try {
     ]);
 }
 
-if (($result['status'] ?? '') !== 'success') {
+$status = (string) ($result['status'] ?? '');
+
+// DHRU async: the order is placed, the wallet stays deducted, the row
+// flips to PROCESSING with the provider reference id stamped. The
+// client now polls /api/services/status.php?id=<public_id> for the
+// final result (or a refund if the provider rejects it).
+if ($status === 'processing') {
+    credits_mark_usage_processing($publicId, (string) ($result['provider_order_id'] ?? ''));
+    echo json_encode([
+        'ok'                => true,
+        'status'            => 'processing',
+        'public_id'         => $publicId,
+        'imei'              => $imei,
+        'tac'               => imei_tac($imei),
+        'cost'              => $cost,
+        'provider_order_id' => $result['provider_order_id'] ?? null,
+        // Suggested next-poll delay in seconds. The provider documents
+        // 1-5 min turnaround so we use a wide initial gap; main.js
+        // backs off further if /status.php returns processing again.
+        'retry_after'       => 8,
+    ]);
+    exit;
+}
+
+if ($status !== 'success') {
     credits_refund_usage($publicId, (string) ($result['error'] ?? 'provider returned failure'));
     fail(502, (string) ($result['error'] ?? 'Lookup failed.'), [
         'public_id' => $publicId,
@@ -131,6 +169,7 @@ credits_mark_usage_success($publicId, [
 
 echo json_encode([
     'ok'        => true,
+    'status'    => 'success',
     'public_id' => $publicId,
     'imei'      => $imei,
     'tac'       => imei_tac($imei),

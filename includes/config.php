@@ -46,6 +46,10 @@ return [
     'api' => [
         'provider'        => env('IMEI_API_PROVIDER', 'sickw'),
         'key'             => env('IMEI_API_KEY', ''),
+        // Account username - only needed by DHRU async services
+        // (placeimeiorder / getimeiorder); the synchronous PHP API
+        // accepts the key alone.
+        'username'        => env('IMEI_API_USERNAME', ''),
         'url'             => env('IMEI_API_URL', 'https://sickw.com/api.php'),
         'default_service' => env('IMEI_API_DEFAULT_SERVICE', '0'),
     ],

@@ -193,21 +193,24 @@ CREATE TABLE IF NOT EXISTS `topup_orders` (
 -- Service usages (paid lookups)
 -- -----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `service_usages` (
-    `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `public_id`     CHAR(26) NOT NULL,
-    `user_id`       BIGINT UNSIGNED NOT NULL,
-    `service_code`  VARCHAR(32) NOT NULL,
-    `cost`          DECIMAL(12, 2) NOT NULL,
-    `input`         JSON NOT NULL,
-    `output`        JSON DEFAULT NULL,
-    `status`        ENUM('PENDING','SUCCESS','FAILED','REFUNDED') NOT NULL DEFAULT 'PENDING',
-    `error_message` VARCHAR(512) DEFAULT NULL,
-    `created_at`    TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `completed_at`  TIMESTAMP(3) NULL DEFAULT NULL,
+    `id`                BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `public_id`         CHAR(26) NOT NULL,
+    `user_id`           BIGINT UNSIGNED NOT NULL,
+    `service_code`      VARCHAR(32) NOT NULL,
+    `cost`              DECIMAL(12, 2) NOT NULL,
+    `input`             JSON NOT NULL,
+    `output`            JSON DEFAULT NULL,
+    `provider_order_id` VARCHAR(64) DEFAULT NULL,                            -- DHRU reference id, NULL for PHP-API services
+    `status`            ENUM('PENDING','PROCESSING','SUCCESS','FAILED','REFUNDED') NOT NULL DEFAULT 'PENDING',
+    `error_message`     VARCHAR(512) DEFAULT NULL,
+    `created_at`        TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `last_polled_at`    TIMESTAMP(3) NULL DEFAULT NULL,                       -- last time we polled the DHRU side
+    `completed_at`      TIMESTAMP(3) NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE KEY `uniq_public_id` (`public_id`),
-    KEY `idx_user_created` (`user_id`, `created_at`),
-    KEY `idx_service` (`service_code`),
+    KEY `idx_user_created`  (`user_id`, `created_at`),
+    KEY `idx_service`       (`service_code`),
+    KEY `idx_status_polled` (`status`, `last_polled_at`),                     -- cron sweep on PROCESSING rows
     CONSTRAINT `fk_usage_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

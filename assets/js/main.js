@@ -71,6 +71,70 @@
         return null;
     }
 
+    // Render the "we placed the order, waiting on the provider" state.
+    // Used for DHRU services (1-5+ min). The caller starts polling
+    // /api/services/status.php?id=<publicId> right after this.
+    function renderProcessing(publicId) {
+        resultEl.hidden = false;
+        resultEl.classList.remove('error');
+        resultEl.innerHTML =
+            '<h2>Processing&hellip; <span class="badge cached">Async</span></h2>' +
+            '<p class="imei-meta">Reference <code>' + escapeHtml(publicId) + '</code></p>' +
+            '<div class="result-processing">' +
+              '<div class="result-spinner" aria-hidden="true"></div>' +
+              '<div>' +
+                '<strong>Your order has been placed with the provider.</strong>' +
+                '<p class="dashboard-subtitle" style="margin:6px 0 0;">' +
+                  'This service typically takes 1&ndash;5 minutes. This page updates ' +
+                  'automatically when the result is ready &mdash; safe to leave open or ' +
+                  'come back later via your dashboard.' +
+                '</p>' +
+              '</div>' +
+            '</div>';
+    }
+
+    // Poll the status endpoint until the lookup completes or fails.
+    // Backs off based on the retry_after the server suggests; gives up
+    // after ~10 minutes of attempts, at which point the user can
+    // revisit from the dashboard (a cron sweep also keeps stuck rows
+    // moving). We re-arm the form so the user can submit a new one
+    // without waiting for this poll to finish.
+    var activePollTimer = null;
+    function pollStatus(publicId, retryAfterSec) {
+        if (activePollTimer) clearTimeout(activePollTimer);
+        var delay = Math.max(3, parseInt(retryAfterSec, 10) || 8) * 1000;
+        var deadline = Date.now() + 10 * 60 * 1000; // 10 min
+
+        function tick() {
+            if (Date.now() > deadline) return;
+            fetch('/api/services/status.php?id=' + encodeURIComponent(publicId), {
+                credentials: 'same-origin',
+            }).then(function (r) {
+                return r.json().then(function (j) { return { status: r.status, body: j }; });
+            }).then(function (resp) {
+                var body = resp.body || {};
+                if (body.ok && body.status === 'success') {
+                    renderResult(body);
+                    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    return;
+                }
+                if (body.ok === false || body.status === 'failed' || body.status === 'refunded') {
+                    var note = body.refunded ? ' Your credit has been refunded automatically.' : '';
+                    showError((body.error || 'Lookup failed.') + note);
+                    return;
+                }
+                // Still processing - schedule the next tick.
+                activePollTimer = setTimeout(tick, Math.max(3, parseInt(body.retry_after, 10) || 8) * 1000);
+            }).catch(function () {
+                // Treat as transient - keep polling with a slightly
+                // longer gap so we don't hammer the server.
+                activePollTimer = setTimeout(tick, delay + 2000);
+            });
+        }
+
+        activePollTimer = setTimeout(tick, delay);
+    }
+
     function renderResult(data) {
         var details = data.details || {};
         var brand = data.brand || details.Brand || details['Brand Name'] || details.Manufacturer || 'Unknown';
@@ -186,6 +250,14 @@
                         ? ' Your credit has been refunded automatically.'
                         : '';
                     showError(((resp.body && resp.body.error) || 'Lookup failed (HTTP ' + resp.status + ').') + note);
+                    return;
+                }
+                // DHRU async services: order was placed, no result yet.
+                // Render the processing card and start polling.
+                if (resp.body.status === 'processing' && resp.body.public_id) {
+                    renderProcessing(resp.body.public_id);
+                    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    pollStatus(resp.body.public_id, resp.body.retry_after);
                     return;
                 }
                 renderResult(resp.body);

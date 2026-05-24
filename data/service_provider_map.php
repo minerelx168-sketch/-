@@ -2,15 +2,25 @@
 declare(strict_types=1);
 
 /**
- * service_code  ->  upstream provider service ID
+ * service_code  ->  upstream provider service descriptor
+ *
+ * Entry shapes:
+ *   'CODE' => null            free local TAC lookup, no provider call
+ *   'CODE' => 123             provider service id, PHP API (sync, <60s)
+ *   'CODE' => ['id' => 123, 'type' => 'dhru']
+ *                             provider service id, DHRU API (async, 1-5min)
+ *                             credits_deduct() -> place order -> PROCESSING
+ *                             A poll loop drives PROCESSING -> SUCCESS/FAILED.
+ *
+ * Use the DHRU shape for any service the provider documents as taking
+ * more than ~60s (GSX Picture, manual fulfillment, etc.). The PHP API
+ * does NOT serve those - calls return an "execution time exceeded"
+ * error and the user's credit ends up refunded for nothing.
  *
  * 1:1 anchor on the upstream API catalog (60 IMEI Check services:
  * 43 ACTIVE wired below + 17 PENDING listed in seed.sql with active=0).
  * Source synced from the provider's imeiservicelist endpoint - see
  * scripts/fetch-provider-services.php to re-fetch.
- *
- * `null` = free local TAC lookup (no provider call, no charge).
- * Reserved for IMEI_BASIC.
  *
  * Codes that don't appear in this map will cause credits_deduct() to
  * throw "Unknown service code". That's fine for the 17 pending rows -
@@ -19,9 +29,10 @@ declare(strict_types=1);
  * any wallet mutation.
  *
  * To activate a pending row:
- *   1. Get the upstream Service ID from provider support.
- *   2. Uncomment the matching `'CODE' => <id>` line in the PENDING
- *      block below.
+ *   1. Get the upstream Service ID from provider support, or run
+ *      scripts/sync-pending-service-ids.php to auto-resolve IDs.
+ *   2. Uncomment the matching line in the PENDING block below.
+ *      Use the DHRU shape for any service flagged as 1-5 min / manual.
  *   3. In sql/seed.sql flip the row's active=0 -> 1 and set cost to
  *      max(0.05, wholesale * 2) (or the operator's selling-sheet
  *      price); re-run the seed.
@@ -102,29 +113,35 @@ return [
     // ----- PENDING (awaiting Service ID from provider) -----
     // Uncomment each row when its real Service ID arrives, then flip
     // the matching seed.sql row's active to 1 and set its cost.
+    // Run scripts/sync-pending-service-ids.php to auto-fill IDs.
     //
-    // Apple IMEI Check
+    // Use plain int form for PHP-API services (sync, <60s).
+    // Use ['id' => N, 'type' => 'dhru'] for DHRU services (async, 1-5+ min) -
+    // the provider documents GSX Picture as DHRU-only; long-running
+    // GSX S2 variants are also safer routed via DHRU.
+    //
+    // Apple IMEI Check (PHP)
     // 'APPLE_OWNER_ID_INFO'      => 0,
     // 'APPLE_IMEI_SN_CONVERT'    => 0,
     //
-    // GSX Services (Instant)
+    // GSX Services (Instant) (PHP)
     // 'APPLE_GSX_CASE_REPLACE'   => 0,
     // 'APPLE_GSX_SOLD_BY'        => 0,
     //
-    // GSX Services (server 2 / non-instant)
-    // 'APPLE_GSX_CASE_S2'        => 0,
-    // 'APPLE_GSX_REPAIRS_S2'     => 0,
-    // 'APPLE_GSX_CASE_DIAG_S2'   => 0,
-    // 'APPLE_GSX_SOLD_POLICY_S2' => 0,
-    // 'APPLE_GSX_FULL_LITE_S2'   => 0,
-    // 'APPLE_FULL_GSX_S2'        => 0,
+    // GSX Services (Server 2 / non-instant) (DHRU)
+    // 'APPLE_GSX_CASE_S2'        => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_GSX_REPAIRS_S2'     => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_GSX_CASE_DIAG_S2'   => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_GSX_SOLD_POLICY_S2' => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_GSX_FULL_LITE_S2'   => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_FULL_GSX_S2'        => ['id' => 0, 'type' => 'dhru'],
     //
-    // GSX Services (Picture)
-    // 'APPLE_GSX_CASE_PIC'         => 0,
-    // 'APPLE_GSX_CASE_REPAIR_PIC'  => 0,
-    // 'APPLE_GSX_SOLD_REPLACE_PIC' => 0,
-    // 'APPLE_GSX_SOLD_DIAG_PIC'    => 0,
-    // 'APPLE_FULL_GSX_PIC'         => 0,
+    // GSX Services (Picture) - DHRU only (manual fulfillment, >60s)
+    // 'APPLE_GSX_CASE_PIC'         => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_GSX_CASE_REPAIR_PIC'  => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_GSX_SOLD_REPLACE_PIC' => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_GSX_SOLD_DIAG_PIC'    => ['id' => 0, 'type' => 'dhru'],
+    // 'APPLE_FULL_GSX_PIC'         => ['id' => 0, 'type' => 'dhru'],
     //
     // Other IMEI Check
     // 'ZTE_INFO'                 => 0,

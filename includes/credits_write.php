@@ -314,6 +314,8 @@ function credits_deduct(int $userId, string $serviceCode, array $input): array
 
 /**
  * Mark a successful run + persist provider output. No ledger change.
+ * Accepts both PENDING (sync PHP API) and PROCESSING (async DHRU) so a
+ * polled order can settle without juggling the state machine itself.
  */
 if (!function_exists('credits_mark_usage_success')) {
 function credits_mark_usage_success(string $publicId, array $output): void
@@ -324,11 +326,46 @@ function credits_mark_usage_success(string $publicId, array $output): void
              output = ?,
              completed_at = NOW(3),
              error_message = NULL
-         WHERE public_id = ? AND status = "PENDING"'
+         WHERE public_id = ? AND status IN ("PENDING", "PROCESSING")'
     )->execute([
         json_encode($output, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
         $publicId,
     ]);
+}
+}
+
+/**
+ * Mark a usage as PROCESSING (DHRU order placed). Stamps the provider
+ * order id so subsequent polls can map back without a join. Records
+ * last_polled_at = NOW() so the debounce window starts fresh.
+ *
+ * Idempotent: if the row is already PROCESSING / SUCCESS / FAILED /
+ * REFUNDED we don't downgrade its state.
+ */
+if (!function_exists('credits_mark_usage_processing')) {
+function credits_mark_usage_processing(string $publicId, string $providerOrderId): void
+{
+    db()->prepare(
+        'UPDATE service_usages
+         SET status            = "PROCESSING",
+             provider_order_id = ?,
+             last_polled_at    = NOW(3)
+         WHERE public_id = ? AND status = "PENDING"'
+    )->execute([$providerOrderId, $publicId]);
+}
+}
+
+/**
+ * Bump last_polled_at on a PROCESSING usage. Used by status.php to
+ * debounce calls to the provider when a tight polling loop hammers it.
+ */
+if (!function_exists('credits_touch_usage_polled')) {
+function credits_touch_usage_polled(string $publicId): void
+{
+    db()->prepare(
+        'UPDATE service_usages SET last_polled_at = NOW(3)
+         WHERE public_id = ? AND status = "PROCESSING"'
+    )->execute([$publicId]);
 }
 }
 

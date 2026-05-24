@@ -19,14 +19,23 @@ class InsufficientCreditError extends RuntimeException {}
 class TopUpAlreadyCreditedError extends RuntimeException {}
 
 /**
- * Insert a PENDING top-up order. The caller (api/topup/create) will then ask
- * Stripe to create a checkout session and store the session id on this row.
+ * Insert a PENDING top-up order. The caller (api/topup/<provider>-create)
+ * will then ask the provider to create a checkout/order and store the
+ * resulting external id on the row via credits_attach_charge_id().
  */
 if (!function_exists('credits_create_topup_order')) {
-function credits_create_topup_order(int $userId, string $amount, string $currency, string $idempotencyKey): array
-{
+function credits_create_topup_order(
+    int $userId,
+    string $amount,
+    string $currency,
+    string $idempotencyKey,
+    string $provider = 'stripe'
+): array {
     if (!preg_match('/^\d+(\.\d{1,2})?$/', $amount) || (float) $amount <= 0) {
         throw new RuntimeException('Invalid top-up amount.');
+    }
+    if (!in_array($provider, ['stripe', 'paypal', 'binancepay'], true)) {
+        throw new RuntimeException('Unknown payment provider: ' . $provider);
     }
 
     $pdo = db();
@@ -43,8 +52,8 @@ function credits_create_topup_order(int $userId, string $amount, string $currenc
     $pdo->prepare(
         'INSERT INTO topup_orders
             (public_id, user_id, amount, currency, status, provider, idempotency_key)
-         VALUES (?, ?, ?, ?, "PENDING", "stripe", ?)'
-    )->execute([$publicId, $userId, $amount, $currency, $idempotencyKey]);
+         VALUES (?, ?, ?, ?, "PENDING", ?, ?)'
+    )->execute([$publicId, $userId, $amount, $currency, $provider, $idempotencyKey]);
 
     $stmt = $pdo->prepare('SELECT * FROM topup_orders WHERE id = ?');
     $stmt->execute([$pdo->lastInsertId()]);
@@ -63,7 +72,13 @@ function credits_attach_charge_id(int $orderId, string $chargeId): void
 /**
  * Credit a paid top-up order. Idempotent: if the order is already CREDITED,
  * returns silently without double-issuing credits. This is the function the
- * Stripe webhook calls.
+ * provider webhooks call.
+ *
+ * If the order's provider has a bonus_pct configured in
+ * data/payment_methods.php, a second BONUS row is appended in the same
+ * transaction (e.g. Binance Pay = +5% to encourage USDT settlement).
+ * Both rows share the order's public_id as reference_id so they sort
+ * together in the credit history view.
  */
 if (!function_exists('credits_issue_topup')) {
 function credits_issue_topup(string $publicId): array
@@ -99,10 +114,12 @@ function credits_issue_topup(string $publicId): array
         $stmt->execute([$order['user_id']]);
         $balance = (float) $stmt->fetchColumn();
 
-        $amount = (float) $order['amount'];
-        $newBalance = $balance + $amount;
+        $amount   = (float) $order['amount'];
+        $provider = (string) $order['provider'];
+        [$providerLabel, $bonusPct] = credits_provider_meta($provider);
+        $bonus = $bonusPct > 0 ? round($amount * $bonusPct, 2) : 0.0;
 
-        // Append the credit row.
+        $newBalance = $balance + $amount;
         $pdo->prepare(
             'INSERT INTO credit_transactions
                 (user_id, amount, type, reference_type, reference_id, balance_after, description)
@@ -112,8 +129,23 @@ function credits_issue_topup(string $publicId): array
             number_format($amount, 2, '.', ''),
             $order['public_id'],
             number_format($newBalance, 2, '.', ''),
-            'Top-up via Stripe',
+            'Top-up via ' . $providerLabel,
         ]);
+
+        if ($bonus > 0) {
+            $newBalance += $bonus;
+            $pdo->prepare(
+                'INSERT INTO credit_transactions
+                    (user_id, amount, type, reference_type, reference_id, balance_after, description)
+                 VALUES (?, ?, "BONUS", "TopUpOrder", ?, ?, ?)'
+            )->execute([
+                $order['user_id'],
+                number_format($bonus, 2, '.', ''),
+                $order['public_id'],
+                number_format($newBalance, 2, '.', ''),
+                sprintf('+%s%% %s bonus', rtrim(rtrim(number_format($bonusPct * 100, 1), '0'), '.'), $providerLabel),
+            ]);
+        }
 
         // Update cached balance + order status.
         $pdo->prepare('UPDATE users SET cached_balance = ? WHERE id = ?')
@@ -129,14 +161,36 @@ function credits_issue_topup(string $publicId): array
 
         $pdo->commit();
 
-        // Re-fetch the order to return current state.
         $stmt = $pdo->prepare('SELECT * FROM topup_orders WHERE id = ?');
         $stmt->execute([$order['id']]);
-        return ['order' => $stmt->fetch(), 'credited_now' => true];
+        return ['order' => $stmt->fetch(), 'credited_now' => true, 'bonus' => $bonus];
     } catch (Throwable $e) {
         $pdo->rollBack();
         throw $e;
     }
+}
+}
+
+if (!function_exists('credits_provider_meta')) {
+/**
+ * Returns [displayLabel, bonusPct] for a topup_orders.provider string.
+ * Looks the provider up in data/payment_methods.php and falls back to
+ * a titlecased version of the provider name with zero bonus.
+ */
+function credits_provider_meta(string $provider): array
+{
+    static $cache = null;
+    if ($cache === null) {
+        $cache = [];
+        $methods = require dirname(__DIR__) . '/data/payment_methods.php';
+        foreach ($methods as $m) {
+            $p = (string) ($m['provider'] ?? '');
+            if ($p !== '' && !isset($cache[$p])) {
+                $cache[$p] = [(string) ($m['label'] ?? ucfirst($p)), (float) ($m['bonus_pct'] ?? 0)];
+            }
+        }
+    }
+    return $cache[$provider] ?? [ucfirst($provider), 0.0];
 }
 }
 

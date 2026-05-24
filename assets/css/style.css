@@ -1548,6 +1548,167 @@ a:hover { color: var(--primary-600); }
     .topup-form { padding: 20px; }
 }
 
+/* ------------------- Payment methods table (ifreeicloud-style) ----------- */
+.pm-table {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+}
+.pm-table-head, .pm-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(120px, 0.9fr) 70px 100px 110px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+}
+.pm-table-head {
+    background: var(--surface-alt);
+    border-bottom: 1px solid var(--border);
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+.pm-row + .pm-row { border-top: 1px solid var(--border); }
+.pm-row:hover { background: rgba(79, 70, 229, .03); }
+
+.pm-col-method {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+.pm-icon {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-alt);
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.pm-name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+.pm-label {
+    font-weight: 600;
+    color: var(--text-strong);
+    font-size: .98rem;
+}
+.pm-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(16, 185, 129, .12);
+    color: var(--success, #047857);
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    letter-spacing: .02em;
+}
+
+.pm-col-fee, .pm-col-min, .pm-col-max {
+    font-variant-numeric: tabular-nums;
+    color: var(--text-soft);
+    font-size: .92rem;
+}
+
+.pm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    background: var(--success, #10b981);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-size: .88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, transform .05s;
+    box-shadow: 0 1px 2px rgba(0,0,0,.08), inset 0 -1px 0 rgba(0,0,0,.12);
+}
+.pm-btn:hover { background: #0f9a72; }
+.pm-btn:active { transform: translateY(1px); }
+.pm-btn:disabled { opacity: .55; cursor: not-allowed; }
+.pm-btn.loading .pm-btn-label { opacity: .8; }
+.pm-btn.loading .btn-spinner { display: inline-block; }
+.pm-btn .btn-spinner { display: none; }
+
+@media (max-width: 720px) {
+    .pm-table-head { display: none; }
+    .pm-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px 14px;
+        padding: 16px;
+    }
+    .pm-col-method { grid-column: 1 / -1; }
+    .pm-col-pay   { grid-column: 1 / -1; order: 5; }
+    .pm-col-fee::before { content: 'Fee: '; color: var(--text-muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+    .pm-col-min::before { content: 'Min: '; color: var(--text-muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+    .pm-col-max::before { content: 'Max: '; color: var(--text-muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; }
+}
+
+/* Binance Pay QR page */
+.bp-pay {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 32px;
+    margin-top: 28px;
+}
+.bp-pay-head h1 { margin: 0 0 4px; font-size: 1.6rem; color: var(--text-strong); }
+.bp-pay-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+    margin-top: 22px;
+}
+.bp-pay-qr {
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.bp-pay-qr img { display: block; max-width: 100%; height: auto; }
+.bp-pay-qr-empty {
+    color: var(--text-muted);
+    font-size: .9rem;
+    padding: 60px 20px;
+    text-align: center;
+}
+.bp-pay-info h2 { font-size: 1.05rem; color: var(--text-strong); margin: 0 0 12px; }
+.bp-pay-info ol { margin: 0 0 18px 18px; padding: 0; color: var(--text-soft); line-height: 1.7; }
+.bp-pay-info ol li { margin: 0 0 4px; }
+.bp-pay-bonus {
+    margin-top: 18px;
+    padding: 12px 14px;
+    background: rgba(16, 185, 129, .08);
+    border: 1px solid rgba(16, 185, 129, .25);
+    border-radius: var(--radius-sm);
+    color: var(--text-strong);
+    font-size: .92rem;
+}
+@media (max-width: 720px) {
+    .bp-pay { padding: 20px; }
+    .bp-pay-grid { grid-template-columns: 1fr; gap: 22px; }
+}
+
 /* ------------------- Filter pills + pagination + secondary btn ------------------- */
 .filter-pills {
     display: flex;

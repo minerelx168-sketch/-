@@ -53,6 +53,23 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
 
         <form id="check-form" class="check-form" autocomplete="off" novalidate>
             <fieldset>
+                <legend>IMEI or serial</legend>
+                <input
+                    id="imei"
+                    name="imei"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="\d*"
+                    maxlength="17"
+                    placeholder="Enter IMEI / Serial"
+                    autocomplete="off"
+                    required>
+                <p class="hint" style="color:var(--text-muted);text-align:left;margin:8px 4px 0;">
+                    Dial <code>*#06#</code> on the phone to display the IMEI.
+                </p>
+            </fieldset>
+
+            <fieldset>
                 <legend>Service</legend>
                 <select name="code" id="service-select" required>
                     <?php foreach ($categories as $group):
@@ -74,7 +91,7 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
                                 <option value="<?= htmlspecialchars($code, ENT_QUOTES, 'UTF-8') ?>"
                                         data-cost="<?= htmlspecialchars((string) $cost, ENT_QUOTES, 'UTF-8') ?>"
                                         <?= $code === $defaultCode ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?> &mdash; <?= $priceLabel ?> &mdash; ⚡ Instant
+                                    <?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?> &mdash; <?= $priceLabel ?>
                                 </option>
                             <?php endforeach; ?>
                         </optgroup>
@@ -92,23 +109,6 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
                     <strong id="sel-cost">&nbsp;</strong>
                 </div>
             </div>
-
-            <fieldset>
-                <legend>IMEI or serial</legend>
-                <input
-                    id="imei"
-                    name="imei"
-                    type="text"
-                    inputmode="numeric"
-                    pattern="\d*"
-                    maxlength="17"
-                    placeholder="Enter 15-digit IMEI"
-                    autocomplete="off"
-                    required>
-                <p class="hint" style="color:var(--text-muted);text-align:left;margin:8px 4px 0;">
-                    Dial <code>*#06#</code> on the phone to display the IMEI.
-                </p>
-            </fieldset>
 
             <button type="submit" id="check-submit" class="btn-primary-block">
                 <span class="btn-label">Run check</span>

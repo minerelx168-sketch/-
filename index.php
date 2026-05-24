@@ -23,30 +23,30 @@ try {
     // demo (and any deploy with a temporarily down DB) still shows the full
     // dropdown. Prices match the operator's selling sheet, USD.
     $services = [
-        'IMEI_BASIC'                => ['name' => 'Free IMEI Check',                     'cost' => '0.00'],
-        'APPLE_BASIC'               => ['name' => 'Apple Check Basic',                   'cost' => '0.10'],
-        'APPLE_ICLOUD_STATUS'       => ['name' => 'Apple FMI iCloud (ON/OFF)',           'cost' => '0.01'],
-        'APPLE_ICLOUD_CLEAN'        => ['name' => 'Apple iCloud (Clean/Lost)',           'cost' => '0.03'],
-        'APPLE_MAC_ICLOUD_STATUS'   => ['name' => 'Apple iCloud MacBook/iMac (ON/OFF)',  'cost' => '0.30'],
-        'APPLE_MAC_ICLOUD_CLEAN'    => ['name' => 'Apple iCloud MacBook/iMac (Clean/Lost)', 'cost' => '0.40'],
-        'APPLE_WARRANTY'            => ['name' => 'Apple Warranty / Activation',         'cost' => '0.04'],
-        'APPLE_SIM_LOCK'            => ['name' => 'Apple SIM-Lock Status',               'cost' => '0.03'],
-        'APPLE_PART_NUMBER'         => ['name' => 'Apple Part Number (MPN)',             'cost' => '0.10'],
-        'APPLE_MDM'                 => ['name' => 'Apple MDM (ON/OFF)',                  'cost' => '0.35'],
-        'APPLE_GSX_LIGHT'           => ['name' => 'Apple GSX: Sold By, Case, Replacement', 'cost' => '1.00'],
-        'APPLE_CASE_REPAIR_HISTORY' => ['name' => 'Apple GSX: Case & Repair History',    'cost' => '1.20'],
-        'APPLE_SOLD_BY_COVERAGE'    => ['name' => 'Apple GSX: Sold By, Coverage',        'cost' => '2.00'],
-        'APPLE_FULL_GSX'            => ['name' => 'Apple GSX: Full Report',              'cost' => '2.30'],
-        'SAMSUNG_INFO'              => ['name' => 'Samsung Info + Knox Guard',           'cost' => '0.10'],
-        'HUAWEI_INFO'               => ['name' => 'Huawei Info',                         'cost' => '0.03'],
-        'XIAOMI_STATUS'             => ['name' => 'Xiaomi Info + Mi ID',                 'cost' => '0.10'],
-        'HONOR_INFO'                => ['name' => 'Honor Info',                          'cost' => '0.10'],
-        'PIXEL_INFO'                => ['name' => 'Google Pixel Info',                   'cost' => '0.10'],
-        'MOTOROLA_INFO'             => ['name' => 'Motorola Info',                       'cost' => '0.10'],
-        'LENOVO_INFO'               => ['name' => 'Lenovo Info',                         'cost' => '0.10'],
-        'TMOBILE_USA'               => ['name' => 'T-Mobile USA Status',                 'cost' => '0.10'],
-        'BLACKLIST_SIMPLE'          => ['name' => 'WorldWide Blacklist (Simple)',        'cost' => '0.01'],
-        'BLACKLIST_FULL'            => ['name' => 'WorldWide Blacklist (Full Info)',     'cost' => '0.10'],
+        'IMEI_BASIC'                => ['name' => 'Free IMEI Check',                                                              'cost' => '0.00'],
+        'APPLE_BASIC'               => ['name' => 'Apple Check Basic',                                                            'cost' => '0.10'],
+        'APPLE_ICLOUD_STATUS'       => ['name' => 'Apple Check Service - FMI iCloud (ON/OFF)',                                    'cost' => '0.01'],
+        'APPLE_ICLOUD_CLEAN'        => ['name' => 'Apple Check Service - iCloud (Clean/Lost)',                                    'cost' => '0.03'],
+        'APPLE_MAC_ICLOUD_STATUS'   => ['name' => 'Apple Check Service - MacBook, iMac iCloud (ON/OFF)',                          'cost' => '0.30'],
+        'APPLE_MAC_ICLOUD_CLEAN'    => ['name' => 'Apple Check Service - MacBook, iMac iCloud (Clean/Lost)',                      'cost' => '0.40'],
+        'APPLE_WARRANTY'            => ['name' => 'Apple Check Service - Warranty/Activation Status',                             'cost' => '0.04'],
+        'APPLE_SIM_LOCK'            => ['name' => 'Apple Check Service - SimLock Status',                                         'cost' => '0.03'],
+        'APPLE_PART_NUMBER'         => ['name' => 'Apple Check Service - Part Number (MPN)',                                      'cost' => '0.10'],
+        'APPLE_MDM'                 => ['name' => 'Apple Check Service - MDM (ON/OFF)',                                           'cost' => '0.35'],
+        'APPLE_GSX_LIGHT'           => ['name' => 'GSX - Sold By, Case History, Replacement History, Activation Policy',          'cost' => '1.00'],
+        'APPLE_CASE_REPAIR_HISTORY' => ['name' => 'GSX - Case History, Repair History',                                           'cost' => '1.20'],
+        'APPLE_SOLD_BY_COVERAGE'    => ['name' => 'GSX - Sold By, Coverage',                                                      'cost' => '2.00'],
+        'APPLE_FULL_GSX'            => ['name' => 'GSX - Sold By, Case History, Replacement History, Activation Policy (FULL INFO)', 'cost' => '2.30'],
+        'SAMSUNG_INFO'              => ['name' => 'Samsung Check Service - Model, Warranty, Carrier, Country, Knox Guard (ON/OFF)','cost' => '0.10'],
+        'HUAWEI_INFO'               => ['name' => 'Huawei Check Service - Model, Warranty, Country',                              'cost' => '0.03'],
+        'XIAOMI_STATUS'             => ['name' => 'Xiaomi Check Service - Model, Warranty, Country, Mi ID (ON/OFF)',              'cost' => '0.10'],
+        'HONOR_INFO'                => ['name' => 'Honor Check Service - Model, Warranty, Country',                               'cost' => '0.10'],
+        'PIXEL_INFO'                => ['name' => 'Google Pixel Check Service - Model, Warranty, Country',                        'cost' => '0.10'],
+        'MOTOROLA_INFO'             => ['name' => 'Motorola Check Service - Model, Warranty, Country',                            'cost' => '0.10'],
+        'LENOVO_INFO'               => ['name' => 'Lenovo Check Service - Model, Warranty, Country',                              'cost' => '0.10'],
+        'TMOBILE_USA'               => ['name' => 'Check Service - T-Mobile USA Clean/Blocked/Unpaid Status',                     'cost' => '0.10'],
+        'BLACKLIST_SIMPLE'          => ['name' => 'Check Service - GSMA Blacklist Status',                                        'cost' => '0.01'],
+        'BLACKLIST_FULL'            => ['name' => 'Check Service - GSMA Blacklist Full Report',                                   'cost' => '0.10'],
     ];
     foreach ($services as $code => &$svc) $svc['code'] = $code;
     unset($svc);
@@ -67,41 +67,47 @@ layout_head(
             </p>
 
             <form id="imei-form" class="hero-lookup" autocomplete="off" novalidate>
-                <label for="service-select" class="sr-only">Service</label>
-                <select id="service-select" name="code" class="hero-select" required>
-                    <?php foreach ($categories as $group):
-                        $opts = array_filter($group['codes'], fn($c) => isset($services[$c]));
-                        if (!$opts) continue; ?>
-                        <optgroup label="<?= htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8') ?>">
-                            <?php foreach ($opts as $code):
-                                $svc  = $services[$code];
-                                $cost = (float) $svc['cost'];
-                                $priceLabel = $cost === 0.0 ? 'FREE' : '$' . number_format($cost, 2);
-                            ?>
-                                <option value="<?= htmlspecialchars($code, ENT_QUOTES, 'UTF-8') ?>"
-                                        data-cost="<?= htmlspecialchars((string) $cost, ENT_QUOTES, 'UTF-8') ?>"
-                                        <?= $code === 'IMEI_BASIC' ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($svc['name'], ENT_QUOTES, 'UTF-8') ?> &mdash; <?= $priceLabel ?> &mdash; ⚡
-                                </option>
-                            <?php endforeach; ?>
-                        </optgroup>
-                    <?php endforeach; ?>
-                </select>
+                <label for="imei" class="hero-field">
+                    <span class="hero-field-icon"><?= icon('phone', 18) ?></span>
+                    <input
+                        id="imei"
+                        name="imei"
+                        type="text"
+                        inputmode="numeric"
+                        pattern="\d*"
+                        maxlength="17"
+                        placeholder="Enter IMEI / Serial"
+                        required>
+                </label>
 
-                <label for="imei" class="sr-only">IMEI number</label>
-                <input
-                    id="imei"
-                    name="imei"
-                    type="text"
-                    inputmode="numeric"
-                    pattern="\d*"
-                    maxlength="17"
-                    placeholder="Enter 15-digit IMEI (e.g. 359152060000003)"
-                    required>
-                <button type="submit" id="submit-btn">
+                <label for="service-select" class="hero-field">
+                    <span class="hero-field-icon"><?= icon('specs', 18) ?></span>
+                    <select id="service-select" name="code" class="hero-select" required>
+                        <?php foreach ($categories as $group):
+                            $opts = array_filter($group['codes'], fn($c) => isset($services[$c]));
+                            if (!$opts) continue; ?>
+                            <optgroup label="<?= htmlspecialchars($group['name'], ENT_QUOTES, 'UTF-8') ?>">
+                                <?php foreach ($opts as $code):
+                                    $svc  = $services[$code];
+                                    $cost = (float) $svc['cost'];
+                                    $priceLabel = $cost === 0.0 ? 'FREE' : '$' . number_format($cost, 2);
+                                ?>
+                                    <option value="<?= htmlspecialchars($code, ENT_QUOTES, 'UTF-8') ?>"
+                                            data-cost="<?= htmlspecialchars((string) $cost, ENT_QUOTES, 'UTF-8') ?>"
+                                            <?= $code === 'IMEI_BASIC' ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($svc['name'], ENT_QUOTES, 'UTF-8') ?> &mdash; <?= $priceLabel ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </optgroup>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+
+                <button type="submit" id="submit-btn" class="hero-submit">
                     <span class="btn-label">Check IMEI</span>
                     <span class="btn-spinner" aria-hidden="true"></span>
                 </button>
+
                 <p id="imei-hint" class="hint">
                     Dial <code>*#06#</code> on your phone to display the IMEI.
                     Premium checks require <a href="/login.php">sign-in</a>.

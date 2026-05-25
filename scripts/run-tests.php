@@ -75,18 +75,22 @@ function invariant(int $userId, string $note = ''): void
 
 function with_test_user(callable $fn): void
 {
-    $pdo = db();
+    // Use db() inline rather than caching the handle: the concurrency
+    // test calls db_disconnect() before forking, and a cached PDO held
+    // here would keep the parent's socket alive across the fork (which a
+    // child would then tear down). Calling db() each time always returns
+    // the current process's live connection.
     $email = 'tests+' . bin2hex(random_bytes(4)) . '@example.com';
-    $pdo->prepare('INSERT INTO users (email, name, cached_balance) VALUES (?, ?, 0)')
+    db()->prepare('INSERT INTO users (email, name, cached_balance) VALUES (?, ?, 0)')
         ->execute([$email, 'Test User']);
-    $userId = (int) $pdo->lastInsertId();
+    $userId = (int) db()->lastInsertId();
     try {
         $fn($userId);
     } finally {
-        $pdo->prepare('DELETE FROM credit_transactions WHERE user_id = ?')->execute([$userId]);
-        $pdo->prepare('DELETE FROM service_usages    WHERE user_id = ?')->execute([$userId]);
-        $pdo->prepare('DELETE FROM topup_orders     WHERE user_id = ?')->execute([$userId]);
-        $pdo->prepare('DELETE FROM users            WHERE id      = ?')->execute([$userId]);
+        db()->prepare('DELETE FROM credit_transactions WHERE user_id = ?')->execute([$userId]);
+        db()->prepare('DELETE FROM service_usages    WHERE user_id = ?')->execute([$userId]);
+        db()->prepare('DELETE FROM topup_orders     WHERE user_id = ?')->execute([$userId]);
+        db()->prepare('DELETE FROM users            WHERE id      = ?')->execute([$userId]);
     }
 }
 
@@ -102,6 +106,22 @@ function with_topup_order(int $userId, float $amount, callable $fn): void
     )->execute([$publicId, $userId, number_format($amount, 2, '.', ''), $idemKey]);
     $fn($publicId);
 }
+
+// =========================================================================
+//  Test fixture: a known paid service priced at 15.
+//
+//  The deduct/refund/concurrency assertions below are written against a
+//  fixed cost of 15 (balance 100 -> 85, floor(100/15) = 6 survivors).
+//  The live USD catalog renamed this lookup to BLACKLIST_SIMPLE / _FULL
+//  at sub-dollar prices, so seed a dedicated 'BLACKLIST' row here instead
+//  of coupling the test to whatever the production price list happens to
+//  be. Removed again before the summary.
+// =========================================================================
+db()->prepare(
+    "INSERT INTO service_prices (code, name, cost, active)
+     VALUES ('BLACKLIST', 'Blacklist Status Check (test fixture)', 15.00, 1)
+     ON DUPLICATE KEY UPDATE cost = VALUES(cost), active = VALUES(active)"
+)->execute();
 
 // =========================================================================
 //  T1. signup
@@ -242,6 +262,11 @@ if (!function_exists('pcntl_fork')) {
         )->execute([$userId]);
         db()->prepare('UPDATE users SET cached_balance = 100 WHERE id = ?')->execute([$userId]);
 
+        // Drop the parent's connection before forking so children don't
+        // inherit (and then tear down) a shared MySQL socket. Each process
+        // — children and the parent below — reopens its own on next use.
+        db_disconnect();
+
         $pids = []; $succ = 0; $fail = 0;
         for ($i = 0; $i < 10; $i++) {
             $pid = pcntl_fork();
@@ -274,6 +299,9 @@ if (!function_exists('pcntl_fork')) {
         invariant($userId, 'after concurrency');
     });
 }
+
+// Remove the test fixture service so we don't leave it in the catalog.
+db()->prepare("DELETE FROM service_prices WHERE code = 'BLACKLIST'")->execute();
 
 // =========================================================================
 //  Summary

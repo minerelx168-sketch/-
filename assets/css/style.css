@@ -496,6 +496,18 @@ a:hover { color: var(--primary-600); }
 .rline--model { font-size: 1.08rem; margin-bottom: 2px; }
 .rline .rk { color: var(--text-strong); }
 .rline strong { color: var(--text-strong); font-weight: 700; }
+.rline--section { margin-top: 12px; font-weight: 700; }
+.rline--section .rk { color: var(--text-strong); }
+.rline--sub {
+    text-align: left;
+    padding-left: 14px;
+    margin-left: 3px;
+    border-left: 2px solid var(--border);
+    color: var(--text-soft);
+    font-size: .9rem;
+    line-height: 1.6;
+    word-break: break-word;
+}
 .pill {
     display: inline-block;
     padding: 3px 13px;

@@ -222,15 +222,58 @@ function imei_provider_parse(string $provider, string $body): array
 
 /**
  * Pulls "Key: Value" pairs out of a result body (HTML, plain text or JSON).
+ *
+ * Repeating sections (Cases History / Repair History / Warranty lists) are
+ * collected as arrays of raw lines under their header rather than flattened
+ * into colliding Key:Value keys (where the 5th "Warranty Type:" would clobber
+ * the first four). A section starts on a line that is JUST a known header and
+ * runs until the next header, a known flat terminator (Replacement Details),
+ * or end of body.
  */
 function imei_extract_details(string $text, array $decoded): array
 {
     $details = [];
 
-    $clean = strip_tags(str_replace(['<br>', '<br/>', '<br />'], "\n", $text));
-    foreach (preg_split('/\r?\n/', $clean) as $line) {
-        $line = trim($line);
-        if ($line === '' || !str_contains($line, ':')) {
+    $starters = [
+        'cases history'         => 'Cases History',
+        'case details'          => 'Case Details',
+        'repair history'        => 'Repair History',
+        'warranty details'      => 'Warranty Details',
+        'warranty entitlements' => 'Warranty Entitlements',
+        'warranty history'      => 'Warranty History',
+    ];
+    $enders = ['replacement details' => 1, 'replacement' => 1];
+
+    $clean   = strip_tags(str_replace(['<br>', '<br/>', '<br />'], "\n", $text));
+    $section = null;
+    foreach (preg_split('/\r?\n/', $clean) as $rawLine) {
+        $line = trim($rawLine);
+        if ($line === '') {
+            continue;
+        }
+
+        // Section header: the line is only the header (optionally ":"-suffixed).
+        $headerKey = strtolower(rtrim($line, " \t:"));
+        if (isset($starters[$headerKey])) {
+            $section = $starters[$headerKey];
+            $details[$section] ??= [];
+            continue;
+        }
+
+        $colonKey = str_contains($line, ':')
+            ? strtolower(trim(explode(':', $line, 2)[0]))
+            : '';
+
+        if ($section !== null) {
+            if ($colonKey !== '' && isset($enders[$colonKey])) {
+                $section = null; // terminator: fall through to flat parse
+            } else {
+                $details[$section][] = $line; // keep the raw line verbatim
+                continue;
+            }
+        }
+
+        if (!str_contains($line, ':')) {
             continue;
         }
         [$k, $v] = array_map('trim', explode(':', $line, 2));

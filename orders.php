@@ -163,7 +163,10 @@ layout_head('Order history · imeihub', 'Your past IMEI lookups.');
           var html='';
           if (d.details_curated) {
             Object.keys(det).forEach(function(k){ var v=det[k]; if(v===''||v==null)return;
-              if(String(k).toLowerCase()==='model'){ html+='<div class="rline rline--model"><span class="rk">Model:</span> <strong>'+esc(v)+'</strong></div>'; }
+              if(Array.isArray(v)){ if(!v.length)return;
+                html+='<div class="rline rline--section"><span class="rk">'+esc(k)+':</span></div>';
+                v.forEach(function(item){ html+='<div class="rline rline--sub">'+esc(item)+'</div>'; }); }
+              else if(String(k).toLowerCase()==='model'){ html+='<div class="rline rline--model"><span class="rk">Model:</span> <strong>'+esc(v)+'</strong></div>'; }
               else { html+='<div class="rline"><span class="rk">'+esc(k)+':</span> '+valueHtml(k,v)+'</div>'; } });
             if(html==='') html='<div class="rline">No data available.</div>';
           } else {

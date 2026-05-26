@@ -216,4 +216,77 @@ return [
     'PING_SMS_S2' => [
         'Number', 'Network Name', 'Country', 'Region', 'Status', 'Status Description',
     ],
+
+    // ---- List-heavy GSX / warranty-history reports ----------------------
+    // Flat header fields are pinned like any other service; the repeating
+    // blocks (Cases History / Repair History / Warranty lists) arrive from
+    // imei_extract_details() as arrays of raw lines and render as sub-lists.
+    'APPLE_CASE_REPAIR_HISTORY' => [
+        'Config Description', $modelDesc, 'IMEI', 'IMEI2', ['Serial', 'Serial Number'],
+        'Cases History', 'Replacement Details',
+    ],
+
+    'APPLE_SOLD_BY_HISTORY' => [
+        'Applied Activation Details', 'Applied Activation Policy Id',
+        ['CSNCSN2E ID', 'CSN/CSN2/EID', 'CSN/CSN2E ID'],
+        'Initial Activation Policy Details', 'Initial Activation Policy Id',
+        'Last Restore Date', 'Last Unbrick Os Build',
+        'Next Tether Policy Details', 'Next Tether Policy Id',
+        'Product Description', 'Product Version', 'Unlock Date', 'Unlocked',
+        'Carrier Name', 'First Activation Date', 'Wireless Mac Address',
+        'Labor Covered', 'Limited Warranty', 'Onsite Coverage', 'Part Covered', 'Personalized',
+        'Purchase Date', 'Registration Date', 'Warranty Status Code', 'Warranty Status Description',
+        'Config Code', 'Config Description', 'Loaner', 'Product Line',
+        'Sold To Name', 'Purchase Country',
+        ['MDM Lock', 'MDM Status'], ['iCloud Lock'], 'iCloud Status',
+        'Case Details',
+    ],
+
+    'APPLE_GSX_LIGHT' => [
+        'Config Description', $modelDesc, 'IMEI', 'IMEI2', ['Serial', 'Serial Number'],
+        'Config Code', 'Product Line', 'Product Version', 'Last Unbrick Os Build',
+        ['CSN/CSN2/EID', 'CSN/CSN2E ID'], 'Wireless Mac Address', 'Carrier Name',
+        'First Activation Date', 'Purchase Date', 'Registration Date', 'Last Restore Date', 'Unlock Date',
+        'Unlocked', 'Applied Activation Policy', 'Initial Activation Policy', 'Next Tether Policy',
+        'Personalized', 'Part Covered', 'Labor Covered', 'Onsite Coverage', 'Limited Warranty',
+        'Warranty Status', 'Sold To Name', 'Purchase Country',
+        ['MDM Lock', 'MDM Status'], ['iCloud Lock'],
+        'Cases History', 'Replacement Details',
+    ],
+
+    'APPLE_GSX_MAX' => [
+        'Config Description', ['Serial', 'Serial Number'], 'Config Code', 'Product Line',
+        'Purchase Date', 'Registration Date', 'Unlocked', 'Personalized',
+        'Part Covered', 'Labor Covered', 'Onsite Coverage', 'Limited Warranty',
+        'Warranty Status', 'Purchase Country', ['MDM Lock', 'MDM Status'], ['iCloud Lock'],
+        'Cases History', 'Repair History', 'Replacement Details',
+    ],
+
+    'HUAWEI_INFO' => [
+        ['Model Description'], 'Model Code', 'IMEI', ['S/N', 'Serial Number'],
+        'Item Code', 'Offer Code', 'Warranty Valid In', 'Warranty Status',
+        'Activation Date', 'Shipment Date', 'Order Date', 'Warranty Details',
+    ],
+
+    'HONOR_INFO' => [
+        ['Model Description'], 'Model Code', 'IMEI', ['S/N', 'Serial Number'],
+        'Item Code', 'Offer Code', 'Warranty Valid In', 'Warranty Status',
+        'Activation Date', 'Shipment Date', 'Order Date', 'Warranty Details',
+    ],
+
+    'MOTOROLA_INFO' => [
+        $model, 'IMEI', 'IMEI2', 'Serial Number', 'Factory Code', 'Item', 'Transceiver',
+        'Ulma', 'Upd by', 'Cit', 'Software', 'ICCID',
+        'Ship To Customer Id', 'Shipment Number', 'Shipment Date', 'Ship To Customer Name',
+        'Ship To City', 'Ship To Country Code',
+        'Sold To Customer Id', 'Sold To Customer Name', 'Sold To Country Name',
+        'Warranty Status', 'Purchased In', 'Warranty Entitlements',
+    ],
+
+    'LENOVO_INFO' => [
+        $model, 'Full Model', 'Serial Number', 'Brand', 'Series', 'Sub Series', 'Group',
+        'Machine Type', 'MTM', 'Warranty Registered', 'Warranty Status',
+        'Warranty Start Date', 'Warranty End Date', 'Shipment Date', 'Ship To Country',
+        'Purchased In', 'Warranty History',
+    ],
 ];

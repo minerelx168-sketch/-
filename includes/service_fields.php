@@ -56,9 +56,15 @@ function service_filter_details(string $code, array $details): array
                 continue;
             }
             $val = $details[$norm[$nk]];
-            if (is_scalar($val) && trim((string) $val) !== '') {
-                $out[$label]  = (string) $val;
-                $used[$nk]    = true;
+            if (is_array($val)) {
+                if ($val !== []) {           // repeating section (cases / warranty list)
+                    $out[$label] = array_values($val);
+                    $used[$nk]   = true;
+                    break;
+                }
+            } elseif (is_scalar($val) && trim((string) $val) !== '') {
+                $out[$label] = (string) $val;
+                $used[$nk]   = true;
                 break;
             }
         }

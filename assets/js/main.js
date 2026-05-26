@@ -195,7 +195,13 @@
             Object.keys(details).forEach(function (k) {
                 var v = details[k];
                 if (v === null || v === undefined || v === '') return;
-                if (String(k).toLowerCase() === 'model') {
+                if (Array.isArray(v)) {
+                    if (!v.length) return;
+                    lines += '<div class="rline rline--section"><span class="rk">' + escapeHtml(k) + ':</span></div>';
+                    v.forEach(function (item) {
+                        lines += '<div class="rline rline--sub">' + escapeHtml(item) + '</div>';
+                    });
+                } else if (String(k).toLowerCase() === 'model') {
                     lines += '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(v) + '</strong></div>';
                 } else {
                     lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';

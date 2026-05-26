@@ -10,14 +10,14 @@ $pdo = db();
 $q = isset($_GET['q']) ? trim((string) $_GET['q']) : '';
 if ($q !== '') {
     $stmt = $pdo->prepare(
-        'SELECT id, email, name, is_admin, cached_balance, created_at
+        'SELECT id, email, name, is_admin, banned_at, cached_balance, created_at
          FROM users WHERE email LIKE ? OR name LIKE ? ORDER BY id DESC LIMIT 200'
     );
     $like = '%' . $q . '%';
     $stmt->execute([$like, $like]);
 } else {
     $stmt = $pdo->query(
-        'SELECT id, email, name, is_admin, cached_balance, created_at
+        'SELECT id, email, name, is_admin, banned_at, cached_balance, created_at
          FROM users ORDER BY id DESC LIMIT 200'
     );
 }
@@ -27,6 +27,9 @@ layout_head('Admin · Users');
 admin_nav('users');
 ?>
 <div class="container" style="padding-bottom:60px">
+  <?php if (isset($_GET['deleted'])): ?>
+    <p style="background:#ecfdf5;color:#065f46;padding:10px 14px;border-radius:8px">User deleted.</p>
+  <?php endif; ?>
   <form method="get" style="margin:0 0 22px;display:flex;gap:10px;flex-wrap:wrap">
     <input type="search" name="q" value="<?= admin_h($q) ?>" placeholder="Search email or name&hellip;"
            style="padding:10px 12px;border-radius:8px;border:1px solid #374151;background:#0b0f17;color:#e5e7eb;min-width:280px">
@@ -62,7 +65,11 @@ admin_nav('users');
         <td style="padding:10px 12px"><?= admin_h($u['email']) ?></td>
         <td style="padding:10px 12px"><?= admin_h($u['name'] ?? '—') ?></td>
         <td style="padding:10px 12px;text-align:right">$<?= number_format((float) $u['cached_balance'], 2) ?></td>
-        <td style="padding:10px 12px"><?= ((int) $u['is_admin'] === 1) ? '<span style="color:#fbbf24">admin</span>' : '<span style="color:#6b7280">user</span>' ?></td>
+        <td style="padding:10px 12px"><?php
+          if (!empty($u['banned_at'])) echo '<span style="color:#b91c1c;font-weight:600">banned</span>';
+          elseif ((int) $u['is_admin'] === 1) echo '<span style="color:#b45309;font-weight:600">admin</span>';
+          else echo '<span style="color:#6b7280">user</span>';
+        ?></td>
         <td style="padding:10px 12px;color:#9ca3af"><?= admin_h(substr((string) $u['created_at'], 0, 10)) ?></td>
         <td style="padding:10px 12px"><a href="/admin/user.php?id=<?= (int) $u['id'] ?>" style="color:#60a5fa">Manage &rarr;</a></td>
       </tr>

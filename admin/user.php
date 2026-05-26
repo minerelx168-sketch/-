@@ -9,7 +9,7 @@ admin_require();
 $pdo = db();
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-$stmt = $pdo->prepare('SELECT id, email, name, is_admin, email_verified, cached_balance, created_at FROM users WHERE id = ? LIMIT 1');
+$stmt = $pdo->prepare('SELECT id, email, name, is_admin, banned_at, email_verified, cached_balance, created_at FROM users WHERE id = ? LIMIT 1');
 $stmt->execute([$id]);
 $user = $stmt->fetch();
 if (!$user) {
@@ -46,8 +46,10 @@ admin_nav('users');
 ?>
 <div class="container" style="padding-bottom:60px">
   <p style="margin:0 0 6px"><a href="/admin/users.php" style="color:#9ca3af">&larr; All users</a></p>
+  <?php $banned = !empty($user['banned_at']); ?>
   <h1 style="margin:0 0 4px;font-size:22px"><?= admin_h($user['name'] ?? $user['email']) ?>
     <?php if ((int) $user['is_admin'] === 1): ?><span style="font-size:13px;color:#fbbf24">(admin)</span><?php endif; ?>
+    <?php if ($banned): ?><span style="font-size:13px;color:#fff;background:#b91c1c;padding:2px 8px;border-radius:6px;margin-left:4px">BANNED</span><?php endif; ?>
   </h1>
   <p style="color:#9ca3af;margin:0 0 18px"><?= admin_h($user['email']) ?> &middot; user #<?= (int) $user['id'] ?>
      &middot; joined <?= admin_h(substr((string) $user['created_at'], 0, 10)) ?>
@@ -77,6 +79,26 @@ admin_nav('users');
     </form>
   </div>
 
+  <?php if ((int) $user['is_admin'] !== 1): ?>
+  <div style="border:1px solid #fecaca;background:#fef2f2;border-radius:12px;padding:16px 20px;margin-bottom:30px">
+    <strong style="color:#991b1b">Danger zone</strong>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
+      <form method="post" action="/admin/ban.php" onsubmit="return confirm('<?= $banned ? 'Unban' : 'Ban' ?> this user?')">
+        <input type="hidden" name="user_id" value="<?= (int) $user['id'] ?>">
+        <input type="hidden" name="csrf" value="<?= admin_h(admin_csrf_token()) ?>">
+        <input type="hidden" name="action" value="<?= $banned ? 'unban' : 'ban' ?>">
+        <button type="submit" style="padding:8px 16px;border-radius:8px;border:1px solid #f59e0b;background:#fff;color:#b45309;cursor:pointer;font-weight:600"><?= $banned ? 'Unban user' : 'Ban user' ?></button>
+      </form>
+      <form method="post" action="/admin/delete.php" onsubmit="return confirm('Permanently delete this account? Only works if it has no financial history.')">
+        <input type="hidden" name="user_id" value="<?= (int) $user['id'] ?>">
+        <input type="hidden" name="csrf" value="<?= admin_h(admin_csrf_token()) ?>">
+        <button type="submit" style="padding:8px 16px;border-radius:8px;border:0;background:#b91c1c;color:#fff;cursor:pointer;font-weight:600">Delete account</button>
+      </form>
+    </div>
+    <p style="color:#7f1d1d;font-size:12px;margin:10px 0 0">Ban revokes sessions and blocks login immediately. Delete is permanent and only allowed for accounts with no ledger / top-ups / usage.</p>
+  </div>
+  <?php endif; ?>
+
   <h2 style="font-size:16px;margin:0 0 8px">Top-up orders</h2>
   <div style="overflow-x:auto;margin-bottom:30px"><table style="width:100%;border-collapse:collapse;font-size:13px">
     <thead><tr><th style="<?= $th ?>">When</th><th style="<?= $th ?>">Provider</th><th style="<?= $th ?>;text-align:right">Amount</th><th style="<?= $th ?>">Status</th><th style="<?= $th ?>">Charge id</th></tr></thead>
@@ -104,7 +126,9 @@ admin_nav('users');
     </tbody>
   </table></div>
 
-  <h2 style="font-size:16px;margin:0 0 8px">Credit ledger</h2>
+  <h2 style="font-size:16px;margin:0 0 8px">Credit ledger
+    <a href="/admin/export.php?type=ledger&id=<?= (int) $user['id'] ?>" style="font-size:12px;font-weight:400;color:#2563eb;text-decoration:none">&#10515; CSV</a>
+  </h2>
   <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
     <thead><tr><th style="<?= $th ?>">When</th><th style="<?= $th ?>">Type</th><th style="<?= $th ?>;text-align:right">Amount</th><th style="<?= $th ?>;text-align:right">After</th><th style="<?= $th ?>">Description</th></tr></thead>
     <tbody>

@@ -5,6 +5,7 @@
     var input   = document.getElementById('imei');
     var button  = document.getElementById('submit-btn');
     var resultEl = document.getElementById('result');
+    var requestStartedAt = 0;
 
     if (!form) return;
 
@@ -30,7 +31,7 @@
 
     function showError(msg) {
         resultEl.hidden = false;
-        resultEl.classList.add('error');
+        resultEl.className = 'result error';
         resultEl.innerHTML =
             '<h2>Lookup failed</h2>' +
             '<p class="imei-meta">' + escapeHtml(msg) + '</p>';
@@ -76,7 +77,7 @@
     // /api/services/status.php?id=<publicId> right after this.
     function renderProcessing(publicId) {
         resultEl.hidden = false;
-        resultEl.classList.remove('error');
+        resultEl.className = 'result';
         resultEl.innerHTML =
             '<h2>Processing&hellip; <span class="badge cached">Async</span></h2>' +
             '<p class="imei-meta">Reference <code>' + escapeHtml(publicId) + '</code></p>' +
@@ -135,37 +136,54 @@
         activePollTimer = setTimeout(tick, delay);
     }
 
+    // A value is rendered as a colored pill when it is a short status
+    // token (EXPIRED / CLEAN / OFF / NO / UNLOCKED ...) that classifyValue
+    // can color. Longer values (model names, dates, IMEI numbers, free
+    // text like "Out Of Warranty") render as plain text.
+    function valueHtml(key, val) {
+        var cls = classifyValue(key, val);
+        var token = /^[\w.+/-]{1,16}$/.test(String(val).trim());
+        if (cls && token) {
+            return '<span class="pill pill-' + cls + '">' + escapeHtml(val) + '</span>';
+        }
+        return escapeHtml(val);
+    }
+
     function renderResult(data) {
         var details = data.details || {};
-        var brand = data.brand || details.Brand || details['Brand Name'] || details.Manufacturer || 'Unknown';
-        var model = data.model || details.Model || details['Model Name'] || details['Model Description'] || 'Unknown';
+        var brand = data.brand || details.Brand || details['Brand Name'] || details.Manufacturer || '';
+        var model = data.model || details.Model || details['Model Name'] || details['Model Description'] || '';
+        var modelStr = (details['Model Description'] || details['Model'] || (brand + ' ' + model)).trim()
+                       || details['Model Name'] || 'Unknown device';
+
+        // Keys already represented by the Model line / not worth repeating.
+        var skip = { 'brand name': 1, 'brand': 1, 'manufacturer': 1, 'model': 1, 'model name': 1, 'model description': 1 };
+
+        var lines = '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(modelStr) + '</strong></div>';
+        Object.keys(details).forEach(function (k) {
+            if (skip[String(k).toLowerCase()]) return;
+            var v = details[k];
+            if (v === null || v === undefined || v === '') return;
+            lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';
+        });
+
+        var secs = requestStartedAt ? ((Date.now() - requestStartedAt) / 1000).toFixed(1) : null;
+        var dateStr = new Date().toLocaleString('en-US', {
+            month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
+        }).toUpperCase();
 
         var html = '';
-        html += '<h2>' + escapeHtml(brand) + ' ' + escapeHtml(model);
-        html += ' <span class="badge' + (data.cached ? ' cached' : '') + '">' +
-                (data.cached ? 'Cached' : 'Verified') + '</span></h2>';
-        html += '<p class="imei-meta">IMEI <code>' + escapeHtml(data.imei) + '</code>' +
-                ' &middot; TAC <code>' + escapeHtml(data.tac || '') + '</code></p>';
-
-        var keys = Object.keys(details);
-        if (keys.length === 0) {
-            html += '<p class="result-empty">No additional details were returned.</p>';
-        } else {
-            html += '<dl class="result-fields">';
-            keys.forEach(function (k) {
-                var v = details[k];
-                if (v === null || v === undefined || v === '') return;
-                var cls = classifyValue(k, v);
-                html += '<div class="result-field">';
-                html +=   '<dt>' + escapeHtml(k) + '</dt>';
-                html +=   '<dd' + (cls ? ' class="rv-' + cls + '"' : '') + '>' + escapeHtml(v) + '</dd>';
-                html += '</div>';
-            });
-            html += '</dl>';
-        }
+        html += '<div class="result-banner">Order Processed!</div>';
+        html += '<div class="result-card">';
+        html +=   '<div class="result-lines">' + lines + '</div>';
+        html +=   '<div class="result-chips">';
+        html +=     '<span class="result-chip">' + (secs !== null ? escapeHtml(secs) + ' SECONDS' : 'COMPLETED') + '</span>';
+        html +=     '<span class="result-chip">' + escapeHtml(dateStr) + '</span>';
+        html +=   '</div>';
+        html += '</div>';
 
         resultEl.hidden = false;
-        resultEl.classList.remove('error');
+        resultEl.className = 'result result--report';
         resultEl.innerHTML = html;
     }
 
@@ -174,7 +192,7 @@
         var imei = input.value.replace(/\D+/g, '');
 
         resultEl.hidden = true;
-        resultEl.classList.remove('error');
+        resultEl.className = 'result';
 
         if (!luhnOk(imei)) {
             showError('Invalid IMEI. Please enter 15 digits (check for typos).');
@@ -183,6 +201,7 @@
 
         form.classList.add('loading');
         button.disabled = true;
+        requestStartedAt = Date.now();
 
         // If the form has a <select name="code">, use the selected option's
         // data-cost to decide between the free (IMEI_BASIC) and paid paths.
@@ -238,7 +257,7 @@
                 // 402 = insufficient credit. Surface a Top-up CTA inline.
                 if (resp.status === 402 || (resp.body && resp.body.error_code === 'INSUFFICIENT_CREDIT')) {
                     resultEl.hidden = false;
-                    resultEl.classList.add('error');
+                    resultEl.className = 'result error';
                     resultEl.innerHTML =
                         '<h2>Not enough credit</h2>' +
                         '<p class="imei-meta">' + escapeHtml(resp.body.error || 'Please top up your wallet.') + '</p>' +

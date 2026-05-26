@@ -433,6 +433,82 @@ a:hover { color: var(--primary-600); }
     color: var(--primary);
 }
 
+/* ---- Report card: "Order Processed!" banner + centered lines +
+   status pills + time/date chips (rendered by renderResult in main.js) ---- */
+.result.result--report {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    max-width: 720px;
+    text-align: left;
+}
+.result-banner {
+    background: var(--success);
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    padding: 20px 28px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 22px;
+}
+.result-card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 34px 32px 0;
+    text-align: center;
+    overflow: hidden;
+}
+.result-lines { padding-bottom: 26px; }
+.rline {
+    font-size: 1rem;
+    line-height: 2.05;
+    color: var(--text);
+    word-break: break-word;
+}
+.rline--model { font-size: 1.08rem; margin-bottom: 2px; }
+.rline .rk { color: var(--text-strong); }
+.rline strong { color: var(--text-strong); font-weight: 700; }
+.pill {
+    display: inline-block;
+    padding: 3px 13px;
+    border-radius: var(--radius-pill);
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: #fff;
+    vertical-align: middle;
+}
+.pill-success { background: var(--success); }
+.pill-danger  { background: var(--danger); }
+.pill-warn    { background: var(--warning); color: #1f2937; }
+.pill-muted   { background: var(--text-muted); }
+.result-chips {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 8px -32px 0;
+}
+.result-chip {
+    background: var(--surface-alt);
+    color: var(--text-soft);
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .03em;
+    padding: 9px 18px;
+    border-radius: 16px 16px 0 0;
+}
+@media (max-width: 560px) {
+    .result-card { padding: 24px 18px 0; }
+    .result-chips { margin: 8px -18px 0; }
+    .result-chip { padding: 8px 12px; font-size: .72rem; }
+}
+
 /* ------------------- Section heading utility ------------------- */
 .section-head { text-align: center; margin: 0 auto 36px; max-width: 600px; }
 .section-head h2 {

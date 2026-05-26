@@ -126,6 +126,19 @@ a:hover { color: var(--primary-600); }
     color: #fff;
     background: rgba(255, 255, 255, .07);
 }
+.nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .18);
+    color: #fff;
+    width: 40px; height: 38px;
+    border-radius: 9px;
+    cursor: pointer;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+    padding: 0;
+}
+.nav-toggle svg { width: 22px; height: 22px; }
 
 /* ------------------- Hero ------------------- */
 .hero {
@@ -1384,6 +1397,29 @@ a:hover { color: var(--primary-600); }
     border-color: var(--primary);
     box-shadow: var(--ring-primary);
 }
+.pw-field { position: relative; }
+.pw-field > input { padding-right: 46px !important; }
+.pw-field .pw-toggle {
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+    background: none; border: 0; padding: 5px;
+    color: var(--text-muted); cursor: pointer;
+    display: inline-flex; align-items: center;
+    border-radius: 6px;
+}
+.pw-field .pw-toggle:hover { color: var(--text-strong); }
+.pw-field .pw-toggle.is-on { color: var(--primary); }
+.auth-forgot { text-align: right; margin: -4px 0 2px; font-size: .88rem; }
+.auth-forgot a { color: var(--primary); text-decoration: none; }
+.auth-forgot a:hover { text-decoration: underline; }
+.auth-note {
+    background: rgba(22, 163, 74, .1);
+    color: var(--success);
+    border: 1px solid rgba(22, 163, 74, .25);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px; font-size: .9rem; margin: 0 0 18px;
+}
 .auth-form .otp-input {
     text-align: center;
     font-family: var(--font-mono);
@@ -2276,8 +2312,22 @@ a:hover { color: var(--primary-600); }
         grid-template-columns: 1fr;
     }
     .lookup-form button { width: 100%; padding: 14px; }
-    .site-nav { gap: 0; }
-    .site-nav a { padding: 6px 9px; font-size: .82rem; }
+    .nav-toggle { display: inline-flex; }
+    .site-nav {
+        position: absolute;
+        top: var(--header-h);
+        left: 0; right: 0;
+        flex-direction: column;
+        gap: 2px;
+        background: rgba(7, 11, 26, .98);
+        -webkit-backdrop-filter: saturate(180%) blur(8px);
+        backdrop-filter: saturate(180%) blur(8px);
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+        padding: 8px 16px 14px;
+        display: none;
+    }
+    .site-nav.is-open { display: flex; }
+    .site-nav a { padding: 11px 12px; font-size: .95rem; }
     .hero { padding: 56px 0 72px; }
     .hero h1 { font-size: 2rem; letter-spacing: -.02em; }
     .hero-stats { gap: 28px; }
@@ -2287,7 +2337,7 @@ a:hover { color: var(--primary-600); }
     .footer-inner { grid-template-columns: 1fr; gap: 24px; }
     .brand-headline { flex-direction: column; gap: 12px; }
     .service-headline { flex-direction: column; }
-    .site-account { margin-left: 4px; }
+    .site-account { margin-left: auto; }
     .account-chip { padding: 3px 3px 3px 10px; font-size: .8rem; gap: 6px; }
     .account-avatar { width: 24px; height: 24px; }
     .dashboard-head { flex-direction: column; }

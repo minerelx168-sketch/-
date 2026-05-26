@@ -26,9 +26,6 @@ layout_head(
             <div class="brand-grid">
                 <?php foreach ($brands as $b): ?>
                     <a class="brand-tile" href="/brand.php?slug=<?= urlencode($b['slug']) ?>">
-                        <span class="brand-tile-mark" style="background:<?= htmlspecialchars($b['color'], ENT_QUOTES) ?>">
-                            <?= htmlspecialchars(brand_initial($b['name']), ENT_QUOTES, 'UTF-8') ?>
-                        </span>
                         <span class="brand-tile-name"><?= htmlspecialchars($b['name'], ENT_QUOTES, 'UTF-8') ?></span>
                         <span class="brand-tile-meta"><?= count($b['models']) ?> models</span>
                     </a>

@@ -308,3 +308,125 @@ function signup_login_with_password(string $email, string $password): array
     return $user;
 }
 }
+
+if (!function_exists('signup_send_reset_email')) {
+function signup_send_reset_email(string $to, string $otp): bool
+{
+    $cfg     = require __DIR__ . '/config.php';
+    $appName = htmlspecialchars($cfg['app']['name'], ENT_QUOTES, 'UTF-8');
+    $appUrl  = htmlspecialchars($cfg['app']['url'],  ENT_QUOTES, 'UTF-8');
+    $otpSafe = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
+
+    $html = <<<HTML
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#f6f8fc;padding:32px 16px;">
+  <table align="center" cellspacing="0" cellpadding="0" style="background:#fff;border:1px solid #e5e9f0;border-radius:12px;max-width:520px;width:100%;">
+    <tr><td style="padding:32px 36px 8px 36px;">
+      <h2 style="margin:0 0 8px;font-size:1.4rem;color:#0b1220;letter-spacing:-.01em;">Reset your password</h2>
+      <p style="margin:0 0 24px;color:#475569;line-height:1.6;">
+        We received a request to reset your <strong>{$appName}</strong>
+        password. Enter the code below to set a new one. It expires in 10 minutes.
+      </p>
+      <div style="background:#f6f8fc;border:1px solid #e5e9f0;border-radius:10px;text-align:center;padding:22px;">
+        <div style="font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:2rem;letter-spacing:.4em;font-weight:700;color:#050818;">{$otpSafe}</div>
+      </div>
+      <p style="margin:24px 0 0;color:#64748b;font-size:.9rem;line-height:1.6;">
+        Didn't request this? You can safely ignore this email &mdash; your
+        password stays unchanged.
+      </p>
+    </td></tr>
+    <tr><td style="padding:16px 36px 28px;border-top:1px solid #eef2f7;color:#94a3b8;font-size:.82rem;">
+      Sent by {$appName} &middot; <a href="{$appUrl}" style="color:#4f46e5;text-decoration:none;">{$appUrl}</a>
+    </td></tr>
+  </table>
+</div>
+HTML;
+
+    $text = "Your {$appName} password reset code is: {$otp}\n\n"
+          . "It expires in 10 minutes. If you didn't request this, you can ignore the email.";
+
+    return resend_send_email($to, "Your {$appName} password reset code: {$otp}", $html, $text);
+}
+}
+
+if (!function_exists('signup_request_reset')) {
+/**
+ * Send a password-reset OTP IF a password account exists for the email.
+ * Silent for unknown / OAuth-only emails (no enumeration). Throttled.
+ */
+function signup_request_reset(string $email): void
+{
+    $email = signup_normalize_email($email);
+    $user  = signup_find_user_by_email($email);
+    if (!$user || empty($user['password_hash'])) {
+        return; // unknown or OAuth-only: act as if it worked
+    }
+    $stmt = db()->prepare(
+        'SELECT COUNT(*) FROM email_verifications
+         WHERE user_id = ? AND purpose = "reset"
+           AND created_at > DATE_SUB(NOW(), INTERVAL ? SECOND)'
+    );
+    $stmt->execute([(int) $user['id'], SIGNUP_RESEND_WINDOW_S]);
+    if ((int) $stmt->fetchColumn() >= SIGNUP_RESEND_MAX_PER_WINDOW) {
+        throw new RuntimeException('Too many reset codes sent. Please wait a few minutes.');
+    }
+    $otp = signup_issue_otp((int) $user['id'], 'reset');
+    signup_send_reset_email($email, $otp);
+}
+}
+
+if (!function_exists('signup_reset_password')) {
+/**
+ * Verify a 'reset' OTP and set a new password. Revokes existing sessions.
+ */
+function signup_reset_password(string $email, string $otp, string $newPassword): void
+{
+    $email = signup_normalize_email($email);
+    if (!preg_match('/^\d{6}$/', $otp)) {
+        throw new RuntimeException('Code must be 6 digits.');
+    }
+    if (!signup_password_is_strong_enough($newPassword)) {
+        throw new RuntimeException('Password must be at least 8 characters.');
+    }
+    $pdo = db();
+    $pdo->beginTransaction();
+    try {
+        $stmt = $pdo->prepare(
+            'SELECT u.id AS user_id, ev.id AS ev_id, ev.code_hash, ev.attempts, ev.expires_at
+             FROM users u
+             LEFT JOIN email_verifications ev
+               ON ev.user_id = u.id AND ev.purpose = "reset" AND ev.consumed_at IS NULL
+             WHERE u.email = ?
+             ORDER BY ev.id DESC LIMIT 1 FOR UPDATE'
+        );
+        $stmt->execute([$email]);
+        $row = $stmt->fetch();
+        if (!$row || !$row['ev_id']) {
+            throw new RuntimeException('No active reset code for this email. Request a new one.');
+        }
+        if (strtotime($row['expires_at']) <= time()) {
+            $pdo->prepare('UPDATE email_verifications SET consumed_at = NOW() WHERE id = ?')->execute([$row['ev_id']]);
+            throw new RuntimeException('Code expired. Request a new one.');
+        }
+        if (!hash_equals($row['code_hash'], hash('sha256', $otp))) {
+            $newAttempts = (int) $row['attempts'] + 1;
+            if ($newAttempts >= SIGNUP_OTP_MAX_ATTEMPTS) {
+                $pdo->prepare('UPDATE email_verifications SET attempts = ?, consumed_at = NOW() WHERE id = ?')->execute([$newAttempts, $row['ev_id']]);
+                $pdo->commit();
+                throw new RuntimeException('Too many wrong attempts. Request a new code.');
+            }
+            $pdo->prepare('UPDATE email_verifications SET attempts = ? WHERE id = ?')->execute([$newAttempts, $row['ev_id']]);
+            $pdo->commit();
+            throw new RuntimeException('Incorrect code.');
+        }
+        // Success: consume code, set new password, ensure verified, revoke sessions.
+        $pdo->prepare('UPDATE email_verifications SET consumed_at = NOW(), attempts = attempts + 1 WHERE id = ?')->execute([$row['ev_id']]);
+        $pdo->prepare('UPDATE users SET password_hash = ?, email_verified = COALESCE(email_verified, NOW()) WHERE id = ?')
+            ->execute([password_hash($newPassword, PASSWORD_BCRYPT), $row['user_id']]);
+        $pdo->prepare('DELETE FROM sessions WHERE user_id = ?')->execute([$row['user_id']]);
+        $pdo->commit();
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        throw $e;
+    }
+}
+}

@@ -26,9 +26,12 @@ layout_head('Create account · imeihub', 'Sign up to imeihub with your email add
                     <span>Email</span>
                     <input type="email" name="email" required autocomplete="email" placeholder="you@example.com">
                 </label>
-                <label>
+                <label class="pw-field">
                     <span>Password (8+ characters)</span>
                     <input type="password" name="password" required minlength="8" autocomplete="new-password">
+                    <button type="button" class="pw-toggle" aria-label="Show password">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
                 </label>
                 <button type="submit" class="btn-primary-block">
                     <span class="btn-label">Send verification code</span>

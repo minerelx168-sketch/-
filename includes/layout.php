@@ -44,7 +44,7 @@ function layout_head(string $title, string $description = ''): void
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/style.css?v=<?= @filemtime(__DIR__ . '/../assets/css/style.css') ?: '1' ?>">
 </head>
 <body>
 <header class="site-header">
@@ -54,7 +54,7 @@ function layout_head(string $title, string $description = ''): void
             <span class="brand-text"><?= $appName ?></span>
         </a>
         <?php $u = auth_user(); ?>
-        <nav class="site-nav">
+        <nav class="site-nav" id="site-nav">
             <?php if ($u): ?>
                 <a href="/check.php">Check</a>
                 <a href="/orders.php">Orders</a>
@@ -84,6 +84,9 @@ function layout_head(string $title, string $description = ''): void
                 <a href="/login.php" class="btn-signin">Sign in</a>
             <?php endif; ?>
         </div>
+        <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
     </div>
 </header>
 <main>
@@ -120,7 +123,24 @@ function layout_foot(): void
         </div>
     </div>
 </footer>
-<script src="/assets/js/main.js"></script>
+<script>
+(function () {
+    var t = document.querySelector('.nav-toggle'), n = document.getElementById('site-nav');
+    if (t && n) {
+        t.addEventListener('click', function () {
+            var open = n.classList.toggle('is-open');
+            t.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+    }
+    document.querySelectorAll('.pw-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var inp = btn.parentNode.querySelector('input');
+            if (inp) { inp.type = inp.type === 'password' ? 'text' : 'password'; btn.classList.toggle('is-on'); }
+        });
+    });
+})();
+</script>
+<script src="/assets/js/main.js?v=<?= @filemtime(__DIR__ . '/../assets/js/main.js') ?: '1' ?>"></script>
 </body>
 </html>
     <?php

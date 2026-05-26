@@ -45,8 +45,8 @@ INSERT INTO `service_prices` (`code`, `name`, `description`, `cost`, `active`) V
     ('APPLE_MAX_INFO',            'Apple Max Info (Premium)',                                                                       'Premium combined report.',                                                       0.70, 1), -- wholesale 0.35 (×2)
 
     -- ----- Apple iCloud -----
-    ('APPLE_ICLOUD_STATUS',       'Apple iCloud (ON / OFF)',                                                                        'Find My iPhone activation lock status.',                                         0.01, 1), -- wholesale 0.008 - sheet "FMI iCloud (ON/OFF)"
-    ('APPLE_ICLOUD_CLEAN',        'Apple iCloud (Clean / Lost)',                                                                    'iCloud Clean / Lost status.',                                                    0.03, 1), -- wholesale 0.02 - sheet
+    ('APPLE_ICLOUD_STATUS',       'Apple iCloud (ON / OFF)',                                                                        'Find My iPhone activation lock status.',                                         0.05, 1), -- wholesale 0.008 - min $0.05
+    ('APPLE_ICLOUD_CLEAN',        'Apple iCloud (Clean / Lost)',                                                                    'iCloud Clean / Lost status.',                                                    0.05, 1), -- wholesale 0.02 - min $0.05
     ('APPLE_ICLOUD_CLEAN_SN',     'Apple iCloud (Clean / Lost) SN',                                                                 'Clean / Lost status by serial number.',                                          0.10, 1), -- wholesale 0.05 (×2)
     ('APPLE_ICLOUD_ID_HINT',      'Apple iCloud ID Hint',                                                                           'Masked Apple ID the device is signed in to.',                                    0.80, 1), -- wholesale 0.40 (×2)
     ('APPLE_MAC_ICLOUD_STATUS',   'Apple iCloud MACBOOK/iMAC (ON / OFF)',                                                           'Find My status for MacBook / iMac.',                                             0.30, 1), -- wholesale 0.10 - sheet
@@ -65,11 +65,12 @@ INSERT INTO `service_prices` (`code`, `name`, `description`, `cost`, `active`) V
     ('APPLE_GSX_TETHER',          'Apple GSX Next Tether Policy',                                                                   'Apple GSX next tether policy.',                                                  0.20, 1), -- wholesale 0.10 (×2)
 
     -- ----- Apple GSX (Premium) -----
-    ('APPLE_CASE_REPAIR_HISTORY', 'Apple Case History, Repair History',                                                             'Apple case and repair history from GSX.',                                        1.20, 1), -- wholesale 1.45 - sheet (note: below wholesale!)
-    ('APPLE_SOLD_BY_COVERAGE',    'Apple Sold By, Coverage (Max Info)',                                                             'Original retailer + coverage status.',                                           2.00, 1), -- wholesale 1.70 - sheet
+    ('APPLE_CASE_REPAIR_HISTORY', 'Apple Case History, Replacement',                                                              'Apple case and repair history from GSX.',                                        1.10, 1), -- wholesale 0.55 (×2) - API ID 201
+    ('APPLE_SOLD_BY_INFO',        'Apple Sold By Info',                                                                             'Original retailer info from GSX.',                                               1.10, 1), -- wholesale 0.55 (×2) - API ID 928
+    ('APPLE_SOLD_BY_COVERAGE',    'Apple Sold By, Coverage (Max Info)',                                                             'Original retailer + coverage status.',                                           2.90, 1), -- wholesale 1.20 (×2.4)
     ('APPLE_SOLD_BY_HISTORY',     'Apple Sold By, Case History, Activation Policy',                                                 'Sold-by + case history + activation policy.',                                    4.20, 1), -- wholesale 2.10 (×2)
-    ('APPLE_GSX_LIGHT',           'Apple Sold By, Case History, Replacement, GSX Activation Policy',                                'Sold-by + case + replacement + activation policy.',                              1.00, 1), -- wholesale 0.75 - sheet
-    ('APPLE_FULL_GSX',            'Apple Sold By, Case History, Replacement, Activation Policy [ICCID & MAC] (Full GSX)',           'Full GSX dataset including ICCID & MAC.',                                        2.30, 1), -- wholesale 2.20 - sheet
+    ('APPLE_GSX_LIGHT',           'Apple Sold By, Case History, Replacement, GSX Activation Policy',                                'Sold-by + case + replacement + activation policy.',                              1.80, 1), -- wholesale 0.75 (×2.4)
+    ('APPLE_FULL_GSX',            'Apple Sold By, Case History, Replacement, Activation Policy [ICCID & MAC] (Full GSX)',           'Full GSX dataset including ICCID & MAC.',                                        3.50, 1), -- wholesale 1.45 (×2.4)
     ('APPLE_GSX_MAX',             'Apple Sold By, Case History, Replacement, Repair, GSX Activation Policy (Max Info)',             'GSX max-info: sold-by + case + replacement + repair + activation policy.',       2.60, 1), -- wholesale 1.30 (×2)
 
     -- ----- Worldwide Blacklist -----

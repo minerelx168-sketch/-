@@ -44,14 +44,15 @@ return [
         'pass' => env('DB_PASS', ''),
     ],
     'api' => [
-        'provider'        => env('IMEI_API_PROVIDER', 'sickw'),
+        'provider'        => env('IMEI_API_PROVIDER', 'unlock-service'),
         'key'             => env('IMEI_API_KEY', ''),
-        // Account username - only needed by DHRU async services
-        // (placeimeiorder / getimeiorder); the synchronous PHP API
-        // accepts the key alone.
+        // Separate DHRU API key for async services (placeimeiorder /
+        // getimeiorder). Falls back to the main key if not set.
+        'dhru_key'        => env('IMEI_DHRU_API_KEY', '') ?: env('IMEI_API_KEY', ''),
+        // Account username - needed by DHRU async services.
         'username'        => env('IMEI_API_USERNAME', ''),
-        'url'             => env('IMEI_API_URL', 'https://sickw.com/api.php'),
-        'default_service' => env('IMEI_API_DEFAULT_SERVICE', '0'),
+        'url'             => env('IMEI_API_URL', 'https://api.unlock-service.net'),
+        'default_service' => env('IMEI_API_DEFAULT_SERVICE', '1'),
     ],
     'google' => [
         'client_id'     => env('GOOGLE_CLIENT_ID', ''),

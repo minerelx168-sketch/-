@@ -52,22 +52,22 @@ return [
     // Apple Featured
     'APPLE_BASIC'                 => 214,
     'APPLE_CARRIER_LITE'          => 444,
-    'APPLE_CARRIER_PRO'           => 445,
+    'APPLE_CARRIER_PRO'           => ['id' => 445, 'type' => 'dhru'],
     'APPLE_CARRIER_PRO_PLUS'      => 448,
     'APPLE_MAX_INFO'              => 976,
 
     // Apple iCloud
     'APPLE_ICLOUD_STATUS'         => 10,
     'APPLE_ICLOUD_CLEAN'          => 11,
-    'APPLE_ICLOUD_CLEAN_SN'       => 847,
+    'APPLE_ICLOUD_CLEAN_SN'       => ['id' => 847, 'type' => 'dhru'],
     'APPLE_ICLOUD_ID_HINT'        => 176,
     'APPLE_MAC_ICLOUD_STATUS'     => 503,
-    'APPLE_MAC_ICLOUD_CLEAN'      => 574,
+    'APPLE_MAC_ICLOUD_CLEAN'      => ['id' => 574, 'type' => 'dhru'],
 
     // Apple MDM
     'APPLE_MDM'                   => 845,
     'APPLE_MDM_SN'                => 457,
-    'APPLE_MDM_FMI'               => 299,
+    'APPLE_MDM_FMI'               => ['id' => 299, 'type' => 'dhru'],
 
     // Apple Device Info
     'APPLE_WARRANTY'              => 806,
@@ -77,7 +77,8 @@ return [
     'APPLE_GSX_TETHER'            => 945,
 
     // Apple GSX (Premium)
-    'APPLE_CASE_REPAIR_HISTORY'   => 691,
+    'APPLE_CASE_REPAIR_HISTORY'   => 201,  // was 691, updated to match current API
+    'APPLE_SOLD_BY_INFO'          => 928,
     'APPLE_SOLD_BY_COVERAGE'      => 623,
     'APPLE_SOLD_BY_HISTORY'       => 707,
     'APPLE_GSX_LIGHT'             => 979,
@@ -108,7 +109,7 @@ return [
     'HLR_LOOKUP'                  => 616,
     'NUMBER_TYPE'                 => 617,
     'PING_SMS'                    => 618,
-    'PING_SMS_S2'                 => 619,
+    'PING_SMS_S2'                 => 619,  // Now active in API catalog
 
     // ----- PENDING (awaiting Service ID from provider) -----
     // Uncomment each row when its real Service ID arrives, then flip

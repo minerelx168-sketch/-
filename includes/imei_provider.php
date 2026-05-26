@@ -66,7 +66,7 @@ function imei_provider_lookup(string $imei, ?string $service = null, string $api
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 30,
+        CURLOPT_TIMEOUT        => 65, // PHP API guarantees response within 60s
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_USERAGENT      => 'imeihub/1.0',
         CURLOPT_FOLLOWLOCATION => true,
@@ -143,7 +143,7 @@ function imei_provider_parse(string $provider, string $body): array
             ? ($statusRaw ? 'success' : 'failed')
             : strtolower((string) $statusRaw);
 
-        if ($statusStr === 'success' || $statusStr === 'ok' || $statusStr === 'true') {
+        if (in_array($statusStr, ['success', 'successful', 'ok', 'true', 'done', 'completed'], true)) {
             // The body of the report can live under different keys.
             $bodyField = $decoded['response']
                 ?? $decoded['result']
@@ -166,6 +166,16 @@ function imei_provider_parse(string $provider, string $body): array
             $details = imei_extract_details($bodyText, $decoded);
             $details = array_merge($details, $extra);
 
+            // unlock-service.net returns structured data in 'object' field.
+            if (isset($decoded['object']) && is_array($decoded['object'])) {
+                foreach ($decoded['object'] as $k => $v) {
+                    if (is_scalar($v)) {
+                        $label = ucwords(str_replace(['_', '-'], ' ', preg_replace('/([a-z])([A-Z])/', '$1 $2', (string) $k)));
+                        $details[$label] = is_bool($v) ? ($v ? 'Yes' : 'No') : (string) $v;
+                    }
+                }
+            }
+
             $brand = $decoded['brand']
                 ?? $decoded['Brand']
                 ?? ($decoded['properties']['brand'] ?? null)
@@ -186,9 +196,9 @@ function imei_provider_parse(string $provider, string $body): array
         }
 
         // Failed JSON response - try to surface the provider's reason.
-        $err = $decoded['response']
-            ?? $decoded['error']
+        $err = $decoded['error']
             ?? $decoded['message']
+            ?? $decoded['response']
             ?? $decoded['result']
             ?? 'Lookup failed.';
         if (is_array($err)) {
@@ -285,7 +295,7 @@ function imei_provider_place_dhru(array $api, string $imei, string $service): ar
     $base = rtrim((string) $api['url'], '/');
     $url  = $base . '/?' . http_build_query([
         'username'     => (string) ($api['username'] ?? ''),
-        'apiaccesskey' => (string) $api['key'],
+        'apiaccesskey' => (string) ($api['dhru_key'] ?? $api['key']),
         'action'       => 'placeimeiorder',
         'service'      => $service,
         'imei'         => $imei,
@@ -335,7 +345,7 @@ function imei_provider_query_dhru(string $referenceId): array
     $base = rtrim((string) $api['url'], '/');
     $url  = $base . '/?' . http_build_query([
         'username'     => (string) ($api['username'] ?? ''),
-        'apiaccesskey' => (string) $api['key'],
+        'apiaccesskey' => (string) ($api['dhru_key'] ?? $api['key']),
         'action'       => 'getimeiorder',
         'id'           => $referenceId,
     ]);

@@ -180,15 +180,30 @@ function bot_resolve_user(string $channel, string $chatId): ?array
     } catch (Throwable $e) {
         return null;
     }
-    $stmt = $pdo->prepare(
-        'SELECT bl.id AS link_id, bl.user_id, bl.display_name,
-                u.email, u.name, u.cached_balance
-         FROM bot_links bl
-         JOIN users u ON u.id = bl.user_id
-         WHERE bl.channel = ? AND bl.channel_chat_id = ?
-         LIMIT 1'
-    );
-    $stmt->execute([$channel, $chatId]);
+    // banned_at filter mirrors auth_user() so a banned account can't keep
+    // spending through the bot. Wrapped so a pre-migration DB (no banned_at
+    // column) still resolves links instead of erroring.
+    try {
+        $stmt = $pdo->prepare(
+            'SELECT bl.id AS link_id, bl.user_id, bl.display_name,
+                    u.email, u.name, u.cached_balance
+             FROM bot_links bl
+             JOIN users u ON u.id = bl.user_id
+             WHERE bl.channel = ? AND bl.channel_chat_id = ? AND u.banned_at IS NULL
+             LIMIT 1'
+        );
+        $stmt->execute([$channel, $chatId]);
+    } catch (Throwable $e) {
+        $stmt = $pdo->prepare(
+            'SELECT bl.id AS link_id, bl.user_id, bl.display_name,
+                    u.email, u.name, u.cached_balance
+             FROM bot_links bl
+             JOIN users u ON u.id = bl.user_id
+             WHERE bl.channel = ? AND bl.channel_chat_id = ?
+             LIMIT 1'
+        );
+        $stmt->execute([$channel, $chatId]);
+    }
     $row = $stmt->fetch();
     if (!$row) return null;
     // Touch last_used_at so admins can see active links.
@@ -418,6 +433,12 @@ function bot_run_lookup(int $userId, string $code, string $imei): string
     $svc = $stmt->fetch();
     if (!$svc || (int) $svc['active'] !== 1) {
         return "❌ Unknown service code: $code\nType 'services' to see the menu.";
+    }
+
+    // Per-user rate limit, mirroring the web /api/services/use.php guard, so a
+    // linked chat can't hammer the upstream provider.
+    if (!rate_limit_allow('bot:' . $userId, 30)) {
+        return "⏳ Too many requests. Please wait a minute and try again.";
     }
 
     try {

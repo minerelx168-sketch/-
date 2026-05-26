@@ -1,0 +1,24 @@
+# imeihub - hardening (protection only; no routing rules so this can't
+# break URL handling). The Docker vhost (docker/apache.conf) already mirrors
+# these denials, but shipping an .htaccess covers any host that serves the
+# repo root directly with AllowOverride enabled.
+
+# Never list directory contents.
+Options -Indexes
+
+# Block dotfiles and dependency manifests (.env, .env.docker, .git, etc.).
+<FilesMatch "(^\.|\.env|composer\.(json|lock)|package(-lock)?\.json|Dockerfile|docker-compose)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block direct web access to backend code/config dirs. These are only ever
+# loaded server-side via require(), so denying HTTP access is safe.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(includes|data|sql|scripts|docker)/ - [F,L]
+</IfModule>

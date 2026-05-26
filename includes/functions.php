@@ -39,9 +39,15 @@ function imei_tac(string $imei): string
 
 function client_ip(): string
 {
-    foreach (['HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR'] as $h) {
+    // Trust ONLY CF-Connecting-IP (Cloudflare overwrites it; the client
+    // cannot forge it through CF) then the real socket peer. We deliberately
+    // do NOT trust X-Forwarded-For: its first hop is client-controlled, so
+    // honouring it lets anyone mint a fresh rate-limit bucket per request.
+    // Lock the origin to Cloudflare's IP ranges at the firewall so a direct
+    // hit can't spoof CF-Connecting-IP either.
+    foreach (['HTTP_CF_CONNECTING_IP', 'REMOTE_ADDR'] as $h) {
         if (!empty($_SERVER[$h])) {
-            $ip = trim(explode(',', $_SERVER[$h])[0]);
+            $ip = trim((string) $_SERVER[$h]);
             if (filter_var($ip, FILTER_VALIDATE_IP)) {
                 return $ip;
             }

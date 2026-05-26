@@ -22,16 +22,23 @@ layout_head('Sign in · imeihub', 'Sign in to imeihub with email or Google.');
                 <h1>Sign in</h1>
                 <p>Use your imeihub account or sign in with Google.</p>
             </div>
+            <?php if (isset($_GET['reset'])): ?>
+                <p class="auth-note">Your password has been reset. Sign in with your new password.</p>
+            <?php endif; ?>
 
             <form id="login-form" class="auth-form" autocomplete="off" novalidate>
                 <label>
                     <span>Email</span>
                     <input type="email" name="email" required autocomplete="email" placeholder="you@example.com">
                 </label>
-                <label>
+                <label class="pw-field">
                     <span>Password</span>
                     <input type="password" name="password" required autocomplete="current-password">
+                    <button type="button" class="pw-toggle" aria-label="Show password">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
                 </label>
+                <p class="auth-forgot"><a href="/forgot-password.php">Forgot password?</a></p>
                 <input type="hidden" name="next" value="<?= htmlspecialchars($next, ENT_QUOTES, 'UTF-8') ?>">
                 <button type="submit" class="btn-primary-block">
                     <span class="btn-label">Sign in</span>

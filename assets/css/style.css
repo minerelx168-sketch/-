@@ -1397,6 +1397,29 @@ a:hover { color: var(--primary-600); }
     border-color: var(--primary);
     box-shadow: var(--ring-primary);
 }
+.pw-field { position: relative; }
+.pw-field > input { padding-right: 46px !important; }
+.pw-field .pw-toggle {
+    position: absolute;
+    right: 8px;
+    bottom: 7px;
+    background: none; border: 0; padding: 5px;
+    color: var(--text-muted); cursor: pointer;
+    display: inline-flex; align-items: center;
+    border-radius: 6px;
+}
+.pw-field .pw-toggle:hover { color: var(--text-strong); }
+.pw-field .pw-toggle.is-on { color: var(--primary); }
+.auth-forgot { text-align: right; margin: -4px 0 2px; font-size: .88rem; }
+.auth-forgot a { color: var(--primary); text-decoration: none; }
+.auth-forgot a:hover { text-decoration: underline; }
+.auth-note {
+    background: rgba(22, 163, 74, .1);
+    color: var(--success);
+    border: 1px solid rgba(22, 163, 74, .25);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px; font-size: .9rem; margin: 0 0 18px;
+}
 .auth-form .otp-input {
     text-align: center;
     font-family: var(--font-mono);

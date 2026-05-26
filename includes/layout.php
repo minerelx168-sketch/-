@@ -126,10 +126,17 @@ function layout_foot(): void
 <script>
 (function () {
     var t = document.querySelector('.nav-toggle'), n = document.getElementById('site-nav');
-    if (!t || !n) return;
-    t.addEventListener('click', function () {
-        var open = n.classList.toggle('is-open');
-        t.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (t && n) {
+        t.addEventListener('click', function () {
+            var open = n.classList.toggle('is-open');
+            t.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+    }
+    document.querySelectorAll('.pw-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var inp = btn.parentNode.querySelector('input');
+            if (inp) { inp.type = inp.type === 'password' ? 'text' : 'password'; btn.classList.toggle('is-on'); }
+        });
     });
 })();
 </script>

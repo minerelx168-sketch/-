@@ -102,8 +102,8 @@ layout_head('Create account · imeihub', 'Sign up to imeihub with your email add
     signupForm.addEventListener('submit', function (e) {
         e.preventDefault();
         clearError(signupErr);
-        setLoading(signupForm, true);
         var fd = new FormData(signupForm);
+        setLoading(signupForm, true);
         fetch('/api/auth/signup.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -125,8 +125,8 @@ layout_head('Create account · imeihub', 'Sign up to imeihub with your email add
     otpForm.addEventListener('submit', function (e) {
         e.preventDefault();
         clearError(otpErr);
-        setLoading(otpForm, true);
         var fd = new FormData(otpForm);
+        setLoading(otpForm, true);
         fetch('/api/auth/verify-email.php', {
             method: 'POST',
             credentials: 'same-origin',

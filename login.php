@@ -70,10 +70,11 @@ layout_head('Sign in · imeihub', 'Sign in to imeihub with email or Google.');
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         err.hidden = true; err.textContent = '';
-        form.classList.add('loading');
-        form.querySelectorAll('input, button').forEach(function (i) { i.disabled = true; });
 
         var fd = new FormData(form);
+
+        form.classList.add('loading');
+        form.querySelectorAll('input, button').forEach(function (i) { i.disabled = true; });
         fetch('/api/auth/login.php', {
             method: 'POST',
             credentials: 'same-origin',

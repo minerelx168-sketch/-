@@ -62,7 +62,7 @@ services:
       - internal
     # Health check for the app container.
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/api/credits/balance.php"]
+      test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s
       timeout: 10s
       retries: 3

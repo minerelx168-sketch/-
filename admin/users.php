@@ -34,6 +34,12 @@ admin_nav('users');
     <?php if ($q !== ''): ?><a href="/admin/users.php" style="align-self:center;color:#9ca3af">Clear</a><?php endif; ?>
   </form>
 
+  <p style="margin:0 0 12px">
+    <a href="/admin/export.php?type=users<?= $q !== '' ? '&q=' . urlencode($q) : '' ?>" style="color:#2563eb;text-decoration:none">&#10515; Export users CSV<?= $q !== '' ? ' (filtered)' : '' ?></a>
+    &nbsp;·&nbsp;
+    <a href="/admin/export.php?type=topups" style="color:#2563eb;text-decoration:none">&#10515; Export top-ups CSV</a>
+  </p>
+
   <p style="color:#9ca3af;margin:0 0 10px"><?= count($users) ?> user(s)<?= $q !== '' ? ' matching "' . admin_h($q) . '"' : '' ?></p>
 
   <div style="overflow-x:auto">

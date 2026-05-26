@@ -21,16 +21,20 @@ if (!function_exists('admin_is_current')) {
  */
 function admin_is_current(): bool
 {
+    static $cached = null;
+    if ($cached !== null) {
+        return $cached;
+    }
     $u = auth_user();
     if (!$u) {
-        return false;
+        return $cached = false;
     }
     try {
         $stmt = db()->prepare('SELECT is_admin FROM users WHERE id = ? LIMIT 1');
         $stmt->execute([(int) $u['id']]);
-        return (int) $stmt->fetchColumn() === 1;
+        return $cached = ((int) $stmt->fetchColumn() === 1);
     } catch (Throwable $e) {
-        return false;
+        return $cached = false;
     }
 }
 }

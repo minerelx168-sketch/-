@@ -29,12 +29,19 @@
         return sum % 10 === 0;
     }
 
-    function showError(msg) {
+    // Banner + card shell shared by every result state. `type` drives the
+    // banner color: success (green), error (red), warn (amber), info (blue).
+    function renderStatus(type, title, innerHtml) {
         resultEl.hidden = false;
-        resultEl.className = 'result error';
+        resultEl.className = 'result result--report';
         resultEl.innerHTML =
-            '<h2>Lookup failed</h2>' +
-            '<p class="imei-meta">' + escapeHtml(msg) + '</p>';
+            '<div class="result-banner result-banner--' + type + '">' + escapeHtml(title) + '</div>' +
+            '<div class="result-card">' + innerHtml + '</div>';
+    }
+
+    function showError(msg, title, type) {
+        renderStatus(type || 'error', title || 'Order Failed',
+            '<p class="result-msg">' + escapeHtml(msg) + '</p>');
     }
 
     function escapeHtml(s) {
@@ -76,11 +83,8 @@
     // Used for DHRU services (1-5+ min). The caller starts polling
     // /api/services/status.php?id=<publicId> right after this.
     function renderProcessing(publicId) {
-        resultEl.hidden = false;
-        resultEl.className = 'result';
-        resultEl.innerHTML =
-            '<h2>Processing&hellip; <span class="badge cached">Async</span></h2>' +
-            '<p class="imei-meta">Reference <code>' + escapeHtml(publicId) + '</code></p>' +
+        renderStatus('info', 'Processing…',
+            '<p class="imei-meta" style="text-align:center">Reference <code>' + escapeHtml(publicId) + '</code></p>' +
             '<div class="result-processing">' +
               '<div class="result-spinner" aria-hidden="true"></div>' +
               '<div>' +
@@ -91,7 +95,7 @@
                   'come back later via your dashboard.' +
                 '</p>' +
               '</div>' +
-            '</div>';
+            '</div>');
     }
 
     // Poll the status endpoint until the lookup completes or fails.
@@ -121,7 +125,9 @@
                 }
                 if (body.ok === false || body.status === 'failed' || body.status === 'refunded') {
                     var note = body.refunded ? ' Your credit has been refunded automatically.' : '';
-                    showError((body.error || 'Lookup failed.') + note);
+                    showError((body.error || 'Lookup failed.') + note,
+                        body.refunded ? 'Order Refunded' : 'Order Failed',
+                        body.refunded ? 'warn' : 'error');
                     return;
                 }
                 // Still processing - schedule the next tick.
@@ -172,19 +178,12 @@
             month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
         }).toUpperCase();
 
-        var html = '';
-        html += '<div class="result-banner">Order Processed!</div>';
-        html += '<div class="result-card">';
-        html +=   '<div class="result-lines">' + lines + '</div>';
-        html +=   '<div class="result-chips">';
-        html +=     '<span class="result-chip">' + (secs !== null ? escapeHtml(secs) + ' SECONDS' : 'COMPLETED') + '</span>';
-        html +=     '<span class="result-chip">' + escapeHtml(dateStr) + '</span>';
-        html +=   '</div>';
-        html += '</div>';
-
-        resultEl.hidden = false;
-        resultEl.className = 'result result--report';
-        resultEl.innerHTML = html;
+        var inner = '<div class="result-lines">' + lines + '</div>' +
+            '<div class="result-chips">' +
+              '<span class="result-chip">' + (secs !== null ? escapeHtml(secs) + ' SECONDS' : 'COMPLETED') + '</span>' +
+              '<span class="result-chip">' + escapeHtml(dateStr) + '</span>' +
+            '</div>';
+        renderStatus('success', 'Order Processed!', inner);
     }
 
     form.addEventListener('submit', function (e) {
@@ -195,7 +194,7 @@
         resultEl.className = 'result';
 
         if (!luhnOk(imei)) {
-            showError('Invalid IMEI. Please enter 15 digits (check for typos).');
+            showError('Please enter a valid 15-digit IMEI (check for typos).', 'Invalid IMEI', 'warn');
             return;
         }
 
@@ -256,19 +255,17 @@
                 }
                 // 402 = insufficient credit. Surface a Top-up CTA inline.
                 if (resp.status === 402 || (resp.body && resp.body.error_code === 'INSUFFICIENT_CREDIT')) {
-                    resultEl.hidden = false;
-                    resultEl.className = 'result error';
-                    resultEl.innerHTML =
-                        '<h2>Not enough credit</h2>' +
-                        '<p class="imei-meta">' + escapeHtml(resp.body.error || 'Please top up your wallet.') + '</p>' +
-                        '<p style="margin-top:14px;"><a href="/topup.php" class="link-more">Top up credit &rarr;</a></p>';
+                    renderStatus('warn', 'Insufficient Credit',
+                        '<p class="result-msg">' + escapeHtml(resp.body.error || 'Please top up your wallet to run this check.') + '</p>' +
+                        '<p class="result-cta"><a href="/topup.php" class="link-more">Top up credit &rarr;</a></p>');
                     return;
                 }
                 if (!resp.body || resp.body.ok !== true) {
-                    var note = resp.body && resp.body.refunded
-                        ? ' Your credit has been refunded automatically.'
-                        : '';
-                    showError(((resp.body && resp.body.error) || 'Lookup failed (HTTP ' + resp.status + ').') + note);
+                    var refunded = resp.body && resp.body.refunded;
+                    var note = refunded ? ' Your credit has been refunded automatically.' : '';
+                    showError(((resp.body && resp.body.error) || 'Lookup failed (HTTP ' + resp.status + ').') + note,
+                        refunded ? 'Order Refunded' : 'Order Failed',
+                        refunded ? 'warn' : 'error');
                     return;
                 }
                 // DHRU async services: order was placed, no result yet.
@@ -283,7 +280,7 @@
                 resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
             })
             .catch(function () {
-                showError('Network error. Please try again.');
+                showError('Network error — please check your connection and try again.', 'Connection Error', 'error');
             })
             .finally(function () {
                 form.classList.remove('loading');

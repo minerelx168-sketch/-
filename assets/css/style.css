@@ -629,7 +629,49 @@ a:hover { color: var(--primary-600); }
 }
 .order-act:hover { color: var(--text-strong); border-color: var(--text-muted); }
 .order-act--report:hover { color: var(--danger); border-color: var(--danger); }
-.order-act.is-reported { color: var(--danger); border-color: var(--danger); background: rgba(220, 38, 38, .08); cursor: default; }
+.order-act.is-reported { color: var(--danger); border-color: var(--danger); background: rgba(220, 38, 38, .08); }
+.order-act.is-reported:hover { background: rgba(220, 38, 38, .16); }
+.order-act.busy { opacity: .5; cursor: progress; }
+
+/* ---- Blacklist import toolbar (orders page) ---- */
+.bl-import-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.btn-outline {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    font-size: .9rem;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: border-color .15s, color .15s, background .15s;
+}
+.btn-outline:hover { border-color: var(--text-muted); color: var(--text-strong); }
+.btn-outline:disabled { opacity: .55; cursor: not-allowed; }
+.btn-outline--primary { border-color: var(--primary); color: var(--primary); }
+.btn-outline--primary:hover { background: rgba(79, 70, 229, .06); color: var(--primary-600); border-color: var(--primary-600); }
+.bl-import-msg {
+    margin: 12px 0 0;
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--text-soft);
+}
+.bl-import-msg--ok  { color: var(--success); }
+.bl-import-msg--err { color: var(--danger); }
+.bl-sample {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .9rem;
+    font-variant-numeric: tabular-nums;
+}
+.bl-sample th, .bl-sample td {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    text-align: left;
+}
+.bl-sample th { background: var(--surface-alt); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: .72rem; letter-spacing: .04em; }
+.bl-sample td { color: var(--text); }
 
 /* ------------------- Section heading utility ------------------- */
 .section-head { text-align: center; margin: 0 auto 36px; max-width: 600px; }

@@ -25,6 +25,7 @@ if (!$user) out(401, ['ok' => false, 'error' => 'Not signed in.']);
 $body   = json_decode((string) file_get_contents('php://input'), true) ?: $_POST;
 $id     = (string) ($body['public_id'] ?? '');
 $reason = isset($body['reason']) ? trim((string) $body['reason']) : null;
+$action = strtolower((string) ($body['action'] ?? 'report')) === 'unreport' ? 'unreport' : 'report';
 
 if (!preg_match('/^[0-9A-HJKMNP-TV-Z]{26}$/', $id)) out(400, ['ok' => false, 'error' => 'Invalid order id.']);
 if (!rate_limit_allow('report:' . $user['id'], 20)) out(429, ['ok' => false, 'error' => 'Too many reports. Please try again later.']);
@@ -46,8 +47,12 @@ foreach (['Serial Number', 'Serial', 'SN'] as $k) {
 }
 
 try {
+    if ($action === 'unreport') {
+        $count = blacklist_unreport($imei, (int) $user['id']);
+        out(200, ['ok' => true, 'reports' => $count, 'reported' => false]);
+    }
     $count = blacklist_report($imei, $serial, (int) $user['id'], $reason);
-    out(200, ['ok' => true, 'reports' => $count]);
+    out(200, ['ok' => true, 'reports' => $count, 'reported' => true]);
 } catch (Throwable $e) {
     out(500, ['ok' => false, 'error' => $e->getMessage()]);
 }

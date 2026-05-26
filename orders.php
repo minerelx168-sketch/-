@@ -4,9 +4,13 @@ declare(strict_types=1);
 require __DIR__ . '/includes/layout.php';
 require __DIR__ . '/includes/auth.php';
 require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/blacklist.php';
 
 $user   = auth_require();
 $userId = (int) $user['id'];
+
+// IMEIs this user has already reported -> show those flags red on load.
+$reportedSet = blacklist_user_reported_imeis($userId);
 
 $perPage = 20;
 $page    = max(1, (int) ($_GET['page'] ?? 1));
@@ -57,7 +61,13 @@ layout_head('Order history · imeihub', 'Your past IMEI lookups.');
         <h1>History order</h1>
         <p class="dashboard-subtitle"><?= $total ?> order(s) on record</p>
       </div>
+      <div class="bl-import-bar">
+        <button type="button" class="btn-outline" id="bl-format">File format</button>
+        <button type="button" class="btn-outline btn-outline--primary" id="bl-import-btn">Import blacklist</button>
+        <input type="file" id="bl-import-file" accept=".csv,.xlsx,.txt" hidden>
+      </div>
     </header>
+    <p id="bl-import-msg" class="bl-import-msg" hidden></p>
 
     <section class="dashboard-block" style="margin-top:24px">
       <?php if (!$rows): ?>
@@ -90,7 +100,8 @@ layout_head('Order history · imeihub', 'Your past IMEI lookups.');
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
                 </button>
                 <?php endif; ?>
-                <button type="button" class="order-act order-act--report js-report" data-id="<?= htmlspecialchars($pid, ENT_QUOTES, 'UTF-8') ?>" title="Report this IMEI as blacklisted" aria-label="Report IMEI">
+                <?php $isReported = $imei !== '' && isset($reportedSet[$imei]); ?>
+                <button type="button" class="order-act order-act--report js-report<?= $isReported ? ' is-reported' : '' ?>" data-id="<?= htmlspecialchars($pid, ENT_QUOTES, 'UTF-8') ?>" data-imei="<?= htmlspecialchars($imei, ENT_QUOTES, 'UTF-8') ?>" title="<?= $isReported ? 'Reported — click to cancel' : 'Report this IMEI as blacklisted' ?>" aria-label="Report IMEI">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22V4h13l-2 4 2 4H4"/></svg>
                 </button>
               </td>
@@ -119,6 +130,28 @@ layout_head('Order history · imeihub', 'Your past IMEI lookups.');
     <div class="result-banner result-banner--success" id="om-banner">Result</div>
     <div class="result-card"><div id="om-body" class="result-lines"></div>
       <p style="text-align:center;margin:18px 0 0"><button type="button" class="bl-dismiss" id="om-close" style="background:var(--text-muted)">Close</button></p>
+    </div>
+  </div>
+</div>
+
+<div id="bl-format-modal" class="bl-overlay" hidden>
+  <div class="bl-card" style="max-width:520px">
+    <h3 style="margin:0 0 6px;color:var(--text-strong)">Blacklist file format</h3>
+    <p style="color:var(--text-soft);margin:0 0 14px;font-size:.92rem;line-height:1.6">
+      Upload a <strong>.csv</strong> or <strong>.xlsx</strong> file with two columns:
+      <strong>IMEI</strong> and <strong>Reason</strong>. A header row is optional and
+      only these two columns are read. Each valid 15-digit IMEI is flagged on your account.
+    </p>
+    <table class="bl-sample">
+      <thead><tr><th>IMEI</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>356938035643809</td><td>stolen</td></tr>
+        <tr><td>490154203237518</td><td>unpaid installment</td></tr>
+      </tbody>
+    </table>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px">
+      <button type="button" class="btn-outline" id="bl-sample-dl">Download sample .csv</button>
+      <button type="button" class="bl-dismiss" id="bl-format-close" style="background:var(--text-muted)">Close</button>
     </div>
   </div>
 </div>
@@ -182,21 +215,71 @@ layout_head('Order history · imeihub', 'Your past IMEI lookups.');
     });
   });
 
+  // ---- report / un-report toggle (red state persists; cancellable) ----
+  function setReported(imei, on){
+    if(!imei) return;
+    document.querySelectorAll('.js-report[data-imei="'+imei+'"]').forEach(function(b){
+      b.classList.toggle('is-reported', on);
+      b.title = on ? 'Reported — click to cancel' : 'Report this IMEI as blacklisted';
+    });
+  }
   document.querySelectorAll('.js-report').forEach(function(btn){
     btn.addEventListener('click', function(){
-      if(btn.disabled) return;
-      if(!confirm('Report this IMEI as blacklisted? Anyone who checks it afterwards will be warned.')) return;
-      var reason = prompt('Reason (optional) — e.g. stolen, unpaid installment:') || '';
+      if(btn.classList.contains('busy')) return;
       var id = btn.getAttribute('data-id');
-      btn.disabled = true;
+      var imei = btn.getAttribute('data-imei');
+      var payload;
+      if(btn.classList.contains('is-reported')){
+        if(!confirm('Cancel your blacklist report for this IMEI?')) return;
+        payload = {public_id:id, action:'unreport'};
+      } else {
+        if(!confirm('Report this IMEI as blacklisted? Anyone who checks it afterwards will be warned.')) return;
+        payload = {public_id:id, action:'report', reason:(prompt('Reason (optional) — e.g. stolen, unpaid installment:') || '')};
+      }
+      btn.classList.add('busy');
       fetch('/api/blacklist/report.php', {method:'POST',credentials:'same-origin',
-        headers:{'Content-Type':'application/json'},body:JSON.stringify({public_id:id,reason:reason})})
+        headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
         .then(function(r){return r.json();})
         .then(function(d){
-          if(d.ok){ btn.title='Reported ('+d.reports+')'; btn.classList.add('is-reported'); }
-          else { alert(d.error||'Could not report.'); btn.disabled=false; }
-        }).catch(function(){ alert('Network error.'); btn.disabled=false; });
+          btn.classList.remove('busy');
+          if(!d.ok){ alert(d.error||'Could not update report.'); return; }
+          setReported(imei, !!d.reported);
+        }).catch(function(){ btn.classList.remove('busy'); alert('Network error.'); });
     });
+  });
+
+  // ---- file-format popup + sample download (no export of our data) ----
+  var fmtModal = document.getElementById('bl-format-modal');
+  document.getElementById('bl-format').addEventListener('click', function(){ fmtModal.hidden=false; });
+  document.getElementById('bl-format-close').addEventListener('click', function(){ fmtModal.hidden=true; });
+  fmtModal.addEventListener('click', function(e){ if(e.target===fmtModal) fmtModal.hidden=true; });
+  document.getElementById('bl-sample-dl').addEventListener('click', function(){
+    var csv = 'IMEI,Reason\n356938035643809,stolen\n490154203237518,unpaid installment\n';
+    var a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = 'imei-blacklist-sample.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  // ---- bulk import (.csv / .xlsx) ----
+  var msg = document.getElementById('bl-import-msg');
+  var fileInput = document.getElementById('bl-import-file');
+  var importBtn = document.getElementById('bl-import-btn');
+  importBtn.addEventListener('click', function(){ fileInput.click(); });
+  fileInput.addEventListener('change', function(){
+    if(!fileInput.files || !fileInput.files.length) return;
+    var fd = new FormData(); fd.append('file', fileInput.files[0]);
+    importBtn.disabled = true;
+    msg.hidden = false; msg.className = 'bl-import-msg'; msg.textContent = 'Importing…';
+    fetch('/api/blacklist/import.php', {method:'POST',credentials:'same-origin',body:fd})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        importBtn.disabled = false; fileInput.value = '';
+        if(!d.ok){ msg.className='bl-import-msg bl-import-msg--err'; msg.textContent=d.error||'Import failed.'; return; }
+        msg.className = 'bl-import-msg bl-import-msg--ok';
+        msg.textContent = 'Imported ' + d.imported + ' IMEI(s)' + (d.skipped ? (', skipped ' + d.skipped + ' invalid') : '') + '. Reloading…';
+        setTimeout(function(){ location.reload(); }, 1200);
+      }).catch(function(){ importBtn.disabled=false; fileInput.value=''; msg.className='bl-import-msg bl-import-msg--err'; msg.textContent='Network error.'; });
   });
 })();
 </script>

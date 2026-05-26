@@ -88,3 +88,77 @@ function blacklist_report(string $imei, ?string $serial, int $userId, ?string $r
     return (int) $s->fetchColumn();
 }
 }
+
+if (!function_exists('blacklist_unreport')) {
+/**
+ * Cancel the caller's own active report for an IMEI (status -> dismissed).
+ * Re-reporting later reactivates it. Returns the remaining active count.
+ */
+function blacklist_unreport(string $imei, int $userId): int
+{
+    $imei = imei_normalize($imei);
+    if (strlen($imei) !== 15) {
+        throw new RuntimeException('A valid 15-digit IMEI is required.');
+    }
+    db()->prepare(
+        "UPDATE blacklist_reports SET status = 'dismissed' WHERE imei = ? AND reported_by = ?"
+    )->execute([$imei, $userId]);
+
+    $s = db()->prepare("SELECT COUNT(*) FROM blacklist_reports WHERE imei = ? AND status = 'active'");
+    $s->execute([$imei]);
+    return (int) $s->fetchColumn();
+}
+}
+
+if (!function_exists('blacklist_user_reported_imeis')) {
+/**
+ * Set of IMEIs the user currently has an active report on, as imei => true
+ * for O(1) lookups when rendering the order list. Tolerates a missing table.
+ */
+function blacklist_user_reported_imeis(int $userId): array
+{
+    try {
+        $s = db()->prepare("SELECT imei FROM blacklist_reports WHERE reported_by = ? AND status = 'active'");
+        $s->execute([$userId]);
+        return array_fill_keys($s->fetchAll(PDO::FETCH_COLUMN), true);
+    } catch (Throwable $e) {
+        return [];
+    }
+}
+}
+
+if (!function_exists('blacklist_import')) {
+/**
+ * Bulk-file (or refresh) reports from an uploaded list. $items is a list of
+ * ['imei' => <15 digits>, 'reason' => <string>]; callers must validate the
+ * IMEI first. Upserts one active report per (imei, user) in a single
+ * transaction. Returns the number of rows applied.
+ */
+function blacklist_import(array $items, int $userId): int
+{
+    if ($items === []) {
+        return 0;
+    }
+    $pdo  = db();
+    $stmt = $pdo->prepare(
+        "INSERT INTO blacklist_reports (imei, tac, serial_number, reported_by, reason, status)
+         VALUES (?, ?, NULL, ?, ?, 'active')
+         ON DUPLICATE KEY UPDATE reason = VALUES(reason), status = 'active'"
+    );
+    $pdo->beginTransaction();
+    try {
+        $n = 0;
+        foreach ($items as $it) {
+            $imei   = (string) $it['imei'];
+            $reason = (string) ($it['reason'] ?? '');
+            $stmt->execute([$imei, imei_tac($imei), $userId, $reason !== '' ? substr($reason, 0, 255) : null]);
+            $n++;
+        }
+        $pdo->commit();
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        throw $e;
+    }
+    return $n;
+}
+}

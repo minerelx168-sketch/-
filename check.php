@@ -131,6 +131,7 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
     var resultEl = document.getElementById('result');
     var selName = document.getElementById('sel-name');
     var selCost = document.getElementById('sel-cost');
+    var requestStartedAt = 0;
 
     function updateSummary() {
         var opt = sel.options[sel.selectedIndex];
@@ -167,63 +168,79 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
         });
     }
 
-    function showError(msg, withTopup) {
-        resultEl.hidden = false;
-        resultEl.classList.add('error');
-        var topup = withTopup
-            ? '<p style="margin-top:14px;"><a href="/topup.php" class="link-more">Top up credit &rarr;</a></p>'
-            : '';
-        resultEl.innerHTML = '<h2>Check failed</h2><p class="imei-meta">' + escapeHtml(msg) + '</p>' + topup;
+    function classifyValue(key, val) {
+        var v = String(val).trim(), k = String(key).toLowerCase();
+        if (/^(blacklisted|stolen|lost|fraud|denied|expired|invalid|sold)/i.test(v)) return 'danger';
+        if (/^(locked)$/i.test(v)) return 'danger';
+        if (/^(activated|active|clean|unlocked|covered|in warranty)$/i.test(v)) return 'success';
+        var alertKey = /(find\s*my|fmi|icloud|mdm|sim.?lock|activation\s*lock|locked|jailbreak)/i;
+        if (/^on$/i.test(v))  return alertKey.test(k) ? 'danger'  : 'success';
+        if (/^off$/i.test(v)) return alertKey.test(k) ? 'success' : 'muted';
+        var warnYesKey = /(repair|blacklist|fraud|lost|stolen|replaced|refurbished|demo|jailbreak|loaner)/i;
+        if (/^yes$/i.test(v)) return warnYesKey.test(k) ? 'warn'    : 'success';
+        if (/^no$/i.test(v))  return warnYesKey.test(k) ? 'success' : null;
+        return null;
     }
-
-    function renderResult(data) {
-        var brand = data.brand || 'Unknown';
-        var model = data.model || 'GSM Phone';
-        var html  = '<h2>' + escapeHtml(brand) + ' ' + escapeHtml(model);
-        html += ' <span class="badge">Verified</span></h2>';
-        html += '<p class="imei-meta">IMEI <code>' + escapeHtml(data.imei) + '</code>';
-        if (data.tac) html += ' · TAC <code>' + escapeHtml(data.tac) + '</code>';
-        if (data.cost) {
-            var cost = parseFloat(data.cost);
-            if (cost > 0) html += ' · charged $' + cost.toFixed(2);
-        }
-        html += '</p>';
-
-        var details = data.details || {};
-        var ordered = {};
-        ['Brand Name','Model Name','Model Number','IMEI','Serial Number','Network','Carrier','Country',
-         'Color','Storage','Warranty Status','Activation Status','iCloud Status','Find My iPhone',
-         'Blacklist Status','SIM Lock'].forEach(function (k) {
-            if (details[k]) ordered[k] = details[k];
-        });
-        Object.keys(details).forEach(function (k) {
-            if (!ordered[k]) ordered[k] = details[k];
-        });
-
-        var keys = Object.keys(ordered);
-        if (keys.length === 0) {
-            html += '<p>No additional details were returned.</p>';
-        } else {
-            html += '<div class="result-grid">';
-            keys.forEach(function (k) {
-                html += '<div class="result-item">'
-                      +   '<span class="k">' + escapeHtml(k) + '</span>'
-                      +   '<span class="v">' + escapeHtml(ordered[k]) + '</span>'
-                      + '</div>';
-            });
-            html += '</div>';
-        }
-
+    function valueHtml(k, v) {
+        var c = classifyValue(k, v), t = /^[\w.+/-]{1,16}$/.test(String(v).trim());
+        return (c && t) ? '<span class="pill pill-' + c + '">' + escapeHtml(v) + '</span>' : escapeHtml(v);
+    }
+    function renderStatus(type, title, innerHtml) {
         resultEl.hidden = false;
-        resultEl.classList.remove('error');
-        resultEl.innerHTML = html;
+        resultEl.className = 'result result--report';
+        resultEl.innerHTML =
+            '<div class="result-banner result-banner--' + type + '">' + escapeHtml(title) + '</div>' +
+            '<div class="result-card">' + innerHtml + '</div>';
+    }
+    function showBlacklistPopup(bl) {
+        if (!bl) return;
+        var oldp = document.getElementById('bl-popup'); if (oldp) oldp.remove();
+        var n = bl.reports || 1, when = bl.first_reported ? String(bl.first_reported).slice(0, 10) : '';
+        var reason = bl.reason ? '<p class="bl-reason">Reported reason: ' + escapeHtml(bl.reason) + '</p>' : '';
+        var ov = document.createElement('div'); ov.id = 'bl-popup'; ov.className = 'bl-overlay';
+        ov.innerHTML = '<div class="bl-card" role="alertdialog" aria-modal="true">' +
+            '<div class="bl-badge">&#9888; BLACKLIST ALERT</div>' +
+            '<h3>This IMEI has been reported</h3>' +
+            '<p>Reported <strong>' + n + ' time' + (n > 1 ? 's' : '') + '</strong> by users on this platform' +
+            (when ? ' (first on ' + escapeHtml(when) + ')' : '') + '. It may be lost, stolen, or carry outstanding debt &mdash; proceed with caution before buying or financing this device.</p>' +
+            reason + '<button type="button" class="bl-dismiss">I understand</button></div>';
+        document.body.appendChild(ov);
+        function close() { ov.remove(); }
+        ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+        ov.querySelector('.bl-dismiss').addEventListener('click', close);
+    }
+    function showError(msg, title, type) {
+        renderStatus(type || 'error', title || 'Order Failed', '<p class="result-msg">' + escapeHtml(msg) + '</p>');
+    }
+    function renderResult(data) {
+        var details = data.details || {};
+        var brand = data.brand || details['Brand Name'] || details.Brand || details.Manufacturer || '';
+        var model = data.model || details['Model Name'] || details.Model || details['Model Description'] || '';
+        var modelStr = (details['Model Description'] || details['Model'] || (brand + ' ' + model)).trim() || details['Model Name'] || 'Unknown device';
+        var skip = {'brand name':1,'brand':1,'manufacturer':1,'model':1,'model name':1,'model description':1};
+        var lines = '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(modelStr) + '</strong></div>';
+        Object.keys(details).forEach(function (k) {
+            if (skip[String(k).toLowerCase()]) return;
+            var v = details[k]; if (v === null || v === undefined || v === '') return;
+            lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';
+        });
+        var secs = requestStartedAt ? ((Date.now() - requestStartedAt) / 1000).toFixed(1) : null;
+        var dateStr = new Date().toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}).toUpperCase();
+        var blWarn = data.blacklist ? '<div class="bl-inline">&#9888; This IMEI was reported ' + (data.blacklist.reports || 1) + ' time(s) as blacklisted &mdash; proceed with caution.</div>' : '';
+        renderStatus('success', 'Order Processed!', blWarn +
+            '<div class="result-lines">' + lines + '</div>' +
+            '<div class="result-chips">' +
+              '<span class="result-chip">' + (secs !== null ? escapeHtml(secs) + ' SECONDS' : 'COMPLETED') + '</span>' +
+              '<span class="result-chip">' + escapeHtml(dateStr) + '</span>' +
+            '</div>');
+        showBlacklistPopup(data.blacklist);
     }
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         err.hidden = true;
         resultEl.hidden = true;
-        resultEl.classList.remove('error');
+        resultEl.className = 'result';
 
         var imeiVal = imei.value.replace(/\D+/g, '');
         if (!luhnOk(imeiVal)) {
@@ -234,6 +251,7 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
 
         submit.classList.add('loading');
         submit.disabled = true;
+        requestStartedAt = Date.now();
 
         fetch('/api/services/use.php', {
             method: 'POST',
@@ -251,20 +269,33 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
                 return;
             }
             if (resp.status === 402 || (resp.body && resp.body.error_code === 'INSUFFICIENT_CREDIT')) {
-                showError(resp.body.error || 'Not enough credit.', true);
+                renderStatus('warn', 'Insufficient Credit',
+                    '<p class="result-msg">' + escapeHtml(resp.body.error || 'Please top up your wallet to run this check.') + '</p>' +
+                    '<p class="result-cta"><a href="/topup.php" class="link-more">Top up credit &rarr;</a></p>');
+                resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+            if (resp.body && resp.body.status === 'processing' && resp.body.public_id) {
+                renderStatus('info', 'Processing…',
+                    '<p class="imei-meta" style="text-align:center">Reference <code>' + escapeHtml(resp.body.public_id) + '</code></p>' +
+                    '<div class="result-processing"><div class="result-spinner" aria-hidden="true"></div><div><strong>Your order has been placed with the provider.</strong>' +
+                    '<p class="dashboard-subtitle" style="margin:6px 0 0;">This service takes a few minutes; the result will appear in your <a href="/orders.php">order history</a>.</p></div></div>');
+                resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                showBlacklistPopup(resp.body.blacklist);
                 return;
             }
             if (!resp.body || resp.body.ok !== true) {
-                var note = resp.body && resp.body.refunded
-                    ? ' Your credit has been refunded automatically.'
-                    : '';
-                showError(((resp.body && resp.body.error) || 'Lookup failed (HTTP ' + resp.status + ').') + note, false);
+                var refunded = resp.body && resp.body.refunded;
+                var note = refunded ? ' Your credit has been refunded automatically.' : '';
+                showError(((resp.body && resp.body.error) || 'Lookup failed (HTTP ' + resp.status + ').') + note,
+                    refunded ? 'Order Refunded' : 'Order Failed', refunded ? 'warn' : 'error');
+                resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 return;
             }
             renderResult(resp.body);
             resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         })
-        .catch(function () { showError('Network error. Please try again.', false); })
+        .catch(function () { showError('Network error — please check your connection and try again.', 'Connection Error', 'error'); })
         .finally(function () {
             submit.classList.remove('loading');
             submit.disabled = false;

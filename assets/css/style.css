@@ -532,6 +532,29 @@ a:hover { color: var(--primary-600); }
     .result-chip { padding: 8px 12px; font-size: .72rem; }
 }
 
+/* Order-history result popup (#order-modal): a past lookup can carry ~30
+   fields, which made the modal taller than the viewport so the banner and
+   Close button were clipped off-screen. Cap the field list and let it scroll
+   internally; the overlay itself scrolls as a fallback on short screens.
+   Scoped to the modal so the inline result card elsewhere is untouched. */
+#order-modal {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 24px 16px;
+}
+#order-modal .result-banner {
+    font-size: 1.15rem;
+    padding: 14px 22px;
+    margin-bottom: 14px;
+}
+#order-modal .result-card { padding: 22px 24px; }
+#order-modal .result-lines {
+    max-height: 58vh;
+    overflow-y: auto;
+}
+#order-modal .rline { line-height: 1.75; font-size: .95rem; }
+#order-modal .rline--model { font-size: 1.05rem; }
+
 /* ---- Community blacklist warning (inline + popup) ---- */
 .bl-inline {
     background: rgba(220, 38, 38, .08);

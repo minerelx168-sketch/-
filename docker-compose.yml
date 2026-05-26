@@ -36,6 +36,8 @@ services:
       - ./sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
       - ./sql/migrate-dhru-async.sql:/docker-entrypoint-initdb.d/03-migrate-dhru-async.sql:ro
       - ./docker/initdb/04-test-user.sql:/docker-entrypoint-initdb.d/04-test-user.sql:ro
+      - ./sql/migrate-admin.sql:/docker-entrypoint-initdb.d/05-migrate-admin.sql:ro
+      - ./sql/migrate-blacklist.sql:/docker-entrypoint-initdb.d/06-migrate-blacklist.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pdevpassword"]
       interval: 5s

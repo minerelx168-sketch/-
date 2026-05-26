@@ -7,6 +7,7 @@ header('X-Content-Type-Options: nosniff');
 require __DIR__ . '/../includes/functions.php';
 require __DIR__ . '/../includes/db.php';
 require __DIR__ . '/../includes/imei_provider.php';
+require __DIR__ . '/../includes/blacklist.php';
 
 function respond(int $code, array $payload): void
 {
@@ -42,6 +43,7 @@ if ($cached) {
         'brand'   => $cached['brand'],
         'model'   => $cached['model'],
         'details' => is_array($details) ? ($details['details'] ?? []) : [],
+        'blacklist' => blacklist_status($imei),
     ]);
 }
 
@@ -77,4 +79,5 @@ respond(200, [
     'brand'   => $result['brand'],
     'model'   => $result['model'],
     'details' => $result['details'],
+    'blacklist' => blacklist_status($imei),
 ]);

@@ -19,6 +19,62 @@ class InsufficientCreditError extends RuntimeException {}
 class TopUpAlreadyCreditedError extends RuntimeException {}
 
 /**
+ * Admin manual credit adjustment (positive = grant, negative = deduct).
+ * Appends ONE ADJUSTMENT ledger row and updates cached_balance atomically
+ * under a FOR UPDATE lock, recomputing from the ledger so the
+ * cached_balance == SUM(ledger) invariant holds. Never drives the balance
+ * negative. The acting admin + reason are recorded for the audit trail.
+ */
+if (!function_exists('credits_admin_adjust')) {
+function credits_admin_adjust(int $userId, float $delta, string $reason, int $adminId): array
+{
+    if (abs($delta) < 0.01) {
+        throw new RuntimeException('Adjustment amount must be non-zero.');
+    }
+    $pdo = db();
+    $pdo->beginTransaction();
+    try {
+        $stmt = $pdo->prepare('SELECT id FROM users WHERE id = ? FOR UPDATE');
+        $stmt->execute([$userId]);
+        if (!$stmt->fetchColumn()) {
+            throw new RuntimeException('User not found: ' . $userId);
+        }
+
+        $stmt = $pdo->prepare('SELECT COALESCE(SUM(amount), 0) FROM credit_transactions WHERE user_id = ?');
+        $stmt->execute([$userId]);
+        $balance    = (float) $stmt->fetchColumn();
+        $newBalance = $balance + $delta;
+        if ($newBalance < 0) {
+            throw new RuntimeException(
+                sprintf('Adjustment would make balance negative (have %.2f, delta %.2f).', $balance, $delta)
+            );
+        }
+
+        $desc = sprintf('Admin #%d: %s', $adminId, substr(trim($reason) !== '' ? trim($reason) : 'manual adjustment', 0, 200));
+        $pdo->prepare(
+            'INSERT INTO credit_transactions
+                (user_id, amount, type, reference_type, reference_id, balance_after, description)
+             VALUES (?, ?, "ADJUSTMENT", "Admin", ?, ?, ?)'
+        )->execute([
+            $userId,
+            number_format($delta, 2, '.', ''),
+            'admin-' . $adminId . '-' . time(),
+            number_format($newBalance, 2, '.', ''),
+            $desc,
+        ]);
+        $pdo->prepare('UPDATE users SET cached_balance = ? WHERE id = ?')
+            ->execute([number_format($newBalance, 2, '.', ''), $userId]);
+
+        $pdo->commit();
+        return ['balance' => number_format($newBalance, 2, '.', '')];
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        throw $e;
+    }
+}
+}
+
+/**
  * Insert a PENDING top-up order. The caller (api/topup/<provider>-create)
  * will then ask the provider to create a checkout/order and store the
  * resulting external id on the row via credits_attach_charge_id().

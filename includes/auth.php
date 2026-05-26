@@ -43,14 +43,29 @@ function auth_user(): ?array
         return $cached = null;
     }
 
-    $stmt = $pdo->prepare(
-        'SELECT u.id, u.email, u.name, u.image, u.cached_balance, s.expires_at
-         FROM sessions s
-         JOIN users u ON u.id = s.user_id
-         WHERE s.id = ? AND s.expires_at > NOW()
-         LIMIT 1'
-    );
-    $stmt->execute([$sid]);
+    // A banned user's session must not resolve. The banned_at filter is
+    // wrapped so a deployment that hasn't run the admin migration yet
+    // (no banned_at column) still authenticates normally instead of
+    // 500ing on every page.
+    try {
+        $stmt = $pdo->prepare(
+            'SELECT u.id, u.email, u.name, u.image, u.cached_balance, s.expires_at
+             FROM sessions s
+             JOIN users u ON u.id = s.user_id
+             WHERE s.id = ? AND s.expires_at > NOW() AND u.banned_at IS NULL
+             LIMIT 1'
+        );
+        $stmt->execute([$sid]);
+    } catch (Throwable $e) {
+        $stmt = $pdo->prepare(
+            'SELECT u.id, u.email, u.name, u.image, u.cached_balance, s.expires_at
+             FROM sessions s
+             JOIN users u ON u.id = s.user_id
+             WHERE s.id = ? AND s.expires_at > NOW()
+             LIMIT 1'
+        );
+        $stmt->execute([$sid]);
+    }
     $row = $stmt->fetch();
     if (!$row) return $cached = null;
 

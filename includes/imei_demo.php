@@ -90,6 +90,24 @@ function imei_demo_details(string $imei, array $info, string $service): array
     if (!empty($info['color']))   $details['Color']   = $info['color'];
     if (!empty($info['storage'])) $details['Storage'] = $info['storage'];
 
+    // Apple full-info style fields (demo). Statuses are pseudo-derived from
+    // the IMEI so different inputs show a mix of green/red pills, the way a
+    // real provider response would. Maps to status pills in renderResult().
+    if (($info['brand'] ?? '') === 'Apple') {
+        $seed = (int) substr($imei, -4);
+        $details['Network']                     = 'Global';
+        $details['IMEI2 Number']                = substr($imei, 0, 14) . (($seed + 7) % 10);
+        $details['MEID Number']                 = substr($imei, 0, 14);
+        $details['Estimated Purchase Date']     = date('j M Y', strtotime('-' . (2 + $seed % 3) . ' years'));
+        $details['Warranty Status']             = 'Out Of Warranty';
+        $details['Telephone Technical Support'] = 'Expired';
+        $details['Repairs and Service Coverage'] = 'Expired';
+        $details['Replaced by Apple']           = 'No';
+        $details['Find My iPhone']              = ($seed % 2) ? 'On' : 'Off';
+        $details['US Block Status']             = ($seed % 5 === 0) ? 'Blacklisted' : 'Clean';
+        $details['SIM-Lock Status']             = ($seed % 3 === 0) ? 'Locked' : 'Unlocked';
+    }
+
     // Per-service additions, so each service page shows different fields.
     switch ($service) {
         case '1': // Blacklist

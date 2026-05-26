@@ -63,34 +63,24 @@ function imei_provider_lookup(string $imei, ?string $service = null, string $api
     $url     = imei_provider_build_url($api, $imei, $service);
     $redacted = preg_replace('/(API_KEY|key|apiaccesskey)=[^&]*/i', '$1=***', $url) ?? $url;
 
-    $ch = curl_init($url);
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT        => 65, // PHP API guarantees response within 60s
-        CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_USERAGENT      => 'imeihub/1.0',
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTPHEADER     => ['Accept: application/json, text/plain, */*'],
-    ]);
-    $body     = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlErr  = curl_error($ch);
-    curl_close($ch);
+    [$body, $httpCode, $curlErr, $timing] = imei_provider_curl_get($url);
 
-    if ($body === false || $httpCode >= 500) {
+    if ($body === null || $httpCode >= 500) {
         return [
-            'status' => 'failed',
-            'brand'  => null,
-            'model'  => null,
-            'details'=> [],
-            'raw'    => (string) $body,
-            'error'  => $curlErr ?: ('Provider returned HTTP ' . $httpCode),
-            'url'    => $redacted,
+            'status'  => 'failed',
+            'brand'   => null,
+            'model'   => null,
+            'details' => [],
+            'raw'     => (string) $body,
+            'error'   => $curlErr ?: ('Provider returned HTTP ' . $httpCode),
+            'url'     => $redacted,
+            '_timing' => $timing,
         ];
     }
 
     $parsed = imei_provider_parse(strtolower((string) $api['provider']), (string) $body);
-    $parsed['url'] = $redacted;
+    $parsed['url']     = $redacted;
+    $parsed['_timing'] = $timing;
     return $parsed;
 }
 
@@ -411,21 +401,68 @@ function imei_provider_query_dhru(string $referenceId): array
 
 function imei_provider_http_get(string $url): array
 {
+    [$body, $code, $err, ] = imei_provider_curl_get($url);
+    if ($body === null || $code >= 500) return [null, $err ?: ('HTTP ' . $code)];
+    return [$body, null];
+}
+
+/**
+ * Single tuned GET used by every provider call (sync PHP API + DHRU).
+ *
+ * Returns [body|null, httpCode, curlError, timing]. `timing` breaks the
+ * round-trip into phases (ms) so a slow lookup can be diagnosed: DNS vs
+ * TCP connect vs TLS handshake vs the provider's own think time
+ * (ttfb - tls) vs transfer.
+ *
+ * Performance opts target the fixed per-call overhead that makes *every*
+ * lookup slow by a similar amount:
+ *   - IPRESOLVE_V4 skips IPv6 connect attempts that black-hole and only
+ *     fall back to IPv4 after CONNECTTIMEOUT (a classic multi-second
+ *     stall on hosts without working IPv6).
+ *   - ENCODING '' negotiates gzip so large reports transfer faster.
+ *   - HTTP/2 (when the provider offers it) + TCP_NODELAY shave handshake
+ *     and Nagle latency.
+ */
+function imei_provider_curl_get(string $url, array $extraHeaders = []): array
+{
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT        => 30,
         CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_USERAGENT      => 'imeihub/1.0',
-        CURLOPT_HTTPHEADER     => ['Accept: application/json, text/plain, */*'],
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTPHEADER     => array_merge(['Accept: application/json, text/plain, */*'], $extraHeaders),
+        CURLOPT_ENCODING       => '',
+        CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_2TLS,
+        CURLOPT_TCP_NODELAY    => true,
+        CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4,
     ]);
     $body = curl_exec($ch);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $code = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $err  = curl_error($ch);
+    $timing = [
+        'dns_ms'     => round(((float) curl_getinfo($ch, CURLINFO_NAMELOOKUP_TIME))    * 1000, 1),
+        'connect_ms' => round(((float) curl_getinfo($ch, CURLINFO_CONNECT_TIME))       * 1000, 1),
+        'tls_ms'     => round(((float) curl_getinfo($ch, CURLINFO_APPCONNECT_TIME))    * 1000, 1),
+        'ttfb_ms'    => round(((float) curl_getinfo($ch, CURLINFO_STARTTRANSFER_TIME)) * 1000, 1),
+        'total_ms'   => round(((float) curl_getinfo($ch, CURLINFO_TOTAL_TIME))         * 1000, 1),
+    ];
     curl_close($ch);
-    if ($body === false || $code >= 500) return [null, $err ?: ('HTTP ' . $code)];
-    return [(string) $body, null];
+
+    // Log the phase breakdown when APP_DEBUG so a slow provider can be
+    // pinpointed from the server log without instrumenting per request.
+    $cfg = require __DIR__ . '/config.php';
+    if (!empty($cfg['app']['debug'])) {
+        error_log(sprintf(
+            'imei_provider timing ms: dns=%.1f connect=%.1f tls=%.1f ttfb=%.1f total=%.1f (%s)',
+            $timing['dns_ms'], $timing['connect_ms'], $timing['tls_ms'],
+            $timing['ttfb_ms'], $timing['total_ms'],
+            preg_replace('/(key|apiaccesskey|API_KEY)=[^&]*/i', '$1=***', $url) ?? $url
+        ));
+    }
+
+    return [$body === false ? null : (string) $body, $code, $err, $timing];
 }
 
 function imei_provider_dhru_pluck($decoded, array $keys): string

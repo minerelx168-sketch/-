@@ -58,23 +58,19 @@ echo "service:       $service\n";
 echo "imei:          $imei\n";
 echo "request url:   $redacted\n\n";
 
-$start = microtime(true);
-$ch = curl_init($url);
-curl_setopt_array($ch, [
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT        => 60,
-    CURLOPT_CONNECTTIMEOUT => 15,
-    CURLOPT_USERAGENT      => 'imeihub-test/1.0',
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_HTTPHEADER     => ['Accept: application/json, text/plain, */*'],
-]);
-$body  = curl_exec($ch);
-$code  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$err   = curl_error($ch);
-$ms    = (microtime(true) - $start) * 1000;
-curl_close($ch);
+// Use the same tuned call the app uses, so the timing here is
+// representative of production.
+[$body, $code, $err, $t] = imei_provider_curl_get($url);
 
-echo sprintf("http status:   %d  (%.0f ms)\n", $code, $ms);
+echo sprintf("http status:   %d  (total %.0f ms)\n", $code, $t['total_ms']);
+echo "---- timing breakdown (ms) ----\n";
+echo sprintf("  DNS lookup       %.1f\n", $t['dns_ms']);
+echo sprintf("  TCP connect      %.1f  (connect - dns = %.1f)\n", $t['connect_ms'], $t['connect_ms'] - $t['dns_ms']);
+echo sprintf("  TLS handshake    %.1f  (tls - connect = %.1f)\n", $t['tls_ms'], max(0, $t['tls_ms'] - $t['connect_ms']));
+echo sprintf("  provider think   %.1f  (ttfb - tls)\n", max(0, $t['ttfb_ms'] - $t['tls_ms']));
+echo sprintf("  download         %.1f  (total - ttfb)\n", max(0, $t['total_ms'] - $t['ttfb_ms']));
+echo "  ^ biggest number = where the latency is. provider-think is the\n";
+echo "    upstream API itself; the rest is fixed per-call overhead.\n";
 if ($err !== '') {
     echo "curl error:    $err\n";
 }

@@ -30,6 +30,7 @@ require __DIR__ . '/../../includes/auth.php';
 require __DIR__ . '/../../includes/credits_write.php';
 require __DIR__ . '/../../includes/imei_provider.php';
 require __DIR__ . '/../../includes/functions.php';
+require __DIR__ . '/../../includes/blacklist.php';
 
 function fail(int $code, string $error, array $extra = []): never
 {
@@ -144,6 +145,7 @@ if ($status === 'processing') {
         'tac'               => imei_tac($imei),
         'cost'              => $cost,
         'provider_order_id' => $result['provider_order_id'] ?? null,
+        'blacklist'         => blacklist_status($imei),
         // Suggested next-poll delay in seconds. The provider documents
         // 1-5 min turnaround so we use a wide initial gap; main.js
         // backs off further if /status.php returns processing again.
@@ -177,4 +179,5 @@ echo json_encode([
     'brand'     => $result['brand'],
     'model'     => $result['model'],
     'details'   => $result['details'],
+    'blacklist' => blacklist_status($imei),
 ]);

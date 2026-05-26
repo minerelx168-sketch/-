@@ -37,12 +37,31 @@ function credits_get_balance(int $userId, bool $strict = false): string
         return number_format((float) $stmt->fetchColumn(), 2, '.', '');
     }
 
-    $stmt = $pdo->prepare('SELECT cached_balance FROM users WHERE id = ?');
+    // Non-strict: read the fast cache but compare it against the ledger and
+    // self-heal on drift, so a display can never show money the spend path
+    // (which always recomputes from the ledger) won't honour.
+    $stmt = $pdo->prepare(
+        'SELECT u.cached_balance,
+                COALESCE((SELECT SUM(amount) FROM credit_transactions WHERE user_id = u.id), 0) AS ledger
+         FROM users u WHERE u.id = ?'
+    );
     $stmt->execute([$userId]);
-    $cached = $stmt->fetchColumn();
-    if ($cached === false) return '0.00';
+    $row = $stmt->fetch();
+    if (!$row) return '0.00';
 
-    return number_format((float) $cached, 2, '.', '');
+    $cached = (float) $row['cached_balance'];
+    $ledger = (float) $row['ledger'];
+    if (abs($cached - $ledger) >= 0.005) {
+        // Ledger is the source of truth; repair the stale cache (best-effort).
+        try {
+            $pdo->prepare('UPDATE users SET cached_balance = ? WHERE id = ?')
+                ->execute([number_format($ledger, 2, '.', ''), $userId]);
+        } catch (Throwable $e) {
+            // ignore; we still return the correct (ledger) value below
+        }
+        return number_format($ledger, 2, '.', '');
+    }
+    return number_format($cached, 2, '.', '');
 }
 }
 

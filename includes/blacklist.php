@@ -25,24 +25,31 @@ function blacklist_status(string $imei): ?array
         return null;
     }
     try {
+        // Single-quoted SQL literals so the query is correct under any
+        // sql_mode (ANSI_QUOTES would treat "active" as an identifier).
         $stmt = db()->prepare(
-            'SELECT COUNT(*) AS reports, MIN(created_at) AS first_reported,
-                    SUBSTRING_INDEX(MAX(CONCAT(created_at, "|", COALESCE(reason, ""))), "|", -1) AS reason
-             FROM blacklist_reports
-             WHERE imei = ? AND status = "active"'
+            "SELECT COUNT(*) AS reports, MIN(created_at) AS first_reported
+             FROM blacklist_reports WHERE imei = ? AND status = 'active'"
         );
         $stmt->execute([$imei]);
         $row = $stmt->fetch();
+        if (!$row || (int) $row['reports'] === 0) {
+            return null;
+        }
+        $r2 = db()->prepare(
+            "SELECT reason FROM blacklist_reports
+             WHERE imei = ? AND status = 'active' AND reason IS NOT NULL AND reason <> ''
+             ORDER BY id DESC LIMIT 1"
+        );
+        $r2->execute([$imei]);
+        $reason = $r2->fetchColumn();
     } catch (Throwable $e) {
         return null; // table may not exist yet
-    }
-    if (!$row || (int) $row['reports'] === 0) {
-        return null;
     }
     return [
         'reports'        => (int) $row['reports'],
         'first_reported' => (string) $row['first_reported'],
-        'reason'         => ($row['reason'] ?? '') !== '' ? (string) $row['reason'] : null,
+        'reason'         => ($reason !== false && $reason !== null && $reason !== '') ? (string) $reason : null,
     ];
 }
 }
@@ -61,13 +68,13 @@ function blacklist_report(string $imei, ?string $serial, int $userId, ?string $r
     }
     $tac = imei_tac($imei);
     db()->prepare(
-        'INSERT INTO blacklist_reports (imei, tac, serial_number, reported_by, reason, status)
-         VALUES (?, ?, ?, ?, ?, "active")
+        "INSERT INTO blacklist_reports (imei, tac, serial_number, reported_by, reason, status)
+         VALUES (?, ?, ?, ?, ?, 'active')
          ON DUPLICATE KEY UPDATE
             serial_number = VALUES(serial_number),
             reason        = VALUES(reason),
-            status        = "active",
-            created_at    = created_at'
+            status        = 'active',
+            created_at    = created_at"
     )->execute([
         $imei,
         $tac,
@@ -76,7 +83,7 @@ function blacklist_report(string $imei, ?string $serial, int $userId, ?string $r
         $reason !== null && $reason !== '' ? substr($reason, 0, 255) : null,
     ]);
 
-    $s = db()->prepare('SELECT COUNT(*) FROM blacklist_reports WHERE imei = ? AND status = "active"');
+    $s = db()->prepare("SELECT COUNT(*) FROM blacklist_reports WHERE imei = ? AND status = 'active'");
     $s->execute([$imei]);
     return (int) $s->fetchColumn();
 }

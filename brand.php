@@ -43,9 +43,6 @@ layout_head(
                 <a href="/brands.php">Brands</a> &rsaquo; <?= $brandName ?>
             </p>
             <div class="brand-headline">
-                <span class="brand-tile-mark brand-tile-mark--lg" style="background:<?= $brandColor ?>">
-                    <?= htmlspecialchars(brand_initial($brand['name']), ENT_QUOTES, 'UTF-8') ?>
-                </span>
                 <div>
                     <h1><?= $brandName ?></h1>
                     <p class="brand-meta"><?= $country ?> &middot; <?= count($brand['models']) ?> models indexed</p>

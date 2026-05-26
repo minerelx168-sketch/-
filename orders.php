@@ -160,12 +160,20 @@ layout_head('Order history · imeihub', 'Your past IMEI lookups.');
           if(!d.ok){ banner.textContent='Not found'; body.innerHTML='<div class="rline">'+esc(d.error||'Error')+'</div>'; return; }
           banner.textContent = (d.service||'Result');
           var det = d.details||{};
-          var brand=d.brand||det['Brand Name']||det.Brand||'';
-          var model=d.model||det['Model Name']||det.Model||'';
-          var html='<div class="rline rline--model"><span class="rk">Model:</span> <strong>'+esc((brand+' '+model).trim()||'Device')+'</strong></div>';
-          var skip={'brand name':1,'brand':1,'model':1,'model name':1,'model description':1,'manufacturer':1};
-          Object.keys(det).forEach(function(k){ if(skip[k.toLowerCase()])return; var v=det[k]; if(v===''||v==null)return;
-            html+='<div class="rline"><span class="rk">'+esc(k)+':</span> '+valueHtml(k,v)+'</div>'; });
+          var html='';
+          if (d.details_curated) {
+            Object.keys(det).forEach(function(k){ var v=det[k]; if(v===''||v==null)return;
+              if(String(k).toLowerCase()==='model'){ html+='<div class="rline rline--model"><span class="rk">Model:</span> <strong>'+esc(v)+'</strong></div>'; }
+              else { html+='<div class="rline"><span class="rk">'+esc(k)+':</span> '+valueHtml(k,v)+'</div>'; } });
+            if(html==='') html='<div class="rline">No data available.</div>';
+          } else {
+            var brand=d.brand||det['Brand Name']||det.Brand||'';
+            var model=d.model||det['Model Name']||det.Model||'';
+            html='<div class="rline rline--model"><span class="rk">Model:</span> <strong>'+esc((brand+' '+model).trim()||'Device')+'</strong></div>';
+            var skip={'brand name':1,'brand':1,'model':1,'model name':1,'model description':1,'manufacturer':1};
+            Object.keys(det).forEach(function(k){ if(skip[k.toLowerCase()])return; var v=det[k]; if(v===''||v==null)return;
+              html+='<div class="rline"><span class="rk">'+esc(k)+':</span> '+valueHtml(k,v)+'</div>'; });
+          }
           body.innerHTML = html;
         }).catch(function(){ banner.textContent='Error'; body.innerHTML='<div class="rline">Network error.</div>'; });
     });

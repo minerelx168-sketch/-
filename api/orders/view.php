@@ -12,6 +12,7 @@ header('Cache-Control: no-store');
 require __DIR__ . '/../../includes/auth.php';
 require __DIR__ . '/../../includes/db.php';
 require __DIR__ . '/../../includes/functions.php';
+require __DIR__ . '/../../includes/service_fields.php';
 
 function out(int $c, array $b): never { http_response_code($c); echo json_encode($b); exit; }
 
@@ -35,17 +36,21 @@ if (!$row) out(404, ['ok' => false, 'error' => 'Order not found.']);
 $input  = json_decode((string) $row['input'], true)  ?: [];
 $output = json_decode((string) $row['output'], true) ?: [];
 $imei   = (string) ($input['imei'] ?? '');
+$code   = (string) $row['service_code'];
+$details = (array) ($output['details'] ?? []);
+$curated = service_result_has_template($code);
 
 out(200, [
-    'ok'         => true,
-    'public_id'  => $row['public_id'],
-    'service'    => $row['service_name'] ?: $row['service_code'],
-    'status'     => $row['status'],
-    'cost'       => $row['cost'],
-    'created_at' => $row['created_at'],
-    'imei'       => $imei,
-    'tac'        => $imei !== '' ? imei_tac($imei) : '',
-    'brand'      => $output['brand'] ?? null,
-    'model'      => $output['model'] ?? null,
-    'details'    => $output['details'] ?? [],
+    'ok'              => true,
+    'public_id'       => $row['public_id'],
+    'service'         => $row['service_name'] ?: $row['service_code'],
+    'status'          => $row['status'],
+    'cost'            => $row['cost'],
+    'created_at'      => $row['created_at'],
+    'imei'            => $imei,
+    'tac'             => $imei !== '' ? imei_tac($imei) : '',
+    'brand'           => $output['brand'] ?? null,
+    'model'           => $output['model'] ?? null,
+    'details'         => $curated ? service_filter_details($code, $details) : $details,
+    'details_curated' => $curated,
 ]);

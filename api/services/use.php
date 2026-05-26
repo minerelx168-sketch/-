@@ -31,6 +31,7 @@ require __DIR__ . '/../../includes/credits_write.php';
 require __DIR__ . '/../../includes/imei_provider.php';
 require __DIR__ . '/../../includes/functions.php';
 require __DIR__ . '/../../includes/blacklist.php';
+require __DIR__ . '/../../includes/service_fields.php';
 
 function fail(int $code, string $error, array $extra = []): never
 {
@@ -169,15 +170,18 @@ credits_mark_usage_success($publicId, [
     'details' => $result['details'],
 ]);
 
+$curated = service_result_has_template($code);
+
 echo json_encode([
-    'ok'        => true,
-    'status'    => 'success',
-    'public_id' => $publicId,
-    'imei'      => $imei,
-    'tac'       => imei_tac($imei),
-    'cost'      => $cost,
-    'brand'     => $result['brand'],
-    'model'     => $result['model'],
-    'details'   => $result['details'],
-    'blacklist' => blacklist_status($imei),
+    'ok'              => true,
+    'status'          => 'success',
+    'public_id'       => $publicId,
+    'imei'            => $imei,
+    'tac'             => imei_tac($imei),
+    'cost'            => $cost,
+    'brand'           => $result['brand'],
+    'model'           => $result['model'],
+    'details'         => $curated ? service_filter_details($code, (array) $result['details']) : $result['details'],
+    'details_curated' => $curated,
+    'blacklist'       => blacklist_status($imei),
 ]);

@@ -185,21 +185,40 @@
 
     function renderResult(data) {
         var details = data.details || {};
-        var brand = data.brand || details.Brand || details['Brand Name'] || details.Manufacturer || '';
-        var model = data.model || details.Model || details['Model Name'] || details['Model Description'] || '';
-        var modelStr = (details['Model Description'] || details['Model'] || (brand + ' ' + model)).trim()
-                       || details['Model Name'] || 'Unknown device';
+        var lines;
 
-        // Keys already represented by the Model line / not worth repeating.
-        var skip = { 'brand name': 1, 'brand': 1, 'manufacturer': 1, 'model': 1, 'model name': 1, 'model description': 1 };
+        if (data.details_curated) {
+            // The server already pinned the exact fields + order for this
+            // service (data/service_result_fields.php). Render them verbatim;
+            // the leading "Model" field becomes the bold heading line.
+            lines = '';
+            Object.keys(details).forEach(function (k) {
+                var v = details[k];
+                if (v === null || v === undefined || v === '') return;
+                if (String(k).toLowerCase() === 'model') {
+                    lines += '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(v) + '</strong></div>';
+                } else {
+                    lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';
+                }
+            });
+            if (lines === '') lines = '<div class="rline">No data available for this IMEI.</div>';
+        } else {
+            var brand = data.brand || details.Brand || details['Brand Name'] || details.Manufacturer || '';
+            var model = data.model || details.Model || details['Model Name'] || details['Model Description'] || '';
+            var modelStr = (details['Model Description'] || details['Model'] || (brand + ' ' + model)).trim()
+                           || details['Model Name'] || 'Unknown device';
 
-        var lines = '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(modelStr) + '</strong></div>';
-        Object.keys(details).forEach(function (k) {
-            if (skip[String(k).toLowerCase()]) return;
-            var v = details[k];
-            if (v === null || v === undefined || v === '') return;
-            lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';
-        });
+            // Keys already represented by the Model line / not worth repeating.
+            var skip = { 'brand name': 1, 'brand': 1, 'manufacturer': 1, 'model': 1, 'model name': 1, 'model description': 1 };
+
+            lines = '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(modelStr) + '</strong></div>';
+            Object.keys(details).forEach(function (k) {
+                if (skip[String(k).toLowerCase()]) return;
+                var v = details[k];
+                if (v === null || v === undefined || v === '') return;
+                lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';
+            });
+        }
 
         var secs = requestStartedAt ? ((Date.now() - requestStartedAt) / 1000).toFixed(1) : null;
         var dateStr = new Date().toLocaleString('en-US', {

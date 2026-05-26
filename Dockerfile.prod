@@ -30,8 +30,13 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 COPY docker/php.prod.ini /usr/local/etc/php/conf.d/zz-imeihub.ini
 
 # Apache modules + vhost.
-RUN a2enmod rewrite headers
+RUN a2enmod rewrite headers ssl
 COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
+
+# SSL with self-signed cert for Cloudflare Full mode.
+RUN apt-get update -qq && apt-get install -y -qq ssl-cert && rm -rf /var/lib/apt/lists/*
+COPY docker/ssl-vhost.conf /etc/apache2/sites-available/default-ssl.conf
+RUN a2ensite default-ssl
 
 # Copy application code (excluding dev-only dirs via .dockerignore).
 WORKDIR /var/www/html
@@ -50,4 +55,4 @@ RUN rm -rf /var/www/html/docker \
            /var/www/html/README.md \
            /var/www/html/DOCKER.md
 
-EXPOSE 80
+EXPOSE 80 443

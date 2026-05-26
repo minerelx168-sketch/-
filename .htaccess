@@ -29,6 +29,12 @@
     # Block .env file
     RewriteRule ^\.env - [F,L]
 
+    # Pretty URLs: /api/check -> /api/check.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.+)$ $1.php [L,QSA]
+
     # Force HTTPS (uncomment in production behind Cloudflare)
     # RewriteCond %{HTTP:X-Forwarded-Proto} !https
     # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

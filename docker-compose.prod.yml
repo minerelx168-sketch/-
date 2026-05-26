@@ -16,8 +16,8 @@
 #          ├── app (PHP 8.4 + Apache, port 80)
 #          └── db  (MySQL 8.4, internal only)
 #
-# SSL is handled by Cloudflare proxy (Full Strict mode recommended).
-# The app container listens on port 80 only.
+# SSL is handled by Cloudflare proxy (Full mode).
+# The app container listens on port 80 and 443 (self-signed cert for Cloudflare).
 services:
   db:
     image: mysql:8.4
@@ -49,6 +49,7 @@ services:
         condition: service_healthy
     ports:
       - "80:80"
+      - "443:443"
     env_file:
       - .env
     environment:

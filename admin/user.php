@@ -59,7 +59,7 @@ admin_nav('users');
   <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;margin-bottom:30px">
     <div style="background:#0f1623;border:1px solid #1f2937;border-radius:12px;padding:18px 22px;min-width:220px">
       <div style="color:#9ca3af;font-size:13px">Balance (ledger)</div>
-      <div style="font-size:28px;font-weight:700">$<?= number_format((float) $ledger, 2) ?></div>
+      <div style="font-size:28px;font-weight:700;color:#f9fafb">$<?= number_format((float) $ledger, 2) ?></div>
       <div style="color:<?= $drift ? '#f87171' : '#6b7280' ?>;font-size:12px;margin-top:4px">
         cached $<?= number_format((float) $cached, 2) ?><?= $drift ? ' — DRIFT!' : ' — in sync' ?>
       </div>

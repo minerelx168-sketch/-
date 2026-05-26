@@ -85,13 +85,13 @@ admin_nav('topups');
     <thead><tr><th style="<?= $th ?>">When</th><th style="<?= $th ?>">User</th><th style="<?= $th ?>">Provider</th><th style="<?= $th ?>;text-align:right">Amount</th><th style="<?= $th ?>">Charge id</th><th style="<?= $th ?>">Webhook</th></tr></thead>
     <tbody>
     <?php foreach ($rows as $o): ?>
-      <tr style="<?= $o['verified'] ? '' : 'background:#1c1310' ?>">
+      <tr style="<?= $o['verified'] ? '' : 'background:#fef2f2' ?>">
         <td style="<?= $td ?>"><?= admin_h(substr((string) $o['created_at'], 0, 16)) ?></td>
         <td style="<?= $td ?>"><a href="/admin/user.php?id=<?= (int) $o['user_id'] ?>" style="color:#60a5fa">#<?= (int) $o['user_id'] ?></a></td>
         <td style="<?= $td ?>"><?= admin_h($o['provider']) ?></td>
         <td style="<?= $td ?>;text-align:right">$<?= number_format((float) $o['amount'], 2) ?></td>
         <td style="<?= $td ?>;color:#6b7280"><?= admin_h($o['provider_charge_id'] ?? '—') ?></td>
-        <td style="<?= $td ?>"><?= $o['verified'] ? '<span style="color:#34d399">verified</span>' : '<span style="color:#f87171">&#9888; none</span>' ?></td>
+        <td style="<?= $td ?>"><?= $o['verified'] ? '<span style="color:#059669;font-weight:600">verified</span>' : '<span style="color:#b91c1c;font-weight:600">&#9888; none</span>' ?></td>
       </tr>
     <?php endforeach; if (!$rows): ?><tr><td colspan="6" style="<?= $td ?>;color:#6b7280">No credited orders yet.</td></tr><?php endif; ?>
     </tbody>

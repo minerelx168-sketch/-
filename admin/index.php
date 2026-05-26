@@ -31,7 +31,7 @@ function kpi_card(string $label, string $value, string $sub = ''): void
 {
     echo '<div style="background:#0f1623;border:1px solid #1f2937;border-radius:12px;padding:18px 22px;min-width:170px;flex:1">';
     echo '<div style="color:#9ca3af;font-size:13px">' . admin_h($label) . '</div>';
-    echo '<div style="font-size:26px;font-weight:700;margin-top:2px">' . admin_h($value) . '</div>';
+    echo '<div style="font-size:26px;font-weight:700;margin-top:2px;color:#f9fafb">' . admin_h($value) . '</div>';
     if ($sub !== '') echo '<div style="color:#6b7280;font-size:12px;margin-top:4px">' . admin_h($sub) . '</div>';
     echo '</div>';
 }

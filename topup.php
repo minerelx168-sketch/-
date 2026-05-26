@@ -47,44 +47,34 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
                 </fieldset>
 
                 <fieldset>
-                    <legend>All Payment Methods</legend>
+                    <legend>Payment method</legend>
                     <p id="topup-error" class="field-error" hidden></p>
 
-                    <div class="pm-table">
-                        <div class="pm-table-head">
-                            <span class="pm-col-method">Method</span>
-                            <span class="pm-col-pay">Pay</span>
-                            <span class="pm-col-fee">Fee</span>
-                            <span class="pm-col-min">Minimum</span>
-                            <span class="pm-col-max">Maximum</span>
-                        </div>
+                    <div class="pm-list">
                         <?php foreach ($methods as $m): if (!($m['enabled'] ?? true)) continue; ?>
-                            <div class="pm-row" data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                <div class="pm-col-method">
-                                    <span class="pm-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="<?= htmlspecialchars((string) $m['icon'], ENT_QUOTES, 'UTF-8') ?>"/>
-                                        </svg>
-                                    </span>
-                                    <div class="pm-name">
-                                        <span class="pm-label"><?= htmlspecialchars((string) $m['label'], ENT_QUOTES, 'UTF-8') ?></span>
+                            <div class="pm-card" data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                <span class="pm-card-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="<?= htmlspecialchars((string) $m['icon'], ENT_QUOTES, 'UTF-8') ?>"/>
+                                    </svg>
+                                </span>
+                                <div class="pm-card-body">
+                                    <div class="pm-card-title">
+                                        <span class="pm-card-name"><?= htmlspecialchars((string) $m['label'], ENT_QUOTES, 'UTF-8') ?></span>
                                         <?php foreach ((array) ($m['badges'] ?? []) as $badge): ?>
                                             <span class="pm-badge"><?= htmlspecialchars((string) $badge, ENT_QUOTES, 'UTF-8') ?></span>
                                         <?php endforeach; ?>
                                     </div>
+                                    <div class="pm-card-meta">
+                                        <span><span class="pm-meta-k">Fee</span><?= (float) $m['fee_pct'] === 0.0 ? 'Free' : number_format((float) $m['fee_pct'], 0) . '%' ?></span>
+                                        <span><span class="pm-meta-k">Min</span>$<?= number_format((float) $m['min_usd'], 2) ?></span>
+                                        <span><span class="pm-meta-k">Max</span>$<?= number_format((float) $m['max_usd'], 0) ?></span>
+                                    </div>
                                 </div>
-                                <div class="pm-col-pay">
-                                    <button type="button" class="pm-btn" data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                            <path d="M13 2L4 14h7l-1 8 9-12h-7z"/>
-                                        </svg>
-                                        <span class="pm-btn-label">Top up</span>
-                                        <span class="btn-spinner" aria-hidden="true"></span>
-                                    </button>
-                                </div>
-                                <div class="pm-col-fee"><?= (float) $m['fee_pct'] === 0.0 ? '0%' : number_format((float) $m['fee_pct'], 0) . '%' ?></div>
-                                <div class="pm-col-min">$<?= number_format((float) $m['min_usd'], 2) ?></div>
-                                <div class="pm-col-max">$<?= number_format((float) $m['max_usd'], 0) ?></div>
+                                <button type="button" class="pm-btn" data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>">
+                                    <span class="pm-btn-label">Top up</span>
+                                    <span class="btn-spinner" aria-hidden="true"></span>
+                                </button>
                             </div>
                         <?php endforeach; ?>
                     </div>
@@ -120,14 +110,22 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
             if (radio && form.elements['custom'].value.trim() !== '') radio.checked = false;
         });
 
-        // Stable idempotency key per intent so a network retry can't bill twice.
-        function idempotencyKey() {
-            var k = sessionStorage.getItem('topup_idem');
-            if (!k) {
-                k = 'idem-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12);
-                sessionStorage.setItem('topup_idem', k);
+        // Idempotency key stays stable for a given (amount, method) so a
+        // network retry can't bill twice - but regenerates when the user
+        // changes the amount or method, so retrying after editing the amount
+        // opens a fresh order at the NEW amount instead of reusing the old one.
+        function idempotencyKey(amount, method) {
+            var sig = amount + ':' + method;
+            var saved;
+            try { saved = JSON.parse(sessionStorage.getItem('topup_idem')); } catch (e) { saved = null; }
+            if (!saved || saved.sig !== sig) {
+                saved = {
+                    sig: sig,
+                    key: 'idem-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12),
+                };
+                sessionStorage.setItem('topup_idem', JSON.stringify(saved));
             }
-            return k;
+            return saved.key;
         }
 
         function showError(msg) {
@@ -157,7 +155,7 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
                     credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Idempotency-Key': idempotencyKey(),
+                        'Idempotency-Key': idempotencyKey(amount, method),
                     },
                     body: JSON.stringify({ amount: amount, method: method }),
                 }).then(function (r) {

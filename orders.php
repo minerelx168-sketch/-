@@ -54,7 +54,7 @@ layout_head('Order history · imeihub', 'Your past IMEI lookups.');
     <header class="dashboard-head">
       <div>
         <p class="hero-eyebrow" style="color:var(--text-muted);border-color:var(--border);background:var(--surface-alt)">History</p>
-        <h1>IMEI orders</h1>
+        <h1>History order</h1>
         <p class="dashboard-subtitle"><?= $total ?> order(s) on record</p>
       </div>
     </header>

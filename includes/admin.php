@@ -78,3 +78,33 @@ function admin_csrf_check(?string $token): bool
     return is_string($token) && hash_equals(admin_csrf_token(), $token);
 }
 }
+
+if (!function_exists('admin_h')) {
+/** htmlspecialchars shorthand for admin templates. */
+function admin_h(string|int|float|null $s): string
+{
+    return htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
+}
+}
+
+if (!function_exists('admin_nav')) {
+/** Sub-navigation strip shown at the top of every admin page. */
+function admin_nav(string $active = ''): void
+{
+    $items = [
+        'index'  => ['/admin/index.php',  'Overview'],
+        'users'  => ['/admin/users.php',  'Users'],
+        'topups' => ['/admin/topups.php', 'Top-ups & reconcile'],
+    ];
+    echo '<div class="container" style="padding-top:24px">';
+    echo '<div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;border-bottom:1px solid #1f2937;padding-bottom:12px;margin-bottom:24px">';
+    echo '<strong style="font-size:18px">Admin</strong>';
+    foreach ($items as $key => [$href, $label]) {
+        $style = $key === $active
+            ? 'color:#fff;font-weight:600'
+            : 'color:#9ca3af';
+        echo '<a href="' . admin_h($href) . '" style="' . $style . ';text-decoration:none">' . admin_h($label) . '</a>';
+    }
+    echo '</div></div>';
+}
+}

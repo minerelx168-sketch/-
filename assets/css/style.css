@@ -455,7 +455,7 @@ a:hover { color: var(--primary-600); }
 }
 .result-banner--success { background: var(--success); }
 .result-banner--error   { background: var(--danger); }
-.result-banner--warn    { background: var(--warning); color: #1f2937; }
+.result-banner--warn    { background: var(--warning); color: #fff; }
 .result-banner--info    { background: var(--primary); }
 .result-card {
     background: var(--surface);

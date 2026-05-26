@@ -30,6 +30,11 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, max-age=0');
 
+// Keep warnings out of the JSON body (they'd surface as a client "Network
+// error"); log them instead.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
 require __DIR__ . '/../../includes/auth.php';
 require __DIR__ . '/../../includes/db.php';
 require __DIR__ . '/../../includes/credits_write.php';

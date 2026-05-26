@@ -134,7 +134,7 @@ function bot_consume_link_token(
         if ($row['consumed_at'] !== null) {
             throw new RuntimeException('Token already used.');
         }
-        if (strtotime($row['expires_at']) <= time()) {
+        if (strtotime($row['expires_at'] . ' UTC') <= time()) {
             throw new RuntimeException('Token expired. Generate a new one in the dashboard.');
         }
 

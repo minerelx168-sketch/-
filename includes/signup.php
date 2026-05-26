@@ -210,7 +210,7 @@ function signup_verify_otp(string $email, string $otp): array
         if (!$row || !$row['ev_id']) {
             throw new RuntimeException('No active code for this email. Request a new one.');
         }
-        if (strtotime($row['expires_at']) <= time()) {
+        if (strtotime($row['expires_at'] . ' UTC') <= time()) {
             $pdo->prepare('UPDATE email_verifications SET consumed_at = NOW() WHERE id = ?')
                 ->execute([$row['ev_id']]);
             throw new RuntimeException('Code expired. Request a new one.');
@@ -403,7 +403,7 @@ function signup_reset_password(string $email, string $otp, string $newPassword):
         if (!$row || !$row['ev_id']) {
             throw new RuntimeException('No active reset code for this email. Request a new one.');
         }
-        if (strtotime($row['expires_at']) <= time()) {
+        if (strtotime($row['expires_at'] . ' UTC') <= time()) {
             $pdo->prepare('UPDATE email_verifications SET consumed_at = NOW() WHERE id = ?')->execute([$row['ev_id']]);
             throw new RuntimeException('Code expired. Request a new one.');
         }

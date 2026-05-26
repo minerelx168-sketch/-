@@ -82,6 +82,7 @@ function layout_head(string $title, string $description = ''): void
                 </a>
             <?php else: ?>
                 <a href="/login.php" class="btn-signin">Sign in</a>
+                <a href="/signup.php" class="btn-signup">Sign up</a>
             <?php endif; ?>
         </div>
         <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">

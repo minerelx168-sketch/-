@@ -29,7 +29,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
 
 $cfg = require __DIR__ . '/../../includes/config.php';
 $expectedSecret = (string) ($cfg['telegram']['webhook_secret'] ?? '');
-$gotSecret      = (string) ($_GET['s'] ?? '');
+// Prefer the header secret token (set it when registering the webhook with
+// secret_token=...); it doesn't leak through access logs / Referer the way a
+// ?s= query string can. Fall back to the query param for existing setups.
+$gotSecret = (string) ($_SERVER['HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN'] ?? ($_GET['s'] ?? ''));
 
 if ($expectedSecret === '' || !hash_equals($expectedSecret, $gotSecret)) {
     http_response_code(401);

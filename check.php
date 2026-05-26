@@ -214,16 +214,38 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
     }
     function renderResult(data) {
         var details = data.details || {};
-        var brand = data.brand || details['Brand Name'] || details.Brand || details.Manufacturer || '';
-        var model = data.model || details['Model Name'] || details.Model || details['Model Description'] || '';
-        var modelStr = (details['Model Description'] || details['Model'] || (brand + ' ' + model)).trim() || details['Model Name'] || 'Unknown device';
-        var skip = {'brand name':1,'brand':1,'manufacturer':1,'model':1,'model name':1,'model description':1};
-        var lines = '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(modelStr) + '</strong></div>';
-        Object.keys(details).forEach(function (k) {
-            if (skip[String(k).toLowerCase()]) return;
-            var v = details[k]; if (v === null || v === undefined || v === '') return;
-            lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';
-        });
+        var lines;
+        if (data.details_curated) {
+            // Server pinned the exact fields + order for this service; render
+            // them verbatim. Array values are repeating sections (Cases /
+            // Repair / Warranty history) shown as indented sub-lists.
+            lines = '';
+            Object.keys(details).forEach(function (k) {
+                var v = details[k];
+                if (v === null || v === undefined || v === '') return;
+                if (Array.isArray(v)) {
+                    if (!v.length) return;
+                    lines += '<div class="rline rline--section"><span class="rk">' + escapeHtml(k) + ':</span></div>';
+                    v.forEach(function (item) { lines += '<div class="rline rline--sub">' + escapeHtml(item) + '</div>'; });
+                } else if (String(k).toLowerCase() === 'model') {
+                    lines += '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(v) + '</strong></div>';
+                } else {
+                    lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';
+                }
+            });
+            if (lines === '') lines = '<div class="rline">No data available for this IMEI.</div>';
+        } else {
+            var brand = data.brand || details['Brand Name'] || details.Brand || details.Manufacturer || '';
+            var model = data.model || details['Model Name'] || details.Model || details['Model Description'] || '';
+            var modelStr = (details['Model Description'] || details['Model'] || (brand + ' ' + model)).trim() || details['Model Name'] || 'Unknown device';
+            var skip = {'brand name':1,'brand':1,'manufacturer':1,'model':1,'model name':1,'model description':1};
+            lines = '<div class="rline rline--model"><span class="rk">Model:</span> <strong>' + escapeHtml(modelStr) + '</strong></div>';
+            Object.keys(details).forEach(function (k) {
+                if (skip[String(k).toLowerCase()]) return;
+                var v = details[k]; if (v === null || v === undefined || v === '') return;
+                lines += '<div class="rline"><span class="rk">' + escapeHtml(k) + ':</span> ' + valueHtml(k, v) + '</div>';
+            });
+        }
         var secs = requestStartedAt ? ((Date.now() - requestStartedAt) / 1000).toFixed(1) : null;
         var dateStr = new Date().toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}).toUpperCase();
         var blWarn = data.blacklist ? '<div class="bl-inline">&#9888; This IMEI was reported ' + (data.blacklist.reports || 1) + ' time(s) as blacklisted &mdash; proceed with caution.</div>' : '';

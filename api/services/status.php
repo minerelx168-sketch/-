@@ -30,11 +30,17 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, max-age=0');
 
+// Keep warnings out of the JSON body (they'd surface as a client "Network
+// error"); log them instead.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
 require __DIR__ . '/../../includes/auth.php';
 require __DIR__ . '/../../includes/db.php';
 require __DIR__ . '/../../includes/credits_write.php';
 require __DIR__ . '/../../includes/imei_provider.php';
 require __DIR__ . '/../../includes/functions.php';
+require __DIR__ . '/../../includes/service_fields.php';
 
 function reply(int $code, array $body): never
 {
@@ -73,20 +79,24 @@ if (!$usage) {
 
 $status = (string) $usage['status'];
 $imei   = (string) ($usage['input'] ? (json_decode((string) $usage['input'], true)['imei'] ?? '') : '');
+$code   = (string) $usage['service_code'];
+$curated = service_result_has_template($code);
 
 // Terminal SUCCESS - serve the cached output.
 if ($status === 'SUCCESS') {
     $out = json_decode((string) $usage['output'], true) ?: [];
+    $details = (array) ($out['details'] ?? []);
     reply(200, [
-        'ok'        => true,
-        'status'    => 'success',
-        'public_id' => $publicId,
-        'imei'      => $imei,
-        'tac'       => $imei ? imei_tac($imei) : '',
-        'cost'      => (string) $usage['cost'],
-        'brand'     => $out['brand']   ?? null,
-        'model'     => $out['model']   ?? null,
-        'details'   => $out['details'] ?? [],
+        'ok'              => true,
+        'status'          => 'success',
+        'public_id'       => $publicId,
+        'imei'            => $imei,
+        'tac'             => $imei ? imei_tac($imei) : '',
+        'cost'            => (string) $usage['cost'],
+        'brand'           => $out['brand']   ?? null,
+        'model'           => $out['model']   ?? null,
+        'details'         => $curated ? service_filter_details($code, $details) : $details,
+        'details_curated' => $curated,
     ]);
 }
 
@@ -128,15 +138,16 @@ if ($status === 'PROCESSING' && !empty($usage['provider_order_id'])) {
                 'details' => $result['details'],
             ]);
             reply(200, [
-                'ok'        => true,
-                'status'    => 'success',
-                'public_id' => $publicId,
-                'imei'      => $imei,
-                'tac'       => $imei ? imei_tac($imei) : '',
-                'cost'      => (string) $usage['cost'],
-                'brand'     => $result['brand'],
-                'model'     => $result['model'],
-                'details'   => $result['details'],
+                'ok'              => true,
+                'status'          => 'success',
+                'public_id'       => $publicId,
+                'imei'            => $imei,
+                'tac'             => $imei ? imei_tac($imei) : '',
+                'cost'            => (string) $usage['cost'],
+                'brand'           => $result['brand'],
+                'model'           => $result['model'],
+                'details'         => $curated ? service_filter_details($code, (array) $result['details']) : $result['details'],
+                'details_curated' => $curated,
             ]);
         }
         if ($pStatus === 'failed') {

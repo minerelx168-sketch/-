@@ -26,11 +26,31 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, max-age=0');
 
+// A large GSX/heavy report can trip a PHP notice/warning while parsing; with
+// display_errors on (dev php.ini) that HTML prints into the body and corrupts
+// the JSON, which the browser surfaces as an opaque "Network error". Force
+// errors to the log only and guarantee a JSON body even on a fatal.
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+ob_start();
+register_shutdown_function(static function (): void {
+    $e = error_get_last();
+    if ($e && in_array($e['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        if (ob_get_level() > 0) ob_end_clean();
+        if (!headers_sent()) {
+            http_response_code(500);
+            header('Content-Type: application/json; charset=utf-8');
+        }
+        echo json_encode(['ok' => false, 'error' => 'Server error during lookup. If your credit was charged it will be refunded.']);
+    }
+});
+
 require __DIR__ . '/../../includes/auth.php';
 require __DIR__ . '/../../includes/credits_write.php';
 require __DIR__ . '/../../includes/imei_provider.php';
 require __DIR__ . '/../../includes/functions.php';
 require __DIR__ . '/../../includes/blacklist.php';
+require __DIR__ . '/../../includes/service_fields.php';
 
 function fail(int $code, string $error, array $extra = []): never
 {
@@ -169,15 +189,18 @@ credits_mark_usage_success($publicId, [
     'details' => $result['details'],
 ]);
 
+$curated = service_result_has_template($code);
+
 echo json_encode([
-    'ok'        => true,
-    'status'    => 'success',
-    'public_id' => $publicId,
-    'imei'      => $imei,
-    'tac'       => imei_tac($imei),
-    'cost'      => $cost,
-    'brand'     => $result['brand'],
-    'model'     => $result['model'],
-    'details'   => $result['details'],
-    'blacklist' => blacklist_status($imei),
+    'ok'              => true,
+    'status'          => 'success',
+    'public_id'       => $publicId,
+    'imei'            => $imei,
+    'tac'             => imei_tac($imei),
+    'cost'            => $cost,
+    'brand'           => $result['brand'],
+    'model'           => $result['model'],
+    'details'         => $curated ? service_filter_details($code, (array) $result['details']) : $result['details'],
+    'details_curated' => $curated,
+    'blacklist'       => blacklist_status($imei),
 ]);

@@ -15,8 +15,10 @@ declare(strict_types=1);
  *                 - "paypal"     -> PayPal Orders v2 (native)
  *                 - "binancepay" -> Binance Pay v3 (native)
  *   currency    display currency for fee math (settle currency is USD)
- *   fee_pct     processor fee shown to user (informational, not collected
- *               on top - we just disclose it)
+ *   fee_pct     processing fee charged ON TOP of the requested amount.
+ *               The user pays amount + fee% at the processor; we credit
+ *               the base amount to their wallet (so the fee covers the
+ *               processor's cut). 0 = no fee (e.g. Binance Pay / USDT).
  *   min_usd     minimum top-up amount
  *   max_usd     maximum top-up amount
  *   bonus_pct   optional bonus credited as a separate BONUS ledger row
@@ -24,10 +26,10 @@ declare(strict_types=1);
  *   badges      short string tags shown next to the label
  *   icon        inline SVG path data for the icon column (24x24 viewBox)
  *
- * Pricing is informational. The actual fee is whatever the processor
- * deducts when they settle to the operator's bank account - we don't
- * add a markup ourselves. Bonus is a separate ledger row credited on
- * successful top-up (so it shows up in the dashboard as its own line).
+ * The fee is added to the amount billed by the processor (see fee_pct
+ * above), not deducted from the credit. Bonus is a separate ledger row
+ * credited on successful top-up (so it shows up in the dashboard as its
+ * own line).
  *
  * To disable a method without removing it (provider down for
  * maintenance etc.), set 'enabled' => false.

@@ -57,6 +57,7 @@ function layout_head(string $title, string $description = ''): void
         <nav class="site-nav">
             <?php if ($u): ?>
                 <a href="/check.php">Check</a>
+                <a href="/orders.php">Orders</a>
             <?php else: ?>
                 <a href="/">IMEI Check</a>
             <?php endif; ?>

@@ -155,6 +155,34 @@
         return escapeHtml(val);
     }
 
+    // Attention popup shown when a checked IMEI has community blacklist
+    // reports. bl = { reports, first_reported, reason } or null.
+    function showBlacklistPopup(bl) {
+        if (!bl) return;
+        var old = document.getElementById('bl-popup');
+        if (old) old.remove();
+        var n = bl.reports || 1;
+        var when = bl.first_reported ? String(bl.first_reported).slice(0, 10) : '';
+        var reason = bl.reason ? '<p class="bl-reason">Reported reason: ' + escapeHtml(bl.reason) + '</p>' : '';
+        var ov = document.createElement('div');
+        ov.id = 'bl-popup';
+        ov.className = 'bl-overlay';
+        ov.innerHTML =
+            '<div class="bl-card" role="alertdialog" aria-modal="true">' +
+              '<div class="bl-badge">&#9888; BLACKLIST ALERT</div>' +
+              '<h3>This IMEI has been reported</h3>' +
+              '<p>Reported <strong>' + n + ' time' + (n > 1 ? 's' : '') + '</strong> by users on this platform' +
+                (when ? ' (first on ' + escapeHtml(when) + ')' : '') + '. ' +
+                'It may be lost, stolen, or carry outstanding debt &mdash; proceed with caution before buying or financing this device.</p>' +
+                reason +
+              '<button type="button" class="bl-dismiss">I understand</button>' +
+            '</div>';
+        document.body.appendChild(ov);
+        function close() { ov.remove(); }
+        ov.addEventListener('click', function (e) { if (e.target === ov) close(); });
+        ov.querySelector('.bl-dismiss').addEventListener('click', close);
+    }
+
     function renderResult(data) {
         var details = data.details || {};
         var brand = data.brand || details.Brand || details['Brand Name'] || details.Manufacturer || '';
@@ -178,12 +206,17 @@
             month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit'
         }).toUpperCase();
 
-        var inner = '<div class="result-lines">' + lines + '</div>' +
+        var blWarn = data.blacklist
+            ? '<div class="bl-inline">&#9888; This IMEI was reported ' + (data.blacklist.reports || 1) +
+              ' time(s) as blacklisted &mdash; proceed with caution.</div>'
+            : '';
+        var inner = blWarn + '<div class="result-lines">' + lines + '</div>' +
             '<div class="result-chips">' +
               '<span class="result-chip">' + (secs !== null ? escapeHtml(secs) + ' SECONDS' : 'COMPLETED') + '</span>' +
               '<span class="result-chip">' + escapeHtml(dateStr) + '</span>' +
             '</div>';
         renderStatus('success', 'Order Processed!', inner);
+        showBlacklistPopup(data.blacklist);
     }
 
     form.addEventListener('submit', function (e) {
@@ -273,6 +306,7 @@
                 if (resp.body.status === 'processing' && resp.body.public_id) {
                     renderProcessing(resp.body.public_id);
                     resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    showBlacklistPopup(resp.body.blacklist);
                     pollStatus(resp.body.public_id, resp.body.retry_after);
                     return;
                 }

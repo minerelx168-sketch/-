@@ -519,6 +519,70 @@ a:hover { color: var(--primary-600); }
     .result-chip { padding: 8px 12px; font-size: .72rem; }
 }
 
+/* ---- Community blacklist warning (inline + popup) ---- */
+.bl-inline {
+    background: rgba(220, 38, 38, .08);
+    color: var(--danger);
+    border: 1px solid rgba(220, 38, 38, .3);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+}
+.bl-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: rgba(15, 17, 23, .62);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    animation: bl-fade .15s ease;
+}
+.bl-overlay[hidden] { display: none; }
+@keyframes bl-fade { from { opacity: 0; } to { opacity: 1; } }
+.bl-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 440px; width: 100%;
+    padding: 28px 28px 24px;
+    text-align: center;
+    border-top: 5px solid var(--danger);
+}
+.bl-badge {
+    display: inline-block;
+    background: var(--danger); color: #fff;
+    font-size: .78rem; font-weight: 700; letter-spacing: .04em;
+    padding: 5px 14px; border-radius: var(--radius-pill);
+    margin-bottom: 14px;
+}
+.bl-card h3 { margin: 0 0 10px; font-size: 1.25rem; color: var(--text-strong); }
+.bl-card p { margin: 0 0 8px; color: var(--text); line-height: 1.6; font-size: .95rem; }
+.bl-reason { color: var(--text-soft); font-size: .9rem; font-style: italic; }
+.bl-dismiss {
+    margin-top: 16px;
+    background: var(--danger); color: #fff; border: 0;
+    padding: 11px 24px; border-radius: var(--radius-pill);
+    font-weight: 700; cursor: pointer; font-size: .95rem;
+}
+.bl-dismiss:hover { filter: brightness(1.08); }
+
+/* Order-history row action buttons (view / report). */
+.order-act {
+    background: var(--surface-alt);
+    border: 1px solid var(--hairline);
+    color: var(--text-soft);
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+.order-act:hover { color: var(--text-strong); border-color: var(--text-muted); }
+.order-act--report:hover { color: var(--danger); border-color: var(--danger); }
+.order-act.is-reported { color: var(--danger); border-color: var(--danger); background: rgba(220, 38, 38, .08); cursor: default; }
+
 /* ------------------- Section heading utility ------------------- */
 .section-head { text-align: center; margin: 0 auto 36px; max-width: 600px; }
 .section-head h2 {

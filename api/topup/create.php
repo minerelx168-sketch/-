@@ -88,6 +88,13 @@ if ($amountFloat < (float) $selected['min_usd'] || $amountFloat > (float) $selec
 
 $provider = (string) $selected['provider'];
 
+// The fee (if any) is charged ON TOP of the requested amount: the user
+// pays amount + fee% at the processor, but we credit the base amount to
+// their wallet. So $amountFloat = wallet credit, $chargeAmount = what the
+// card/PayPal actually bills.
+$feePct       = (float) ($selected['fee_pct'] ?? 0);
+$chargeAmount = round($amountFloat * (1 + $feePct / 100), 2);
+
 // Idempotency key (client header preferred, otherwise generated).
 $idempotencyKey = (string) ($_SERVER['HTTP_IDEMPOTENCY_KEY'] ?? '');
 if (!preg_match('/^[A-Za-z0-9_-]{16,80}$/', $idempotencyKey)) {
@@ -127,9 +134,9 @@ try {
     }
 
     $url = match ($provider) {
-        'stripe'     => topup_create_stripe($order, $amountFloat, $user, $cfg, $idempotencyKey),
-        'paypal'     => topup_create_paypal($order, $amountFloat, $cfg),
-        'binancepay' => topup_create_binancepay($order, $amountFloat, $cfg),
+        'stripe'     => topup_create_stripe($order, $amountFloat, $chargeAmount, $feePct, $user, $cfg, $idempotencyKey),
+        'paypal'     => topup_create_paypal($order, $chargeAmount, $cfg),
+        'binancepay' => topup_create_binancepay($order, $chargeAmount, $cfg),
         default      => throw new RuntimeException('Unhandled provider: ' . $provider),
     };
 
@@ -144,27 +151,46 @@ try {
 
 // ---------- per-provider creators ---------------------------------------------
 
-function topup_create_stripe(array $order, float $amount, array $user, array $cfg, string $idemKey): string
+function topup_create_stripe(array $order, float $baseAmount, float $chargeAmount, float $feePct, array $user, array $cfg, string $idemKey): string
 {
     require_once __DIR__ . '/../../includes/stripe.php';
 
-    $amountCents = (int) round($amount * 100);
+    // Bill the credit as one line item and the processing fee as a second,
+    // so the Stripe receipt shows the breakdown. Deriving feeCents from the
+    // rounded charge keeps base + fee exactly equal to the total billed.
+    $baseCents   = (int) round($baseAmount * 100);
+    $chargeCents = (int) round($chargeAmount * 100);
+    $feeCents    = $chargeCents - $baseCents;
+
+    $lineItems = [[
+        'price_data' => [
+            'currency'     => 'usd',
+            'unit_amount'  => $baseCents,
+            'product_data' => [
+                'name'        => 'imeihub credit top-up',
+                'description' => 'Adds $' . number_format($baseAmount, 2) . ' to your imeihub wallet.',
+            ],
+        ],
+        'quantity' => 1,
+    ]];
+    if ($feeCents > 0) {
+        $feeLabel = rtrim(rtrim(number_format($feePct, 1), '0'), '.');
+        $lineItems[] = [
+            'price_data' => [
+                'currency'     => 'usd',
+                'unit_amount'  => $feeCents,
+                'product_data' => ['name' => 'Card processing fee (' . $feeLabel . '%)'],
+            ],
+            'quantity' => 1,
+        ];
+    }
+
     $session = stripe_create_checkout_session([
         'mode'                 => 'payment',
         'client_reference_id'  => $order['public_id'],
         'customer_email'       => $user['email'],
         'payment_method_types' => ['card'],
-        'line_items'           => [[
-            'price_data' => [
-                'currency'     => 'usd',
-                'unit_amount'  => $amountCents,
-                'product_data' => [
-                    'name'        => 'imeihub credit top-up',
-                    'description' => 'Adds $' . number_format($amount, 2) . ' to your imeihub wallet.',
-                ],
-            ],
-            'quantity' => 1,
-        ]],
+        'line_items'           => $lineItems,
         'metadata' => [
             'topup_public_id' => $order['public_id'],
             'user_id'         => (string) $user['id'],

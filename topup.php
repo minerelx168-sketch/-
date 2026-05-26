@@ -52,7 +52,7 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
 
                     <div class="pm-list">
                         <?php foreach ($methods as $m): if (!($m['enabled'] ?? true)) continue; ?>
-                            <div class="pm-card" data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>">
+                            <div class="pm-card" data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>" data-fee="<?= (float) $m['fee_pct'] ?>">
                                 <span class="pm-card-icon" aria-hidden="true">
                                     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="<?= htmlspecialchars((string) $m['icon'], ENT_QUOTES, 'UTF-8') ?>"/>
@@ -71,8 +71,9 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
                                         <span><span class="pm-meta-k">Max</span>$<?= number_format((float) $m['max_usd'], 0) ?></span>
                                     </div>
                                 </div>
+                                <?php $btnTotal = round(25 * (1 + (float) $m['fee_pct'] / 100), 2); ?>
                                 <button type="button" class="pm-btn" data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                    <span class="pm-btn-label">Top up</span>
+                                    <span class="pm-btn-label">Pay $<?= number_format($btnTotal, 2) ?></span>
                                     <span class="btn-spinner" aria-hidden="true"></span>
                                 </button>
                             </div>
@@ -82,9 +83,11 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
             </form>
 
             <p class="topup-foot">
+                Card and PayPal add a 5% processing fee &mdash; each button shows the
+                exact total you'll be charged, and your wallet is credited the amount
+                you picked above. You'll only be charged once the top-up succeeds
+                &mdash; cancelled or failed orders never touch your wallet.
                 Need help? <a href="/contact.php">Contact us</a>.
-                You'll only be charged once the top-up succeeds &mdash; cancelled
-                or failed orders never touch your wallet.
             </p>
         </div>
     </section>
@@ -105,10 +108,36 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
             return radio ? parseInt(radio.value, 10) : 0;
         }
 
+        function fmtUsd(n) {
+            return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Each method's button shows the amount actually billed = credit +
+        // its fee%. Card/PayPal add 5%; Binance Pay adds nothing.
+        function updateTotals() {
+            var amount = selectedAmount();
+            form.querySelectorAll('.pm-card').forEach(function (card) {
+                var label = card.querySelector('.pm-btn-label');
+                if (!label) return;
+                if (amount && amount >= 1) {
+                    var fee = parseFloat(card.getAttribute('data-fee')) || 0;
+                    var total = Math.round(amount * (1 + fee / 100) * 100) / 100;
+                    label.textContent = 'Pay ' + fmtUsd(total);
+                } else {
+                    label.textContent = 'Top up';
+                }
+            });
+        }
+
         form.elements['custom'].addEventListener('input', function () {
             var radio = form.querySelector('input[name="amount"]:checked');
             if (radio && form.elements['custom'].value.trim() !== '') radio.checked = false;
+            updateTotals();
         });
+        form.querySelectorAll('input[name="amount"]').forEach(function (r) {
+            r.addEventListener('change', updateTotals);
+        });
+        updateTotals();
 
         // Idempotency key stays stable for a given (amount, method) so a
         // network retry can't bill twice - but regenerates when the user

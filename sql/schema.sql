@@ -155,7 +155,12 @@ CREATE TABLE IF NOT EXISTS `credit_transactions` (
     `created_at`     TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     PRIMARY KEY (`id`),
     KEY `idx_user_created` (`user_id`, `created_at`),
-    KEY `idx_ref` (`reference_type`, `reference_id`),
+    -- Defense-in-depth against double-credit: at most one ledger row per
+    -- (reference, type). TOPUP+BONUS share a TopUpOrder ref but differ by type;
+    -- USAGE+REFUND share a ServiceUsage ref but differ by type - all fine. Rows
+    -- with NULL reference_id are exempt (MySQL treats NULLs as distinct). The
+    -- (reference_type, reference_id) prefix also serves lookups (replaces idx_ref).
+    UNIQUE KEY `uniq_ledger_ref` (`reference_type`, `reference_id`, `type`),
     CONSTRAINT `fk_credit_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -335,4 +340,5 @@ INSERT IGNORE INTO `schema_migrations` (`version`) VALUES
     ('admin'),
     ('blacklist'),
     ('dhru-async'),
-    ('payment-intent');
+    ('payment-intent'),
+    ('ledger-unique');

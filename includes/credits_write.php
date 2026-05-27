@@ -58,7 +58,9 @@ function credits_admin_adjust(int $userId, float $delta, string $reason, int $ad
         )->execute([
             $userId,
             number_format($delta, 2, '.', ''),
-            'admin-' . $adminId . '-' . time(),
+            // ULID (not time()) so two adjustments in the same second can't
+            // collide on the uniq_ledger_ref (reference_type, reference_id, type) key.
+            'admin-' . $adminId . '-' . ulid(),
             number_format($newBalance, 2, '.', ''),
             $desc,
         ]);

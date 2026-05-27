@@ -55,6 +55,11 @@ CREATE TABLE IF NOT EXISTS `users` (
     -- they're OAuth-only and can't log in with a password.
     `password_hash`  VARCHAR(255) DEFAULT NULL,
 
+    -- Admin gate (includes/admin.php) + ban flag. A banned user's session
+    -- resolves to logged-out (enforced in includes/auth.php).
+    `is_admin`       TINYINT(1) NOT NULL DEFAULT 0,
+    `banned_at`      TIMESTAMP NULL DEFAULT NULL,
+
     -- Denormalized balance cache. SOURCE OF TRUTH IS THE LEDGER.
     -- Stored as DECIMAL(12,2) so we can hold up to 9,999,999,999.99.
     `cached_balance` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
@@ -169,7 +174,8 @@ CREATE TABLE IF NOT EXISTS `topup_orders` (
                        NOT NULL DEFAULT 'PENDING',
 
     `provider`         VARCHAR(32) NOT NULL,               -- "stripe"
-    `provider_charge_id` VARCHAR(255) DEFAULT NULL,        -- e.g. Stripe session/PI id
+    `provider_charge_id` VARCHAR(255) DEFAULT NULL,        -- Stripe Checkout session id (cs_...)
+    `provider_payment_intent` VARCHAR(255) DEFAULT NULL,   -- Stripe PaymentIntent (pi_...); used to match charge.refunded
 
     -- Idempotency: also used as Stripe idempotency-key so retries don't
     -- create duplicate orders or duplicate credits.
@@ -185,6 +191,7 @@ CREATE TABLE IF NOT EXISTS `topup_orders` (
     UNIQUE KEY `uniq_public_id` (`public_id`),
     UNIQUE KEY `uniq_idempotency` (`idempotency_key`),
     UNIQUE KEY `uniq_charge_id` (`provider_charge_id`),
+    KEY `idx_payment_intent` (`provider_payment_intent`),
     KEY `idx_user_status` (`user_id`, `status`),
     CONSTRAINT `fk_topup_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -288,3 +295,44 @@ CREATE TABLE IF NOT EXISTS `webhook_events` (
     UNIQUE KEY `uniq_event_id` (`provider`, `event_id`),
     KEY `idx_processed` (`processed`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- -----------------------------------------------------------------------------
+-- Community blacklist reports (users flag an IMEI as lost/stolen/owing money).
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `blacklist_reports` (
+    `id`            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `imei`          CHAR(15) NOT NULL,
+    `tac`           CHAR(8) DEFAULT NULL,
+    `serial_number` VARCHAR(64) DEFAULT NULL,
+    `reported_by`   BIGINT UNSIGNED DEFAULT NULL,
+    `reason`        VARCHAR(255) DEFAULT NULL,
+    `status`        ENUM('active','dismissed') NOT NULL DEFAULT 'active',
+    `created_at`    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_imei_reporter` (`imei`, `reported_by`),
+    KEY `idx_imei_status` (`imei`, `status`),
+    KEY `idx_status` (`status`),
+    CONSTRAINT `fk_blreport_user` FOREIGN KEY (`reported_by`) REFERENCES `users`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- -----------------------------------------------------------------------------
+-- Schema migration tracking.
+--
+-- This file (schema.sql) is the COMPLETE current schema for a FRESH install.
+-- Incremental changes for EXISTING databases live in sql/migrate-*.sql and are
+-- applied (and recorded here) by scripts/migrate.sh. Because a fresh install
+-- already contains every migration's effect, we seed their versions as applied
+-- so the runner treats them as done.
+-- -----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `schema_migrations` (
+    `version`    VARCHAR(191) NOT NULL,
+    `applied_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT IGNORE INTO `schema_migrations` (`version`) VALUES
+    ('thb-to-usd'),
+    ('admin'),
+    ('blacklist'),
+    ('dhru-async'),
+    ('payment-intent');

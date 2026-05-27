@@ -115,6 +115,16 @@ try {
             $paymentStatus = (string) ($object['payment_status'] ?? '');
             if ($publicId && $paymentStatus === 'paid') {
                 $result = credits_issue_topup($publicId);
+                // Record the PaymentIntent so a later charge.refunded can be
+                // matched back to this order (provider_charge_id holds the
+                // Checkout session id, which refund events never carry).
+                $pi = (string) ($object['payment_intent'] ?? '');
+                if ($pi !== '') {
+                    db()->prepare(
+                        'UPDATE topup_orders SET provider_payment_intent = ?
+                         WHERE public_id = ? AND (provider_payment_intent IS NULL OR provider_payment_intent = "")'
+                    )->execute([$pi, $publicId]);
+                }
                 whlog('info', 'topup credited', [
                     'public_id'    => $publicId,
                     'credited_now' => $result['credited_now'],
@@ -144,16 +154,19 @@ try {
             break;
 
         case 'charge.refunded':
-            // Stripe refunds the charge; we currently only reflect that on the
-            // order. The ledger-level refund (CreditTransaction type=REFUND)
-            // requires admin action because deducting back from a wallet that
-            // has already been spent must be a manual call.
-            $chargeId = (string) ($object['payment_intent'] ?? $object['id'] ?? '');
-            if ($chargeId !== '') {
-                db()->prepare(
-                    'UPDATE topup_orders SET status = "REFUNDED" WHERE provider_charge_id = ?'
-                )->execute([$chargeId]);
-                whlog('info', 'topup marked refunded', ['charge_id' => $chargeId]);
+            // The Charge object carries its PaymentIntent (pi_...); match the
+            // order we recorded it against at payment time. We only reflect the
+            // refund on the order here - the ledger-level refund (a REFUND
+            // CreditTransaction) stays a manual admin action because clawing
+            // back already-spent wallet balance must be deliberate.
+            $pi = (string) ($object['payment_intent'] ?? '');
+            if ($pi !== '') {
+                $upd = db()->prepare(
+                    'UPDATE topup_orders SET status = "REFUNDED"
+                     WHERE provider_payment_intent = ? AND status <> "REFUNDED"'
+                );
+                $upd->execute([$pi]);
+                whlog('info', 'topup marked refunded', ['payment_intent' => $pi, 'rows' => $upd->rowCount()]);
             }
             break;
 

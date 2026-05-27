@@ -544,6 +544,32 @@ a:hover { color: var(--primary-600); }
     .result-chip { padding: 8px 12px; font-size: .72rem; }
 }
 
+/* Save / share the result as an image (small icon buttons under the card). */
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+.result-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: var(--surface, #fff);
+    color: var(--text-soft);
+    border-radius: 999px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .15s, color .15s, background .15s, transform .1s;
+    -webkit-tap-highlight-color: transparent;
+}
+.result-action svg { width: 16px; height: 16px; }
+.result-action:hover { border-color: #c7d2fe; color: #4f46e5; background: #f5f7ff; }
+.result-action:active { transform: scale(.97); }
+
 /* Order-history result popup (#order-modal): a past lookup can carry ~30
    fields, which made the modal taller than the viewport so the banner and
    Close button were clipped off-screen. Cap the field list and let it scroll

@@ -132,6 +132,7 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
     var selName = document.getElementById('sel-name');
     var selCost = document.getElementById('sel-cost');
     var requestStartedAt = 0;
+    var lastReport = null;
 
     function updateSummary() {
         var opt = sel.options[sel.selectedIndex];
@@ -249,14 +250,211 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
         var secs = requestStartedAt ? ((Date.now() - requestStartedAt) / 1000).toFixed(1) : null;
         var dateStr = new Date().toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}).toUpperCase();
         var blWarn = data.blacklist ? '<div class="bl-inline">&#9888; This IMEI was reported ' + (data.blacklist.reports || 1) + ' time(s) as blacklisted &mdash; proceed with caution.</div>' : '';
+        lastReport = { data: data, imei: (imei.value.replace(/\D+/g, '') || 'report'), secs: secs, dateStr: dateStr };
         renderStatus('success', 'Order Processed!', blWarn +
             '<div class="result-lines">' + lines + '</div>' +
             '<div class="result-chips">' +
               '<span class="result-chip">' + (secs !== null ? escapeHtml(secs) + ' SECONDS' : 'COMPLETED') + '</span>' +
               '<span class="result-chip">' + escapeHtml(dateStr) + '</span>' +
             '</div>');
+        resultEl.insertAdjacentHTML('beforeend',
+            '<div class="result-actions" role="group" aria-label="Save or share result">' +
+              '<button type="button" class="result-action" data-action="save" aria-label="Save as image">' + ICON_SAVE + '<span>Save</span></button>' +
+              '<button type="button" class="result-action" data-action="share" aria-label="Share">' + ICON_SHARE + '<span>Share</span></button>' +
+            '</div>');
         showBlacklistPopup(data.blacklist);
     }
+
+    var ICON_SAVE  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+    var ICON_SHARE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>';
+
+    // Re-collect the rendered fields as a flat list so the PNG export matches
+    // the on-screen card (curated order, sections, model, status pills).
+    function collectReportRows(data) {
+        var details = data.details || {}, rows = [];
+        if (data.blacklist) {
+            rows.push({ kind: 'warn', text: '⚠ This IMEI was reported ' + (data.blacklist.reports || 1) + ' time(s) as blacklisted — proceed with caution.' });
+        }
+        if (data.details_curated) {
+            Object.keys(details).forEach(function (k) {
+                var v = details[k];
+                if (v === null || v === undefined || v === '') return;
+                if (Array.isArray(v)) {
+                    if (!v.length) return;
+                    rows.push({ kind: 'section', key: k });
+                    v.forEach(function (it) { rows.push({ kind: 'sub', text: String(it) }); });
+                } else if (String(k).toLowerCase() === 'model') {
+                    rows.push({ kind: 'model', val: String(v) });
+                } else {
+                    rows.push({ kind: 'kv', key: k, val: String(v) });
+                }
+            });
+        } else {
+            var brand = data.brand || details['Brand Name'] || details.Brand || details.Manufacturer || '';
+            var model = data.model || details['Model Name'] || details.Model || details['Model Description'] || '';
+            var modelStr = (details['Model Description'] || details['Model'] || (brand + ' ' + model)).trim() || details['Model Name'] || 'Unknown device';
+            rows.push({ kind: 'model', val: modelStr });
+            var skip = { 'brand name':1,'brand':1,'manufacturer':1,'model':1,'model name':1,'model description':1 };
+            Object.keys(details).forEach(function (k) {
+                if (skip[String(k).toLowerCase()]) return;
+                var v = details[k]; if (v === null || v === undefined || v === '') return;
+                rows.push({ kind: 'kv', key: k, val: String(v) });
+            });
+        }
+        return rows;
+    }
+
+    // Draw the report to an offscreen canvas (no external lib, so it works in
+    // mobile Safari where foreignObject->canvas is unreliable). Two passes:
+    // measure height first, then render.
+    function buildReportCanvas(report) {
+        var data = report.data || {}, rows = collectReportRows(data);
+        var DPR = Math.max(2, Math.min(3, window.devicePixelRatio || 1));
+        var W = 760, padX = 44, maxW = W - padX * 2;
+        var FF = '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif';
+        var INK = '#0b1220', SUB = '#64748b', LINE = '#e9edf5';
+        var PILL = {
+            success: { bg:'#dcfce7', fg:'#166534' }, danger: { bg:'#fee2e2', fg:'#b91c1c' },
+            warn: { bg:'#fef3c7', fg:'#92400e' }, muted: { bg:'#eef2f7', fg:'#475569' }
+        };
+        var scratch = document.createElement('canvas').getContext('2d');
+        function wrap(ctx, text, mw) {
+            var words = String(text).split(/\s+/), out = [], cur = '';
+            for (var i = 0; i < words.length; i++) {
+                var t = cur ? cur + ' ' + words[i] : words[i];
+                if (ctx.measureText(t).width > mw && cur) { out.push(cur); cur = words[i]; }
+                else cur = t;
+            }
+            if (cur) out.push(cur);
+            return out.length ? out : [''];
+        }
+        function rr(ctx, x, y, w, h, r) {
+            ctx.beginPath(); ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+        }
+        function pillOk(v) { return /^[\w.+/\-]{1,16}$/.test(String(v).trim()); }
+
+        function run(ctx, draw) {
+            var y = 36;
+            ctx.font = '700 24px ' + FF;
+            if (draw) { ctx.fillStyle = '#4f46e5'; ctx.fillText('imeihub', padX, y); }
+            y += 36;
+            if (draw) { ctx.strokeStyle = LINE; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padX, y); ctx.lineTo(W - padX, y); ctx.stroke(); }
+            y += 22;
+            for (var i = 0; i < rows.length; i++) {
+                var r = rows[i];
+                if (r.kind === 'warn') {
+                    ctx.font = '600 15px ' + FF;
+                    var wl = wrap(ctx, r.text, maxW - 28), bh = wl.length * 21 + 22;
+                    if (draw) {
+                        rr(ctx, padX, y, maxW, bh, 12); ctx.fillStyle = '#fef2f2'; ctx.fill();
+                        ctx.strokeStyle = '#fecaca'; ctx.lineWidth = 1; ctx.stroke();
+                        ctx.fillStyle = '#b91c1c';
+                        for (var j = 0; j < wl.length; j++) ctx.fillText(wl[j], padX + 14, y + 11 + j * 21);
+                    }
+                    y += bh + 16;
+                } else if (r.kind === 'model') {
+                    ctx.font = '700 25px ' + FF;
+                    var ml = wrap(ctx, r.val, maxW);
+                    if (draw) { ctx.fillStyle = INK; for (var m = 0; m < ml.length; m++) ctx.fillText(ml[m], padX, y + m * 32); }
+                    y += ml.length * 32 + 12;
+                } else if (r.kind === 'section') {
+                    ctx.font = '700 18px ' + FF;
+                    if (draw) { ctx.fillStyle = INK; ctx.fillText(r.key + ':', padX, y); }
+                    y += 30;
+                } else if (r.kind === 'sub') {
+                    ctx.font = '400 15px ' + FF;
+                    var sl = wrap(ctx, '•  ' + r.text, maxW - 16);
+                    if (draw) { ctx.fillStyle = SUB; for (var s = 0; s < sl.length; s++) ctx.fillText(sl[s], padX + 16, y + s * 21); }
+                    y += sl.length * 21 + 4;
+                } else {
+                    var label = r.key + ': ';
+                    ctx.font = '400 17px ' + FF;
+                    var lw = ctx.measureText(label).width;
+                    var cls = classifyValue(r.key, r.val);
+                    if (cls && pillOk(r.val)) {
+                        var val = String(r.val).trim();
+                        ctx.font = '700 14px ' + FF;
+                        var pw = ctx.measureText(val).width + 20;
+                        if (draw) {
+                            ctx.font = '400 17px ' + FF; ctx.fillStyle = SUB; ctx.fillText(label, padX, y);
+                            var pc = PILL[cls] || PILL.muted;
+                            rr(ctx, padX + lw + 2, y - 1, pw, 24, 12); ctx.fillStyle = pc.bg; ctx.fill();
+                            ctx.font = '700 14px ' + FF; ctx.fillStyle = pc.fg; ctx.fillText(val, padX + lw + 12, y + 3);
+                        }
+                        y += 32;
+                    } else {
+                        ctx.font = '400 17px ' + FF;
+                        var vlines = wrap(ctx, String(r.val), maxW - lw);
+                        if (draw) {
+                            ctx.fillStyle = SUB; ctx.fillText(label, padX, y);
+                            ctx.fillStyle = INK;
+                            for (var v2 = 0; v2 < vlines.length; v2++) ctx.fillText(vlines[v2], padX + lw, y + v2 * 24);
+                        }
+                        y += vlines.length * 24 + 7;
+                    }
+                }
+            }
+            y += 6;
+            ctx.font = '600 12px ' + FF;
+            var chip = ((report.secs != null ? report.secs + ' SECONDS   ·   ' : '') + (report.dateStr || '')).toUpperCase();
+            if (draw) { ctx.fillStyle = SUB; ctx.fillText(chip, padX, y); }
+            y += 28;
+            if (draw) { ctx.strokeStyle = LINE; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padX, y); ctx.lineTo(W - padX, y); ctx.stroke(); }
+            y += 14;
+            ctx.font = '600 13px ' + FF;
+            if (draw) { ctx.fillStyle = SUB; ctx.fillText('imeihub.net', padX, y); }
+            return y + 30;
+        }
+
+        scratch.textBaseline = 'top';
+        var H = run(scratch, false);
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+        var ctx = canvas.getContext('2d');
+        ctx.scale(DPR, DPR); ctx.textBaseline = 'top';
+        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+        run(ctx, true);
+        return canvas;
+    }
+
+    function reportFileName() {
+        return 'imeihub-' + ((lastReport && lastReport.imei) || 'report') + '.png';
+    }
+    function withReportBlob(cb) {
+        if (!lastReport) return;
+        try {
+            buildReportCanvas(lastReport).toBlob(function (blob) { if (blob) cb(blob); }, 'image/png');
+        } catch (e) { /* canvas/toBlob unsupported */ }
+    }
+    function saveReport() {
+        withReportBlob(function (blob) {
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url; a.download = reportFileName();
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+        });
+    }
+    function shareReport() {
+        withReportBlob(function (blob) {
+            var file = null;
+            try { file = new File([blob], reportFileName(), { type: 'image/png' }); } catch (e) {}
+            if (file && navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+                navigator.share({ files: [file], title: 'IMEI Report', text: 'IMEI check result — imeihub.net' }).catch(function () {});
+            } else {
+                saveReport(); // no native share (e.g. desktop Firefox): download instead
+            }
+        });
+    }
+    resultEl.addEventListener('click', function (e) {
+        var btn = e.target.closest ? e.target.closest('.result-action') : null;
+        if (!btn) return;
+        var act = btn.getAttribute('data-action');
+        if (act === 'save') saveReport();
+        else if (act === 'share') shareReport();
+    });
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();

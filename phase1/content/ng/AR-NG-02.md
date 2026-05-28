@@ -9,33 +9,33 @@ word_count_target: 1000
 
 # How to Check If a Phone Is Stolen in Nigeria (NCC + IMEI)
 
-Phone theft is one of the fastest-moving crimes in Nigerian cities, and the second-hand market in places like Computer Village in Lagos, Alaba and Tradefair has long absorbed stolen devices because there was no real national way to flag them. That ended in October 2025 when the Nigerian Communications Commission (NCC) switched on its Device Management System (NCC-DMS). For the first time, a stolen IMEI reported to NCC, the Nigeria Police or the original network can be flagged across MTN Nigeria, Glo, Airtel and 9mobile at the same time.
+Phone theft is one of the fastest-moving crimes in Nigerian cities, and second-hand markets like Computer Village in Lagos, Alaba and Tradefair have long absorbed stolen devices. That ended in October 2025 when the Nigerian Communications Commission (NCC) switched on its Device Management System (NCC-DMS). A stolen IMEI reported to NCC, the police or the original network can now be flagged across MTN Nigeria, Glo, Airtel and 9mobile at the same time.
 
-This guide shows you exactly how to confirm whether a phone is stolen before you pay for it — and what to do if a check comes back red.
+This guide shows you how to confirm whether a phone is stolen before you pay — and what to do if a check comes back red.
 
 ## Why Stolen-Phone Checks Matter Now
 
-Before NCC-DMS, a stolen phone could be wiped, re-flashed, and resold in a different state within hours. The only block was at the network level, and even that was inconsistent. Today, a stolen-flag on NCC-DMS propagates to all four MNOs because they sync with the central register daily.
+Before NCC-DMS, a stolen phone could be wiped and resold in another state within hours. Today, a stolen-flag on NCC-DMS propagates to all four MNOs because they sync with the central register daily.
 
 That means three new things for buyers:
 
-- A phone reported stolen to any Nigerian network is flagged on the central register within hours, not weeks.
-- Once flagged, the IMEI cannot be activated on a new SIM on any major network.
-- Even unblocking the phone after recovery requires the original owner to submit proof — making fraudulent unblocks much harder.
+- A phone reported stolen is flagged on the central register within hours, not weeks.
+- Once flagged, the IMEI cannot be activated on any major network.
+- Unblocking after recovery requires the original owner to submit proof — making fraudulent unblocks much harder.
 
-For a buyer, that flips the equation. The risk has moved from "this phone might be locked one day" to "this phone is already useless if it is on the stolen register". Verifying before paying is now the single most important step in any used-phone deal.
+The risk has moved from "this phone might be locked one day" to "this phone is already useless if it is on the stolen register". Verifying before paying is now the single most important step in any used-phone deal.
 
 ## How to Run a Stolen-Phone IMEI Check
 
 There are three reliable ways to check whether a phone is on the NCC-DMS stolen register. Use at least two of them before parting with money.
 
-**1. Free IMEI lookup.** The fastest option is an instant IMEI check through a public lookup. You can run one right now with our [Free IMEI Check](/ng/) — paste the 15-digit IMEI and the result returns the device's registration status, network compatibility and any blacklist flag in seconds. This is what most Nigerian buyers do at the point of purchase, often standing in the seller's shop.
+**1. Free IMEI lookup.** The fastest option is an instant IMEI check through a public lookup. You can run one right now with our <a href="/ng/">Free IMEI Check</a> — paste the 15-digit IMEI and the result returns the device's registration status, network compatibility and any blacklist flag in seconds. This is what most Nigerian buyers do at the point of purchase, often standing in the seller's shop.
 
 **2. NCC-DMS official portal.** The NCC operates a public verification page on `ncc.gov.ng`. Enter the IMEI and the system returns one of three statuses: Clean, Under Review, or Blocked / Reported Stolen. This is the authoritative answer because it comes directly from the central register.
 
 **3. Dial *#06# and check carrier response.** Slot a known-good SIM into the phone. Dial `*#06#` to display the IMEI. Then make a test call, send an SMS, and try mobile data. A stolen phone often fails one of these tests because the IMEI is already on the no-service list.
 
-For a thorough check, a buyer should run options 1 and 2 against the same IMEI and confirm they match. If the seller refuses to let you fit your SIM and run a test, walk away.
+Run options 1 and 2 against the same IMEI and confirm they match. If the seller refuses to let you fit your SIM, walk away.
 
 ## Reading the Result: What Each Status Means
 
@@ -58,22 +58,22 @@ If you discover the issue after purchase, you have rights but you must act fast.
 - Stop using the phone immediately. Using a known stolen device can implicate you in handling stolen goods.
 - Note the seller's name, location and any receipt or transfer message.
 - Report to the nearest police station and obtain an extract — this protects you as an innocent buyer.
-- Contact NCC Consumer Affairs Bureau via 622 (toll-free from any network) with your IMEI and police report.
-- File a complaint on the NCC consumer portal so the device's history records that an innocent buyer was defrauded.
+- Contact NCC Consumer Affairs on 622 (toll-free) with your IMEI and police report.
+- File a complaint on the NCC consumer portal so the device's history records the fraud.
 
-In most cases the phone will be retained pending return to the original owner. You will not get the phone back, but a clean police report protects your record and supports a small-claims case against the seller.
+The phone is usually retained pending return to the original owner. You will not get the device back, but a clean police report supports a small-claims case against the seller.
 
 ## Protecting Yourself as a Buyer
 
 A few habits go a long way in the Nigerian used-phone market.
 
-- Always meet in a public place, preferably a recognised market with cameras such as Computer Village's main strip, not a back-alley shop.
+- Meet in a public place — Computer Village's main strip, not a back-alley shop.
 - Run the IMEI check in front of the seller. A genuine seller has no objection.
-- Ask for a written receipt with the IMEI, the seller's full name, and a phone number that you call to verify on the spot.
-- Pay through bank transfer, not cash — the transfer record is evidence if the deal goes wrong. Avoid third-party "POS guys" you do not know.
-- For iPhones, ask the seller to sign out of iCloud and reset the phone in front of you. A working IMEI is useless if the device is iCloud-locked.
+- Ask for a written receipt with the IMEI, seller's full name, and a phone number you call to verify on the spot.
+- Pay by bank transfer, not cash. Avoid unknown POS agents.
+- For iPhones, have the seller sign out of iCloud and reset the phone in front of you.
 
-The NCC-DMS makes stolen-phone fraud harder, but only for buyers who take five minutes to check. The check is free; the consequences of skipping it are not.
+NCC-DMS makes stolen-phone fraud harder, but only for buyers who take five minutes to check. The check is free; skipping it is not.
 
 ## Frequently Asked Questions
 

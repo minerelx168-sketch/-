@@ -9,15 +9,15 @@ word_count_target: 1000
 
 # MTN, Glo, Airtel, 9mobile — IMEI Check Per Carrier in Nigeria
 
-Each Nigerian network keeps a record of the IMEI it has seen attached to your SIM. With the NCC-DMS (Device Management System) live since October 2025, those records now sync into a central register run by the Nigerian Communications Commission (NCC). But each network — MTN Nigeria, Glo (Globacom), Airtel Nigeria and 9mobile — still has its own short-code, customer-care channel and unlock process you can use directly from the phone.
+Each Nigerian network keeps a record of every IMEI attached to your SIM. With NCC-DMS (Device Management System) live since October 2025, those records now sync into a central register run by the Nigerian Communications Commission (NCC). Each network — MTN Nigeria, Glo (Globacom), Airtel Nigeria and 9mobile — still has its own short-code and unlock process you can use directly.
 
-This guide gives you the working USSD codes, the official channels, and the carrier-lock checks for each of the four major MNOs, with one section per network so you can jump to the one you use.
+This guide gives you the working USSD codes, official channels, and carrier-lock checks for each MNO, one section per network so you can jump to the one you use.
 
 ## The Universal Code Every Nigerian Should Know
 
 Before you go to your network, run the universal IMEI display. Dial `*#06#` on any phone, on any network in the world. The 15-digit IMEI appears immediately. On dual-SIM devices you will see two IMEIs — both are tied to your device and both are tracked in NCC-DMS.
 
-Copy or screenshot the IMEI before you continue. You will need it for every network-specific check below, for the NCC-DMS portal at `ncc.gov.ng`, and for our [Free IMEI Check](/ng/) which gives an instant cross-network status.
+Copy or screenshot the IMEI before you continue. You will need it for every network-specific check below, for the NCC-DMS portal at `ncc.gov.ng`, and for our <a href="/ng/">Free IMEI Check</a> which gives an instant cross-network status.
 
 ## MTN Nigeria IMEI Check
 
@@ -27,9 +27,9 @@ MTN is the largest MNO in Nigeria with the deepest NCC-DMS integration. There ar
 - **MyMTN app**: Open the MyMTN app (available on Play Store and App Store), go to Account → Devices. The app shows every IMEI currently bound to your MSISDN.
 - **Customer care**: Dial 180 from your MTN SIM (free) or 0803 100 0180 from another network. Ask the agent to confirm your IMEI status on the NCC-DMS register.
 
-For IMEI binding: MTN allows multiple IMEIs per MSISDN. If you switch phones, the new IMEI is registered automatically when you insert the SIM, but it must already be on the NCC-DMS register. MTN's network rejects unregistered IMEIs the second time the device tries to attach.
+IMEI binding: MTN allows multiple IMEIs per MSISDN. When you switch phones the new IMEI is registered automatically, but it must already be on the NCC-DMS register. MTN rejects unregistered IMEIs after the second attach attempt.
 
-Carrier lock on MTN: MTN sells subsidised devices (mostly low-end Android) that are locked to its network for 12 months. To check whether your device is locked, dial `*123*7#` and look at the "Device status" field. To request an unlock after the 12-month period, dial 180 with proof of purchase.
+Carrier lock on MTN: subsidised devices (mostly low-end Android) are locked for 12 months. Dial `*123*7#` and check "Device status". For an unlock after 12 months, dial 180 with proof of purchase.
 
 ## Glo (Globacom) IMEI Check
 

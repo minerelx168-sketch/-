@@ -11,7 +11,7 @@ word_count_target: 1000
 
 When the Nigerian Communications Commission (NCC) switched on its new Device Management System (NCC-DMS) in October 2025, it changed how every phone connects to MTN Nigeria, Glo, Airtel and 9mobile. The system is a Central Equipment Identity Register (CEIR)-style platform that holds the IMEI of every device that touches a Nigerian SIM. If your IMEI is not in the register, or if it has been flagged as stolen or unapproved, your phone risks losing service as enforcement tightens through 2026.
 
-This is the registration walkthrough most Nigerian buyers actually need. It is short, practical, and follows the route the NCC and your network use today. If you only have five minutes, jump to the four-step portal section.
+This is the practical registration walkthrough most Nigerian buyers need. If you only have five minutes, jump to the four-step portal section.
 
 ## What NCC-DMS Actually Is
 
@@ -23,7 +23,7 @@ It does three things:
 2. Cross-checks the IMEI against stolen, cloned and counterfeit registers shared between NCC, the Nigerian Customs Service, SON (Standards Organisation of Nigeria), NITDA and NIMC.
 3. Tells the MNOs whether to allow that IMEI to carry voice, SMS or data on their network.
 
-Enforcement is gradual. Phones already in active use before October 2025 are being onboarded automatically through the MNO sync. Newly imported or newly resold phones are the ones most likely to need manual action. You can confirm your status right now with a [Free IMEI Check](/ng/) before you go any further.
+Enforcement is gradual. Phones already in active use before October 2025 are being onboarded automatically through the MNO sync. Newly imported or newly resold phones are the ones most likely to need manual action. You can confirm your status right now with a <a href="/ng/">Free IMEI Check</a> before you go any further.
 
 ## Who Must Register
 

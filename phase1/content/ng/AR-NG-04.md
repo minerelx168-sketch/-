@@ -9,21 +9,21 @@ word_count_target: 1000
 
 # Buying a Used Phone in Nigeria — IMEI Safety Checklist
 
-Nigeria runs the largest used-phone market in Sub-Saharan Africa. Computer Village in Lagos alone moves tens of thousands of "UK used" and "London used" iPhones, Samsungs, Tecno and Infinix devices every week. The country also runs Alaba International, Tradefair, the GSM markets in Aba, Onitsha and Kano, and a fast-growing online second-hand layer on Jiji, Jumia and Instagram. A second-hand phone in good shape can cost half the price of a new unit, which is why the market is so big.
+Nigeria runs the largest used-phone market in Sub-Saharan Africa. Computer Village in Lagos alone moves tens of thousands of "UK used" iPhones, Samsungs, Tecno and Infinix devices every week, alongside Alaba International, Tradefair, the GSM markets in Aba, Onitsha and Kano, and a fast-growing online layer on Jiji, Jumia and Instagram.
 
-It is also why scams are common. With the NCC-DMS (Device Management System) live since October 2025, the rules have shifted in the buyer's favour — but only if you check the IMEI before you pay. This is the practical safety checklist you can run in five minutes at a market stall or in a DM conversation.
+It is also why scams are common. With NCC-DMS (Device Management System) live since October 2025, the rules shifted in the buyer's favour — but only if you check the IMEI before you pay. This is the practical safety checklist you can run in five minutes.
 
 ## Why the Used-Phone Market Is Riskier Than It Looks
 
-A used iPhone 13 advertised for ₦310,000 in Computer Village can be any of the following:
+A used iPhone 13 advertised for ₦310,000 in Computer Village can be:
 
 - A genuine UK-used phone with a clean IMEI and no carrier lock — what you want.
-- A stolen device whose IMEI has just been reported to NCC-DMS and will go dead within days.
-- An iCloud-locked or MDM-locked device that will display the activation screen the moment you reset it.
-- A "smuggled" phone that was never declared at Customs, has no SON type approval, and will fail NCC-DMS verification.
+- A stolen device whose IMEI is on the NCC-DMS register and will go dead within days.
+- An iCloud or MDM-locked device that displays the activation screen the moment you reset it.
+- A smuggled phone with no SON type approval, which will fail NCC-DMS verification.
 - A counterfeit running a skinned Android made to look like iOS.
 
-The only physical inspection (screen, battery, ports) can spot two of those five. The other three need an IMEI check. That is the difference between paying ₦310,000 for a working phone and paying ₦310,000 for a brick.
+Physical inspection spots two of those five. The other three need an IMEI check. That is the difference between paying ₦310,000 for a working phone and paying ₦310,000 for a brick.
 
 ## The Five Checks Every Buyer Should Run
 
@@ -31,7 +31,7 @@ Run these in order. If any single check fails, walk away — there is always ano
 
 **Check 1 — Get the IMEI in front of the seller.** Ask the seller to dial `*#06#` on the phone. Compare the 15-digit number on screen with the IMEI printed on the back of the box and (for iPhones) etched in the SIM tray. All three should match exactly. A mismatch usually means the back panel has been swapped or the phone has been re-flashed with a fake IMEI.
 
-**Check 2 — Run an instant IMEI lookup.** Use our [Free IMEI Check](/ng/) directly on your phone in front of the seller. Paste the IMEI and read the report aloud. You are looking for: device model matches what the seller said, registration status is Clean, and there is no Blacklist or Reported-Stolen flag.
+**Check 2 — Run an instant IMEI lookup.** Use our <a href="/ng/">Free IMEI Check</a> directly on your phone in front of the seller. Paste the IMEI and read the report aloud. You are looking for: device model matches what the seller said, registration status is Clean, and there is no Blacklist or Reported-Stolen flag.
 
 **Check 3 — Confirm with the NCC-DMS portal.** Open `ncc.gov.ng` on your phone and run the same IMEI through the official NCC-DMS verification page. A two-source match (free lookup + NCC) is what you want before paying.
 
@@ -41,17 +41,17 @@ Run these in order. If any single check fails, walk away — there is always ano
 
 ## Red Flags You Can Spot Without a Phone
 
-Some warning signs do not need an IMEI lookup. Treat any of these as reasons to negotiate hard or leave.
+Some warning signs do not need an IMEI lookup. Treat any of these as reasons to leave.
 
 - The seller refuses to let you dial `*#06#` or to fit your SIM.
-- The price is much lower than the going market rate. A "London used" iPhone 14 at ₦220,000 is suspicious in any month of 2026.
-- The IMEI label on the back of the device has been scratched or polished off.
-- There is no box, no charger, and no proof of purchase — and the seller cannot produce a verifiable previous owner's name.
-- The seller pushes you to pay through an unfamiliar POS or a third-party "agent". Real sellers accept direct bank transfer.
-- The deal is happening late at night, in a back-alley shop, or outside the seller's stated address.
-- The seller cannot show recent call logs, photos or app history. A wiped phone is fine; a phone that has clearly been wiped immediately before showing it to you is a flag.
+- The price is much lower than market rate. A "London used" iPhone 14 at ₦220,000 in 2026 is suspicious.
+- The IMEI label on the back has been scratched off.
+- No box, no charger, no proof of purchase — and the seller cannot name a verifiable previous owner.
+- The seller pushes payment through an unfamiliar POS or third-party agent.
+- The deal is happening late at night or in a back-alley shop.
+- The phone was wiped immediately before showing it to you.
 
-A working phone with a verifiable history will pass all of these. A stolen or smuggled phone almost always fails one or two.
+A working phone with a verifiable history passes all of these. Stolen or smuggled phones almost always fail one or two.
 
 ## The One-Page Pre-Purchase Checklist
 
@@ -72,11 +72,11 @@ You can run all ten items in under fifteen minutes. That fifteen minutes is the 
 
 ## After You Buy: Register the IMEI in Your Name
 
-Once the money has moved, your job is not finished. Transfer the IMEI to your NIN on the NCC-DMS portal within seven days. The seller's NIN is still attached to the IMEI until you do this. If they later report the phone "stolen" by mistake, your phone gets blocked and you have to fight to recover it.
+Once the money has moved, your job is not finished. Transfer the IMEI to your NIN on NCC-DMS within seven days. Until then the seller's NIN is still on the IMEI — and if they report the phone "stolen" by mistake, your phone gets blocked.
 
-Visit `ncc.gov.ng`, open the device transfer flow, enter the IMEI and the seller's previous registration reference (it should be on the receipt), and add your NIN. A confirmation SMS arrives within 24–72 hours. Save that SMS — it is your proof of ownership.
+Visit `ncc.gov.ng`, open the device transfer flow, enter the IMEI and the seller's registration reference (it should be on the receipt), and add your NIN. A confirmation SMS arrives within 24–72 hours. Save it — that is your proof of ownership.
 
-If the seller cannot produce their registration reference, you can self-register the IMEI fresh, but you will be asked for supporting documents: the receipt, a photo of the box, and ideally a video of the seller handing over the device.
+If the seller has no registration reference, self-register the IMEI fresh with the receipt, a photo of the box, and ideally a video of the handover.
 
 ## Frequently Asked Questions
 

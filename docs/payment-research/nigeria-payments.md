@@ -2,7 +2,7 @@
 
 **Research date**: 2026-05-28 — **Task**: PR-PAYSTACK-01
 
-imeihub is a free + paid IMEI check service (PHP + MySQL) currently on Stripe. Stripe supports Nigerian customers but has elevated failure rates on NG-issued cards (foreign-card rails + CBN PAN-tokenisation friction). This note compares **Paystack** (Stripe's NG subsidiary, local-default card processor) and **Flutterwave** (multi-currency cross-border specialist) for imeihub's micro-transaction band: USD $0.01–$4.20 ≈ NGN 15–6,500 at mid-2026 rates. The decisive constraint: **imeihub has no Nigerian CAC entity**, so foreign-merchant onboarding shapes the recommendation.
+imeihub is a free + paid IMEI check (PHP + MySQL) currently on Stripe. Stripe supports NG customers but has elevated failure rates on NG-issued cards (foreign-card rails + CBN PAN-tokenisation friction). This note compares **Paystack** (Stripe's NG subsidiary, local-default) and **Flutterwave** (multi-currency cross-border specialist) for imeihub's micro-transaction band: USD $0.01–$4.20 ≈ NGN 15–6,500 at mid-2026 rates. The decisive constraint: **imeihub has no NG CAC entity**, so foreign-merchant onboarding shapes the recommendation.
 
 ---
 
@@ -20,7 +20,7 @@ API ref: <https://paystack.com/docs/api/>. REST + bearer-token auth. Canonical f
 
 NG merchants need up-to-date **CAC registration** (Form 3 preferred; proof of address ≤6 months as fallback), valid gov ID per beneficial owner (driver's licence, NIN, voter's card, or passport), and **BVN consent** for all directors — CBN mandates BVN for PSP identity validation [[Paystack Support, accessed 2026-05-28](https://support.paystack.com/en/articles/2123970)]. A "Starter Business" tier reduces docs for sole proprietors but caps inbound at ₦5M and still requires NG BVN.
 
-**Foreign merchants** (critical): Paystack does **not self-serve onboard** foreign-incorporated businesses with no NG presence. Compliance assumes CAC + BVN. The `paystack.com/internationals` "global brands" channel exists (FedEx, UPS) but the mechanism is that the foreign brand contracts with Stripe (or a NG aggregator) which routes the NG leg onto Paystack rails — sales-led, not realistic at imeihub's scale. Options without a NG entity: (1) keep Stripe; (2) incorporate NG RC (~₦50–150k + 3–6 weeks); (3) use a NG merchant-of-record (Bumpa, Selar); (4) switch to Flutterwave's "rest of world" flow. Verdict: **requires-local-incorporation** for self-serve.
+**Foreign merchants**: Paystack does **not self-serve onboard** foreign-incorporated businesses with no NG presence. Compliance assumes CAC + BVN. The `paystack.com/internationals` "global brands" channel exists (FedEx, UPS) but the mechanism is sales-led: foreign brand contracts with Stripe (or NG aggregator) which routes the NG leg onto Paystack rails — not realistic at imeihub's scale. Options without a NG entity: (1) keep Stripe; (2) incorporate NG RC (~₦50–150k + 3–6 weeks); (3) NG merchant-of-record (Bumpa, Selar); (4) Flutterwave RoW. Verdict: **requires-local-incorporation** for self-serve.
 
 ### Pricing & fees
 
@@ -33,7 +33,7 @@ Per Paystack's official rates [[Paystack Support — Transactions pricing, acces
 
 No separate USD-to-NGN FX line; spread is built into the 3.9% international rate (~1–2% off mid-market observed) [[HuruPay, 2024](https://hurupay.com/blog/does-paystack-accept-dollar-payments)].
 
-**imeihub band impact**: ₦500 = ₦8.06 (1.6%); ₦2,500 = ₦40.31 (1.6%); **₦2,501 = ₦147.82 (5.9%) — sharp cliff at waiver boundary**; ₦6,500 = ₦212.31 (3.3%). The ≤₦2,500 waiver is the single most important pricing fact for imeihub — beats Stripe's `2.9% + 30¢` decisively on sub-$2 sales.
+**imeihub band**: ₦500 = ₦8.06 (1.6%); ₦2,500 = ₦40.31 (1.6%); **₦2,501 = ₦147.82 (5.9%) — sharp cliff**; ₦6,500 = ₦212.31 (3.3%). The ≤₦2,500 waiver is the single most important pricing fact for imeihub — beats Stripe's `2.9% + 30¢` decisively on sub-$2 sales.
 
 ### Settlement timeline
 
@@ -102,7 +102,7 @@ Per Flutterwave's NG pricing page [[Flutterwave Help — Pricing for receiving p
 - **Transfers out**: ₦25 + 7.5% VAT (≤₦50k) / ₦50 + 7.5% VAT (>₦50k); GBP transfers £35.
 - **No equivalent of Paystack's ₦100-fee waiver** on ≤₦2,500.
 
-**imeihub band impact**: ₦500 = ₦10 (2.0%); ₦2,500 = ₦50 (2.0%); ₦2,501 = ₦50.02 (2.0%, no cliff); ₦6,500 = ₦130 (2.0%). Flutterwave is **cheaper than Paystack in ₦2,501–~₦6,667** (Paystack's ₦100 flat dominates) and **more expensive in ≤₦2,500** (Paystack waives ₦100).
+**imeihub band**: ₦500 = ₦10; ₦2,500 = ₦50; ₦2,501 = ₦50.02 (no cliff); ₦6,500 = ₦130 — flat 2.0%. Flutterwave is **cheaper than Paystack in ₦2,501–~₦6,667** (Paystack's ₦100 flat dominates) and **more expensive in ≤₦2,500** (Paystack waives ₦100).
 
 ### Settlement timeline
 
@@ -118,7 +118,7 @@ NGN, GHS, KES, UGX, TZS, RWF, ZAR, ZMW, XOF, XAF, EGP, MAD, USD, GBP, EUR, CAD �
 
 ### Webhook structure + signature verification
 
-Header **`verif-hash`** (v3 legacy) / **`flutterwave-signature`** (v4). HMAC-SHA256 over the body keyed by the merchant's **Secret Hash** (a user-defined string set in Dashboard → Settings → Webhooks, distinct from the API secret key) [[Flutterwave Help — Secret Hash, accessed 2026-05-28](https://flutterwave.com/eg/support/integrations/what-is-a-secret-hash), [Flutterwave Webhooks](https://developer.flutterwave.com/docs/webhooks)]. PHP pattern:
+Header **`verif-hash`** (v3) / **`flutterwave-signature`** (v4). HMAC-SHA256 over the body keyed by the merchant's **Secret Hash** (user-defined string in Dashboard → Settings → Webhooks, distinct from the API secret key) [[Flutterwave — Secret Hash, accessed 2026-05-28](https://flutterwave.com/eg/support/integrations/what-is-a-secret-hash), [Flutterwave Webhooks](https://developer.flutterwave.com/docs/webhooks)]. PHP pattern:
 
 ```php
 $secretHash = getenv('FLW_SECRET_HASH');
@@ -136,13 +136,13 @@ Sandbox base URL: **`https://developersandbox-api.flutterwave.com`** [[Flutterwa
 
 ### 3 example competitor digital services using Flutterwave
 
-1. **Selar** — also runs Flutterwave for cross-border NGN→USD creator payouts; >1.4M unique Flutterwave transactions processed [[Flutterwave Blog — Selar case study](https://flutterwave.com/us/blog/african-creators-global-audience-selars-massive-growth-journey-powered-by-flutterwave)].
-2. **Audiomack** — global music streaming with significant African base. Migrated to Flutterwave in 2020 specifically for multi-method coverage (cards + mobile money + bank transfer + wallets) and African-currency settlement [[Flutterwave Blog — Audiomack partnership](https://flutterwave.com/us/blog/mobile-money-sets-the-pace-as-audiomack-leverages-flutterwave-for-seamless-payments-in-africa)]. **Direct analogue for imeihub**: a foreign digital service collecting low-ticket payments from Nigerian users.
-3. **Showmax** — MultiChoice's streaming product; uses Flutterwave for cross-border subscription billing across multiple African currencies [[Flutterwave Showmax pay link](https://flutterwave.com/pay/3mxttgr76uc3)]. Foreign-incorporated-but-collects-in-NGN pattern that imeihub would adopt.
+1. **Selar** — also runs Flutterwave for cross-border NGN→USD creator payouts (>1.4M unique Flutterwave transactions) [[Flutterwave Blog — Selar](https://flutterwave.com/us/blog/african-creators-global-audience-selars-massive-growth-journey-powered-by-flutterwave)].
+2. **Audiomack** — global music streaming with major African base. Migrated to Flutterwave in 2020 specifically for multi-method coverage (cards + mobile money + bank transfer + wallets) and African-currency settlement [[Flutterwave Blog — Audiomack](https://flutterwave.com/us/blog/mobile-money-sets-the-pace-as-audiomack-leverages-flutterwave-for-seamless-payments-in-africa)]. **Direct analogue for imeihub**: foreign digital service collecting low-ticket payments from NG users.
+3. **Showmax** — MultiChoice's streaming product; Flutterwave for cross-border subscription billing across multiple African currencies [[Flutterwave Showmax pay link](https://flutterwave.com/pay/3mxttgr76uc3)]. The foreign-incorporated-but-collects-in-NGN pattern imeihub would adopt.
 
 ### Compliance notes
 
-Flutterwave holds a CBN **Switching & Processing licence** plus, as of April 2026, a **Microfinance Banking Licence** — a meaningful upgrade above Paystack's PSSP because it allows direct deposit-taking. Additional certifications: PCI-DSS Level 1, ISO 27001, NDPR. Outside Nigeria, 13 US state Money Transmission Licences (29 states via partnerships) and UK FCA registration — these legally underpin the "rest of the world" foreign-merchant flow. All Nigerian-leg settlement still touches NIBSS, identical to Paystack. The same **Nigeria Tax Act 2025 VAT on non-resident digital services** rule applies (1 January 2026), but Flutterwave's foreign-merchant onboarding can include NRS VAT registration as part of compliance setup — a service Paystack does not currently offer non-Nigerian businesses.
+Flutterwave holds a CBN **Switching & Processing licence** plus, as of April 2026, a **Microfinance Banking Licence** — meaningful upgrade over Paystack's PSSP, as it allows direct deposit-taking. Additional: PCI-DSS Level 1, ISO 27001, NDPR. Outside NG: 13 US state Money Transmission Licences (29 states via partnerships) and UK FCA registration — these legally underpin the "rest of the world" foreign-merchant flow. NG-leg settlement still touches NIBSS, identical to Paystack. The same **NTA 2025 VAT on non-resident digital services** rule applies (1 January 2026), but Flutterwave's foreign-merchant onboarding can include NRS VAT registration in compliance setup — a service Paystack does not offer non-NG businesses.
 
 ---
 
@@ -152,50 +152,50 @@ Flutterwave holds a CBN **Switching & Processing licence** plus, as of April 202
 
 | Dimension | Paystack | Flutterwave |
 |---|---|---|
-| Local NGN card fee (≤₦2,500) | **1.5%** (₦100 waived) — best | 2.0% |
-| Local NGN card fee (₦2,501–₦6,500) | 1.5% + ₦100 (effective 3.3–5.9%) | **2.0% flat** — best |
-| International card fee | **3.9%** + ₦100 — cheaper | 4.8% |
+| Local NGN fee (≤₦2,500) | **1.5%** (₦100 waived) | 2.0% |
+| Local NGN fee (₦2,501–₦6,500) | 1.5% + ₦100 (eff. 3.3–5.9%) | **2.0% flat** |
+| International card fee | **3.9% + ₦100** | 4.8% |
 | NGN settlement | T+1 | T+1 (T+0 at +0.5%) |
-| USD settlement | T+1 to Zenith dom only | **T+5 to any USD account** — broader |
-| **Foreign-merchant friendly** | **No** — needs Nigerian RC/BVN | **Yes** — self-serve RoW flow |
-| SDK quality (PHP) | Community libs; small REST surface | **First-party SDK on Packagist** |
-| USD acceptance | Yes (NG/KE only) | **Yes (30+ currencies, multi-balance)** |
+| USD settlement | T+1 to Zenith dom only | **T+5 to any USD account** |
+| **Foreign-merchant friendly** | **No** — needs NG RC/BVN | **Yes** — self-serve RoW |
+| SDK quality (PHP) | Community libs; small REST | **First-party Packagist SDK** |
+| USD acceptance | Yes (NG/KE only) | **Yes (30+ ccy, multi-balance)** |
 | Local card success rate | **Highest** (~92–95%) | Lower (~88–92%) [[Daikimedia 2026](https://www.daikimedia.com/blog/paystack-vs-flutterwave-2026-which-gateway-converts-better-in-nigeria)] |
-| CBN licence | PSSP (no deposits) | Switching + Processing + **MFB** (deposits) |
-| Webhook signing | HMAC-SHA512 per payload | Secret-hash equality (v3) / HMAC-SHA256 (v4) |
-| **Recommended for imeihub** | Phase-3 swap if NG-incorporated | **Primary — Phase 2 target** |
+| CBN licence | PSSP (no deposits) | Switching + Processing + **MFB** |
+| Webhook signing | HMAC-SHA512 per payload | Secret-hash (v3) / HMAC-SHA256 (v4) |
+| **Recommended for imeihub** | Phase-3 if NG-incorporated | **Primary — Phase 2** |
 
 ### Primary recommendation: **Flutterwave**
 
-For imeihub as a foreign-incorporated micro-transaction digital service with no Nigerian CAC entity, **Flutterwave is the primary processor**, with Paystack as a deferred Phase-3 option.
+For imeihub (foreign-incorporated micro-transaction digital service, no NG CAC entity): **Flutterwave is primary**, Paystack a deferred Phase-3 option.
 
-1. **Foreign-merchant onboarding is resolved without legal restructuring.** Flutterwave's "rest of the world" flow accepts a UK Ltd / US LLC / Stripe Atlas C-corp with no Nigerian RC, BVN, or Zenith dom account. Paystack requires either Nigerian incorporation (~₦50–150k + 3–6 weeks + ongoing compliance) or a Stripe enterprise contract that is not realistic at imeihub's revenue band. This legal-feasibility delta dominates all other factors.
-2. **Multi-currency settlement matches imeihub's pricing model.** imeihub prices in USD and converts at checkout. Flutterwave's per-currency balances let USD-card payments settle into a USD balance without forced NGN conversion losses — directly replacing Stripe's behaviour. Paystack's forced-NGN settlement on Nigerian-issued cards is acceptable but inferior for a globally-priced service.
-3. **Fee profile is acceptable across imeihub's band.** At ₦500–₦2,500 Flutterwave is ~0.4pp more expensive than Paystack; at ₦2,501–₦6,500 Flutterwave is *cheaper*. Across imeihub's full distribution (skewed to the lower half where Paystack's waiver wins), the weighted-average fee delta is ~0.3–0.5pp in Paystack's favour — a small premium to pay for self-serve foreign-merchant access, and recoverable with a ~5% baseline price uplift.
+1. **Foreign-merchant onboarding is resolved without legal restructuring.** Flutterwave's RoW flow accepts a UK Ltd / US LLC / Stripe Atlas C-corp without NG RC, BVN, or Zenith dom. Paystack requires either NG incorporation (~₦50–150k + 3–6 weeks + ongoing compliance) or a Stripe enterprise contract not realistic at imeihub's scale. This legal-feasibility delta dominates everything else.
+2. **Multi-currency settlement matches imeihub's USD pricing.** Flutterwave's per-currency balances let USD-card payments settle into a USD balance without forced NGN conversion — direct Stripe replacement. Paystack's forced-NGN settlement on NG-issued cards is acceptable but inferior for a globally-priced service.
+3. **Fee profile is acceptable.** At ₦500–₦2,500 Flutterwave is ~0.4pp more expensive than Paystack; at ₦2,501–₦6,500 Flutterwave is *cheaper*. Weighted across imeihub's distribution the delta is ~0.3–0.5pp in Paystack's favour — recoverable with a ~5% baseline price uplift, small price for self-serve onboarding access.
 
 ### When to switch to Paystack instead
 
-Switch to Paystack as primary (and demote Flutterwave to fallback) if **any** of these become true:
-- imeihub incorporates a Nigerian RC entity — at that point Paystack's lower fees on ≤₦2,500 transactions, higher local-card success rate (3–5pp conversion edge), and superior inline UX make it the obvious choice.
-- imeihub partners with a Nigerian merchant-of-record facilitator (Selar, Bumpa) — these typically run Paystack under the hood.
-- imeihub adds a Ghana (`/gh/`) market — Paystack's Ghana operation is more mature than Flutterwave's.
+Promote Paystack to primary if **any** become true:
+- imeihub incorporates a NG RC entity — Paystack's lower fees on ≤₦2,500 transactions, higher local-card success rate (3–5pp), and superior inline UX then dominate.
+- imeihub partners with a NG merchant-of-record (Selar, Bumpa) — these typically run Paystack under the hood.
+- imeihub adds a Ghana (`/gh/`) market — Paystack's GH operation is more mature.
 
-### When Flutterwave is unambiguously right (even after Nigerian incorporation)
-- imeihub's USD revenue stays >50% of total — multi-currency settlement outvalues the small-ticket fee edge.
-- imeihub expands to >2 African markets and wants one processor — Flutterwave covers 34 countries vs Paystack's 5.
-- imeihub launches recurring billing — Flutterwave's tokenisation + recurring API surface is broader, and the MFB licence enables direct prepaid balance holding.
+### When Flutterwave stays right even after NG incorporation
+- USD revenue stays >50% — multi-currency settlement outvalues the fee edge.
+- imeihub expands to >2 African markets — Flutterwave covers 34 vs Paystack's 5.
+- Recurring billing launches — Flutterwave's recurring API is broader; MFB licence enables prepaid balance holding.
 
 ### Foreign-merchant question status
 
-**Resolved.** Flutterwave's "rest of the world" onboarding accepts imeihub's existing foreign incorporation without Nigerian CAC, BVN, or Zenith dom account. No local incorporation is required to ship the Phase-2 integration. Paystack's foreign-merchant path remains **blocked-by-policy** for self-serve — it requires either Nigerian incorporation or a sales-negotiated Stripe-routed contract, neither realistic at imeihub's current scale.
+**Resolved.** Flutterwave's RoW onboarding accepts imeihub's existing foreign incorporation without NG CAC, BVN, or Zenith dom. No local incorporation needed for Phase 2. Paystack's foreign-merchant path remains **blocked-by-policy** for self-serve — needs NG incorporation or a sales-negotiated Stripe-routed contract, neither realistic at imeihub's scale.
 
 ### Known gaps
 
-- The 3–5pp Paystack conversion edge cited from Daikimedia 2026 is third-party; Phase 2 should validate with an A/B traffic split before committing fully.
-- v4 webhook HMAC details are doc-current 2026-05-28; the precise `flutterwave-signature` derivation should be re-confirmed at integration time against `developer.flutterwave.com/docs/webhooks`.
-- NRS VAT registration practicalities for foreign merchants are documented in NTA 2025 but the operational flow (does Flutterwave automate it, or is it imeihub's responsibility?) was not directly confirmed by official Flutterwave docs accessible during this research — assumed merchant responsibility. Confirm in Phase 2.
-- Stamp duty on payouts (₦50 per outbound ≥₦10,000) is confirmed for Paystack; equivalent treatment under Flutterwave's MFB licence post-April-2026 was not confirmed and should be assumed to apply.
-- Direct WebFetch to `paystack.com` and `flutterwave.com` returned HTTP 403 during this research; fee numbers and signature schemes have been triangulated from official support pages (cited inline) and reputable third-party sources, each independently corroborated across at least two sources.
+- The 3–5pp Paystack conversion edge (Daikimedia 2026) is third-party; validate with A/B in Phase 2.
+- v4 webhook HMAC details are doc-current 2026-05-28; re-confirm the `flutterwave-signature` derivation at integration against `developer.flutterwave.com/docs/webhooks`.
+- NRS VAT registration practicalities for foreign merchants are codified in NTA 2025 but whether Flutterwave automates it or it's merchant responsibility was not directly confirmed in official Flutterwave docs accessible during research — assumed merchant responsibility. Confirm in Phase 2.
+- Stamp duty (₦50 per outbound ≥₦10,000) is confirmed for Paystack; equivalent post-April-2026 treatment under Flutterwave's MFB licence was not confirmed and should be assumed to apply.
+- Direct WebFetch to `paystack.com` / `flutterwave.com` returned HTTP 403; all fee numbers and signature schemes are triangulated from official support pages and reputable third-party sources, each independently corroborated.
 
 ---
 

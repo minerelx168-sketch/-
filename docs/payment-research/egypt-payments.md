@@ -78,60 +78,55 @@ Vodafone Cash is Egypt's dominant mobile wallet. Q2 2025: **~25.5M users (55% of
 
 ### API documentation URL + integration model
 
-**No public direct Vodafone Cash merchant API.** Vodafone Egypt does not run a developer self-service. Vodafone Cash is **exposed exclusively through CBE-licensed aggregators** — chiefly **Paymob**, plus Fawry's MyFawry wallet rail, Tap, Kashier, Geidea [Paymob digital wallet page](https://paymob.com/en/digital-wallet). The reference path is **via Paymob**:
-
-- Paymob developer portal: `https://developers.paymob.com/` [Paymob Developer Portal](https://developers.paymob.com/).
-- Mobile-wallets docs: `https://docs.paymob.com/docs/mobile-wallets`.
-
-Paymob flow: (1) `POST /api/auth/tokens` with API key → auth token; (2) `POST /api/ecommerce/orders` → `order_id`; (3) `POST /api/acceptance/payment_keys` with the `integration_id` for Vodafone Cash → `payment_token`; (4) `POST /api/acceptance/payments/pay` with `source.identifier=<phone>`, `source.subtype=WALLET`. Customer receives an OTP on their Vodafone line, enters it on the Paymob-hosted page, payment completes. Returns via webhook to a merchant URL.
+**No public direct Vodafone Cash merchant API.** Vodafone Egypt does not run developer self-service. Vodafone Cash is **exposed exclusively through CBE-licensed aggregators** — chiefly **Paymob**, plus Fawry's MyFawry rail, Tap, Kashier, Geidea [Paymob digital wallet](https://paymob.com/en/digital-wallet). Reference path via Paymob: developer portal at [`developers.paymob.com`](https://developers.paymob.com/); mobile-wallets docs at `docs.paymob.com/docs/mobile-wallets`. Flow: (1) `POST /api/auth/tokens` with API key → auth token; (2) `POST /api/ecommerce/orders` → `order_id`; (3) `POST /api/acceptance/payment_keys` with `integration_id` for Vodafone Cash → `payment_token`; (4) `POST /api/acceptance/payments/pay` with `source.identifier=<phone>`, `source.subtype=WALLET`. Customer receives OTP on their Vodafone line, enters it on the Paymob-hosted page, payment completes; returns via webhook.
 
 ### Merchant onboarding — KYC docs, foreign-merchant rules
 
-Paymob's CBE license requires the same baseline as Fawry: **Egyptian commercial registration, Tax ID, Egyptian bank account for EGP settlement**. Paymob does hold a UAE Central Bank Retail Payment Services license (January 2025) and operates in KSA and Oman [Disrupt Africa Paymob UAE license, 2025-01-31](https://disruptafrica.com/2025/01/31/egypts-paymob-secures-uae-central-bank-retail-payment-services-licence/), so a foreign entity may onboard via Paymob UAE for *card* acceptance — but the **Egyptian mobile-wallet rails (Vodafone Cash, Orange Money, e& Money) are gated to Egyptian-licensed MIDs only**. PayAtlas notes Egypt is "more conservative" than UAE on non-resident MIDs and emphasizes "local accountability" [PayAtlas Egypt PSP guide, 2026](https://payatlas.com/countries/egypt-eg).
+Paymob requires the same baseline as Fawry: **Egyptian commercial registration, Tax ID, Egyptian bank account for EGP settlement**. Paymob does hold a UAE Central Bank Retail Payment Services license (Jan 2025) and operates in KSA and Oman [Disrupt Africa, 2025-01-31](https://disruptafrica.com/2025/01/31/egypts-paymob-secures-uae-central-bank-retail-payment-services-licence/), so a foreign entity could onboard via Paymob UAE for *card* — but **Egyptian wallet rails (Vodafone Cash, Orange Money, e& Money) are gated to Egyptian-licensed MIDs only**. PayAtlas notes Egypt is "more conservative" than UAE on non-resident MIDs [PayAtlas, 2026](https://payatlas.com/countries/egypt-eg).
 
-**Foreign-merchant verdict: BLOCKED for direct Vodafone Cash MID.** Workarounds: (a) Egyptian subsidiary, (b) an aggregator fronting Vodafone Cash to foreign merchants — Tap and Checkout.com list it for cross-border, but typically require GCC incorporation, (c) MoR. Paymob's e-commerce-plugin guides assume an Egyptian merchant; there is no documented foreign-merchant onboarding path through Paymob Egypt.
+**Foreign-merchant verdict: BLOCKED for direct Vodafone Cash MID.** Workarounds: (a) Egyptian subsidiary, (b) aggregator fronting (Tap and Checkout.com list it cross-border but require GCC incorporation), (c) MoR. No documented foreign-merchant onboarding path through Paymob Egypt.
 
 ### Pricing & fees
 
-Paymob's public pricing card: **2.75% + EGP 3 per successful transaction**, zero monthly fee, for local SMB/SME card and wallet [Paymob pricing](https://www.paymob.com/en/pricing); [Bilixe Paymob review, 2025](https://bilixe.com/listing/paymob-payment-gateway/). Enterprise and international "on inquiry only." For Vodafone Cash specifically, MDR is typically the same 2.75% + EGP 3.
+Paymob public pricing: **2.75% + EGP 3 per successful transaction**, zero monthly fee, for local SMB/SME card and wallet [Paymob pricing](https://www.paymob.com/en/pricing); [Bilixe, 2025](https://bilixe.com/listing/paymob-payment-gateway/). Enterprise and international "on inquiry only." Vodafone Cash MDR is typically the same 2.75% + EGP 3.
 
-For imeihub's price band the **EGP 3 flat fee is the killer**. On a 50 EGP ticket: 2.75% × 50 + 3 = EGP 4.375 = **8.75% effective**. On 100 EGP: 5.75%. On 200 EGP: 4.25%. Only above ~EGP 150 does the rate flatten into single digits. Refunds: `/api/acceptance/void_refund/refund`; the processing fee is generally not refunded, costing the merchant the original fee plus an aggregator refund fee (EGP 2–5).
+The **EGP 3 flat fee is the killer at imeihub's price band**. On EGP 50: 2.75% × 50 + 3 = EGP 4.375 = **8.75% effective**. On EGP 100: 5.75%. On EGP 200: 4.25%. Only above ~EGP 150 does the rate flatten into single digits. Refunds via `/api/acceptance/void_refund/refund`; processing fee is generally not refunded, costing merchant the original fee plus an aggregator refund fee (EGP 2–5).
 
 ### Settlement timeline
 
-Paymob: **T+1 for card payments and digital wallets**; weekly bank deposits by default, daily on enterprise plans [Bilixe, 2025](https://bilixe.com/listing/paymob-payment-gateway/). EGP into an Egyptian IBAN. Vodafone Cash settles same-day Vodafone → Paymob, then T+1 Paymob → merchant.
+Paymob: **T+1 for card and wallets**; weekly bank deposits by default, daily on enterprise plans. EGP into an Egyptian IBAN. Vodafone Cash: same-day Vodafone → Paymob, T+1 Paymob → merchant.
 
 ### Supported currencies
 
-**EGP only.** Vodafone Cash is a carrier-billed wallet — no USD pass-through. Multi-currency display works upstream (imeihub displays USD, Paymob converts to EGP at API call) but settlement is unavoidably EGP.
+**EGP only.** No USD pass-through on a carrier-billed wallet. Multi-currency display works upstream (imeihub shows USD, Paymob converts to EGP at API call) but settlement is unavoidably EGP.
 
 ### SDK / web-checkout availability — PHP and JS
 
-- **PHP**: First-party `PaymobAccept/paymob-php` [GitHub PaymobAccept/paymob-php](https://github.com/PaymobAccept/paymob-php). Also `skrskr/paymob` for Laravel. Nafezly/payments wraps both.
-- **JS**: Paymob iframe checkout (hosted in an iframe) is the documented web path. No first-party Node SDK, but the REST API is trivial to call from any HTTP client.
-- **Plugins**: WooCommerce, Magento, Shopify, OpenCart, Wix [Paymob e-commerce plugins](https://developers.paymob.com/egypt/e-commerce-plugins).
+- **PHP**: First-party `PaymobAccept/paymob-php` [GitHub](https://github.com/PaymobAccept/paymob-php); `skrskr/paymob` for Laravel; Nafezly wraps both.
+- **JS**: Paymob iframe checkout is the documented web path. No first-party Node SDK; REST is trivial to call from any HTTP client.
+- **Plugins**: WooCommerce, Magento, Shopify, OpenCart, Wix [Paymob plugins](https://developers.paymob.com/egypt/e-commerce-plugins).
 
 ### Webhook structure + signature verification
 
-**HMAC-SHA512.** Callback delivered as HTTPS POST (processed callback) or GET-redirect (response callback). Parameters sorted lexicographically by key, values concatenated in order, then HMAC-SHA512 hashed with the merchant's HMAC secret, compared against the `hmac` query parameter [Paymob HMAC docs](https://developers.paymob.com/paymob-docs/developers/webhook-callbacks-and-hmac). Payload fields include `amount_cents`, `currency`, `id`, `integration_id`, `is_3d_secure`, `is_refunded`, `order.id`, `source_data.sub_type`, `source_data.type`, `success`.
+**HMAC-SHA512.** Callback as HTTPS POST (processed) or GET-redirect (response). Parameters sorted lexicographically by key, values concatenated in order, HMAC-SHA512 with merchant HMAC secret, compared against the `hmac` query parameter [Paymob HMAC docs](https://developers.paymob.com/paymob-docs/developers/webhook-callbacks-and-hmac). Payload includes `amount_cents`, `currency`, `id`, `integration_id`, `is_3d_secure`, `is_refunded`, `order.id`, `source_data.sub_type`, `source_data.type`, `success`.
 
 ### Sandbox URL + credential acquisition
 
-Self-service registration at `https://accept.paymob.com/portal2/en/register`. Test credentials documented at `https://developers.paymob.com/paymob-docs/need-help/faq/test-credentials.md`. Vodafone Cash sandbox: **phone = `01010101010`, PIN/OTP = `123456`** [GitHub Nafezly/payments](https://github.com/Nafezly/payments). Sandbox is self-service (no sales gate, unlike Fawry); production migration requires the same Egyptian KYC packet as Fawry.
+Self-service signup at `accept.paymob.com/portal2/en/register`. Test creds at `developers.paymob.com/paymob-docs/need-help/faq/test-credentials.md`. Vodafone Cash sandbox: **phone `01010101010`, PIN/OTP `123456`** [Nafezly](https://github.com/Nafezly/payments). Self-service sandbox (no sales gate, unlike Fawry); production requires the same Egyptian KYC packet.
 
 ### 3 example competitor digital services using Vodafone Cash via Paymob
 
-1. **Swvl** (`swvl.com`) — Egyptian mass-transit booking; Paymob for card and Vodafone Cash payments.
-2. **MaxAB** (`maxab.io`) — B2B grocery for 150K+ Egyptian retailers; Paymob is the underlying processor for mobile-wallet settlements.
-3. **elmenus** (`elmenus.com`) — restaurant discovery and food delivery; offers Vodafone Cash via Paymob checkout.
+1. **Swvl** — Egyptian mass-transit booking; Paymob for card and Vodafone Cash.
+2. **MaxAB** — B2B grocery serving 150K+ Egyptian retailers; Paymob underpins mobile-wallet settlements.
+3. **elmenus** — restaurant discovery and food delivery; Vodafone Cash via Paymob checkout.
 
 All three are Egyptian-incorporated. No clean foreign-merchant precedent at the consumer-checkout layer.
 
 ### Compliance notes
 
-- **CBE**: Paymob is a CBE-licensed PSP under the 2025 framework. The June 2026 transition deadline applies to Paymob's licensing posture, not to merchants.
+- **CBE**: Paymob is a CBE-licensed PSP under the 2025 framework. June 2026 transition applies to Paymob, not merchants.
 - **NTRA**: Vodafone Cash is a Vodafone-Egypt service; NTRA regulates Vodafone as a carrier but does not gate merchants accepting Vodafone Cash via a CBE-licensed PSP. No NTRA third-party-billing license needed.
-- **Data residency**: Paymob processes within Egypt for Egyptian transactions; CBE-mandated 7-year retention applies to PSP-side records.
+- **Data residency**: Paymob processes within Egypt; CBE-mandated 7-year retention on PSP-side records.
 - **PCI DSS**: Paymob is PCI-DSS Level 1; iframe-integrated merchants inherit SAQ-A scope.
 
 ---
@@ -140,33 +135,33 @@ All three are Egyptian-incorporated. No clean foreign-merchant precedent at the 
 
 ### Overview & market position
 
-InstaPay is the consumer-facing app for Egypt's **Instant Payment Network (IPN)** — Egypt's domestic real-time payment rail, launched **March 22, 2022** and operated by the Egyptian Banks Company (EBC) under CBE supervision [EBC IPN](https://www.egyptianbanks.com/instant-payment-network/); [CBE IPN page](https://www.cbe.org.eg/en/payment-systems-and-services/instant-payment-network). It is the closest Egyptian analog to UPI (India) or Pix (Brazil). End of 2024: **1.5B transactions, EGP 2.9T value, 10M+ app downloads** [Lightspark Egypt instant payments, 2026](https://www.lightspark.com/knowledge/egypt-instant-payments); [CBPN IPN evolution, 2025-05](https://cbpn.currencyresearch.com/blog/2025/05/23/the-evolution-of-the-instant-payment-network-ipn-in-egypt-the-success-story-of-instapay). The niche: **bank-to-bank real-time transfers from ~36 participating banks** at near-zero customer-side fees. 2025 growth has been explosive [Egyptian Streets, 2026-01-04](https://egyptianstreets.com/2026/01/04/inside-egypts-instapay-economy-how-instant-payments-are-changing-access-for-a-new-generation/).
+InstaPay is the consumer-facing app for Egypt's **Instant Payment Network (IPN)** — Egypt's domestic real-time rail, launched **March 22, 2022**, operated by the Egyptian Banks Company (EBC) under CBE supervision [EBC IPN](https://www.egyptianbanks.com/instant-payment-network/); [CBE IPN](https://www.cbe.org.eg/en/payment-systems-and-services/instant-payment-network). Closest Egyptian analog to UPI (India) or Pix (Brazil). End of 2024: **1.5B transactions, EGP 2.9T value, 10M+ app downloads** [Lightspark, 2026](https://www.lightspark.com/knowledge/egypt-instant-payments); [CBPN, 2025-05](https://cbpn.currencyresearch.com/blog/2025/05/23/the-evolution-of-the-instant-payment-network-ipn-in-egypt-the-success-story-of-instapay). The niche: **bank-to-bank real-time transfers across ~36 participating banks** at near-zero customer-side fees. 2025 growth is explosive [Egyptian Streets, 2026-01-04](https://egyptianstreets.com/2026/01/04/inside-egypts-instapay-economy-how-instant-payments-are-changing-access-for-a-new-generation/).
 
 ### API documentation URL + integration model
 
-**There is no public InstaPay merchant API for third-party developers.** The IPN rail is consumed via:
+**No public InstaPay merchant API for third-party developers.** The IPN rail is consumed via:
 
-- **Bank-side APIs**: Each participating bank (CIB, Banque Misr, NBE, ABC, etc.) exposes IPN APIs to its own corporate customers behind that bank's developer portal — none standardized, none open [Bank ABC InstaPay page, 2026](https://www.bank-abc.com/en/CountrySites/Egypt/Ways-to-our-Bank/Pages/InstaPay.aspx).
-- **CBE merchant QR**: Since 2024, the CBE extended InstaPay with a merchant-acceptance QR feature (customer scans, payment auto-routes via IPN) [EgyptToday CBE QR feature, 2024](https://www.egypttoday.com/Article/3/132704/CBE-enhances-InstaPay-with-QR-Code-feature-for-Instant-Payments). Rolled out via member banks, not as a standalone API.
-- **Aggregators**: Some CBE-licensed PSPs (Paymob, MNT-Halan, Khazna) have begun fronting IPN pull, but coverage is limited and conditional on the customer's bank supporting account-to-merchant pull.
+- **Bank-side APIs**: Each participating bank (CIB, Banque Misr, NBE, ABC, etc.) exposes IPN APIs to its corporate customers behind that bank's developer portal — none standardized, none open [Bank ABC InstaPay, 2026](https://www.bank-abc.com/en/CountrySites/Egypt/Ways-to-our-Bank/Pages/InstaPay.aspx).
+- **CBE merchant QR**: Since 2024, CBE extended InstaPay with a merchant-acceptance QR (customer scans, payment auto-routes via IPN) [EgyptToday, 2024](https://www.egypttoday.com/Article/3/132704/CBE-enhances-InstaPay-with-QR-Code-feature-for-Instant-Payments). Rolled out via member banks, not as a standalone API.
+- **Aggregators**: Some PSPs (Paymob, MNT-Halan, Khazna) have begun fronting IPN pull, but coverage is limited and conditional on the customer's bank.
 
-`instapay.eg` is consumer-only; no self-service developer surface [InstaPay Q&A](https://www.instapay.eg/?page_id=348&lang=en). The unrelated US processor at `secure.instapaygateway.com` is often confused in search results — different company entirely.
+`instapay.eg` is consumer-only; no self-service developer surface [InstaPay Q&A](https://www.instapay.eg/?page_id=348&lang=en). The unrelated US processor at `secure.instapaygateway.com` is often confused in search results.
 
 ### Merchant onboarding — KYC docs, foreign-merchant rules
 
-For direct merchant acceptance via a bank's IPN APIs: full Egyptian corporate banking relationship required (commercial registration, Tax ID, board resolution, beneficial-ownership disclosure, AML interview). For foreign-merchant acceptance via an aggregator: the aggregator's terms apply, but Paymob's IPN pull is Egyptian-MID-only today.
+Direct bank IPN APIs: full Egyptian corporate banking relationship (commercial registration, Tax ID, board resolution, beneficial-ownership disclosure, AML interview). Aggregator-fronted: terms vary, but Paymob's IPN pull is Egyptian-MID-only today.
 
-**Foreign-merchant verdict: BLOCKED-BY-POLICY at the rail level.** No public path for a non-Egyptian entity to consume the IPN merchant rail without (a) an Egyptian bank corporate account or (b) an Egyptian-licensed PSP fronting it. The CBE 2025 rules allow foreign payment institutions to apply for CBE PSP licensing, but that's a multi-year regulatory project, not a payment-integration option.
+**Foreign-merchant verdict: BLOCKED-BY-POLICY at the rail level.** No public path for a non-Egyptian entity to consume the IPN merchant rail without (a) an Egyptian corporate bank account or (b) an Egyptian-licensed PSP fronting. CBE 2025 rules allow foreign payment institutions to apply for CBE PSP licensing — multi-year regulatory project, not a payment-integration option.
 
 ### Pricing & fees
 
-InstaPay's customer-side: **zero fee for personal-to-personal up to EGP 70,000/month**. Merchants accepting IPN pull pay **<1% MDR** in current pilot programs — significantly cheaper than card MDR. Customer-pushed (initiated from their banking app): typically zero on customer side, ~EGP 1–3 flat on the merchant.
+Customer-side: **zero fee for personal-to-personal up to EGP 70,000/month**. Merchants accepting IPN pull pay **<1% MDR** in current pilots — significantly cheaper than card MDR. Customer-push (initiated from banking app): zero customer-side, ~EGP 1–3 flat on merchant.
 
-For imeihub's price band, this would be the cheapest rail by a wide margin — if access could be unlocked. On EGP 50 at 0.5% + EGP 1 = EGP 1.25 = **2.5%**. On EGP 200: ~1.0%. Structurally 3–6× better than Fawry or Vodafone Cash.
+For imeihub's price band this would be the cheapest rail — if access could be unlocked. On EGP 50 at 0.5% + EGP 1 = EGP 1.25 = **2.5%**. On EGP 200: ~1.0%. Structurally 3–6× better than Fawry or Vodafone Cash.
 
 ### Settlement timeline
 
-**T+0 / real-time** at the rail. IPN settles between participating banks in seconds, 24/7. Merchant-side settlement to the corporate bank account is real-time. This is the headline advantage and the reason CBE has prioritized IPN growth.
+**T+0 / real-time.** IPN settles between participating banks in seconds, 24/7. Merchant-side to the corporate account is real-time — the headline advantage and the reason CBE has prioritized IPN growth.
 
 ### Supported currencies
 
@@ -174,32 +169,31 @@ For imeihub's price band, this would be the cheapest rail by a wide margin — i
 
 ### SDK / web-checkout availability — PHP and JS
 
-**None publicly.** Bank-side APIs are issued to corporate banking customers under NDA, not standardized across the 36 member banks. No PHP SDK, no JS SDK, no documented webhook surface available to the open developer ecosystem.
+**None publicly.** Bank-side APIs are issued under NDA to corporate banking customers, not standardized across the 36 member banks. No PHP SDK, no JS SDK, no documented webhook surface for the open developer ecosystem.
 
 ### Webhook structure + signature verification
 
-Not publicly documented. Bank-issued APIs use bank-specific auth (typically mTLS + JWT). No standardized webhook contract across the IPN ecosystem.
+Not publicly documented. Bank-issued APIs use bank-specific auth (typically mTLS + JWT). No standardized webhook contract across IPN.
 
 ### Sandbox URL + credential acquisition
 
-**No third-party sandbox.** Bank-side sandboxes are issued case-by-case after KYC and account opening at that bank.
+**No third-party sandbox.** Bank-side sandboxes are issued case-by-case after KYC and account opening at the bank.
 
 ### 3 example competitor digital services using InstaPay
 
 InstaPay is not yet meaningfully used for online checkout the way Fawry and Vodafone Cash are. Current uses:
 
-1. **Peer-to-peer transfers** between individuals (~80%+ of volume).
+1. **Peer-to-peer transfers** (~80%+ of volume).
 2. **Bill-pay and government collections** routed through CBE-approved aggregators (Misr Digital Innovation, e-Finance).
-3. **Bank-app-initiated transfers to merchants** — common for high-value transactions (rent, freelance invoicing) but not consumer checkout.
+3. **Bank-app-initiated transfers to merchants** — common for high-value (rent, freelance invoicing), not consumer checkout.
 
-The QR merchant feature is the early e-commerce path, but as of May 2026 no Tier-1 Egyptian e-commerce site documents an InstaPay-branded checkout button alongside their Fawry/card/wallet options.
+The QR merchant feature is the early e-commerce path, but as of May 2026 no Tier-1 Egyptian e-commerce site lists an InstaPay-branded checkout button alongside Fawry/card/wallet options.
 
 ### Compliance notes
 
-- **CBE**: InstaPay is CBE-operated infrastructure; merchant access is gated by participating banks under CBE's PSO/PSP licensing (2025).
-- **Data residency**: All IPN data held within Egypt by EBC.
-- **NTRA**: Not involved.
-- **ITIDA**: Not involved at the payment layer.
+- **CBE**: InstaPay is CBE-operated infrastructure; merchant access gated by participating banks under CBE's PSO/PSP licensing (2025).
+- **Data residency**: All IPN data within Egypt by EBC.
+- **NTRA / ITIDA**: Not involved at the payment layer.
 
 ---
 
@@ -221,17 +215,17 @@ The QR merchant feature is the early e-commerce path, but as of May 2026 no Tier
 
 Three-bullet rationale:
 
-- **Reach matters more than cost at imeihub's scale.** Fawry's 53M customer base — particularly the kiosk channel — captures the exact segment imeihub fails on today: Egyptian users with no card, no Vodafone line, no Stripe-friendly wallet. Even at a 7–10% effective fee, the conversion lift from a cash-friendly checkout vs Stripe's near-zero EG conversion is the larger lever. Typical EG e-commerce case studies show 10× conversion uplift when adding Fawry to a card-only checkout.
-- **The foreign-merchant constraint is solvable via an international acquirer**, not by Egyptian incorporation. Checkout.com and EBANX both list Fawry as a payment method for non-Egyptian merchants of record, settling weekly in USD. imeihub does *not* need to incorporate in Egypt to use Fawry; it accepts a higher all-in MDR (4–5%) than direct-Fawry merchants pay. For Phase 2 this is the right tradeoff vs spending 30–45 days and USD 2,000–3,000 on an Egyptian LLC.
-- **Implementation effort is the lowest of the three.** The `fawry-api/fawry` PHP library and Fawry's JS embed are documented, the webhook signature is simple SHA-256, the sandbox is real (even if gated via the acquirer). InstaPay has no path; Vodafone Cash via Paymob is identical-difficulty but requires the same foreign-merchant workaround AND has lower reach than Fawry.
+- **Reach beats cost at imeihub's scale.** Fawry's 53M customers — particularly the kiosk channel — capture the exact segment imeihub fails on today: Egyptian users with no card, no Vodafone line, no Stripe-friendly wallet. Even at a 7–10% effective fee, the conversion lift from cash-friendly checkout vs Stripe's near-zero EG conversion is the larger lever. Typical case studies show ~10× conversion uplift when adding Fawry to a card-only checkout.
+- **Foreign-merchant constraint is solvable via an international acquirer**, not Egyptian incorporation. Checkout.com and EBANX both list Fawry for non-Egyptian merchants of record, settling weekly in USD. imeihub does not need an Egyptian entity to use Fawry — it accepts a higher all-in MDR (4–5%) vs direct-Fawry merchants. For Phase 2, this is the right tradeoff vs 30–45 days and USD 2K–3K on an Egyptian LLC.
+- **Lowest implementation effort.** The `fawry-api/fawry` PHP library and Fawry JS embed are documented, the webhook signature is simple SHA-256, the sandbox works (even if gated via the acquirer). InstaPay has no path; Vodafone Cash via Paymob has identical difficulty but the same foreign-merchant workaround AND lower reach than Fawry.
 
-**Top-2 (parallel track): Vodafone Cash via Paymob — only after an Egyptian entity exists OR an MoR like Dodo Payments is contracted.** Adds ~25.5M wallet users at a similar fee envelope. Worth pursuing once the foreign-merchant gate is solved — Vodafone Cash captures a different cohort (smartphone-first millennials in Cairo/Alexandria) than Fawry's kiosk base (mass-market, including older/rural users).
+**Top-2 (parallel track): Vodafone Cash via Paymob — only after an Egyptian entity exists OR an MoR is contracted.** Adds ~25.5M wallet users at a similar fee envelope. Worth pursuing once the foreign-merchant gate is solved — Vodafone Cash captures smartphone-first millennials in Cairo/Alexandria, a different cohort from Fawry's mass-market kiosk base.
 
-**Deprioritize InstaPay for Phase 2.** Revisit in 2026 H2 if (a) CBE publishes a foreign-merchant pull-API spec, (b) Paymob or another aggregator launches a foreign-merchant IPN tier, or (c) imeihub incorporates in Egypt. The 2.5% effective fee and T+0 settlement make it the strategically correct long-term rail, but the surface area to consume it does not exist today for a non-Egyptian entity.
+**Deprioritize InstaPay for Phase 2.** Revisit in 2026 H2 if (a) CBE publishes a foreign-merchant pull-API spec, (b) Paymob or another aggregator launches a foreign-merchant IPN tier, or (c) imeihub incorporates in Egypt. 2.5% effective fee and T+0 settlement make it the strategically correct long-term rail, but the surface area to consume it does not exist today for a non-Egyptian entity.
 
 ### Price-band caveat
 
-imeihub's typical paid transaction is 0.5–210 EGP. Fawry card and Paymob/Vodafone Cash both carry a ~EGP 2.5–3 flat fee. Below ~EGP 30 — the bottom third of the price band — the flat fee alone is >8% of the transaction before percentage MDR. The integration should therefore: (1) set a minimum charge floor (~EGP 30) on any Fawry/Paymob transaction; (2) bundle small services into a credit-pack model (sell EGP 50 / EGP 100 / EGP 250 prepaid credits, deduct per IMEI check internally) — amortizes the flat fee across 5–50 checks; (3) keep Stripe (or PayPal) live for the small expat/diaspora slice that already converts on international rails.
+imeihub's transactions are 0.5–210 EGP. Fawry card and Paymob/Vodafone Cash both carry a ~EGP 2.5–3 flat fee. Below ~EGP 30 — the bottom third of the price band — the flat fee alone is >8% of the transaction before percentage MDR. The integration should: (1) set a minimum charge floor (~EGP 30) for Fawry/Paymob; (2) bundle small services into a credit-pack model (EGP 50 / EGP 100 / EGP 250 prepaid credits, deducted per IMEI check internally) — amortizes the flat fee across 5–50 checks; (3) keep Stripe or PayPal live for the small expat/diaspora slice that already converts on international rails.
 
 ---
 

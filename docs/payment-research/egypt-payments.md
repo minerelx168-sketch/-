@@ -1,9 +1,9 @@
 # Egypt Payment Options for imeihub — Fawry, Vodafone Cash, InstaPay (PR-FAWRY-01)
 
 **Date**: 2026-05-28. **Status**: Pre-integration research; no code written.
-**Scope**: Three dominant Egyptian payment rails for a PHP + MySQL IMEI-check service whose typical paid transaction is **0.5–210 EGP** (≈ USD 0.01–4.20 at ~50 EGP/USD). Stripe is the incumbent; it works poorly in Egypt (low card penetration, punitive FX markup, high checkout friction). The deciding question for imeihub — **a non-Egyptian entity** — is which rails are realistically integrable and which are blocked by policy.
+**Scope**: Three dominant Egyptian payment rails for a PHP + MySQL IMEI-check service whose typical paid transaction is **0.5–210 EGP** (≈ USD 0.01–4.20 at ~50 EGP/USD). Stripe is the incumbent and works poorly in Egypt (low card penetration, punitive FX markup, high friction). The deciding question for imeihub — **a non-Egyptian entity** — is which rails are realistically integrable and which are blocked by policy.
 
-**Headline finding**: all three providers' direct merchant rails require Egyptian commercial registration and tax ID. imeihub has neither. The recommendation steers to (a) routing Fawry through an international acquirer that already holds Egyptian licensing, or (b) operating via a Merchant-of-Record (MoR). Direct onboarding with Fawry, Paymob, or an IPN-participating bank is structurally blocked without an Egyptian legal entity.
+**Headline finding**: all three providers' direct merchant rails require Egyptian commercial registration and tax ID; imeihub has neither. Recommendation steers to (a) routing Fawry via an international acquirer that already holds Egyptian licensing, or (b) operating via a Merchant-of-Record. Direct onboarding with Fawry, Paymob, or an IPN bank is structurally blocked without an Egyptian legal entity.
 
 ---
 
@@ -11,47 +11,44 @@
 
 ### Overview & market position
 
-Fawry is Egypt's dominant offline-to-online payments network. 2025 disclosures: **~53.1M active customers**, **FY2025 throughput EGP 943.6B (+57% YoY)**, **>372,000 agent locations + 36 partner banks**, **>6M transactions/day** [Fawry FY2025 release, 2025-09](https://www.zawya.com/en/press-release/companies-news/fawry-releases-fy2025-results-qwuzfh7k); [Fawry corporate, 2025-03](https://www.fawry.com/2025/03/19/fawry-and-contact-join-forces-to-transform-egypts-e-payment-system/). The niche: **cash-on-bills / kiosk vouchers** — customer initiates online, gets a 6-digit reference number, pays at any kiosk, ATM, or bank app. This captures the card-light segment hitting imeihub's funnel after the January 21, 2026 customs-exemption end. FawryPay (the online product) layers cards and mobile wallets on the same reference-number rail.
+Fawry is Egypt's dominant offline-to-online payments network. 2025: **~53.1M active customers**, **FY2025 throughput EGP 943.6B (+57% YoY)**, **>372,000 agent locations + 36 partner banks**, **>6M transactions/day** [Fawry FY2025, 2025-09](https://www.zawya.com/en/press-release/companies-news/fawry-releases-fy2025-results-qwuzfh7k); [Fawry corporate, 2025-03](https://www.fawry.com/2025/03/19/fawry-and-contact-join-forces-to-transform-egypts-e-payment-system/). The niche: **cash-on-bills / kiosk vouchers** — customer initiates online, gets a 6-digit reference, pays at any kiosk, ATM, or bank app. Captures the card-light segment hitting imeihub's funnel after the January 21, 2026 customs-exemption end. FawryPay layers cards and mobile wallets on the same reference-number rail.
 
 ### API documentation URL + integration model
 
-- Developer portal: `https://developer.fawrystaging.com/` (documents both staging and production) [FawryPay Documentation](https://developer.fawrystaging.com/).
-- Postman public workspace: [Fawry Postman, 2025](https://www.postman.com/fawryapi/workspace/fawry-api-docs-s-public-workspace/documentation/7656578-58bc3d2b-8bff-4aef-9c09-b0b37fe9da85).
-
-Integration models: **Checkout Link** (Fawry-hosted, lightest lift), **Checkout Button** (self-hosted JS embed), **Server-to-server REST** for card-on-file/refunds/status polling, and **Mobile SDKs** for Android/iOS (also `fawry_sdk` on pub.dev for Flutter) [pub.dev fawry_sdk](https://pub.dev/packages/fawry_sdk). Payment methods exposed: cards (Visa/Mastercard/Meeza), e-wallet pass-through, PAYATFAWRY reference number, partner-bank installments.
+Developer portal: [`developer.fawrystaging.com`](https://developer.fawrystaging.com/) (covers both staging and production). Postman public workspace also available. Integration models: **Checkout Link** (Fawry-hosted, lightest), **Checkout Button** (self-hosted JS embed), **Server-to-server REST** for card-on-file/refunds/status, **Mobile SDKs** (Android/iOS; `fawry_sdk` on pub.dev for Flutter [pub.dev](https://pub.dev/packages/fawry_sdk)). Methods: cards (Visa/Mastercard/Meeza), e-wallet pass-through, PAYATFAWRY reference number, partner-bank installments.
 
 ### Merchant onboarding — KYC docs, foreign-merchant rules
 
-**Critical for imeihub.** Third-party documentation is explicit: *"A Fawry merchant account can only be opened by a company based in Egypt"* — requires Commercial Register + Tax ID plus the CBE KYC packet [WHMCS Fawry plugin docs, 2024](https://marketplace.whmcs.com/product/5540-fawry-for-whmcs); corroborated by Nafezly PHP guide and `fawry.com/sme-registration-form/`. Required: Egyptian commercial registration (سجل تجاري), Egyptian Tax ID (بطاقة ضريبية), bank account at a Fawry-partnered Egyptian bank for EGP settlement, AML/KYC officer, VAT certificate if revenue >EGP 500K/yr. **No public foreign-merchant tier or non-resident MID program.** CBE June 2025 rules allow foreign payment institutions to apply for CBE licensing, but that path is for PSPs (not merchants) and requires home-jurisdiction equivalence — irrelevant for imeihub [CBE PSO/PSP rules, 2025-06](https://www.cbe.org.eg/en/news-publications/news/2025/06/19/08/20/psos-and-psps-licensing-rules); [Shehata Law, 2025](https://shehatalaw.com/law-update/the-central-bank-of-egypt-issues-new-licensing-regulations-for-payment-system-operators-and-service-providers/).
+**Critical for imeihub.** Third-party documentation is explicit: *"A Fawry merchant account can only be opened by a company based in Egypt"* — requires Commercial Register + Tax ID plus CBE KYC packet [WHMCS Fawry plugin, 2024](https://marketplace.whmcs.com/product/5540-fawry-for-whmcs); corroborated by Nafezly PHP guide and `fawry.com/sme-registration-form/`. Required: Egyptian commercial registration (سجل تجاري), Tax ID (بطاقة ضريبية), bank account at a Fawry-partnered Egyptian bank for EGP settlement, AML/KYC officer, VAT certificate if revenue >EGP 500K/yr. **No public foreign-merchant tier or non-resident MID.** CBE June 2025 rules allow foreign payment institutions to apply for CBE licensing, but that's for PSPs (not merchants) and requires home-jurisdiction equivalence — irrelevant for imeihub [CBE rules, 2025-06](https://www.cbe.org.eg/en/news-publications/news/2025/06/19/08/20/psos-and-psps-licensing-rules); [Shehata Law, 2025](https://shehatalaw.com/law-update/the-central-bank-of-egypt-issues-new-licensing-regulations-for-payment-system-operators-and-service-providers/).
 
 **Foreign-merchant verdict: BLOCKED for direct merchant accounts.** Workarounds: (a) incorporate an Egyptian LLC (~USD 1,500–3,000, 30–45 days), (b) sign with an international acquirer routing to Fawry (EBANX, Nuvei, Checkout.com, PaymentWall all expose Fawry to non-Egyptian merchants of record), or (c) use an MoR like Dodo Payments [Dodo MoR guide, 2026](https://dodopayments.com/blogs/merchant-of-record-in-egypt).
 
 ### Pricing & fees
 
-Fawry does not publish a public MDR card; pricing is commercially negotiated by channel, volume, merchant profile. Public third-party signals (2025): via international aggregators (EBANX/Nuvei/Checkout.com) **3.0–4.5% MDR** plus FX margin if settling in USD — EBANX's Fawry voucher model passes EGP and settles in USD weekly [EBANX Fawry, 2025](https://docs.ebanx.com/docs/payments/guides/accept-payments/api/egypt/fawry/); direct Fawry merchants pay roughly **2.75% + ~2.5 EGP per transaction** for card, while the PAYATFAWRY kiosk model is a flat ~EGP 5–15 shouldered by merchant or customer [Akurateco, 2024](https://akurateco.com/payment-methods/fawry). Refunds via `/refund`; kiosk refunds are slow (T+5 to T+14) because they reverse through the agent network. For imeihub's ~EGP 50 average ticket: flat EGP 5 kiosk = ~10% effective, card (~3% + EGP 2.5) = ~7%. Implication: enable Fawry only above ~EGP 30 and bundle small services into credit packs.
+Fawry does not publish a public MDR card; pricing is commercially negotiated by channel, volume, merchant profile. Public 2025 signals: via international aggregators (EBANX/Nuvei/Checkout.com) **3.0–4.5% MDR** plus FX margin if settling in USD — EBANX passes EGP and settles weekly in USD [EBANX, 2025](https://docs.ebanx.com/docs/payments/guides/accept-payments/api/egypt/fawry/); direct merchants pay **~2.75% + ~2.5 EGP** for card; PAYATFAWRY kiosk is a flat ~EGP 5–15 [Akurateco, 2024](https://akurateco.com/payment-methods/fawry). Refunds via `/refund`; kiosk refunds slow (T+5 to T+14) — reverse through the agent network. imeihub's ~EGP 50 ticket: flat EGP 5 kiosk = ~10% effective, card = ~7%. Implication: enable Fawry only above ~EGP 30, bundle small services into credit packs.
 
 ### Settlement timeline
 
-Settlements **process within 5 business days** to the merchant's destination [Flutterwave Fawry FAQ, 2025](https://flutterwave.com/gh/support/payments/fawry-pay-faq-egypt). Direct merchants negotiate T+2 to T+3 for card and T+5 to T+7 for kiosk (agent reconciliation lag). Currency: EGP into an Egyptian IBAN. International acquirers deliver weekly USD payouts.
+Settlements **process within 5 business days** [Flutterwave Fawry FAQ, 2025](https://flutterwave.com/gh/support/payments/fawry-pay-faq-egypt). Direct merchants negotiate T+2 to T+3 for card, T+5 to T+7 for kiosk (agent reconciliation lag). EGP into an Egyptian IBAN. International acquirers deliver weekly USD payouts.
 
 ### Supported currencies
 
-**EGP only at the rail.** Customer pays EGP; merchant of record absorbs FX if needed. CBE FX controls and the 2024 EGP float make USD-displayed pricing impossible at the consumer rail — USD displays get converted at reference rate plus 1–3% markup [Grey on Egypt FX controls](https://grey.co/blog/what-egypts-currency-controls-mean-for-international-payments).
+**EGP only at the rail.** Customer pays EGP; merchant of record absorbs FX. CBE FX controls and the 2024 EGP float make USD-displayed pricing impossible at the consumer rail — USD displays get converted at reference rate plus 1–3% markup [Grey FX, 2026](https://grey.co/blog/what-egypts-currency-controls-mean-for-international-payments).
 
 ### SDK / web-checkout availability — PHP and JS
 
-- **PHP**: `fawry-api/fawry` (charge, refund, status, card payment, callback v2) [GitHub](https://github.com/fawry-api/fawry); also `Nafezly/payments` which wraps Fawry and 18 other gateways under a uniform `setUserId()->setAmount()->pay()` [GitHub](https://github.com/Nafezly/payments).
+- **PHP**: `fawry-api/fawry` (charge, refund, status, card payment, callback v2) [GitHub](https://github.com/fawry-api/fawry); also `Nafezly/payments` which wraps Fawry + 18 other gateways under a uniform `setUserId()->setAmount()->pay()` [GitHub](https://github.com/Nafezly/payments).
 - **JS**: Fawry Checkout Button drop-in `<script>`. No first-party Node SDK; community wrappers are thin REST clients.
 
-For PHP + MySQL: composer install `fawry-api/fawry`, set `FAWRY_URL=https://atfawry.fawrystaging.com/` (sandbox) or `https://www.atfawry.com/` (production), plus `FAWRY_SECRET` and `FAWRY_MERCHANT`.
+For PHP + MySQL: composer install `fawry-api/fawry`, set `FAWRY_URL=https://atfawry.fawrystaging.com/` (sandbox) or `https://www.atfawry.com/` (prod), plus `FAWRY_SECRET` and `FAWRY_MERCHANT`.
 
 ### Webhook structure + signature verification
 
-Server Callback v2 — HTTPS POST to a merchant-configured URL with `requestId`, `fawryRefNumber`, `merchantRefNumber`, `customerMobile`, `customerMail`, `paymentAmount`, `orderAmount`, `fawryFees`, `orderStatus`, `paymentMethod`, `messageSignature`, `orderExpiryDate`, `orderItems`. Signature is **SHA-256** of `merchantCode + merchantRefNumber + paymentAmount + orderAmount + orderStatus + paymentMethod + secureKey` compared against `messageSignature`. Retries on non-2xx with backoff. No replay nonce — dedupe on `fawryRefNumber`.
+Server Callback v2 — HTTPS POST with `requestId`, `fawryRefNumber`, `merchantRefNumber`, `customerMobile`, `paymentAmount`, `orderAmount`, `fawryFees`, `orderStatus`, `paymentMethod`, `messageSignature`, `orderExpiryDate`, `orderItems`. Signature: **SHA-256** of `merchantCode + merchantRefNumber + paymentAmount + orderAmount + orderStatus + paymentMethod + secureKey` vs `messageSignature`. Retries on non-2xx with backoff. No replay nonce — dedupe on `fawryRefNumber`.
 
 ### Sandbox URL + credential acquisition
 
-Sandbox: `https://atfawry.fawrystaging.com/`. Production: `https://www.atfawry.com/`. **No self-service signup.** Fill `fawry.com/sme-registration-form/`, a rep emails back, sandbox `merchantCode` + `secureKey` arrive in 1–5 business days. This is a hard gate for foreign teams without an Egyptian sales contact. International aggregators (EBANX, PaymentWall, Tap) expose Fawry in their own sandboxes without this gate.
+Sandbox: `https://atfawry.fawrystaging.com/`. Production: `https://www.atfawry.com/`. **No self-service signup** — fill `fawry.com/sme-registration-form/`, a rep emails back, `merchantCode` + `secureKey` arrive in 1–5 business days. Hard gate for foreign teams without an Egyptian sales contact. International aggregators (EBANX, PaymentWall, Tap) expose Fawry in their own sandboxes without this gate.
 
 ### 3 example competitor digital services using Fawry
 
@@ -65,8 +62,8 @@ All three are Egyptian-incorporated; the Fawry-via-EBANX precedent is the strong
 
 - **CBE**: Fawry is a licensed PSP. June 2025 PSO/PSP rules apply with transition through June 2026 [Daily News Egypt, 2025-06-21](https://www.dailynewsegypt.com/2025/06/21/cbe-issues-new-licensing-framework-for-electronic-payment-service-providers/). Merchants' own AML/KYC obligation continues.
 - **ITIDA**: Not involved in payment licensing; supervises E-Signature Law 15/2004 [ITIDA](https://itida.gov.eg/).
-- **NTRA**: imeihub is telecom-adjacent but not regulated by NTRA as long as it does not provide carrier billing. NTRA's Jan 2025 IMEI regime uses its own Telefoni app for fees [NTRA Telefoni, 2025](https://www.tra.gov.eg/en/national-telecommunications-regulatory-authority-ntra-introduces-new-payment-methods-via-telefoni-app/). No third-party-billing license needed for non-carrier-billed digital products.
-- **Tax**: Egypt's simplified VAT registration for nonresident digital service providers applies at 14% on B2C sales once Egyptian revenue exceeds EGP 500K/yr [EY VAT alert, 2023](https://www.ey.com/en_gl/technical/tax-alerts/egypt-introduces-vat-guidelines-for-nonresident-providers-of-rem).
+- **NTRA**: imeihub is telecom-adjacent but not gated by NTRA as long as it does not provide carrier billing. NTRA's Jan 2025 IMEI regime uses its own Telefoni app for fees [NTRA, 2025](https://www.tra.gov.eg/en/national-telecommunications-regulatory-authority-ntra-introduces-new-payment-methods-via-telefoni-app/). No third-party-billing license needed.
+- **Tax**: Egypt's simplified VAT registration for nonresident digital providers applies at 14% on B2C sales once Egyptian revenue exceeds EGP 500K/yr [EY, 2023](https://www.ey.com/en_gl/technical/tax-alerts/egypt-introduces-vat-guidelines-for-nonresident-providers-of-rem).
 
 ---
 
@@ -74,27 +71,27 @@ All three are Egyptian-incorporated; the Fawry-via-EBANX precedent is the strong
 
 ### Overview & market position
 
-Vodafone Cash is Egypt's dominant mobile wallet. Q2 2025: **~25.5M users (55% of the 46.3M wallet base)**, **78% of wallet transactions by count**, **81% by value** [Daily News Egypt, 2025-09-13](https://www.dailynewsegypt.com/2025/09/13/mobile-wallet-transactions-in-egypt-surge-72-in-q2-2025-to-egp-943-4bn/); [Statista, 2025](https://www.statista.com/statistics/1624013/market-share-of-leading-mobile-wallets-in-egypt/). Total Q2 2025 wallet value EGP 943.4B (~USD 19.6B), +72% YoY [IBS Intelligence, 2025-09](https://ibsintelligence.com/ibsi-news/digital-payments-in-egypt-reach-19-63bn-as-wallets-soar/). The niche: **carrier-backed mobile balance** — any Vodafone Egypt subscriber can spend balance funded by airtime top-up, bank transfer, or salary, no card needed. For imeihub this is the biggest reach lever for users who failed Stripe due to no card.
+Vodafone Cash is Egypt's dominant mobile wallet. Q2 2025: **~25.5M users (55% of 46.3M wallet base)**, **78% of wallet transactions by count**, **81% by value** [Daily News Egypt, 2025-09-13](https://www.dailynewsegypt.com/2025/09/13/mobile-wallet-transactions-in-egypt-surge-72-in-q2-2025-to-egp-943-4bn/); [Statista, 2025](https://www.statista.com/statistics/1624013/market-share-of-leading-mobile-wallets-in-egypt/). Total Q2 wallet value EGP 943.4B (~USD 19.6B), +72% YoY [IBS Intelligence, 2025-09](https://ibsintelligence.com/ibsi-news/digital-payments-in-egypt-reach-19-63bn-as-wallets-soar/). The niche: **carrier-backed mobile balance** — any Vodafone Egypt subscriber spends balance funded by airtime top-up, bank transfer, or salary; no card needed. For imeihub, the biggest reach lever for users who failed Stripe.
 
 ### API documentation URL + integration model
 
-**No public direct Vodafone Cash merchant API.** Vodafone Egypt does not run developer self-service. Vodafone Cash is **exposed exclusively through CBE-licensed aggregators** — chiefly **Paymob**, plus Fawry's MyFawry rail, Tap, Kashier, Geidea [Paymob digital wallet](https://paymob.com/en/digital-wallet). Reference path via Paymob: developer portal at [`developers.paymob.com`](https://developers.paymob.com/); mobile-wallets docs at `docs.paymob.com/docs/mobile-wallets`. Flow: (1) `POST /api/auth/tokens` with API key → auth token; (2) `POST /api/ecommerce/orders` → `order_id`; (3) `POST /api/acceptance/payment_keys` with `integration_id` for Vodafone Cash → `payment_token`; (4) `POST /api/acceptance/payments/pay` with `source.identifier=<phone>`, `source.subtype=WALLET`. Customer receives OTP on their Vodafone line, enters it on the Paymob-hosted page, payment completes; returns via webhook.
+**No public direct Vodafone Cash merchant API.** Vodafone Egypt has no developer self-service. Vodafone Cash is **exposed exclusively through CBE-licensed aggregators** — chiefly **Paymob**, plus MyFawry, Tap, Kashier, Geidea [Paymob digital wallet](https://paymob.com/en/digital-wallet). Reference path via Paymob: portal [`developers.paymob.com`](https://developers.paymob.com/); mobile-wallets docs at `docs.paymob.com/docs/mobile-wallets`. Flow: (1) `POST /api/auth/tokens` → auth token; (2) `POST /api/ecommerce/orders` → `order_id`; (3) `POST /api/acceptance/payment_keys` with `integration_id` for Vodafone Cash → `payment_token`; (4) `POST /api/acceptance/payments/pay` with `source.identifier=<phone>`, `source.subtype=WALLET`. Customer receives OTP on Vodafone line, enters on the Paymob-hosted page, payment completes; returns via webhook.
 
 ### Merchant onboarding — KYC docs, foreign-merchant rules
 
-Paymob requires the same baseline as Fawry: **Egyptian commercial registration, Tax ID, Egyptian bank account for EGP settlement**. Paymob does hold a UAE Central Bank Retail Payment Services license (Jan 2025) and operates in KSA and Oman [Disrupt Africa, 2025-01-31](https://disruptafrica.com/2025/01/31/egypts-paymob-secures-uae-central-bank-retail-payment-services-licence/), so a foreign entity could onboard via Paymob UAE for *card* — but **Egyptian wallet rails (Vodafone Cash, Orange Money, e& Money) are gated to Egyptian-licensed MIDs only**. PayAtlas notes Egypt is "more conservative" than UAE on non-resident MIDs [PayAtlas, 2026](https://payatlas.com/countries/egypt-eg).
+Paymob requires the same baseline as Fawry: **Egyptian commercial registration, Tax ID, Egyptian bank account for EGP settlement**. Paymob holds a UAE Central Bank RPS license (Jan 2025) and operates in KSA and Oman [Disrupt Africa, 2025-01-31](https://disruptafrica.com/2025/01/31/egypts-paymob-secures-uae-central-bank-retail-payment-services-licence/), so a foreign entity could onboard via Paymob UAE for *card* — but **Egyptian wallet rails (Vodafone Cash, Orange Money, e& Money) are gated to Egyptian-licensed MIDs only**. PayAtlas notes Egypt is "more conservative" than UAE on non-resident MIDs [PayAtlas, 2026](https://payatlas.com/countries/egypt-eg).
 
-**Foreign-merchant verdict: BLOCKED for direct Vodafone Cash MID.** Workarounds: (a) Egyptian subsidiary, (b) aggregator fronting (Tap and Checkout.com list it cross-border but require GCC incorporation), (c) MoR. No documented foreign-merchant onboarding path through Paymob Egypt.
+**Foreign-merchant verdict: BLOCKED for direct Vodafone Cash MID.** Workarounds: (a) Egyptian subsidiary, (b) aggregator fronting (Tap and Checkout.com list it cross-border but require GCC incorporation), (c) MoR.
 
 ### Pricing & fees
 
-Paymob public pricing: **2.75% + EGP 3 per successful transaction**, zero monthly fee, for local SMB/SME card and wallet [Paymob pricing](https://www.paymob.com/en/pricing); [Bilixe, 2025](https://bilixe.com/listing/paymob-payment-gateway/). Enterprise and international "on inquiry only." Vodafone Cash MDR is typically the same 2.75% + EGP 3.
+Paymob public pricing: **2.75% + EGP 3 per successful transaction**, zero monthly fee, local SMB/SME card and wallet [Paymob](https://www.paymob.com/en/pricing); [Bilixe, 2025](https://bilixe.com/listing/paymob-payment-gateway/). Enterprise and international on inquiry. Vodafone Cash MDR same 2.75% + EGP 3.
 
-The **EGP 3 flat fee is the killer at imeihub's price band**. On EGP 50: 2.75% × 50 + 3 = EGP 4.375 = **8.75% effective**. On EGP 100: 5.75%. On EGP 200: 4.25%. Only above ~EGP 150 does the rate flatten into single digits. Refunds via `/api/acceptance/void_refund/refund`; processing fee is generally not refunded, costing merchant the original fee plus an aggregator refund fee (EGP 2–5).
+**EGP 3 flat fee is the killer at imeihub's band.** EGP 50: **8.75% effective**. EGP 100: 5.75%. EGP 200: 4.25%. Above ~EGP 150 rate flattens. Refunds via `/api/acceptance/void_refund/refund`; processing fee generally not refunded, costing original fee + aggregator refund fee (EGP 2–5).
 
 ### Settlement timeline
 
-Paymob: **T+1 for card and wallets**; weekly bank deposits by default, daily on enterprise plans. EGP into an Egyptian IBAN. Vodafone Cash: same-day Vodafone → Paymob, T+1 Paymob → merchant.
+Paymob: **T+1 for card and wallets**; weekly bank deposits by default, daily on enterprise. EGP into an Egyptian IBAN. Vodafone Cash: same-day Vodafone → Paymob, T+1 Paymob → merchant.
 
 ### Supported currencies
 
@@ -108,7 +105,7 @@ Paymob: **T+1 for card and wallets**; weekly bank deposits by default, daily on 
 
 ### Webhook structure + signature verification
 
-**HMAC-SHA512.** Callback as HTTPS POST (processed) or GET-redirect (response). Parameters sorted lexicographically by key, values concatenated in order, HMAC-SHA512 with merchant HMAC secret, compared against the `hmac` query parameter [Paymob HMAC docs](https://developers.paymob.com/paymob-docs/developers/webhook-callbacks-and-hmac). Payload includes `amount_cents`, `currency`, `id`, `integration_id`, `is_3d_secure`, `is_refunded`, `order.id`, `source_data.sub_type`, `source_data.type`, `success`.
+**HMAC-SHA512.** Callback as HTTPS POST (processed) or GET-redirect (response). Parameters sorted lexicographically by key, values concatenated in order, HMAC-SHA512 with merchant secret, compared against the `hmac` query parameter [Paymob HMAC docs](https://developers.paymob.com/paymob-docs/developers/webhook-callbacks-and-hmac). Payload includes `amount_cents`, `currency`, `id`, `integration_id`, `is_3d_secure`, `is_refunded`, `order.id`, `source_data.type`, `success`.
 
 ### Sandbox URL + credential acquisition
 
@@ -135,7 +132,7 @@ All three are Egyptian-incorporated. No clean foreign-merchant precedent at the 
 
 ### Overview & market position
 
-InstaPay is the consumer-facing app for Egypt's **Instant Payment Network (IPN)** — Egypt's domestic real-time rail, launched **March 22, 2022**, operated by the Egyptian Banks Company (EBC) under CBE supervision [EBC IPN](https://www.egyptianbanks.com/instant-payment-network/); [CBE IPN](https://www.cbe.org.eg/en/payment-systems-and-services/instant-payment-network). Closest Egyptian analog to UPI (India) or Pix (Brazil). End of 2024: **1.5B transactions, EGP 2.9T value, 10M+ app downloads** [Lightspark, 2026](https://www.lightspark.com/knowledge/egypt-instant-payments); [CBPN, 2025-05](https://cbpn.currencyresearch.com/blog/2025/05/23/the-evolution-of-the-instant-payment-network-ipn-in-egypt-the-success-story-of-instapay). The niche: **bank-to-bank real-time transfers across ~36 participating banks** at near-zero customer-side fees. 2025 growth is explosive [Egyptian Streets, 2026-01-04](https://egyptianstreets.com/2026/01/04/inside-egypts-instapay-economy-how-instant-payments-are-changing-access-for-a-new-generation/).
+InstaPay is the consumer app for Egypt's **Instant Payment Network (IPN)** — domestic real-time rail launched **March 22, 2022**, operated by the Egyptian Banks Company (EBC) under CBE [EBC IPN](https://www.egyptianbanks.com/instant-payment-network/); [CBE IPN](https://www.cbe.org.eg/en/payment-systems-and-services/instant-payment-network). Closest Egyptian analog to UPI (India) or Pix (Brazil). End of 2024: **1.5B transactions, EGP 2.9T value, 10M+ app downloads** [Lightspark, 2026](https://www.lightspark.com/knowledge/egypt-instant-payments); [CBPN, 2025-05](https://cbpn.currencyresearch.com/blog/2025/05/23/the-evolution-of-the-instant-payment-network-ipn-in-egypt-the-success-story-of-instapay). The niche: **bank-to-bank real-time transfers across ~36 banks** at near-zero customer-side fees. 2025 growth explosive [Egyptian Streets, 2026-01-04](https://egyptianstreets.com/2026/01/04/inside-egypts-instapay-economy-how-instant-payments-are-changing-access-for-a-new-generation/).
 
 ### API documentation URL + integration model
 
@@ -155,9 +152,9 @@ Direct bank IPN APIs: full Egyptian corporate banking relationship (commercial r
 
 ### Pricing & fees
 
-Customer-side: **zero fee for personal-to-personal up to EGP 70,000/month**. Merchants accepting IPN pull pay **<1% MDR** in current pilots — significantly cheaper than card MDR. Customer-push (initiated from banking app): zero customer-side, ~EGP 1–3 flat on merchant.
+Customer-side: **zero fee P2P up to EGP 70,000/month**. Merchants accepting IPN pull pay **<1% MDR** in current pilots — cheaper than card. Customer-push (initiated from banking app): zero customer-side, ~EGP 1–3 flat on merchant.
 
-For imeihub's price band this would be the cheapest rail — if access could be unlocked. On EGP 50 at 0.5% + EGP 1 = EGP 1.25 = **2.5%**. On EGP 200: ~1.0%. Structurally 3–6× better than Fawry or Vodafone Cash.
+For imeihub's band this would be the cheapest rail — if access could be unlocked. EGP 50 at 0.5% + EGP 1 = **2.5%**. EGP 200: ~1.0%. Structurally 3–6× better than Fawry or Vodafone Cash.
 
 ### Settlement timeline
 
@@ -201,75 +198,75 @@ The QR merchant feature is the early e-commerce path, but as of May 2026 no Tier
 
 ### Comparison table
 
-| Dimension | Fawry | Vodafone Cash (via Paymob) | InstaPay |
+| Dimension | Fawry | Vodafone Cash (Paymob) | InstaPay |
 |---|---|---|---|
-| Fee on EGP 50 ticket | ~10% (kiosk) / ~7% (card) | ~8.75% (2.75% + EGP 3) | ~2.5% (~0.5% + EGP 1) |
-| Settlement | T+2 to T+5 EGP to EG bank | T+1 EGP to EG bank | T+0 real-time |
-| Foreign-merchant friendly | **No** — Egyptian CR + Tax ID required; workaround via aggregator (EBANX/Nuvei) | **No** — Egyptian MID required for wallet rails; workaround via MoR | **No** — bank corporate account required; no third-party path |
-| SDK quality (PHP/JS) | Good — community PHP SDK, JS embed, Postman workspace | Excellent — official PHP SDK, iframe checkout, well-documented HMAC | None — no public SDKs |
-| Sandbox accessibility | Gated (sales conversation, 1–5 days) | Self-service registration | None |
-| Coverage of imeihub's target | ~53M customers, kiosk-heavy (highest reach) | ~25.5M wallet users, smartphone-only | ~46M IPN-capable bank accounts, no merchant checkout maturity |
-| Recommendation | **Prioritize** — via Checkout.com or EBANX MoR | Track parallel — defer until Egyptian entity or MoR | Defer — revisit late 2026 |
+| Fee on EGP 50 ticket | ~10% kiosk / ~7% card | ~8.75% (2.75% + EGP 3) | ~2.5% (~0.5% + EGP 1) |
+| Settlement | T+2 to T+5 EGP | T+1 EGP | T+0 real-time |
+| Foreign-merchant friendly | **No** — workaround via EBANX/Nuvei MoR | **No** — workaround via MoR | **No** — no third-party path |
+| SDK quality (PHP/JS) | Good — community PHP, JS embed, Postman | Excellent — official PHP SDK, iframe, HMAC docs | None |
+| Sandbox | Gated (sales, 1–5 days) | Self-service | None |
+| Reach | ~53M customers, kiosk-heavy | ~25.5M wallet users | ~46M bank accounts, no merchant maturity |
+| Recommendation | **Prioritize** via Checkout.com/EBANX | Parallel — defer until EG entity/MoR | Defer — revisit late 2026 |
 
 ### Top-1 prioritized provider: **Fawry — routed via Checkout.com or EBANX as the merchant of record**
 
 Three-bullet rationale:
 
-- **Reach beats cost at imeihub's scale.** Fawry's 53M customers — particularly the kiosk channel — capture the exact segment imeihub fails on today: Egyptian users with no card, no Vodafone line, no Stripe-friendly wallet. Even at a 7–10% effective fee, the conversion lift from cash-friendly checkout vs Stripe's near-zero EG conversion is the larger lever. Typical case studies show ~10× conversion uplift when adding Fawry to a card-only checkout.
-- **Foreign-merchant constraint is solvable via an international acquirer**, not Egyptian incorporation. Checkout.com and EBANX both list Fawry for non-Egyptian merchants of record, settling weekly in USD. imeihub does not need an Egyptian entity to use Fawry — it accepts a higher all-in MDR (4–5%) vs direct-Fawry merchants. For Phase 2, this is the right tradeoff vs 30–45 days and USD 2K–3K on an Egyptian LLC.
-- **Lowest implementation effort.** The `fawry-api/fawry` PHP library and Fawry JS embed are documented, the webhook signature is simple SHA-256, the sandbox works (even if gated via the acquirer). InstaPay has no path; Vodafone Cash via Paymob has identical difficulty but the same foreign-merchant workaround AND lower reach than Fawry.
+- **Reach beats cost.** Fawry's 53M customers — particularly the kiosk channel — capture the segment imeihub fails on today: Egyptians with no card, no Vodafone line, no Stripe-friendly wallet. At 7–10% effective fee, the conversion lift vs Stripe's near-zero EG conversion is the larger lever; case studies report ~10× uplift adding Fawry to card-only checkout.
+- **Foreign-merchant constraint is solvable via an international acquirer**, not Egyptian incorporation. Checkout.com and EBANX list Fawry for non-Egyptian merchants of record, settling weekly in USD. imeihub accepts ~4–5% all-in MDR vs direct-Fawry's lower rate — the right Phase 2 tradeoff vs 30–45 days and USD 2K–3K on an Egyptian LLC.
+- **Lowest implementation effort.** `fawry-api/fawry` PHP and JS embed are documented, webhook signature is plain SHA-256, sandbox works via the acquirer. InstaPay has no path; Vodafone Cash via Paymob has the same workaround AND lower reach.
 
-**Top-2 (parallel track): Vodafone Cash via Paymob — only after an Egyptian entity exists OR an MoR is contracted.** Adds ~25.5M wallet users at a similar fee envelope. Worth pursuing once the foreign-merchant gate is solved — Vodafone Cash captures smartphone-first millennials in Cairo/Alexandria, a different cohort from Fawry's mass-market kiosk base.
+**Top-2 (parallel track): Vodafone Cash via Paymob — only after an Egyptian entity or MoR is in place.** Adds ~25.5M wallet users at similar fees. Captures smartphone-first millennials, a different cohort from Fawry's mass-market kiosk base.
 
-**Deprioritize InstaPay for Phase 2.** Revisit in 2026 H2 if (a) CBE publishes a foreign-merchant pull-API spec, (b) Paymob or another aggregator launches a foreign-merchant IPN tier, or (c) imeihub incorporates in Egypt. 2.5% effective fee and T+0 settlement make it the strategically correct long-term rail, but the surface area to consume it does not exist today for a non-Egyptian entity.
+**Deprioritize InstaPay for Phase 2.** Revisit late 2026 if (a) CBE publishes a foreign-merchant pull-API spec, (b) an aggregator launches a foreign-merchant IPN tier, or (c) imeihub incorporates in Egypt. 2.5% fee + T+0 settlement = strategically correct long-term, but the consumption surface does not exist today for a non-Egyptian entity.
 
 ### Price-band caveat
 
-imeihub's transactions are 0.5–210 EGP. Fawry card and Paymob/Vodafone Cash both carry a ~EGP 2.5–3 flat fee. Below ~EGP 30 — the bottom third of the price band — the flat fee alone is >8% of the transaction before percentage MDR. The integration should: (1) set a minimum charge floor (~EGP 30) for Fawry/Paymob; (2) bundle small services into a credit-pack model (EGP 50 / EGP 100 / EGP 250 prepaid credits, deducted per IMEI check internally) — amortizes the flat fee across 5–50 checks; (3) keep Stripe or PayPal live for the small expat/diaspora slice that already converts on international rails.
+Both Fawry card and Paymob/Vodafone Cash carry a ~EGP 2.5–3 flat fee. Below ~EGP 30 the flat fee alone is >8% before percentage MDR. The integration should: (1) set a minimum charge floor (~EGP 30) for Fawry/Paymob; (2) bundle small services into prepaid credit packs (EGP 50 / 100 / 250, deducted per check internally) — amortizes the flat fee across 5–50 checks; (3) keep Stripe or PayPal live for the small expat/diaspora slice already converting on international rails.
 
 ---
 
 ## Sources
 
-1. Fawry FY2025 results — Zawya — 2025-09 — https://www.zawya.com/en/press-release/companies-news/fawry-releases-fy2025-results-qwuzfh7k
-2. Fawry × Contact joint venture — Fawry — 2025-03-19 — https://www.fawry.com/2025/03/19/fawry-and-contact-join-forces-to-transform-egypts-e-payment-system/
-3. FawryPay Developer Documentation — Fawry — accessed 2026-05 — https://developer.fawrystaging.com/
-4. Fawry public Postman workspace — Fawry — accessed 2026-05 — https://www.postman.com/fawryapi/workspace/fawry-api-docs-s-public-workspace/
-5. fawry-api/fawry PHP library — GitHub — accessed 2026-05 — https://github.com/fawry-api/fawry
-6. Nafezly/payments multi-gateway PHP library — GitHub — accessed 2026-05 — https://github.com/Nafezly/payments
-7. fawry_sdk Flutter package — pub.dev — accessed 2026-05 — https://pub.dev/packages/fawry_sdk
-8. Fawry Pay FAQ on settlement — Flutterwave — 2025 — https://flutterwave.com/gh/support/payments/fawry-pay-faq-egypt
-9. Akurateco Fawry payment method analysis — Akurateco — 2024 — https://akurateco.com/payment-methods/fawry
-10. EBANX Fawry integration documentation — EBANX — 2025 — https://docs.ebanx.com/docs/payments/guides/accept-payments/api/egypt/fawry/
-11. WHMCS Fawry plugin (Egyptian-only merchant note) — WHMCS — 2024 — https://marketplace.whmcs.com/product/5540-fawry-for-whmcs
-12. Paymob Developer Portal — Paymob — accessed 2026-05 — https://developers.paymob.com/
-13. Paymob webhook/HMAC documentation — Paymob — accessed 2026-05 — https://developers.paymob.com/paymob-docs/developers/webhook-callbacks-and-hmac
-14. Paymob mobile-wallets documentation — Paymob — accessed 2026-05 — https://docs.paymob.com/docs/mobile-wallets
-15. Paymob public pricing page — Paymob — accessed 2026-05 — https://www.paymob.com/en/pricing
-16. Paymob e-commerce plugins for Egypt — Paymob — accessed 2026-05 — https://developers.paymob.com/egypt/e-commerce-plugins
-17. PaymobAccept/paymob-php official PHP SDK — GitHub — accessed 2026-05 — https://github.com/PaymobAccept/paymob-php
-18. Bilixe Paymob review with fee detail — Bilixe — 2025 — https://bilixe.com/listing/paymob-payment-gateway/
-19. Paymob UAE Central Bank RPS license — Disrupt Africa — 2025-01-31 — https://disruptafrica.com/2025/01/31/egypts-paymob-secures-uae-central-bank-retail-payment-services-licence/
-20. Vodafone Cash market share, Q2 2025 — Daily News Egypt — 2025-09-13 — https://www.dailynewsegypt.com/2025/09/13/mobile-wallet-transactions-in-egypt-surge-72-in-q2-2025-to-egp-943-4bn/
-21. Mobile wallet market share — Statista — 2025 — https://www.statista.com/statistics/1624013/market-share-of-leading-mobile-wallets-in-egypt/
-22. Egypt digital payments / wallet surge — IBS Intelligence — 2025-09 — https://ibsintelligence.com/ibsi-news/digital-payments-in-egypt-reach-19-63bn-as-wallets-soar/
-23. Egyptian Banks Company IPN page — EBC — 2026 — https://www.egyptianbanks.com/instant-payment-network/
-24. CBE Instant Payment Network official page — CBE — 2026 — https://www.cbe.org.eg/en/payment-systems-and-services/instant-payment-network
-25. Evolution of IPN in Egypt — Central Bank Payments News — 2025-05-23 — https://cbpn.currencyresearch.com/blog/2025/05/23/the-evolution-of-the-instant-payment-network-ipn-in-egypt-the-success-story-of-instapay
-26. Egypt Instant Payments analysis — Lightspark — 2026 — https://www.lightspark.com/knowledge/egypt-instant-payments
-27. InstaPay consumer Q&A — InstaPay — 2026 — https://www.instapay.eg/?page_id=348&lang=en
-28. Inside Egypt's InstaPay Economy — Egyptian Streets — 2026-01-04 — https://egyptianstreets.com/2026/01/04/inside-egypts-instapay-economy-how-instant-payments-are-changing-access-for-a-new-generation/
-29. CBE QR feature for InstaPay merchant acceptance — EgyptToday — 2024 — https://www.egypttoday.com/Article/3/132704/CBE-enhances-InstaPay-with-QR-Code-feature-for-Instant-Payments
-30. Bank ABC InstaPay page — Bank ABC Egypt — 2026 — https://www.bank-abc.com/en/CountrySites/Egypt/Ways-to-our-Bank/Pages/InstaPay.aspx
-31. CBE PSO/PSP licensing rules — CBE — 2025-06-19 — https://www.cbe.org.eg/en/news-publications/news/2025/06/19/08/20/psos-and-psps-licensing-rules
-32. Shehata Law analysis of CBE licensing — Shehata Law — 2025 — https://shehatalaw.com/law-update/the-central-bank-of-egypt-issues-new-licensing-regulations-for-payment-system-operators-and-service-providers/
-33. CBE issues new licensing framework — Daily News Egypt — 2025-06-21 — https://www.dailynewsegypt.com/2025/06/21/cbe-issues-new-licensing-framework-for-electronic-payment-service-providers/
-34. Merchant of Record in Egypt — Dodo Payments — 2026 — https://dodopayments.com/blogs/merchant-of-record-in-egypt
-35. Accepting Payments in Egypt: PSPs, Compliance & Fees — PayAtlas — 2026 — https://payatlas.com/countries/egypt-eg
-36. Egypt VAT for nonresident digital services — EY — 2023 — https://www.ey.com/en_gl/technical/tax-alerts/egypt-introduces-vat-guidelines-for-nonresident-providers-of-rem
-37. Egypt FX controls — Grey — accessed 2026-05 — https://grey.co/blog/what-egypts-currency-controls-mean-for-international-payments
-38. ITIDA agency overview — ITIDA Egypt — 2026 — https://itida.gov.eg/
-39. NTRA Telefoni app new payment methods — NTRA Egypt — 2025 — https://www.tra.gov.eg/en/national-telecommunications-regulatory-authority-ntra-introduces-new-payment-methods-via-telefoni-app/
-40. Jumia Egypt e-commerce site — Jumia — 2026 — https://www.jumia.com.eg/
-41. Noon Egypt e-commerce site — Noon — 2026 — https://www.noon.com/egypt-en/
-42. inDrive Egypt Fawry top-up help — inDrive — 2026 — https://indrive.com/en-eg/help/drivers/how-to-top-up-your-indrive-account
+- Fawry FY2025 results — Zawya, 2025-09 — https://www.zawya.com/en/press-release/companies-news/fawry-releases-fy2025-results-qwuzfh7k
+- Fawry × Contact JV — Fawry, 2025-03-19 — https://www.fawry.com/2025/03/19/fawry-and-contact-join-forces-to-transform-egypts-e-payment-system/
+- FawryPay Documentation — Fawry, 2026-05 — https://developer.fawrystaging.com/
+- Fawry public Postman — Fawry, 2026-05 — https://www.postman.com/fawryapi/workspace/fawry-api-docs-s-public-workspace/
+- fawry-api/fawry PHP library — GitHub, 2026-05 — https://github.com/fawry-api/fawry
+- Nafezly/payments PHP library — GitHub, 2026-05 — https://github.com/Nafezly/payments
+- fawry_sdk Flutter — pub.dev, 2026-05 — https://pub.dev/packages/fawry_sdk
+- Fawry Pay FAQ — Flutterwave, 2025 — https://flutterwave.com/gh/support/payments/fawry-pay-faq-egypt
+- Akurateco Fawry analysis — 2024 — https://akurateco.com/payment-methods/fawry
+- EBANX Fawry integration — 2025 — https://docs.ebanx.com/docs/payments/guides/accept-payments/api/egypt/fawry/
+- WHMCS Fawry plugin (Egyptian-only merchant note) — 2024 — https://marketplace.whmcs.com/product/5540-fawry-for-whmcs
+- Paymob Developer Portal — 2026-05 — https://developers.paymob.com/
+- Paymob webhook/HMAC docs — 2026-05 — https://developers.paymob.com/paymob-docs/developers/webhook-callbacks-and-hmac
+- Paymob mobile-wallets docs — 2026-05 — https://docs.paymob.com/docs/mobile-wallets
+- Paymob pricing — 2026-05 — https://www.paymob.com/en/pricing
+- Paymob e-commerce plugins — 2026-05 — https://developers.paymob.com/egypt/e-commerce-plugins
+- PaymobAccept/paymob-php — GitHub, 2026-05 — https://github.com/PaymobAccept/paymob-php
+- Bilixe Paymob review — 2025 — https://bilixe.com/listing/paymob-payment-gateway/
+- Paymob UAE RPS license — Disrupt Africa, 2025-01-31 — https://disruptafrica.com/2025/01/31/egypts-paymob-secures-uae-central-bank-retail-payment-services-licence/
+- Vodafone Cash market share Q2 2025 — Daily News Egypt, 2025-09-13 — https://www.dailynewsegypt.com/2025/09/13/mobile-wallet-transactions-in-egypt-surge-72-in-q2-2025-to-egp-943-4bn/
+- Mobile wallet market share — Statista, 2025 — https://www.statista.com/statistics/1624013/market-share-of-leading-mobile-wallets-in-egypt/
+- Egypt digital payments surge — IBS Intelligence, 2025-09 — https://ibsintelligence.com/ibsi-news/digital-payments-in-egypt-reach-19-63bn-as-wallets-soar/
+- EBC IPN page — 2026 — https://www.egyptianbanks.com/instant-payment-network/
+- CBE Instant Payment Network — 2026 — https://www.cbe.org.eg/en/payment-systems-and-services/instant-payment-network
+- Evolution of IPN — CBPN, 2025-05-23 — https://cbpn.currencyresearch.com/blog/2025/05/23/the-evolution-of-the-instant-payment-network-ipn-in-egypt-the-success-story-of-instapay
+- Egypt Instant Payments — Lightspark, 2026 — https://www.lightspark.com/knowledge/egypt-instant-payments
+- InstaPay Q&A — 2026 — https://www.instapay.eg/?page_id=348&lang=en
+- Inside Egypt's InstaPay Economy — Egyptian Streets, 2026-01-04 — https://egyptianstreets.com/2026/01/04/inside-egypts-instapay-economy-how-instant-payments-are-changing-access-for-a-new-generation/
+- CBE QR feature — EgyptToday, 2024 — https://www.egypttoday.com/Article/3/132704/CBE-enhances-InstaPay-with-QR-Code-feature-for-Instant-Payments
+- Bank ABC InstaPay — 2026 — https://www.bank-abc.com/en/CountrySites/Egypt/Ways-to-our-Bank/Pages/InstaPay.aspx
+- CBE PSO/PSP licensing rules — 2025-06-19 — https://www.cbe.org.eg/en/news-publications/news/2025/06/19/08/20/psos-and-psps-licensing-rules
+- Shehata Law on CBE licensing — 2025 — https://shehatalaw.com/law-update/the-central-bank-of-egypt-issues-new-licensing-regulations-for-payment-system-operators-and-service-providers/
+- CBE new licensing framework — Daily News Egypt, 2025-06-21 — https://www.dailynewsegypt.com/2025/06/21/cbe-issues-new-licensing-framework-for-electronic-payment-service-providers/
+- Merchant of Record in Egypt — Dodo Payments, 2026 — https://dodopayments.com/blogs/merchant-of-record-in-egypt
+- Accepting Payments in Egypt — PayAtlas, 2026 — https://payatlas.com/countries/egypt-eg
+- Egypt VAT for nonresident digital services — EY, 2023 — https://www.ey.com/en_gl/technical/tax-alerts/egypt-introduces-vat-guidelines-for-nonresident-providers-of-rem
+- Egypt FX controls — Grey, 2026-05 — https://grey.co/blog/what-egypts-currency-controls-mean-for-international-payments
+- ITIDA — 2026 — https://itida.gov.eg/
+- NTRA Telefoni — 2025 — https://www.tra.gov.eg/en/national-telecommunications-regulatory-authority-ntra-introduces-new-payment-methods-via-telefoni-app/
+- Jumia Egypt — 2026 — https://www.jumia.com.eg/
+- Noon Egypt — 2026 — https://www.noon.com/egypt-en/
+- inDrive Egypt Fawry top-up — 2026 — https://indrive.com/en-eg/help/drivers/how-to-top-up-your-indrive-account

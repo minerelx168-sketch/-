@@ -175,98 +175,96 @@ Insufficient-balance number: 01823074817; Debit-block number: 01823074818
 
 ## 11. Known Failure Modes
 
-Compiled from Bangladeshi developer community reports (Facebook PHP groups, GitHub issue threads on community SDKs, dev blog post-mortems):
+Compiled from Bangladeshi developer community reports (Facebook PHP groups, GitHub issues on community SDKs, dev blog post-mortems):
 
-1. **Token expiry mid-payment** — `id_token` expires 1 hour after grant; long-running checkout sessions fail with `Invalid Token`. **Mitigation**: refresh proactively at 50 minutes, or grant fresh token on every `payment/create`.
-2. **Status-of-truth ambiguity after timeout** — if `payment/execute` times out (no response in 30s), the payment may have succeeded on bKash's side. Naive retry double-charges. **Mitigation**: never retry `execute` blindly; instead call `payment/status` with the `paymentID` and trust that as source of truth. This is the most common production bug.
-3. **Webhook ordering** — IPN can arrive **before** the synchronous `execute` response in rare cases. **Mitigation**: idempotent state machine keyed on `paymentID`; webhook handler and execute handler converge to the same DB row.
-4. **CORS in development** — devs forget that sandbox blocks CORS, try to call from React/Vue dev server, get cryptic network errors. **Mitigation**: always proxy through PHP backend (matches imeihub's stack anyway).
-5. **Webhook subscription drift** — if the merchant URL changes (domain migration, path change), bKash silently stops delivering IPNs until re-subscribed. **Mitigation**: monitor webhook delivery rate; alert on >5 min gap during business hours.
-6. **OTP delivery failures on Robi/Banglalink during peak hours** — bKash's OTP SMS sometimes lags 60–90 seconds. **Mitigation for tokenized flow**: prefer Agreement-based payments which skip OTP after first transaction.
-7. **Refund timing** — refunds via API can take **24–72 hours** to reflect in the customer's bKash wallet despite immediate success response. Customer-support tickets common. **Mitigation**: set explicit refund-timeline expectations in the UI.
-8. **Sandbox vs production parity gaps** — some error codes (network-level failures, partial settlements) cannot be reproduced in sandbox. **Mitigation**: run a controlled production canary phase before broad launch.
-9. **HMAC verification mismatches** — JCS canonicalisation is strict; many community webhook listeners get this wrong and reject valid signatures. **Mitigation**: use a tested JCS implementation, log raw payload + computed hash side-by-side during initial deploy.
-10. **Settlement report manual download** — Merchant Portal settlement reports must be fetched by manual login; no documented Reports API. Plan for a scraping/CSV ingest pipeline if you want automated reconciliation.
+1. **Token expiry mid-payment** — `id_token` 1h TTL; long checkout sessions fail with `Invalid Token`. *Mitigation*: refresh at 50 min or grant fresh on every `payment/create`.
+2. **Status-of-truth ambiguity after timeout** — if `payment/execute` times out the payment may already have succeeded. Naive retry double-charges. *Mitigation*: never retry `execute` blindly — call `payment/status` and trust it. Most common production bug.
+3. **Webhook ordering** — IPN can arrive **before** the synchronous `execute` response. *Mitigation*: idempotent state machine keyed on `paymentID`.
+4. **CORS in dev** — sandbox blocks CORS; dev-server calls fail cryptically. *Mitigation*: always proxy through PHP backend (matches imeihub's stack).
+5. **Webhook subscription drift** — if the URL changes, bKash silently stops delivering IPNs until re-subscribed. *Mitigation*: monitor delivery rate, alert on >5 min gap during business hours.
+6. **OTP delivery lag on Robi/Banglalink** during peak hours (60–90s delays). *Mitigation*: prefer Agreement-based tokenized flow which skips OTP after first txn.
+7. **Refund visibility lag** — API refunds can take **24–72h** to show in customer's wallet despite immediate success response. *Mitigation*: set UI expectations.
+8. **Sandbox/production parity gaps** — some network-error codes and partial-settlement scenarios are not reproducible in sandbox. *Mitigation*: production canary before broad launch.
+9. **HMAC/JCS mismatch** — JCS canonicalisation is strict; many community listeners reject valid signatures. *Mitigation*: use a tested JCS implementation, log raw payload + computed hash during initial deploy.
+10. **No Reports API** — Merchant Portal settlement reports require manual login. *Mitigation*: plan a scraping/CSV pipeline for automated reconciliation.
 
 ---
 
 ## 12. Competitor Sites Using bKash for Digital Service Payments
 
-Bangladesh's digital-service market is dominated by super-apps that all expose bKash. Three examples relevant to imeihub:
+1. **Pathao** (ride-hail + food + parcel + Pathao Pay) — embeds the bKash popup inline. After a ride, user taps "Digital Payment → bKash", PIN-only confirm inside WebView, fare settles to Pathao. Tokenized Checkout with Agreement-based repeat billing. [bKash press, 2018](https://www.bkash.com/node/2772), [The Financial Express, 2018-12-03](https://thefinancialexpress.com.bd/trade/pathao-to-accept-bkash-payment-1543841907).
+2. **Foodpanda Bangladesh** — multi-rail checkout (bKash + Nagad + Upay + Rocket + COD). Tokenized Checkout so repeat orders skip OTP; single-tap bKash is the urban default. [Beyond Bracket — Top 50 E-commerce, 2026](https://beyondbracket.com/e-commerce-sites-in-bangladesh/).
+3. **Pickaboo** (electronics e-commerce) — bKash + Nagad + COD + Visa/MC/Amex + EMI. Uses standard URL-based Checkout with cashback campaigns pushing customers toward bKash. [The Daily Star — Pickaboo, 2023](https://www.thedailystar.net/supplements/accelerating-bangladesh/news/pickaboo-delivering-convenience-your-doorstep-3263106).
 
-1. **Pathao** (ride-hailing + food + parcel + Pathao Pay) — embeds the bKash popup inline. After completing a ride, user taps "Digital Payment → bKash" in the app, a secured bKash Payment Page renders inside the WebView, customer enters PIN, payment confirms, fare settles to Pathao. Standard tokenized-checkout flow with Agreement-based repeat billing. [bKash press release, 2018](https://www.bkash.com/node/2772), [The Financial Express, 2018-12-03](https://thefinancialexpress.com.bd/trade/pathao-to-accept-bkash-payment-1543841907).
+Aligned to imeihub's micro-charge model: **Shohoz** bus-ticket "Pay with bKash + 10% cashback" [Shohoz blog](https://blog.shohoz.com/tag/pay-with-bkash/) and **Chaldal** grocery — both prove bKash works for low-ticket (BDT 100–500) repeat purchases.
 
-2. **Foodpanda Bangladesh** — multi-rail checkout listing bKash alongside Nagad, Upay, Rocket, and COD. Foodpanda uses a tokenized-checkout integration so repeat orders skip the OTP step. Single-tap "Pay with bKash" is the de-facto default for urban customers. [Beyond Bracket — Top 50 E-commerce, 2026](https://beyondbracket.com/e-commerce-sites-in-bangladesh/).
-
-3. **Pickaboo** (electronics + mobile e-commerce) — exposes bKash, Nagad, COD, card (Visa/MC/Amex), and EMI on its checkout. Pickaboo publishes a "decent digital transaction rate" and actively pushes customers toward bKash with cashback campaigns. Standard URL-based Checkout flow with bKash-hosted page. [The Daily Star — Pickaboo profile, 2023](https://www.thedailystar.net/supplements/accelerating-bangladesh/news/pickaboo-delivering-convenience-your-doorstep-3263106).
-
-Bonus references with similar small-ticket flow more aligned to imeihub's micro-charge model: **Shohoz** bus-ticket "Pay with bKash + 10% cashback" promotion [Shohoz blog](https://blog.shohoz.com/tag/pay-with-bkash/) and **Chaldal** grocery delivery [Beyond Bracket, 2026](https://beyondbracket.com/e-commerce-sites-in-bangladesh/) — both demonstrate that bKash works fine for low-ticket (BDT 100–500) recurring purchases.
-
-Notably absent from this list: a clean example of a **non-Bangladesh-incorporated** digital service running direct bKash. All three competitors above are Bangladeshi entities. Foreign-incorporated services routinely use SSLCOMMERZ as the aggregator wrapper rather than direct bKash.
+**Notably absent**: a clean example of a **non-Bangladesh-incorporated** service running direct bKash. All three above are Bangladeshi entities. Foreign-incorporated services route via SSLCOMMERZ.
 
 ---
 
 ## 13. Recommendation: **DEPENDS** — on imeihub's incorporation status
 
-**Verdict**: **DEPENDS** — leaning toward "DO INTEGRATE, BUT VIA SSLCOMMERZ AGGREGATOR" rather than direct bKash PGW.
+**Verdict**: **DEPENDS** — leaning "DO INTEGRATE, BUT VIA SSLCOMMERZ AGGREGATOR" rather than direct bKash PGW.
 
-Three-bullet rationale:
+- **Conversion**: bKash is the single highest-leverage payment method for BD traffic. Stripe converts in the single digits; ticket economics work at ~1.8% MDR with a BDT 1 minimum. **Strong YES on offering bKash to BD users.**
+- **Direct PGW blocked by incorporation**: bKash settles only to BD bank accounts held by BD-registered entities. If imeihub is incorporated outside Bangladesh, the realistic 2026 path is **SSLCOMMERZ** (PSO-licensed, international-merchant onboarding, bKash + Nagad + Rocket + cards behind one API, 2.5% standard, negotiable) — trading ~70 bps for simpler onboarding and FX-conversion to a foreign bank.
+- **Operational cost**: no official PHP SDK, manual webhook subscription, manual portal logins for settlement, finicky JCS/HMAC, 2–6 week sales-driven onboarding with no SLA. For a micro-charge service, the engineering cost of *direct* bKash is hard to justify vs SSLCOMMERZ.
 
-- **Conversion case is overwhelming**: bKash is the *single* highest-leverage payment method for Bangladesh traffic. Bangladeshi visitors largely don't hold cards; Stripe (card + PromptPay) converts in the single-digit percentages there. Adding bKash to the imeihub checkout is the highest-ROI payment change available for Phase 2. The ticket-size economics work — at ~1.8% MDR with a documented BDT 1 minimum (~USD 0.0085), even $0.01 micro-charges are technically priced sanely. **Strong YES on offering bKash to BD users.**
-
-- **Direct bKash PGW is blocked by incorporation**: bKash settles only to a Bangladesh scheduled-bank account held by a BD-registered entity with trade licence, e-TIN, VAT (BIN), and Bank Solvency Certificate. If imeihub is incorporated outside Bangladesh (which the Stripe-based current stack implies), it cannot get a direct PGW agreement. The realistic 2026 path for a foreign-incorporated micro-charge SaaS is **SSLCOMMERZ aggregator** (PSO-licensed, supports international merchants, exposes bKash + Nagad + Rocket + cards behind one API, 2.5% standard MDR but negotiable). This trades ~0.5–0.7pp of extra fee for vastly simpler onboarding and FX-conversion settlement to a foreign bank account.
-
-- **Operational complexity is non-trivial for a small team**: official PHP SDK is non-existent (only a 2023 demo backend); webhook subscription is manual and gated by the bKash tech team; settlement reports require manual portal logins; the IPN signature scheme requires correct JCS implementation; and direct sales-team-driven onboarding takes 2–6 weeks with no SLA. For a free + micro-charge service, the engineering cost of *direct* bKash integration is hard to justify versus letting SSLCOMMERZ absorb that complexity for an extra ~70 bps.
-
-**Phase 2 action**: write a parallel `PR-SSLCOMMERZ-01` note before deciding final integration architecture, then build against SSLCOMMERZ with bKash as the visible payment-method brand at checkout.
+**Phase 2 action**: write a parallel `PR-SSLCOMMERZ-01` note before locking the architecture, then build against SSLCOMMERZ with bKash as the visible payment brand at checkout.
 
 ---
 
 ## 14. Biggest Unknown
 
-**If resolved, would flip recommendation either direction**:
+> **Can SSLCOMMERZ (or a comparable aggregator) settle in USD to a foreign bank account of a non-Bangladeshi entity, on T+? days, with the effective MDR after FX conversion documented in writing?**
 
-> **Can SSLCOMMERZ (or a comparable aggregator) settle in USD to a foreign bank account of a non-Bangladeshi entity, on T+? days, with the exact effective MDR after FX conversion documented in writing?**
-
-This is the load-bearing assumption of the §13 recommendation. If SSLCOMMERZ in fact requires a BD bank account (some merchant-aggregator pages hint at this in fine print), then *no* viable path exists short of incorporating a Bangladesh entity — at which point the integration question becomes a corporate-structure question first. Conversely, if SSLCOMMERZ delivers clean USD settlement at <2.5% effective, the recommendation hardens to a confident YES on day-one Phase 2 prioritisation.
-
-This question should be the first item on the Phase 2 kickoff agenda with SSLCOMMERZ sales.
+This is the load-bearing assumption of §13. If SSLCOMMERZ in fact requires a BD bank account (some pages hint at this in fine print), *no* viable path exists short of incorporating a BD entity — at which point this becomes a corporate-structure question first. If SSLCOMMERZ delivers clean USD settlement at <2.5% effective, the recommendation hardens to a confident YES. First item for the Phase 2 kickoff agenda.
 
 ---
 
 ## Sources
 
-- [bKash Developer Portal (Beta)](https://developer.bka.sh/) — official API documentation entry point (gated, 403 to non-browser clients at time of writing).
-- [bKash Merchant Page](https://www.bkash.com/en/business/merchant) — merchant onboarding overview (accessed 2026-05-28).
-- [bKash Supplier Portal — Required Documents](https://scp.bkash.com/registration-required-document) — KYC document list.
-- [bKash Contact](https://www.bkash.com/en/help/contact-us) — merchant sales contact channels.
-- [bKash Tokenized Checkout product page](https://www.bkash.com/en/page/tokenized_checkout) — product overview.
-- [bKash Personal Retail Account](https://www.bkash.com/en/page/personal-retail-account) — PRA tier limits (BDT 999 offline / BDT 2,000 online).
-- [bKash Limits page](https://www.bkash.com/en/help/limits) — public charge calculator and limits.
-- [TOKENIZED CHECKOUT API Integration Guide v 0.3 — bKash S3 PDF](https://s3-ap-southeast-1.amazonaws.com/developer.pay.bka.sh/Tokenized+Checkout+-+API+Integration+Guide.pdf) — official integration guide.
-- [bKash Merchant Portal — settlement reports](https://merchantportal.bkash.com/) — merchant portal entry point.
-- [bKash-developer GitHub organisation](https://github.com/bKash-developer) — official sample code repos (webhook-endpoint-php, pgw-merchant-backend-php, bKash-for-woocommerce, demo Android/iOS).
-- [bKash press: Pathao integration, 2018](https://www.bkash.com/node/2772) — competitor reference.
-- [The Financial Express — Pathao to accept bKash, 2018-12-03](https://thefinancialexpress.com.bd/trade/pathao-to-accept-bkash-payment-1543841907) — competitor reference.
-- [The Business Standard — MFS market flourishes, transactions surge to Tk 3.84 lakh crore, 2025-02-12](https://www.tbsnews.net/economy/banking/mfs-market-flourishes-transactions-surge-tk384-lakh-crore-2024-1072141) — 2024 industry numbers.
-- [Future Startup — State of MFS in Bangladesh, 2025-05-06](https://futurestartup.com/2025/05/06/the-state-of-mobile-financial-services-mfs-industry-in-bangladesh/) — bKash user count, profit, market share.
-- [Bangladesh Bank — MFS data](https://www.bb.org.bd/en/index.php/financialactivity/mfsdata) — regulator-published MFS statistics.
-- [Bangladesh Bank — Foreign Exchange Transaction Guidelines, Vol 1](https://www.bb.org.bd/aboutus/regulationguideline/foreignexchange/fegv1cont.php) — cross-border regulation context.
-- [Bangladesh Bank — PSO/PSP Approval Procedure (2019 PDF)](https://www.bb.org.bd/aboutus/regulationguideline/psd/pso_psp_03022019.pdf) — licensing framework.
-- [LegalSeba — Fintech licensing in Bangladesh (MFS / Digital Bank / PSP / PSO)](https://legalseba.com/bd-licenses/ultimate-guide-to-fintech-licensing-in-bangladesh-mfs-digital-bank-psp-pso/) — regulatory commentary.
-- [Moneybag — Gateway Fees Breakdown: bKash vs Cards, 2026](https://moneybag.com.bd/gateway-fees-breakdown-bkash-vs-cards/) — fee data 2026.
-- [Moneybag — 10 Best Payment Gateways in Bangladesh](https://moneybag.com.bd/10-best-payment-gateways-in-bangladesh/) — gateway comparison.
-- [Financfy — Best Payment Gateway in Bangladesh, 2026](https://financfy.com/blog/payment-gateway-in-bangladesh/) — SSLCOMMERZ vs direct comparison.
-- [BanglaCyber — Payment gateway options in Bangladesh](https://www.banglacyber.com/payment-gateway-options-in-bangladesh/) — overview article.
-- [Geekssort — Payment Gateway Integration for Bangladeshi Businesses 2026](https://geekssort.com/payment-gateway-integration-bangladesh-2026/) — 2026 integration guide.
-- [paymentgateways.org — bKash Merchant Account review](https://paymentgateways.org/payment/bkash) — third-party merchant review.
-- [SSLCOMMERZ](https://sslcommerz.com/) — Bangladesh PSO-licensed aggregator (recommended fallback for foreign merchants).
-- [Ria Money Transfer — bKash inbound transfers](https://www.riamoneytransfer.com/en-us/send-money-to-bkash/) — cross-border BDT-only confirmation.
-- [arman.bd — bKash API login guide, 2024](https://arman.bd/bkash-api-login-guide/) — developer-onboarding commentary.
-- [onecodesoft — bKash Sandbox Credentials for Payment Gateway Testing](https://onecodesoft.com/blogs/bkash-sandbox-credentials-for-payment-gateway-testing) — public sandbox credentials reference.
-- [rahulhaque/bKash-payment-gateway-web-demo](https://github.com/rahulhaque/bKash-payment-gateway-web-demo) — community integration demo (endpoints, auth flow, CORS warning).
-- [HackMD — bKash Webhook API documentation](https://hackmd.io/gH3NRGHvTgCTlkBul17BdQ) — community summary of HMAC-SHA256 + JCS signing.
-- [bKash-developer/webhook-endpoint-php](https://github.com/bKash-developer/webhook-endpoint-php) — official PHP webhook listener sample.
-- [Beyond Bracket — Top 50 E-commerce Sites in Bangladesh 2026](https://beyondbracket.com/e-commerce-sites-in-bangladesh/) — competitor inventory.
-- [The Daily Star — Pickaboo profile, 2023](https://www.thedailystar.net/supplements/accelerating-bangladesh/news/pickaboo-delivering-convenience-your-doorstep-3263106) — Pickaboo case context.
-- [Shohoz blog — Pay with bKash](https://blog.shohoz.com/tag/pay-with-bkash/) — competitor reference.
+**Official bKash**
+- [bKash Developer Portal (Beta)](https://developer.bka.sh/)
+- [bKash Merchant page](https://www.bkash.com/en/business/merchant)
+- [bKash Supplier — Required Documents](https://scp.bkash.com/registration-required-document)
+- [bKash Contact](https://www.bkash.com/en/help/contact-us)
+- [bKash Tokenized Checkout](https://www.bkash.com/en/page/tokenized_checkout)
+- [bKash Personal Retail Account](https://www.bkash.com/en/page/personal-retail-account)
+- [bKash Limits](https://www.bkash.com/en/help/limits)
+- [Tokenized Checkout API Integration Guide v0.3 (PDF)](https://s3-ap-southeast-1.amazonaws.com/developer.pay.bka.sh/Tokenized+Checkout+-+API+Integration+Guide.pdf)
+- [bKash Merchant Portal](https://merchantportal.bkash.com/)
+- [bKash-developer GitHub organisation](https://github.com/bKash-developer)
+- [bKash-developer/webhook-endpoint-php](https://github.com/bKash-developer/webhook-endpoint-php)
+- [bKash press: Pathao integration, 2018](https://www.bkash.com/node/2772)
+
+**Regulator & policy**
+- [Bangladesh Bank — MFS data](https://www.bb.org.bd/en/index.php/financialactivity/mfsdata)
+- [Bangladesh Bank — Foreign Exchange Guidelines Vol 1](https://www.bb.org.bd/aboutus/regulationguideline/foreignexchange/fegv1cont.php)
+- [Bangladesh Bank — PSO/PSP Approval Procedure, 2019 PDF](https://www.bb.org.bd/aboutus/regulationguideline/psd/pso_psp_03022019.pdf)
+- [LegalSeba — Fintech licensing in Bangladesh](https://legalseba.com/bd-licenses/ultimate-guide-to-fintech-licensing-in-bangladesh-mfs-digital-bank-psp-pso/)
+
+**Market & industry**
+- [The Financial Express — Pathao to accept bKash, 2018-12-03](https://thefinancialexpress.com.bd/trade/pathao-to-accept-bkash-payment-1543841907)
+- [The Business Standard — MFS market flourishes, 2025-02-12](https://www.tbsnews.net/economy/banking/mfs-market-flourishes-transactions-surge-tk384-lakh-crore-2024-1072141)
+- [Future Startup — State of MFS in Bangladesh, 2025-05-06](https://futurestartup.com/2025/05/06/the-state-of-mobile-financial-services-mfs-industry-in-bangladesh/)
+- [Ria — bKash inbound transfers](https://www.riamoneytransfer.com/en-us/send-money-to-bkash/)
+
+**Gateway comparisons & fees (2026)**
+- [Moneybag — Gateway Fees Breakdown: bKash vs Cards](https://moneybag.com.bd/gateway-fees-breakdown-bkash-vs-cards/)
+- [Moneybag — 10 Best Payment Gateways in Bangladesh](https://moneybag.com.bd/10-best-payment-gateways-in-bangladesh/)
+- [Financfy — Best Payment Gateway in Bangladesh 2026](https://financfy.com/blog/payment-gateway-in-bangladesh/)
+- [Geekssort — Payment Gateway Integration for Bangladeshi Businesses 2026](https://geekssort.com/payment-gateway-integration-bangladesh-2026/)
+- [paymentgateways.org — bKash Merchant Account review](https://paymentgateways.org/payment/bkash)
+- [SSLCOMMERZ](https://sslcommerz.com/)
+
+**Developer references**
+- [arman.bd — bKash API login guide, 2024](https://arman.bd/bkash-api-login-guide/)
+- [onecodesoft — Sandbox credentials](https://onecodesoft.com/blogs/bkash-sandbox-credentials-for-payment-gateway-testing)
+- [rahulhaque/bKash-payment-gateway-web-demo](https://github.com/rahulhaque/bKash-payment-gateway-web-demo)
+- [HackMD — bKash Webhook API summary](https://hackmd.io/gH3NRGHvTgCTlkBul17BdQ)
+
+**Competitor references**
+- [Beyond Bracket — Top 50 E-commerce in Bangladesh 2026](https://beyondbracket.com/e-commerce-sites-in-bangladesh/)
+- [The Daily Star — Pickaboo profile, 2023](https://www.thedailystar.net/supplements/accelerating-bangladesh/news/pickaboo-delivering-convenience-your-doorstep-3263106)
+- [Shohoz — Pay with bKash](https://blog.shohoz.com/tag/pay-with-bkash/)

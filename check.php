@@ -250,9 +250,13 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
         var secs = requestStartedAt ? ((Date.now() - requestStartedAt) / 1000).toFixed(1) : null;
         var dateStr = new Date().toLocaleString('en-US', {month:'short',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}).toUpperCase();
         var blWarn = data.blacklist ? '<div class="bl-inline">&#9888; This IMEI was reported ' + (data.blacklist.reports || 1) + ' time(s) as blacklisted &mdash; proceed with caution.</div>' : '';
+        // Free lookups don't include the community blacklist alert (paid feature).
+        var freeNote = data.free
+            ? '<div class="result-free-note"><strong>&#8505; Heads up:</strong> Community blacklist alerts are not included with free lookups. Pick a paid service above to see if this IMEI has been reported as lost / stolen / outstanding debt.</div>'
+            : '';
         lastReport = { data: data, imei: (imei.value.replace(/\D+/g, '') || 'report'), secs: secs, dateStr: dateStr };
         renderStatus('success', 'Order Processed!', blWarn +
-            '<div class="result-lines">' + lines + '</div>' +
+            '<div class="result-lines">' + lines + '</div>' + freeNote +
             '<div class="result-chips">' +
               '<span class="result-chip">' + (secs !== null ? escapeHtml(secs) + ' SECONDS' : 'COMPLETED') + '</span>' +
               '<span class="result-chip">' + escapeHtml(dateStr) + '</span>' +

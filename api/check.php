@@ -46,12 +46,12 @@ if ($cached) {
     respond(200, [
         'ok'        => true,
         'cached'    => true,
+        'free'      => true,
         'imei'      => $imei,
         'tac'       => $cached['tac'],
         'brand'     => $cached['brand'],
         'model'     => $cached['model'],
         'details'   => is_array($details) ? ($details['details'] ?? []) : [],
-        'blacklist' => blacklist_status($imei),
     ]);
 }
 
@@ -72,10 +72,10 @@ lookup_save([
 respond(200, [
     'ok'        => true,
     'cached'    => false,
+    'free'      => true,
     'imei'      => $imei,
     'tac'       => imei_tac($imei),
     'brand'     => $result['brand'],
     'model'     => $result['model'],
     'details'   => $result['details'],
-    'blacklist' => blacklist_status($imei),
 ]);

@@ -544,6 +544,23 @@ a:hover { color: var(--primary-600); }
     .result-chip { padding: 8px 12px; font-size: .72rem; }
 }
 
+/* Inline note shown on FREE lookup results explaining that the community
+   blacklist alert is paid-only. Keeps absence-of-alert from reading as
+   "this IMEI is clean". */
+.result-free-note {
+    margin: 16px 0 0;
+    padding: 12px 16px;
+    background: #f0f4ff;
+    border: 1px solid #c7d2fe;
+    border-radius: 10px;
+    color: #3730a3;
+    font-size: .82rem;
+    line-height: 1.5;
+    text-align: left;
+}
+.result-free-note strong { color: #312e81; }
+.result-free-note a { color: #4f46e5; text-decoration: underline; font-weight: 600; }
+
 /* Save / share the result as an image (small icon buttons under the card). */
 .result-actions {
     display: flex;

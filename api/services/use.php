@@ -165,7 +165,8 @@ if ($status === 'processing') {
         'tac'               => imei_tac($imei),
         'cost'              => $cost,
         'provider_order_id' => $result['provider_order_id'] ?? null,
-        'blacklist'         => blacklist_status($imei),
+        // Community blacklist alerts are a paid feature; suppress for free services.
+        'blacklist'         => $cost > 0 ? blacklist_status($imei) : null,
         // Suggested next-poll delay in seconds. The provider documents
         // 1-5 min turnaround so we use a wide initial gap; main.js
         // backs off further if /status.php returns processing again.
@@ -198,9 +199,11 @@ echo json_encode([
     'imei'            => $imei,
     'tac'             => imei_tac($imei),
     'cost'            => $cost,
+    'free'            => $cost <= 0,
     'brand'           => $result['brand'],
     'model'           => $result['model'],
     'details'         => $curated ? service_filter_details($code, (array) $result['details']) : $result['details'],
     'details_curated' => $curated,
-    'blacklist'       => blacklist_status($imei),
+    // Community blacklist alerts are a paid feature; suppress for free services.
+    'blacklist'       => $cost > 0 ? blacklist_status($imei) : null,
 ]);

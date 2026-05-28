@@ -235,7 +235,16 @@
             ? '<div class="bl-inline">&#9888; This IMEI was reported ' + (data.blacklist.reports || 1) +
               ' time(s) as blacklisted &mdash; proceed with caution.</div>'
             : '';
-        var inner = blWarn + '<div class="result-lines">' + lines + '</div>' +
+        // Free lookups never include the community blacklist alert (it is a
+        // paid-only feature). Tell the user explicitly so a missing alert
+        // doesn't read as "this IMEI is clean".
+        var freeNote = data.free
+            ? '<div class="result-free-note"><strong>&#8505; Heads up:</strong> ' +
+              'Community blacklist alerts are not included with free lookups. ' +
+              'To check whether this IMEI has been reported as lost / stolen / outstanding debt, ' +
+              '<a href="/check.php">run a paid service</a>.</div>'
+            : '';
+        var inner = blWarn + '<div class="result-lines">' + lines + '</div>' + freeNote +
             '<div class="result-chips">' +
               '<span class="result-chip">' + (secs !== null ? escapeHtml(secs) + ' SECONDS' : 'COMPLETED') + '</span>' +
               '<span class="result-chip">' + escapeHtml(dateStr) + '</span>' +

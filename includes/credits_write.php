@@ -92,7 +92,7 @@ function credits_create_topup_order(
     if (!preg_match('/^\d+(\.\d{1,2})?$/', $amount) || (float) $amount <= 0) {
         throw new RuntimeException('Invalid top-up amount.');
     }
-    if (!in_array($provider, ['stripe', 'paypal', 'binancepay'], true)) {
+    if (!in_array($provider, ['stripe', 'paypal', 'binancepay', 'crypto-trc20', 'crypto-bep20'], true)) {
         throw new RuntimeException('Unknown payment provider: ' . $provider);
     }
 
@@ -247,6 +247,12 @@ function credits_provider_meta(string $provider): array
                 $cache[$p] = [(string) ($m['label'] ?? ucfirst($p)), (float) ($m['bonus_pct'] ?? 0)];
             }
         }
+    }
+    // Crypto orders store the chain in the provider value (crypto-trc20 /
+    // crypto-bep20); render that as "USDT TRC20" / "USDT BEP-20" in the
+    // ledger description so the history reads cleanly.
+    if (strncmp($provider, 'crypto-', 7) === 0) {
+        return ['USDT ' . strtoupper(substr($provider, 7)), 0.0];
     }
     return $cache[$provider] ?? [ucfirst($provider), 0.0];
 }

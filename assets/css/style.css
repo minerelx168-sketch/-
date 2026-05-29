@@ -544,6 +544,104 @@ a:hover { color: var(--primary-600); }
     .result-chip { padding: 8px 12px; font-size: .72rem; }
 }
 
+/* Crypto top-up page (topup/crypto.php): address panels + verify form. */
+.crypto-card {
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 16px;
+    padding: 28px 28px 30px;
+    margin-top: 22px;
+    box-shadow: 0 6px 20px rgba(11, 18, 32, .06);
+}
+.crypto-h {
+    font-size: 1.05rem;
+    margin: 0 0 6px;
+    color: var(--text, #0b1220);
+}
+.crypto-h--step2 { margin-top: 26px; }
+.crypto-sub { color: var(--text-soft, #475569); font-size: .92rem; margin: 0 0 18px; line-height: 1.55; }
+.crypto-addr {
+    background: #f6f8fc;
+    border: 1px solid #e5e9f0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+}
+.crypto-addr-h { margin-bottom: 8px; }
+.crypto-chip {
+    display: inline-block;
+    background: #eef2ff;
+    color: #4338ca;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+.crypto-addr-row { display: flex; align-items: center; gap: 10px; }
+.crypto-addr-val {
+    flex: 1; min-width: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .88rem;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: #0b1220;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+.crypto-copy {
+    border: 1px solid #c7d2fe;
+    background: #fff;
+    color: #4f46e5;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: .78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+.crypto-copy:hover { background: #4f46e5; color: #fff; }
+.crypto-form { margin-top: 4px; }
+.crypto-input { display: block; }
+.crypto-input span {
+    display: block;
+    font-weight: 600;
+    color: var(--text-soft, #475569);
+    font-size: .82rem;
+    margin-bottom: 6px;
+}
+.crypto-input input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .9rem;
+    background: #fff;
+    box-sizing: border-box;
+}
+.crypto-input input:focus { outline: 2px solid #c7d2fe; border-color: #818cf8; }
+.crypto-msg {
+    margin: 14px 0 4px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: .88rem;
+    line-height: 1.5;
+}
+.crypto-msg--info  { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e3a8a; }
+.crypto-msg--ok    { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; }
+.crypto-msg--warn  { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+.crypto-msg--error { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; }
+.crypto-msg a { color: inherit; text-decoration: underline; font-weight: 600; }
+@media (max-width: 560px) {
+    .crypto-card { padding: 22px 18px 24px; }
+    .crypto-addr-row { flex-direction: column; align-items: stretch; }
+    .crypto-copy { align-self: flex-end; }
+}
+
 /* Inline note shown on FREE lookup results explaining that the community
    blacklist alert is paid-only. Keeps absence-of-alert from reading as
    "this IMEI is clean". */

@@ -80,6 +80,33 @@ return [
         // Lowering it forces fresher pubkey fetches during dev.
         'cert_ttl'       => (int) env('BINANCE_PAY_CERT_TTL', '300'),
     ],
+    // Direct on-chain crypto top-ups: the user sends USDT to our address, then
+    // pastes the TxID and we verify it via a public blockchain API and credit
+    // the wallet for whatever amount actually landed.
+    'crypto' => [
+        'min_usd' => (float) env('CRYPTO_MIN_USD', '1'),
+        'trc20' => [
+            // The TRON address we want users to send USDT (TRC20) to.
+            'address'           => env('CRYPTO_TRC20_ADDRESS', ''),
+            // USDT TRC20 contract (well-known; do not change).
+            'usdt_contract_hex' => 'a614f803b6fd780986a42c78ec9c7f77e6ded13c',
+            'min_confirmations' => (int) env('CRYPTO_TRC20_MIN_CONFIRMATIONS', '3'),
+            'trongrid_url'      => rtrim((string) env('TRONGRID_URL', 'https://api.trongrid.io'), '/'),
+            // Optional. Empty falls back to the public free tier.
+            'trongrid_key'      => env('TRONGRID_API_KEY', ''),
+        ],
+        'bep20' => [
+            // The BSC address we want users to send USDT/USDC (BEP-20) to.
+            'address'           => env('CRYPTO_BEP20_ADDRESS', ''),
+            // USDT BEP-20 + USDC BEP-20 contracts (well-known).
+            'usdt_contract'     => '0x55d398326f99059ff775485246999027b3197955',
+            'usdc_contract'     => '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+            'min_confirmations' => (int) env('CRYPTO_BEP20_MIN_CONFIRMATIONS', '5'),
+            'bscscan_url'       => rtrim((string) env('BSCSCAN_URL', 'https://api.bscscan.com/api'), '?'),
+            // Free key from https://bscscan.com/apis - required for prod.
+            'bscscan_key'       => env('BSCSCAN_API_KEY', ''),
+        ],
+    ],
     'session' => [
         'lifetime_days' => (int) env('SESSION_LIFETIME_DAYS', '30'),
         'cookie_name'   => env('SESSION_COOKIE_NAME', 'imeihub_sid'),

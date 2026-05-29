@@ -71,9 +71,17 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
                                         <span><span class="pm-meta-k">Max</span>$<?= number_format((float) $m['max_usd'], 0) ?></span>
                                     </div>
                                 </div>
-                                <?php $btnTotal = round(25 * (1 + (float) $m['fee_pct'] / 100), 2); ?>
-                                <button type="button" class="pm-btn" data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>">
-                                    <span class="pm-btn-label">Pay $<?= number_format($btnTotal, 2) ?></span>
+                                <?php
+                                    $btnTotal = round(25 * (1 + (float) $m['fee_pct'] / 100), 2);
+                                    $route    = isset($m['route']) ? (string) $m['route'] : '';
+                                    // Route-based methods (e.g. crypto) skip the amount picker entirely
+                                    // because the credit is whatever the user actually sends on-chain.
+                                    $btnLabel = $route !== '' ? 'Continue' : 'Pay $' . number_format($btnTotal, 2);
+                                ?>
+                                <button type="button" class="pm-btn"
+                                        data-method="<?= htmlspecialchars((string) $m['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                        <?php if ($route !== ''): ?>data-route="<?= htmlspecialchars($route, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>>
+                                    <span class="pm-btn-label"><?= htmlspecialchars($btnLabel, ENT_QUOTES, 'UTF-8') ?></span>
                                     <span class="btn-spinner" aria-hidden="true"></span>
                                 </button>
                             </div>
@@ -113,12 +121,19 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
         }
 
         // Each method's button shows the amount actually billed = credit +
-        // its fee%. Card/PayPal add 5%; Binance Pay adds nothing.
+        // its fee%. Card/PayPal add 5%; Binance Pay adds nothing. Methods
+        // with a data-route (e.g. crypto) have a fixed "Continue" label
+        // because the amount is determined on-chain, not picked here.
         function updateTotals() {
             var amount = selectedAmount();
             form.querySelectorAll('.pm-card').forEach(function (card) {
                 var label = card.querySelector('.pm-btn-label');
-                if (!label) return;
+                var btn   = card.querySelector('.pm-btn');
+                if (!label || !btn) return;
+                if (btn.hasAttribute('data-route')) {
+                    label.textContent = 'Continue';
+                    return;
+                }
                 if (amount && amount >= 1) {
                     var fee = parseFloat(card.getAttribute('data-fee')) || 0;
                     var total = Math.round(amount * (1 + fee / 100) * 100) / 100;
@@ -170,6 +185,15 @@ layout_head('Top up credit · imeihub', 'Add credit to your imeihub wallet via c
             btn.addEventListener('click', function () {
                 clearError();
                 var method = btn.getAttribute('data-method');
+
+                // Route-based methods (crypto) skip amount + create.php and go
+                // straight to a dedicated page that handles its own flow.
+                var route = btn.getAttribute('data-route');
+                if (route) {
+                    window.location.href = route;
+                    return;
+                }
+
                 var amount = selectedAmount();
                 if (!amount || amount < 1 || amount > 3000) {
                     showError('Please choose an amount between $1 and $3,000.');

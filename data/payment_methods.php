@@ -75,4 +75,22 @@ return [
         'enabled'   => true,
         'icon'      => 'M12 2 4 10l8 8 8-8zM4 10l8 8 8-8M12 2v16',
     ],
+    [
+        // Direct on-chain USDT (TRC20 / BEP-20). The button does NOT POST to
+        // create.php; it routes to /topup/crypto.php, which shows the wallet
+        // addresses + a TxID verify form (the amount actually sent on-chain
+        // becomes the credit, so the topup.php amount picker is ignored).
+        'id'        => 'crypto',
+        'label'     => 'Crypto (USDT / USDC)',
+        'provider'  => 'crypto',
+        'currency'  => 'USDT',
+        'fee_pct'   => 0,
+        'min_usd'   => 1,
+        'max_usd'   => 10000,
+        'bonus_pct' => 0,
+        'badges'    => ['TRC20 · BEP-20', 'No fee'],
+        'enabled'   => true,
+        'route'     => '/topup/crypto.php',
+        'icon'      => 'M12 2 4 8v8l8 6 8-6V8zM12 2v20M4 8l8 6 8-6',
+    ],
 ];

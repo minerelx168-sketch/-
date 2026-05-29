@@ -23,7 +23,7 @@ layout_head(
     <section class="articles-list">
         <div class="container">
             <?php foreach ($articles as $a): ?>
-                <a class="article-card" href="/article.php?slug=<?= urlencode($a['slug']) ?>">
+                <a class="article-card" href="/article/<?= urlencode($a['slug']) ?>">
                     <div class="article-card-meta">
                         <span class="pill pill-tag"><?= htmlspecialchars($a['tag'], ENT_QUOTES, 'UTF-8') ?></span>
                         <time><?= htmlspecialchars($a['date'], ENT_QUOTES, 'UTF-8') ?></time>

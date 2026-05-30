@@ -3,9 +3,8 @@ declare(strict_types=1);
 
 header('Content-Type: application/xml; charset=utf-8');
 
-$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$base   = $scheme . '://' . $host;
+// Always use HTTPS for sitemap URLs
+$base = 'https://imeihub.net';
 
 $brands   = require __DIR__ . '/data/brands.php';
 $services = require __DIR__ . '/data/services.php';
@@ -35,11 +34,12 @@ foreach ($brands as $b) {
         'changefreq' => 'monthly',
     ];
 }
+// Use pretty URLs for articles (/article/slug instead of /article.php?slug=)
 foreach ($articles as $a) {
     $urls[] = [
-        'loc'        => $base . '/article.php?slug=' . urlencode($a['slug']),
-        'priority'   => '0.6',
-        'changefreq' => 'monthly',
+        'loc'        => $base . '/article/' . urlencode($a['slug']),
+        'priority'   => '0.7',
+        'changefreq' => 'weekly',
     ];
 }
 

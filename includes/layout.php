@@ -4,12 +4,12 @@ declare(strict_types=1);
 /**
  * Shared header/footer chrome so brand pages and the homepage stay in sync.
  * Use:
- *   layout_head('Page title', 'Optional meta description');
+ *   layout_head('Page title', 'Optional meta description', 'Optional extra head HTML');
  *   // ... page content ...
  *   layout_foot();
  */
 
-function layout_head(string $title, string $description = ''): void
+function layout_head(string $title, string $description = '', string $extraHead = ''): void
 {
     require_once __DIR__ . '/icons.php';
     require_once __DIR__ . '/auth.php';
@@ -41,6 +41,7 @@ function layout_head(string $title, string $description = ''): void
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= $title ?></title>
 <meta name="description" content="<?= $desc ?>">
+<?= $extraHead ?>
 <link rel="icon" href="data:image/svg+xml;charset=utf-8,<?= $favicon ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

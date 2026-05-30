@@ -173,13 +173,13 @@ Run a check instantly:
 
 ## Frequently Asked Questions
 
-**Q: Do I need to declare a phone I already own if I'm just visiting Kenya?**
+**Q: Do I need to declare a phone I already own if I am just visiting Kenya?**
 A: Yes. Even if you have owned the phone for years, if it was purchased outside Kenya, you must declare it on the F88 form when entering the country.
 
 **Q: What if I forget to declare my phone at the airport?**
 A: You can approach the KRA customs desk before leaving the arrivals hall. Voluntary declaration after entry is handled on a case-by-case basis, but it is far better than being caught at a random spot-check inside the country.
 
-**Q: Can Safaricom or Airtel block my phone if it's undeclared?**
+**Q: Can Safaricom or Airtel block my phone if it is undeclared?**
 A: Yes. Under the Communications Authority of Kenya's IMEI management system, unregistered foreign phones can be flagged and blocked by all three major networks within 60 days of arrival.
 
 **Q: Is there a way to check if my phone's IMEI is already in the KRA system?**
@@ -197,7 +197,219 @@ Before you travel to Kenya — or before you buy any second-hand device — run 
 - [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) — Verify brand, model, and basic device info instantly, at no cost
 - [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) — Confirm the phone has not been reported stolen in Kenya or any other country
 
-Staying compliant with KRA's IMEI declaration rules is straightforward when you are prepared. Know your IMEI number, fill in the F88 form honestly, and keep your stamped receipt — and your arrival in Kenya will be smooth and stress-free.
+Staying compliant with KRA IMEI declaration rules is straightforward when you are prepared. Know your IMEI number, fill in the F88 form honestly, and keep your stamped receipt — and your arrival in Kenya will be smooth and stress-free.
+MD,
+    ],
+
+    [
+        'slug'    => 'ceir-gov-mm-imei-check-register-myanmar-guide',
+        'title'   => 'ceir.gov.mm IMEI Check & Register Myanmar 2025',
+        'excerpt' => 'Myanmar CEIR portal lets you check and register your phone IMEI. Avoid network blocking — follow this step-by-step guide to ceir.gov.mm compliance.',
+        'date'    => '2026-05-30',
+        'tag'     => 'Guide',
+        'body'    => <<<MD
+## ceir.gov.mm Myanmar IMEI Check & Registration: Complete Guide 2025
+
+Search interest in **ceir.gov.mm** — Myanmar's official Central Equipment Identity Register portal — has surged by more than **3,750%** over the past twelve months. If you own a mobile phone in Myanmar, whether purchased locally or brought from abroad, understanding the CEIR system is no longer optional. Unregistered devices face **network blocking** across all of Myanmar's major operators.
+
+This guide explains what the CEIR is, how to use **ceir.gov.mm** to check your IMEI status, and the step-by-step process to register your device before it gets blocked.
+
+---
+
+## What Is Myanmar's CEIR? (Central Equipment Identity Register)
+
+The **Central Equipment Identity Register (CEIR)** is a national database of mobile phone IMEI numbers maintained by Myanmar's **Ministry of Transport and Communications (MoTC)**. The system is modelled on international GSMA standards and connects directly with all licensed Myanmar network operators.
+
+The CEIR serves three core functions:
+
+1. **Whitelist** — approved, legally imported devices whose IMEIs are active on the network
+2. **Blacklist** — stolen, counterfeit, or illegally imported devices that are blocked from all networks
+3. **Greylist** — devices flagged as potentially non-compliant and under review
+
+When a phone's IMEI appears on the **blacklist**, all four of Myanmar's major operators are required to prevent that SIM from connecting to their networks. The phone cannot make calls, send texts, or use mobile data — regardless of which operator's SIM you insert.
+
+Myanmar's licensed network operators connected to the CEIR:
+- **MPT** (Myanmar Posts and Telecommunications)
+- **Mytel** (Myanmar National Telecom Holding Public Co.)
+- **Ooredoo Myanmar**
+- **ATOM** (formerly Telenor Myanmar)
+
+---
+
+## Why Is Myanmar Implementing IMEI Registration?
+
+Myanmar has one of Southeast Asia's fastest-growing smartphone markets, but a significant portion of devices enter through **unofficial channels** — grey imports from China, Thailand, and Singapore that bypass customs duties and quality checks. The CEIR aims to:
+
+- **Eliminate counterfeit phones** that use cloned or invalid IMEI numbers
+- **Reduce mobile phone theft** by making stolen devices unusable on any local network
+- **Collect accurate import data** and ensure that customs duties are properly applied to commercial imports
+- **Protect consumers** from purchasing phones that will later be blocked
+
+The search spike for `ceir gov mm` reflects a wave of phone owners — especially buyers of imported devices in Yangon, Mandalay, and Naypyidaw — racing to check whether their handset is compliant before the enforcement deadlines.
+
+---
+
+## Who Needs to Register on ceir.gov.mm?
+
+| Device Type | Registration Required? |
+|---|---|
+| Phone purchased from an authorised Myanmar dealer | Registered by dealer at point of sale |
+| Phone brought from abroad (personal use) | **Yes — must self-register** |
+| Phone bought from China/Thailand via informal channels | **Yes — high priority** |
+| Second-hand phone purchased inside Myanmar | **Verify status first, then register if needed** |
+| Phone received as a gift from someone overseas | **Yes — must self-register** |
+| Phone used by foreign visitors (short stay) | Grace period applies — check MoTC announcements |
+
+> **Key Rule:** If your phone's IMEI does not appear in the CEIR **whitelist**, it is at risk of being blocked. Even if your phone currently works, it may be blocked during the next enforcement sweep.
+
+---
+
+## How to Check Your IMEI Status on ceir.gov.mm
+
+Before registering, check whether your phone is already compliant. Follow these steps:
+
+**Step 1 — Find Your IMEI**
+Dial `*#06#` on your phone. The 15-digit IMEI number will appear on screen. For dual-SIM phones, note both IMEI 1 and IMEI 2.
+
+**Step 2 — Visit the Official CEIR Portal**
+Open your browser and go to the official Myanmar CEIR website: **ceir.gov.mm**
+
+**Step 3 — Enter Your IMEI**
+On the homepage, find the IMEI check field. Type your 15-digit IMEI number exactly as it appears — no spaces or dashes.
+
+**Step 4 — Read Your Status**
+The portal will return one of three results:
+
+| Result | Meaning | Action Required |
+|---|---|---|
+| **Whitelisted / Valid** | Your phone is registered and compliant | None — you are good |
+| **Blacklisted / Blocked** | Your phone is flagged (stolen, counterfeit, or illegal import) | Contact MoTC or your operator |
+| **Not Found / Unregistered** | Your phone is not in the database | **Register immediately** |
+
+---
+
+## How to Register Your IMEI on ceir.gov.mm: Step-by-Step
+
+If your IMEI check returns "Not Found" or "Unregistered", follow this registration process:
+
+**Step 1 — Prepare Required Documents**
+Gather the following before starting:
+- Your **NRC card** (National Registration Card) for Myanmar citizens, or **passport** for foreign nationals
+- **Proof of purchase** — receipt, invoice, or online order confirmation
+- The phone's **IMEI number(s)** — both IMEI 1 and IMEI 2 if dual-SIM
+- The phone's **model name and brand**
+
+**Step 2 — Access the Registration Section**
+On **ceir.gov.mm**, navigate to the registration or "Device Registration" section. As of 2025, both online self-registration and in-person registration at operator service centres are available.
+
+**Step 3 — Fill in the Registration Form**
+Enter the following details accurately:
+- Full name (as on NRC or passport)
+- NRC number or passport number
+- Phone brand and model
+- IMEI 1 (and IMEI 2 if applicable)
+- Date of purchase and purchase country
+- Purchase price in the original currency
+
+**Step 4 — Upload Supporting Documents**
+Attach a clear photo or scan of your purchase receipt and NRC/passport. Files must typically be JPG or PDF format, under 2MB each.
+
+**Step 5 — Submit and Wait for Confirmation**
+Submit the form. You will receive an SMS or on-screen confirmation code. Processing time is typically **1–3 business days**.
+
+**Step 6 — Verify Registration**
+After the processing period, repeat the IMEI check on ceir.gov.mm. Your device should now show as **Whitelisted**.
+
+> **Alternative — In-Person Registration:** If you encounter issues with the online portal, visit any official service centre of MPT, Mytel, Ooredoo, or ATOM with your documents. Staff can register your IMEI directly at the counter.
+
+---
+
+## In-Person IMEI Registration: Service Centre Locations
+
+All four licensed operators maintain service centres across major cities where you can register your IMEI in person. Key locations include:
+
+| City | Available Operators |
+|---|---|
+| **Yangon** | MPT, Mytel, Ooredoo, ATOM |
+| **Mandalay** | MPT, Mytel, Ooredoo, ATOM |
+| **Naypyidaw** | MPT, Mytel |
+| **Mawlamyine** | MPT, Ooredoo |
+| **Bago** | MPT, Mytel |
+
+Bring your original NRC card (not a photocopy) and original purchase receipt. Processing at service centres is usually completed the same day.
+
+---
+
+## What Happens If You Do Not Register?
+
+The consequences of using an unregistered phone in Myanmar escalate over time:
+
+1. **First Warning** — Your operator sends an SMS warning that your device is unregistered. You have a grace period (typically 30–60 days) to register.
+2. **Service Restriction** — Outgoing calls and SMS are disabled while incoming calls remain active.
+3. **Full Network Block** — The IMEI is added to the blacklist. All services — calls, SMS, and data — are blocked across all four operators simultaneously.
+4. **Permanent Block** — If a device is blocked for non-registration of an illegal import, it may be permanently blacklisted and unable to be re-registered without MoTC intervention.
+
+A permanently blocked phone retains its hardware functionality (Wi-Fi works) but is entirely unusable as a telephone on Myanmar's networks.
+
+---
+
+## Myanmar's Grey Market Phone Problem: Know Before You Buy
+
+A large portion of phones sold in Yangon's **Bo Gyoke Aung San Market** and Mandalay's phone districts are grey-market imports — often purchased in bulk from China or Thailand and sold without documentation. These phones are at the highest risk of:
+
+- Having **cloned or invalid IMEIs** (multiple phones sharing one IMEI number)
+- Already being on the **CEIR blacklist** from another country
+- Having a **non-Myanmar firmware** that may not support local frequency bands
+
+Before purchasing any second-hand or grey-market phone in Myanmar, always run an IMEI check first:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) — Verify the brand and model match what is on the box
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) — Confirm the phone has not been reported stolen internationally
+
+An international blacklist hit means the phone is very likely to be added to Myanmar's CEIR blacklist during the next cross-border data sync.
+
+---
+
+## Dual-SIM Phones: Register Both IMEIs
+
+Most phones sold in Myanmar are dual-SIM. Both IMEI numbers must be registered separately on ceir.gov.mm. Registering only IMEI 1 and leaving IMEI 2 unregistered is a common mistake — the second SIM slot will be blocked even if the first appears active.
+
+To find both IMEIs:
+- **Dial `*#06#`** — both IMEI numbers will be displayed on dual-SIM devices
+- **Settings → About Phone** — look for IMEI 1 and IMEI 2
+
+---
+
+## Frequently Asked Questions
+
+**Q: Is ceir.gov.mm the only official IMEI check portal for Myanmar?**
+A: Yes. ceir.gov.mm is the authoritative portal operated by the Ministry of Transport and Communications. Any other site claiming to check Myanmar CEIR status is unofficial.
+
+**Q: My phone currently works fine in Myanmar. Do I still need to register?**
+A: Yes. The fact that your phone works now does not mean it is registered. CEIR enforcement operates in waves — your phone may be blocked during the next sweep if it is not on the whitelist.
+
+**Q: I bought a phone in Thailand and brought it to Myanmar. Is it automatically registered?**
+A: No. Phones purchased abroad are not automatically registered in Myanmar's CEIR. You must register the IMEI yourself through ceir.gov.mm or at an operator service centre.
+
+**Q: What if my phone is blacklisted by mistake?**
+A: Contact MoTC directly or visit the nearest operator service centre with your purchase documentation. Wrongful blacklisting can be disputed, but you will need proof of lawful purchase.
+
+**Q: Can I use my phone on Wi-Fi if it is blocked?**
+A: Yes. A CEIR block only prevents the phone from connecting to cellular networks (calls, SMS, mobile data). Wi-Fi functionality is unaffected.
+
+**Q: How long does registration take on ceir.gov.mm?**
+A: Online registration is typically processed within 1–3 business days. In-person registration at operator service centres is usually completed the same day.
+
+---
+
+## Check and Protect Your Phone Right Now
+
+Whether you are a Myanmar resident, an expat, or a traveller with a foreign device, take two minutes to verify your IMEI status before enforcement reaches your device:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) — Instantly verify your phone's brand, model, and basic compliance info
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) — Check if your phone has been reported stolen in any country connected to the global GSMA blacklist database
+
+Registering on ceir.gov.mm takes less than ten minutes. The alternative — a permanently blocked phone — costs far more to resolve.
 MD,
     ],
 

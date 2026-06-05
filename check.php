@@ -477,11 +477,18 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
         submit.disabled = true;
         requestStartedAt = Date.now();
 
+        // Bound the wait so a hung upstream doesn't leave the user staring at
+        // a spinner forever. The server's own shutdown handler refunds the
+        // wallet if the script dies before the result is persisted.
+        var abortCtrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+        var fetchTimer = setTimeout(function () { if (abortCtrl) abortCtrl.abort(); }, 75000);
+
         fetch('/api/services/use.php', {
             method: 'POST',
             credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code: sel.value, input: { imei: imeiVal } })
+            body: JSON.stringify({ code: sel.value, input: { imei: imeiVal } }),
+            signal: abortCtrl ? abortCtrl.signal : undefined
         })
         .then(function (r) {
             return r.json().then(function (j) { return { status: r.status, body: j }; });
@@ -519,8 +526,20 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
             renderResult(resp.body);
             resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         })
-        .catch(function () { showError('Network error — please check your connection and try again.', 'Connection Error', 'error'); })
+        .catch(function (e) {
+            var aborted = e && (e.name === 'AbortError');
+            var html = aborted
+                ? '<p class="result-msg">The lookup took too long and was cancelled. If your wallet was charged, ' +
+                  'check your <a href="/orders.php" class="link-more">order history</a> &mdash; the credit is refunded ' +
+                  'automatically when the provider does not complete in time.</p>'
+                : '<p class="result-msg">Network error. If you submitted a paid lookup, check your ' +
+                  '<a href="/orders.php" class="link-more">order history</a> before retrying &mdash; you will not be ' +
+                  'double-charged for the same submission.</p>';
+            renderStatus(aborted ? 'warn'  : 'error',
+                         aborted ? 'Lookup Timed Out' : 'Connection Error', html);
+        })
         .finally(function () {
+            clearTimeout(fetchTimer);
             submit.classList.remove('loading');
             submit.disabled = false;
         });

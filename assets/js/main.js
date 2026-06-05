@@ -283,16 +283,24 @@
             paid = form.getAttribute('data-paid') === '1';
             code = form.getAttribute('data-code');
         }
+        // Slow upstream providers (or a flaky mobile network) can leave the
+        // request hanging indefinitely; abort after 75s so the user sees a
+        // defined error instead of a spinner that never resolves. The server
+        // still finishes its own work (and refunds on its own death), so the
+        // user is never charged without recourse.
+        var abortCtrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+        var fetchTimer = setTimeout(function () { if (abortCtrl) abortCtrl.abort(); }, 75000);
+        var fetchOpts = abortCtrl ? { signal: abortCtrl.signal } : {};
         var fetchPromise;
 
         if (paid && code) {
             // Auth-required, paid path. Deducts credit, refunds on failure.
-            fetchPromise = fetch('/api/services/use.php', {
+            fetchPromise = fetch('/api/services/use.php', Object.assign({
                 method: 'POST',
                 credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code: code, input: { imei: imei } })
-            });
+            }, fetchOpts));
         } else {
             // Anonymous free path - posts to the legacy check endpoint.
             var body = new URLSearchParams();
@@ -300,11 +308,11 @@
             var serviceId = form.getAttribute('data-service');
             if (serviceId) body.set('service', serviceId);
 
-            fetchPromise = fetch('/api/check.php', {
+            fetchPromise = fetch('/api/check.php', Object.assign({
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: body.toString()
-            });
+            }, fetchOpts));
         }
 
         fetchPromise
@@ -347,10 +355,20 @@
                 renderResult(resp.body);
                 resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
             })
-            .catch(function () {
-                showError('Network error — please check your connection and try again.', 'Connection Error', 'error');
+            .catch(function (e) {
+                var aborted = e && (e.name === 'AbortError');
+                var html = aborted
+                    ? '<p class="result-msg">The lookup took too long and was cancelled. If your wallet was charged, ' +
+                      'check your <a href="/orders.php" class="link-more">order history</a> &mdash; the credit is ' +
+                      'refunded automatically when the provider does not complete in time.</p>'
+                    : '<p class="result-msg">Network error. If you submitted a paid lookup, check your ' +
+                      '<a href="/orders.php" class="link-more">order history</a> before retrying &mdash; you will ' +
+                      'not be double-charged for the same submission.</p>';
+                renderStatus(aborted ? 'warn'  : 'error',
+                             aborted ? 'Lookup Timed Out' : 'Connection Error', html);
             })
             .finally(function () {
+                clearTimeout(fetchTimer);
                 form.classList.remove('loading');
                 button.disabled = false;
             });

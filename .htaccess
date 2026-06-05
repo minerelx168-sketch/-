@@ -29,6 +29,9 @@
     # Block .env file
     RewriteRule ^\.env - [F,L]
 
+    # Article pretty URLs: /article/slug -> article.php?slug=slug
+    RewriteRule ^article/([a-z0-9-]+)$ article.php?slug=$1 [L,QSA]
+
     # Pretty URLs: /api/check -> /api/check.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

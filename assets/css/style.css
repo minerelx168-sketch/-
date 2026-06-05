@@ -544,6 +544,73 @@ a:hover { color: var(--primary-600); }
     .result-chip { padding: 8px 12px; font-size: .72rem; }
 }
 
+/* In-progress card shown during a lookup. Replaces the blank-spinner wait
+   with a staged label + a capped progress bar so a slow paid provider
+   (e.g. Apple GSX, 20-30s) feels like the page is alive, not frozen. The
+   bar advances off the client clock - the server flow is unchanged. */
+.result-progress {
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 16px;
+    padding: 28px 30px;
+    margin-top: 14px;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(11, 18, 32, .06);
+}
+.result-progress-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text, #0b1220);
+    margin: 0 0 4px;
+}
+.result-progress-service {
+    font-size: .88rem;
+    color: var(--text-soft, #475569);
+    margin: 0 0 22px;
+}
+.result-progress-bar {
+    position: relative;
+    height: 8px;
+    background: #eef2f7;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 auto 16px;
+    max-width: 460px;
+}
+.result-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #818cf8);
+    width: 0%;
+    transition: width .6s cubic-bezier(.4, 0, .2, 1);
+    border-radius: 4px;
+}
+.result-progress-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+    transform: translateX(-100%);
+    animation: rp-shimmer 1.8s infinite linear;
+    pointer-events: none;
+}
+@keyframes rp-shimmer {
+    to { transform: translateX(100%); }
+}
+.result-progress-stage {
+    font-size: .9rem;
+    color: var(--text-soft, #475569);
+    font-style: italic;
+    min-height: 1.4em;
+}
+@media (max-width: 560px) {
+    .result-progress { padding: 22px 18px; }
+    .result-progress-service { margin-bottom: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .result-progress-bar::after { animation: none; }
+    .result-progress-bar-fill { transition: none; }
+}
+
 /* Crypto top-up page (topup/crypto.php): address panels + verify form. */
 .crypto-card {
     background: var(--surface, #fff);

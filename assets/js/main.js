@@ -32,11 +32,53 @@
     // Banner + card shell shared by every result state. `type` drives the
     // banner color: success (green), error (red), warn (amber), info (blue).
     function renderStatus(type, title, innerHtml) {
+        stopProgress(); // any real outcome (success / error / refund) replaces the in-progress card
         resultEl.hidden = false;
         resultEl.className = 'result result--report';
         resultEl.innerHTML =
             '<div class="result-banner result-banner--' + type + '">' + escapeHtml(title) + '</div>' +
             '<div class="result-card">' + innerHtml + '</div>';
+    }
+
+    // In-progress card: replaces the silent spinner during a paid lookup so the
+    // user can see we're still working. Pure UX - the server flow, credit
+    // deduction, and 75s client abort are unchanged. The stage label + bar
+    // advance off the CLIENT clock (we don't know upstream progress) and the
+    // bar caps at 95% until the result arrives.
+    var progressTimer = null;
+    var progressStartedAt = 0;
+    function renderInProgress(serviceName, isPaid) {
+        resultEl.hidden = false;
+        resultEl.className = 'result result--progress';
+        resultEl.innerHTML =
+            '<div class="result-progress" role="status" aria-live="polite">' +
+              '<div class="result-progress-title">Working on your check…</div>' +
+              '<div class="result-progress-service">' + escapeHtml(serviceName || 'IMEI lookup') + '</div>' +
+              '<div class="result-progress-bar"><div class="result-progress-bar-fill" id="rpfill"></div></div>' +
+              '<div class="result-progress-stage" id="rpstage">Looking up your IMEI…</div>' +
+            '</div>';
+        progressStartedAt = Date.now();
+        if (progressTimer) clearInterval(progressTimer);
+        progressTimer = setInterval(function () { updateProgress(isPaid); }, 1000);
+        updateProgress(isPaid);
+    }
+    function updateProgress(isPaid) {
+        var stageEl = document.getElementById('rpstage');
+        var fillEl  = document.getElementById('rpfill');
+        if (!stageEl || !fillEl) { stopProgress(); return; }
+        var t = (Date.now() - progressStartedAt) / 1000;
+        var stage, pct;
+        if (t < 2)        { stage = 'Looking up your IMEI…';                                              pct = t * 9; }
+        else if (t < 7)   { stage = 'Querying provider servers…';                                          pct = 18 + (t - 2) * 6.4; }
+        else if (t < 15)  { stage = 'Still working — this can take a moment for premium reports…';        pct = 50 + (t - 7) * 3.125; }
+        else if (t < 25)  { stage = 'Provider is still processing — typical for premium GSX lookups…';    pct = 75 + (t - 15) * 1.3; }
+        else              { stage = 'Almost there — please hold on…';                                     pct = Math.min(95, 88 + (t - 25) * 0.4); }
+        if (!isPaid && t >= 2) stage = 'Looking up your IMEI…'; // free lookups are local; don't promise provider work
+        stageEl.textContent = stage;
+        fillEl.style.width = Math.max(0, Math.min(95, pct)) + '%';
+    }
+    function stopProgress() {
+        if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     }
 
     function showError(msg, title, type) {
@@ -273,16 +315,20 @@
         // data-cost to decide between the free (IMEI_BASIC) and paid paths.
         // Otherwise fall back to the static data-paid + data-code attributes
         // that per-service landing pages use.
-        var paid, code;
+        var paid, code, serviceName;
         var select = form.querySelector('select[name="code"]');
         if (select) {
             code = select.value;
             var opt = select.options[select.selectedIndex];
             paid = parseFloat(opt && opt.getAttribute('data-cost') || '0') > 0;
+            serviceName = ((opt && opt.text) || '').split(' — ')[0];
         } else {
             paid = form.getAttribute('data-paid') === '1';
             code = form.getAttribute('data-code');
+            serviceName = form.getAttribute('data-service-name') || '';
         }
+        renderInProgress(serviceName || 'IMEI lookup', paid);
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         // Slow upstream providers (or a flaky mobile network) can leave the
         // request hanging indefinitely; abort after 75s so the user sees a
         // defined error instead of a spinner that never resolves. The server
@@ -324,6 +370,7 @@
             .then(function (resp) {
                 // 401 on a paid lookup -> push to /login and come back.
                 if (resp.status === 401) {
+                    stopProgress();
                     var next = encodeURIComponent(window.location.pathname + window.location.search);
                     window.location.href = '/login.php?next=' + next;
                     return;

@@ -133,6 +133,8 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
     var selCost = document.getElementById('sel-cost');
     var requestStartedAt = 0;
     var lastReport = null;
+    var progressTimer = null;
+    var progressStartedAt = 0;
 
     function updateSummary() {
         var opt = sel.options[sel.selectedIndex];
@@ -187,11 +189,51 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
         return (c && t) ? '<span class="pill pill-' + c + '">' + escapeHtml(v) + '</span>' : escapeHtml(v);
     }
     function renderStatus(type, title, innerHtml) {
+        stopProgress(); // any real outcome (success / error / refund) replaces the in-progress card
         resultEl.hidden = false;
         resultEl.className = 'result result--report';
         resultEl.innerHTML =
             '<div class="result-banner result-banner--' + type + '">' + escapeHtml(title) + '</div>' +
             '<div class="result-card">' + innerHtml + '</div>';
+    }
+
+    // In-progress card: replaces the silent spinner during a lookup so the user
+    // can see the request is still alive. Pure UX - it does not change the
+    // server flow, the credit deduction, or the timeout / refund behaviour.
+    // The stage label + bar advance off the CLIENT clock (we don't actually
+    // know upstream progress); the bar caps at 95% until the result arrives.
+    function renderInProgress(serviceName, isPaid) {
+        resultEl.hidden = false;
+        resultEl.className = 'result result--progress';
+        resultEl.innerHTML =
+            '<div class="result-progress" role="status" aria-live="polite">' +
+              '<div class="result-progress-title">Working on your check…</div>' +
+              '<div class="result-progress-service">' + escapeHtml(serviceName || 'IMEI lookup') + '</div>' +
+              '<div class="result-progress-bar"><div class="result-progress-bar-fill" id="rpfill"></div></div>' +
+              '<div class="result-progress-stage" id="rpstage">Looking up your IMEI…</div>' +
+            '</div>';
+        progressStartedAt = Date.now();
+        if (progressTimer) clearInterval(progressTimer);
+        progressTimer = setInterval(function () { updateProgress(isPaid); }, 1000);
+        updateProgress(isPaid);
+    }
+    function updateProgress(isPaid) {
+        var stageEl = document.getElementById('rpstage');
+        var fillEl  = document.getElementById('rpfill');
+        if (!stageEl || !fillEl) { stopProgress(); return; }
+        var t = (Date.now() - progressStartedAt) / 1000;
+        var stage, pct;
+        if (t < 2)        { stage = 'Looking up your IMEI…';                                              pct = t * 9; }
+        else if (t < 7)   { stage = 'Querying provider servers…';                                          pct = 18 + (t - 2) * 6.4; }
+        else if (t < 15)  { stage = 'Still working — this can take a moment for premium reports…';        pct = 50 + (t - 7) * 3.125; }
+        else if (t < 25)  { stage = 'Provider is still processing — typical for premium GSX lookups…';    pct = 75 + (t - 15) * 1.3; }
+        else              { stage = 'Almost there — please hold on…';                                     pct = Math.min(95, 88 + (t - 25) * 0.4); }
+        if (!isPaid && t >= 2) stage = 'Looking up your IMEI…'; // free lookups are local; don't promise provider work
+        stageEl.textContent = stage;
+        fillEl.style.width = Math.max(0, Math.min(95, pct)) + '%';
+    }
+    function stopProgress() {
+        if (progressTimer) { clearInterval(progressTimer); progressTimer = null; }
     }
     function showBlacklistPopup(bl) {
         if (!bl) return;
@@ -477,6 +519,14 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
         submit.disabled = true;
         requestStartedAt = Date.now();
 
+        // Show the staged in-progress card so the user can see we're working
+        // rather than staring at a frozen spinner.
+        var selOpt = sel.options[sel.selectedIndex];
+        var selServiceName = (selOpt && selOpt.text || '').split(' — ')[0] || 'IMEI lookup';
+        var selCostNum = parseFloat(selOpt && selOpt.getAttribute('data-cost') || '0');
+        renderInProgress(selServiceName, selCostNum > 0);
+        resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
         // Bound the wait so a hung upstream doesn't leave the user staring at
         // a spinner forever. The server's own shutdown handler refunds the
         // wallet if the script dies before the result is persisted.
@@ -495,6 +545,7 @@ layout_head('Check IMEI · imeihub', 'Run any IMEI lookup from a single grouped 
         })
         .then(function (resp) {
             if (resp.status === 401) {
+                stopProgress();
                 var next = encodeURIComponent(window.location.pathname);
                 window.location.href = '/login.php?next=' + next;
                 return;

@@ -357,15 +357,20 @@
             })
             .catch(function (e) {
                 var aborted = e && (e.name === 'AbortError');
+                // We stopped waiting on the client, but the server may have
+                // finished the lookup regardless - so we can't claim it was
+                // refunded. Point the user to Orders, where the real outcome
+                // (a completed result OR an automatic refund) will appear.
                 var html = aborted
-                    ? '<p class="result-msg">The lookup took too long and was cancelled. If your wallet was charged, ' +
-                      'check your <a href="/orders.php" class="link-more">order history</a> &mdash; the credit is ' +
-                      'refunded automatically when the provider does not complete in time.</p>'
-                    : '<p class="result-msg">Network error. If you submitted a paid lookup, check your ' +
-                      '<a href="/orders.php" class="link-more">order history</a> before retrying &mdash; you will ' +
-                      'not be double-charged for the same submission.</p>';
+                    ? '<p class="result-msg">This took longer than expected, so we stopped waiting &mdash; but your ' +
+                      'lookup may still be completing. Open your <a href="/orders.php" class="link-more">order history</a>: ' +
+                      'if it succeeded the result is there, and if the provider never responded your credit is refunded ' +
+                      'automatically. Please check there before submitting again.</p>'
+                    : '<p class="result-msg">We couldn\'t confirm the result. If you submitted a paid lookup, open your ' +
+                      '<a href="/orders.php" class="link-more">order history</a> before retrying &mdash; the result or an ' +
+                      'automatic refund will appear there, so you won\'t be double-charged.</p>';
                 renderStatus(aborted ? 'warn'  : 'error',
-                             aborted ? 'Lookup Timed Out' : 'Connection Error', html);
+                             aborted ? 'Still Working…' : 'Connection Error', html);
             })
             .finally(function () {
                 clearTimeout(fetchTimer);

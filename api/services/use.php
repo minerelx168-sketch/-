@@ -220,6 +220,12 @@ credits_mark_usage_success($publicId, [
     'brand'   => $result['brand'],
     'model'   => $result['model'],
     'details' => $result['details'],
+    // Persist the provider latency breakdown (dns/connect/tls/ttfb/total ms)
+    // so scripts/provider-latency.php can report p50/p95 per service and tell
+    // us, with data, which services are slow enough to move to async. Stored
+    // under a "_"-prefixed key that the result/orders views never read, so it
+    // never surfaces in the UI.
+    '_timing' => $result['_timing'] ?? null,
 ]);
 // Result is locked in; the shutdown handler must not refund this usage even
 // if the JSON encode below trips a fatal.

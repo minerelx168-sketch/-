@@ -1434,4 +1434,370 @@ A: When the NCC issues a blocking directive, it applies across all licensed netw
 MD,
     ],
 
+
+    // ─────────────────────────────────────────────────────────────────────
+    // Day 13 · 2026-06-10 · Pakistan · PTA Tax on iPhone 15 & 16
+    // ─────────────────────────────────────────────────────────────────────
+    [
+        'slug'    => 'pta-tax-iphone-15-16-pakistan-calculator',
+        'title'   => 'PTA Tax on iPhone 15 & 16 in Pakistan: 2025 Guide',
+        'excerpt' => 'Find out exactly how much PTA DIRBS tax you owe on an iPhone 15 or 16 in Pakistan. Model-by-model breakdown plus step-by-step payment instructions.',
+        'date'    => '2026-06-10',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## How Much PTA Tax Do You Pay on an iPhone 15 or iPhone 16 in Pakistan?
+
+If you are bringing an iPhone 15 or iPhone 16 into Pakistan — whether as a traveller, an overseas Pakistani returning home, or a resident who bought the phone abroad — you must pay **PTA DIRBS tax** before your device will connect to any Pakistani network.
+
+The **Pakistan Telecommunication Authority (PTA)** operates the **Device Identification, Registration and Blocking System (DIRBS)**, which cross-references every IMEI against a national database. Phones not registered by the applicable deadline are blocked from all networks: **Jazz, Zong, Telenor, Ufone,** and any MVNO running on their infrastructure.
+
+> **Deadline rule:** Returning Pakistani nationals and residents receive **60 days** from the date of entry to register. Foreign visitors receive **30 days**. After expiry, the IMEI is blacklisted system-wide.
+
+---
+
+## Why Does PTA Charge Tax on iPhones?
+
+Pakistan applies import-related duties on all foreign-market devices as part of its **Federal Budget telecom policy**. The charges are collected through the **Pakistan Single Window (PSW)** portal and comprise four components:
+
+| Tax Component | Description |
+|---|---|
+| **Customs Duty (CD)** | Based on the assessed international retail value |
+| **Sales Tax (ST)** | Applied under the Sales Tax Act 1990 |
+| **Withholding Tax (WHT)** | Collected at the point of import or registration |
+| **Regulatory Duty (RD)** | A fixed surcharge applicable to mobile handsets |
+
+The PTA assesses device value from the **international retail price**, not what you personally paid. This prevents under-declaration.
+
+---
+
+## PTA Tax Table: iPhone 15 Series (2025 Approximate Rates)
+
+The figures below are **approximate** based on FBR/PTA assessed values in effect from 2024 onwards. Exact amounts can vary by a few thousand PKR depending on the USD/PKR exchange rate at the time you register. Always verify the live amount at **psw.gov.pk** or **dirbs.pta.gov.pk** before making payment.
+
+| Model | Storage | Approx. PTA Tax (PKR) |
+|---|---|---|
+| iPhone 15 | 128 GB | 55,000 – 65,000 |
+| iPhone 15 | 256 GB | 60,000 – 70,000 |
+| iPhone 15 | 512 GB | 65,000 – 75,000 |
+| iPhone 15 Plus | 128 GB | 65,000 – 78,000 |
+| iPhone 15 Plus | 256 GB | 70,000 – 83,000 |
+| iPhone 15 Pro | 128 GB | 78,000 – 92,000 |
+| iPhone 15 Pro | 256 GB | 83,000 – 97,000 |
+| iPhone 15 Pro | 512 GB | 88,000 – 103,000 |
+| iPhone 15 Pro Max | 256 GB | 85,000 – 100,000 |
+| iPhone 15 Pro Max | 512 GB | 90,000 – 107,000 |
+| iPhone 15 Pro Max | 1 TB | 95,000 – 115,000 |
+
+---
+
+## PTA Tax Table: iPhone 16 Series (2025 Approximate Rates)
+
+| Model | Storage | Approx. PTA Tax (PKR) |
+|---|---|---|
+| iPhone 16 | 128 GB | 60,000 – 72,000 |
+| iPhone 16 | 256 GB | 65,000 – 77,000 |
+| iPhone 16 | 512 GB | 70,000 – 83,000 |
+| iPhone 16 Plus | 128 GB | 70,000 – 83,000 |
+| iPhone 16 Plus | 256 GB | 75,000 – 88,000 |
+| iPhone 16 Pro | 128 GB | 85,000 – 100,000 |
+| iPhone 16 Pro | 256 GB | 90,000 – 107,000 |
+| iPhone 16 Pro | 512 GB | 95,000 – 112,000 |
+| iPhone 16 Pro Max | 256 GB | 95,000 – 112,000 |
+| iPhone 16 Pro Max | 512 GB | 100,000 – 118,000 |
+| iPhone 16 Pro Max | 1 TB | 108,000 – 128,000 |
+
+> **Tax rates change with every Federal Budget.** The figures above reflect PTA DIRBS rates in effect from mid-2024. Always use **psw.gov.pk** for the exact, real-time amount before paying.
+
+---
+
+## Step-by-Step: How to Pay PTA Tax on Your iPhone
+
+### Method 1: Online via Pakistan Single Window (Recommended)
+
+1. **Get your IMEI** — dial `*#06#` on your iPhone or go to **Settings → General → About**.
+2. **Create a CNIC/passport-linked account** at [id.gov.pk](https://id.gov.pk) if you do not already have one.
+3. **Go to** [psw.gov.pk](https://psw.gov.pk) and select **Mobile Device Registration**.
+4. **Enter your IMEI** — the system will auto-identify your device model and assessed value.
+5. **Review the tax breakdown** showing CD, ST, WHT, and RD individually.
+6. **Pay online** via credit/debit card, JazzCash, Easypaisa, or bank transfer.
+7. **Download your DIRBS registration certificate** — keep a PDF copy.
+8. **Wait 24–72 hours** for the IMEI to go fully active on all Pakistani networks.
+
+### Method 2: At the Airport Bea Customs Counter (Upon Arrival)
+
+1. Proceed to the **PTA / FBR counter** in the arrivals hall at Islamabad (ISB), Karachi (KHI), or Lahore (LHE) international airports.
+2. Present your passport, phone, and boarding pass.
+3. The officer will assess the device and issue a tax challan.
+4. Pay the challan at the airport bank counter or via mobile banking on the spot.
+5. Collect your DIRBS registration receipt.
+
+---
+
+## How to Check If Your iPhone IMEI Is Already PTA-Registered
+
+Before paying, always verify whether your IMEI is already compliant — for example, if the handset was originally sold in Pakistan:
+
+1. Dial `*#06#` to confirm your IMEI.
+2. Run a free device lookup at [imeihub.net](https://imeihub.net/service.php?slug=free-imei-check) to confirm brand and model.
+3. Check PTA's official compliance lookup at **dirbs.pta.gov.pk**.
+
+A device showing **"Compliant"** requires no action. A **"Non-Compliant"** result means you must register and pay the applicable tax.
+
+For a full international stolen/lost check before purchasing a second-hand iPhone, use the [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist).
+
+---
+
+## Consequences of Not Paying PTA Tax
+
+| Timeline | Consequence |
+|---|---|
+| Day 1–30 (foreign visitors) | Phone works on all networks normally |
+| Day 1–60 (Pakistani nationals / residents) | Phone works on all networks normally |
+| After deadline (still unregistered) | Calls, SMS, and mobile data blocked on ALL networks |
+| Attempting workarounds | New SIM card or carrier switch makes no difference — block is at IMEI level |
+| Selling the phone | A blocked device sells for 40–60% below market value |
+
+Once blocked, **no workaround exists**. The block is enforced at IMEI level across every licensed operator simultaneously.
+
+---
+
+## Buying a Used iPhone in Pakistan: What to Check
+
+If you are buying a second-hand iPhone locally, always verify compliance before handing over money:
+
+1. Ask the seller to show the **PTA DIRBS certificate** or PSW payment receipt.
+2. Check the IMEI independently at [imeihub.net](https://imeihub.net/service.php?slug=free-imei-check).
+3. Ensure the IMEI on the certificate matches `*#06#` on the physical handset.
+4. Run a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) to rule out international theft reports.
+
+Buying an unregistered iPhone is a significant risk — you may inherit a device that gets blocked within days.
+
+---
+
+## Frequently Asked Questions
+
+**Q: Can I use an iPhone on a foreign SIM in Pakistan without paying PTA tax?**
+A: No. DIRBS blocks the IMEI itself — any SIM, Pakistani or foreign, fails to register a network on a blocked device.
+
+**Q: I paid PTA tax for my old iPhone. Can I transfer that registration to my new iPhone?**
+A: No. PTA registration is bound to a specific IMEI, not to your identity. Each device requires its own individual registration.
+
+**Q: How long after paying does it take for networks to connect?**
+A: Online registrations typically activate within 24–72 hours. Airport counter registrations usually activate within a few hours of payment.
+
+**Q: What if I leave Pakistan before the 30-day window expires?**
+A: If you depart with an unregistered device, the IMEI will be blocked after the grace period elapses. Registration cannot be completed remotely; you must pay upon your next entry.
+
+**Q: Is the tax different for a new iPhone versus a second-hand one?**
+A: PTA taxes the model based on its assessed market value — not whether the unit is new or used. A second-hand iPhone 16 Pro pays the same tax rate as a new one of the same model.
+
+**Q: Does PTA tax apply to iPads and Apple Watches too?**
+A: iPads with cellular (SIM-card) capability are subject to DIRBS registration. Apple Watch with LTE is also included. Wi-Fi-only iPads and non-cellular accessories are exempt.
+
+**Q: Which iPhone models are registered most often through DIRBS?**
+A: iPhone 13, iPhone 14, and iPhone 15 remain the most frequently registered models. iPhone 16 volumes have risen sharply since its global launch in late 2024.
+MD,
+    ],
+
+    // ─────────────────────────────────────────────────────────────────────
+    // Day 14 · 2026-06-11 · Indonesia · Bea Cukai IMEI Tax Calculator
+    // ─────────────────────────────────────────────────────────────────────
+    [
+        'slug'    => 'bea-cukai-imei-tax-calculator-indonesia',
+        'title'   => 'Bea Cukai IMEI Tax Calculator: Indonesia Tourist Guide',
+        'excerpt' => 'Bringing a phone to Indonesia? Calculate your Bea Cukai IMEI customs tax, register your device step by step, and avoid being blocked on Telkomsel or XL.',
+        'date'    => '2026-06-11',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## Indonesia Bea Cukai IMEI Tax Calculator: Complete Tourist Guide (2025)
+
+If you are arriving in Indonesia with a smartphone purchased abroad, you need to know two things: **IMEI registration** and **Bea Cukai (customs) tax obligations**.
+
+Since **April 18, 2020**, Indonesia requires all mobile phones to have their IMEI registered in a national database maintained jointly by the **Ministry of Industry (Kemenperin)**, the **Ministry of Finance (Kemenkeu / Bea Cukai)**, and the **Ministry of Communication and Digital (Komdigi)**. An unregistered IMEI will be **blocked from all Indonesian mobile networks** — Telkomsel, Indosat Ooredoo Hutchison, XL Axiata, Smartfren, and all MVNOs — after a 90-day grace period.
+
+This guide covers who needs to register, how to calculate your exact tax liability, a model-by-model estimate table, and a step-by-step registration walkthrough.
+
+---
+
+## Who Must Register and Pay Bea Cukai Tax?
+
+| Traveller Type | Registration Required | Tax Due? |
+|---|---|---|
+| Tourist with phone valued ≤ $500 USD | Yes (free, online or at airport) | No |
+| Tourist with phone valued > $500 USD | Yes | Yes — on the amount above $500 |
+| Indonesian returning from abroad (≤ $500) | Yes (free) | No |
+| Indonesian returning from abroad (> $500) | Yes | Yes — on the amount above $500 |
+| Phone purchased in Indonesia (official channels) | Pre-registered by manufacturer | No |
+| Phone bought via official e-commerce (Tokopedia, Lazada ID, etc.) | Pre-registered | No |
+
+> **The $500 threshold applies to total goods per person per trip**, not per item. If you carry two phones valued at $300 each, the combined $600 means $100 is taxable.
+
+---
+
+## Understanding the $500 Duty-Free Threshold
+
+Indonesian customs law grants each incoming international traveller a personal duty-free allowance of **USD 500 per person per trip**.
+
+- Phone value **at or below $500**: IMEI registration is free, zero tax.
+- Phone value **above $500**: only the **excess portion** (amount over $500) is subject to tax.
+
+### Example: Bringing one iPhone 16 Pro valued at $999
+
+- Taxable excess = $999 − $500 = **$499**
+- Tax is calculated only on this $499, not the full $999.
+
+---
+
+## How to Calculate Your Bea Cukai IMEI Tax
+
+For smartphones (HS Code **8517.12.00**), Indonesia applies the following rate structure:
+
+| Tax Type | Indonesian Term | Rate |
+|---|---|---|
+| Import Duty | Bea Masuk (BM) | 0% |
+| Value Added Tax | PPN | 11% |
+| Income Tax (with NPWP) | PPh Pasal 22 | 10% |
+| Income Tax (without NPWP) | PPh Pasal 22 | 20% |
+
+> **NPWP** is Indonesia's taxpayer identification number. Tourists do not have NPWP, so the **20% PPh rate applies** to most foreign visitors.
+
+**Total effective tax rate for tourists (no NPWP): 31% on the taxable excess above $500.**
+
+### Step-by-Step Calculation
+
+**Phone:** iPhone 16 Pro Max (256 GB) — retail price $1,199 USD
+**Assumed exchange rate:** IDR 16,200 per USD
+
+| Step | Calculation | Result |
+|---|---|---|
+| 1. Phone retail value in IDR | $1,199 × 16,200 | IDR 19,423,800 |
+| 2. Duty-free allowance in IDR | $500 × 16,200 | IDR 8,100,000 |
+| 3. Taxable base | IDR 19,423,800 − 8,100,000 | IDR 11,323,800 |
+| 4. Import Duty (0%) | 0% × IDR 11,323,800 | IDR 0 |
+| 5. PPN 11% | 11% × IDR 11,323,800 | IDR 1,245,618 |
+| 6. PPh Pasal 22 (20%, no NPWP) | 20% × IDR 11,323,800 | IDR 2,264,760 |
+| **Total Tax** | | **IDR 3,510,378 (~$217 USD)** |
+
+---
+
+## Quick Tax Estimate Table by Popular Phone Model (2025)
+
+Based on IDR 16,200/USD, tourist rate (no NPWP, 20% PPh). Exchange rates fluctuate — actual IDR tax amount will differ slightly on your arrival date.
+
+| Phone Model | Retail Price (USD) | Taxable Excess | Est. PPN (11%) | Est. PPh (20%) | **Total Est. Tax (IDR)** | **Total Est. Tax (USD)** |
+|---|---|---|---|---|---|---|
+| iPhone 16 (128 GB) | $799 | $299 | IDR 533,412 | IDR 969,840 | **IDR 1,503,252** | **~$93** |
+| iPhone 16 Plus (128 GB) | $899 | $399 | IDR 711,612 | IDR 1,293,480 | **IDR 2,005,092** | **~$124** |
+| iPhone 16 Pro (128 GB) | $999 | $499 | IDR 889,812 | IDR 1,617,120 | **IDR 2,506,932** | **~$155** |
+| iPhone 16 Pro Max (256 GB) | $1,199 | $699 | IDR 1,246,212 | IDR 2,264,760 | **IDR 3,510,972** | **~$217** |
+| Samsung Galaxy S25 (128 GB) | $799 | $299 | IDR 533,412 | IDR 969,840 | **IDR 1,503,252** | **~$93** |
+| Samsung Galaxy S25+ (256 GB) | $999 | $499 | IDR 889,812 | IDR 1,617,120 | **IDR 2,506,932** | **~$155** |
+| Samsung Galaxy S25 Ultra (256 GB) | $1,299 | $799 | IDR 1,424,412 | IDR 2,588,400 | **IDR 4,012,812** | **~$248** |
+| Google Pixel 9 Pro (128 GB) | $999 | $499 | IDR 889,812 | IDR 1,617,120 | **IDR 2,506,932** | **~$155** |
+| Xiaomi 14 Ultra | $899 | $399 | IDR 711,612 | IDR 1,293,480 | **IDR 2,005,092** | **~$124** |
+| OnePlus 13 (256 GB) | $899 | $399 | IDR 711,612 | IDR 1,293,480 | **IDR 2,005,092** | **~$124** |
+
+> These are **estimates only**. Bea Cukai uses the Bank Indonesia **middle rate on the date of arrival**. The official tax amount is computed by the e-CD system or the customs officer at the counter.
+
+---
+
+## Step-by-Step: How to Register Your Phone's IMEI in Indonesia
+
+### Option 1: Online Before You Arrive (Recommended)
+
+This is the fastest method — complete it on the plane or the night before landing.
+
+1. **Find your IMEI** — dial `*#06#` or go to **Settings → About Phone / About iPhone**.
+2. **Go to** [beacukai.go.id](https://www.beacukai.go.id) and find the **Registrasi IMEI** section.
+3. **Fill in** your passport number, arrival flight number, arrival date, and IMEI.
+4. **Declare the phone's purchase value** in USD.
+5. **Submit the form** and download the **QR code confirmation**.
+6. **At the airport**, proceed to the Bea Cukai counter if your declared value exceeds $500. Scan the QR code, pay the tax, and collect your receipt.
+7. **If your value is under $500**, show the QR code at the Bea Cukai counter for a free stamp and you are done.
+
+### Option 2: At the Airport Bea Cukai Counter
+
+Available at all major international airports: **Soekarno-Hatta CGK (Jakarta), Ngurah Rai DPS (Bali), Juanda SUB (Surabaya), Kuala Namu KNO (Medan),** and other primary gateways.
+
+1. Proceed to the **Bea Cukai** (Customs) counter in the arrivals hall — look for the green "Nothing to Declare" or red "Goods to Declare" lane.
+2. Choose the **red lane** if your phone value exceeds $500 (declare proactively).
+3. Show your **passport** and state that you are declaring a mobile device.
+4. Provide the **IMEI** — staff will check against the national database.
+5. If tax is owed, pay at the designated payment point: **cash (IDR)**, Visa/Mastercard, or GoPay/OVO QR at equipped airports.
+6. Collect the **IMEI registration receipt** — keep this document for the lifetime of the phone in Indonesia.
+
+### Option 3: Ministry of Industry Portal (Post-Entry Backup)
+
+If you entered Indonesia and forgot to register, use the Kemenperin IMEI registration portal within the 90-day grace period:
+
+1. Visit **imei.kemenperin.go.id**.
+2. Enter your IMEI to check its current registration status.
+3. If "tidak terdaftar" (not registered), follow the on-screen registration flow.
+4. For tax payment on high-value devices, you will be directed to a Bea Cukai office.
+
+---
+
+## How to Verify Your Phone's IMEI Registration Status in Indonesia
+
+Before going through customs — or before buying a used phone locally — check the IMEI:
+
+- **Official government check:** [imei.kemenperin.go.id](https://imei.kemenperin.go.id) — shows "terdaftar" (registered) or "tidak terdaftar" (not registered).
+- **Free device info lookup:** [imeihub.net](https://imeihub.net/service.php?slug=free-imei-check) — confirms brand, model, and basic device status.
+- **International blacklist check:** [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) — essential for buying second-hand phones to rule out stolen/lost reports from the original country of purchase.
+
+---
+
+## What Happens If You Do Not Register?
+
+| Scenario | Consequence |
+|---|---|
+| Arrive with unregistered foreign phone | Phone connects to Wi-Fi normally; no SIM/cellular service |
+| Within 90-day grace period | Phone continues to work on Wi-Fi only; deadline clock is running |
+| After 90 days (still unregistered) | Bea Cukai / Komdigi issue blocking directive to all operators |
+| Insert local SIM after block | Card is rejected or shows "no service" — block is at IMEI level |
+| Sell the blocked phone | Buyer cannot use it on any Indonesian cellular network |
+
+Once blocked, restoration requires a visit to a Bea Cukai office in person with original proof of purchase and passport, plus payment of any overdue tax plus a penalty.
+
+---
+
+## Practical Tips for Tourists
+
+- **Declare online before landing** — the e-form takes five minutes and avoids airport queues.
+- **Bring exact IDR or a widely accepted card** — not all Bea Cukai counters accept Amex or foreign digital wallets.
+- **Photograph your receipt** immediately — if connectivity issues arise later, you will need this as proof.
+- **Budget ≈31% of the excess value** when planning to buy a phone abroad for use in Indonesia.
+- **Phones under $500 still need IMEI registration** — it is free, but mandatory.
+- **Buying second-hand locally? Check IMEI first.** Phones sold at Glodok (Jakarta), ITC Roxy Mas, or online marketplaces sometimes have unregistered or cloned IMEIs.
+
+---
+
+## Frequently Asked Questions
+
+**Q: My phone was bought in Singapore. Do I still need to register in Indonesia?**
+A: Yes. Any device not originally sold through official Indonesian distributor channels requires registration, regardless of purchase country.
+
+**Q: Can I register more than one phone at a time?**
+A: Individuals may register up to **2 mobile devices per trip** duty-free (subject to the $500 combined value threshold). Commercial quantities require a formal import licence.
+
+**Q: I am transiting through Bali for 8 hours — do I need to register?**
+A: If you stay within the international transit zone and do not pass through immigration, no registration is needed. Clearing immigration triggers the 90-day grace period.
+
+**Q: Is the Bea Cukai IMEI tax a recurring annual fee?**
+A: No. It is a **one-time payment** at the point of import. Once registered, your IMEI is permanently in the Indonesian database — no renewal required.
+
+**Q: I forgot to register at the airport. What are my options?**
+A: You have up to **90 days from entry** to register online at beacukai.go.id or at any Bea Cukai office. After 90 days the online window closes; you must visit a Bea Cukai office directly.
+
+**Q: Can I get a refund on the tax if I leave Indonesia early?**
+A: No. The tax is a one-time import levy. However, the IMEI remains permanently registered, so there is no re-payment required on future visits.
+
+**Q: My phone is already blocked. Can it be unblocked?**
+A: In principle, yes — visit a Bea Cukai office with your passport, IMEI, and original purchase documentation. The process is significantly more complex and time-consuming than proactive registration.
+
+**Q: Does this regulation apply to smartwatches and tablets with SIM cards?**
+A: Yes. Any device with a SIM card slot that connects to cellular networks must have its IMEI registered in Indonesia, including cellular iPads and LTE-enabled smartwatches.
+MD,
+    ],
+
 ]; // end return

@@ -1870,4 +1870,1816 @@ A: Bea Cukai officers will assess the phone's value based on the model's market 
 MD,
     ],
 
+    // =========================================================
+    // DAY 15 | Kenya — Check Stolen Phone / IMEI Blacklist
+    // =========================================================
+    [
+        'slug'    => 'check-stolen-phone-kenya-imei-blacklist',
+        'title'   => 'Check Stolen Phone in Kenya: IMEI Blacklist 2025',
+        'excerpt' => 'Find out if a phone is stolen or blacklisted in Kenya before buying. Check your IMEI against the Communications Authority database. 2025 guide.',
+        'date'    => '2026-06-12',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## How to Check If a Phone Is Stolen in Kenya
+
+Phone theft is a serious problem across Nairobi, Mombasa, and Kisumu. The **Communications Authority of Kenya (CA)** maintains a national **IMEI blacklist** in partnership with Safaricom, Airtel Kenya, and Telkom Kenya, preventing stolen phones from being reactivated on local networks.
+
+If you are buying a used phone — at a market, on Jiji.co.ke, or from a private seller — verifying the IMEI against the blacklist before paying is the most important step you can take.
+
+## How Kenya's Phone Blacklist Works
+
+When a phone is stolen and the victim reports it:
+
+1. Victim files a **police abstract** at the nearest Kenya Police Service station
+2. Victim calls their operator (**Safaricom 100**, **Airtel 175**, **Telkom 100**) with the IMEI and report number
+3. Operator blocks the device and reports it to the **CA national IMEI database**
+4. CA distributes the blacklisted IMEI to all participating networks
+5. Phone is blocked on **all Kenyan networks within 24–48 hours**
+
+## Three Ways to Check If a Phone Is Blacklisted in Kenya
+
+### Method 1: Call Your Operator
+Call customer care with the phone's IMEI and ask for a blacklist status check:
+- **Safaricom**: Dial 100 (free from Safaricom line)
+- **Airtel Kenya**: Dial 175
+- **Telkom Kenya**: Dial 100
+
+### Method 2: International IMEI Check
+For phones that may have been stolen abroad (common for iPhones and Samsung flagships), use an international blacklist database:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+### Method 3: Physical Verification Before Purchase
+Always ask the seller to:
+1. Dial `*#06#` to display the IMEI on screen in front of you
+2. Show that the displayed IMEI matches the label on the SIM tray or original box
+3. Allow you to insert your own SIM card to verify network connectivity before paying
+
+## Warning Signs When Buying a Used Phone in Kenya
+
+| Red Flag | What It Likely Means |
+|---|---|
+| Seller refuses to dial `*#06#` | Hiding a blacklisted IMEI |
+| IMEI on screen differs from box label | Counterfeit or tampered device |
+| Price far below current market value | Possibly stolen |
+| No purchase receipt available | No legitimate ownership history |
+| Seller insists on rushing the transaction | Common behaviour for stolen goods sales |
+| Unusual scratches around SIM tray area | Physical IMEI label may have been altered |
+
+## Where Stolen Phones Are Commonly Sold in Kenya
+
+### Nairobi
+- **Luthuli Avenue** — main electronics street; high volume, mixed legitimacy
+- **Gikomba Market** — second-hand goods; stolen phones mixed with legitimate used devices
+- **OLX Kenya / Jiji.co.ke** — high volume of online used phone listings; always verify IMEI before meeting
+
+### Mombasa
+- **Moi Avenue electronics shops** — mix of legitimate and grey market phones
+
+### Kisumu
+- **Kisumu Town Centre** electronics district
+
+## How to Report a Stolen Phone in Kenya
+
+If your own phone is stolen:
+
+1. **File a police abstract** immediately — you need the report reference number
+2. **Call your operator** to request IMEI blocking:
+   - Safaricom: 100 | Airtel: 175 | Telkom: 100
+3. **Use remote tracking**: Google Find My Device (Android) or Apple Find My (iPhone) while the phone is still active
+4. **Contact Communications Authority** if operators are slow to respond: 0800 722 345 (toll-free)
+5. **Save your IMEI now** — dial `*#06#` on your current phone and record the number somewhere safe, before any theft occurs
+
+## Frequently Asked Questions
+
+**Q: Is there a public CA website to check stolen phones in Kenya?**
+A: The CA does not yet operate a consumer-facing public IMEI check portal. Your best options are contacting your operator directly or using an international IMEI checker at imeihub.net.
+
+**Q: I unknowingly bought a stolen phone — can I unblock it?**
+A: No. A blacklisted phone stays blocked until the original owner files a removal request. Return the phone to the seller and demand a refund.
+
+**Q: Does Safaricom share stolen phone data with other countries?**
+A: Yes. Through the GSMA's international sharing programme, Kenyan blacklist data is increasingly shared globally — a phone stolen in Kenya may eventually be blocked in other countries.
+
+**Q: Can I check a Jiji.co.ke listing IMEI before meeting the seller?**
+A: Yes — ask the seller to send you the IMEI via chat. Run it through imeihub.net before agreeing to meet. Sellers who refuse to share the IMEI before meeting should be avoided.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 16 | Myanmar — CEIR Grey List: Unblock Phone Guide
+    // =========================================================
+    [
+        'slug'    => 'ceir-myanmar-grey-list-unblock-phone-guide',
+        'title'   => 'CEIR Myanmar Grey List: Unblock Your Phone 2025',
+        'excerpt' => "Understand Myanmar's CEIR Grey List and learn how to register your phone before the deadline to avoid permanent network blocking in 2025.",
+        'date'    => '2026-06-13',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## What Does Grey List Mean on ceir.gov.mm?
+
+On Myanmar's **CEIR portal (ceir.gov.mm)**, every mobile device has one of four statuses: **White List**, **Grey List**, **Black List**, or **Unregistered**. If your phone shows **Grey List**, it means:
+
+- Your phone is **provisionally active** — it can currently connect to Myanmar networks
+- It has been flagged as **not fully registered** and given a deadline to complete the process
+- After that deadline, without registration, your device is moved to **Black List** and permanently blocked
+
+Grey List is a warning — your phone is working on borrowed time.
+
+## Why Is My Phone on Myanmar's CEIR Grey List?
+
+Common reasons for Grey List status:
+
+- Phone activated with a Myanmar SIM but **never formally registered** on CEIR
+- Device purchased locally but the **seller did not complete** IMEI registration on your behalf
+- Foreign phone activated with a Myanmar SIM and **not registered within 30 days**
+- Device was registered in an older system but **not migrated** to the current CEIR database
+
+## How Long Is the Grey List Grace Period?
+
+| Device Category | Typical Grace Period | After Deadline |
+|---|---|---|
+| New locally purchased phone | 30–60 days from activation | Moved to Black List |
+| Foreign phone (tourist/visitor) | 30 days after local SIM activation | Moved to Black List |
+| Grandfathered legacy devices | Extended deadlines announced by PTD | Moved to Black List |
+
+**Do not wait until the deadline expires.** Register immediately the moment you see Grey List status.
+
+## Step-by-Step: Move from Grey List to White List
+
+**Step 1:** Visit **ceir.gov.mm** and confirm your IMEI shows as Grey List.
+
+**Step 2:** Create an account (or log in) using your Myanmar mobile number with OTP verification.
+
+**Step 3:** Click **"Register New Device"** from your dashboard.
+
+**Step 4:** Enter your IMEI (dial `*#06#`), device brand, model, purchase date, and country.
+
+**Step 5:** Upload your purchase receipt and a photo of your NRC or passport.
+
+**Step 6:** Submit. You will receive a registration reference number.
+
+**Step 7:** Wait 24–48 hours. Approved devices are moved to **White List** and confirmed via SMS.
+
+## What Happens If You Miss the Grey List Deadline?
+
+Once moved to **Black List**:
+- Voice calls, SMS, and mobile data on all Myanmar networks (MPT, Telenor, Ooredoo, MyTel) are **cut off**
+- Your phone can still use **Wi-Fi**
+- Re-activation requires a formal **PTD appeal** — not a simple online re-registration
+
+## How to Appeal a Black List in Myanmar
+
+If your device was wrongly blacklisted or you missed the Grey List deadline:
+
+**Step 1:** Gather documents — purchase receipt, NRC or passport, IMEI screenshots.
+
+**Step 2:** Visit a **PTD (Post and Telecommunication Department)** office:
+- Yangon: PTD Headquarters, Lanmadaw Township
+- Mandalay: PTD Regional Office
+- Naypyidaw: PTD Central Office
+
+**Step 3:** Complete and submit a **Black List Appeal Form** with all supporting documents.
+
+**Step 4:** PTD reviews within 5–10 working days. If approved, status is restored to White List.
+
+**Step 5:** Verify the change by checking ceir.gov.mm after 48 hours.
+
+## Check Your Status Right Now
+
+Don't wait for a network problem to reveal you are on Grey List. Check proactively:
+
+- Visit **ceir.gov.mm** → Device Status Check → Enter your IMEI
+- Grey List or Unregistered? Register immediately via this guide
+- Black List? Visit a PTD office today
+
+Also verify your device is clean internationally:
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## Frequently Asked Questions
+
+**Q: Will I lose my Myanmar phone number when my device is Black Listed?**
+A: No. Your SIM card and number remain valid. Insert the SIM into a different, registered phone and your number works normally. Only the unregistered device's IMEI is blocked.
+
+**Q: Can I register my phone at an operator store instead of ceir.gov.mm?**
+A: Yes. MPT, Telenor Myanmar, Ooredoo Myanmar, and MyTel stores can assist with CEIR registration in person.
+
+**Q: My phone worked fine for a year, then suddenly showed Grey List. Why?**
+A: PTD periodically runs compliance sweeps. Devices previously tolerated without registration are formally placed on Grey List during these sweeps with a new deadline.
+
+**Q: If I sell my Grey List phone, does the new owner inherit the problem?**
+A: Yes. The Grey List status stays on the IMEI. The new owner must register the IMEI under their own name to bring it to White List.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 17 | Nigeria — NCC Type Approval Check
+    // =========================================================
+    [
+        'slug'    => 'ncc-type-approval-check-nigeria-approved-phones',
+        'title'   => 'NCC Type Approval Nigeria: Approved Phone Check 2025',
+        'excerpt' => 'Learn what NCC Type Approval means in Nigeria and how to check if your phone model is approved. Avoid network blocking with this 2025 compliance guide.',
+        'date'    => '2026-06-14',
+        'tag'     => 'Regulation',
+        'body'    => <<<'MD'
+## What Is NCC Type Approval in Nigeria?
+
+The **Nigerian Communications Commission (NCC)** requires every **model** of mobile device sold or used in Nigeria to undergo **Type Approval** — a formal regulatory assessment confirming the device meets Nigerian and international telecommunications standards.
+
+Type Approval is different from individual IMEI blacklisting. It operates at the **device model level**, not the individual unit level. If a specific model (e.g., "XYZ Phone Model A") has not been approved by the NCC, every unit of that model may be blocked from Nigerian networks regardless of individual IMEI status.
+
+## Why NCC Type Approval Exists
+
+The NCC introduced Type Approval to:
+
+- **Protect network integrity** — unapproved devices with non-standard radio frequency emissions can interfere with mobile network infrastructure
+- **Safeguard consumers** from substandard hardware that may pose health or safety risks
+- **Combat counterfeit phones** sold under well-known brand names but not meeting technical standards
+- **Ensure electromagnetic compatibility** with Nigerian spectrum allocations
+
+## How to Check If Your Phone Model Is NCC Type Approved
+
+### Method 1: NCC Type Approval Database
+
+**Step 1:** Visit the NCC official website at **ncc.gov.ng**
+
+**Step 2:** Navigate to the **"Type Approval"** section under Regulatory Services
+
+**Step 3:** Search by:
+- Brand name (e.g., Samsung, Apple, Tecno, Itel)
+- Model name (e.g., Galaxy S24 Ultra, iPhone 16 Pro)
+- TA Certificate Number (if available from seller)
+
+**Step 4:** Confirm your exact model appears in the approved list
+
+### Method 2: Ask for the TA Certificate
+
+Legitimate distributors and importers hold an **NCC Type Approval (TA) Certificate** for every device model they sell. When buying from a shop, ask to see:
+- The TA Certificate number for the specific device model
+- The approval date and validity period
+
+### Method 3: Check Device Packaging
+
+NCC-approved devices sold through official channels typically carry:
+- An **NCC Type Approval sticker** on the box
+- The TA Certificate number printed on packaging
+
+## What Happens If Your Phone Model Is Not NCC Type Approved?
+
+If a device model is not on the NCC Type Approval list:
+
+1. **Network operators are notified** to flag IMEIs of that model
+2. **Device owners receive SMS warnings** about non-compliance
+3. **Grace period is given** to replace the device or have it type-approved
+4. **After grace period**: All IMEIs of the unapproved model are blocked across MTN, Airtel, Glo, and 9mobile
+
+## Most Common Brands with NCC Type Approval Issues in Nigeria
+
+| Situation | Risk Level | Action |
+|---|---|---|
+| Major brands (Apple, Samsung, Tecno, Itel, Infinix) | Low — typically pre-approved | Verify certificate on packaging |
+| Xiaomi/Redmi (sold through official channels) | Low | Confirm official distributor |
+| Xiaomi/Redmi (grey market imports) | High | Check TA status; may not be approved |
+| Generic/no-name Chinese brands | Very High | Likely not NCC approved; avoid |
+| Phones sold below market price in markets | High | Possibly non-approved clone |
+
+## NCC Type Approval vs. Individual IMEI Blacklist: Key Differences
+
+| Feature | Type Approval | IMEI Blacklist |
+|---|---|---|
+| Applies to | All units of a specific model | One specific device |
+| Reason | Technical non-compliance | Theft, fraud, or regulatory breach |
+| Who is affected | All buyers of that model | Owner of the specific blacklisted device |
+| How to resolve | Model-level re-approval by manufacturer | Individual IMEI dispute process |
+
+## Verify Your Individual Device Before Buying
+
+Beyond Type Approval, always run an individual IMEI check to confirm your specific unit is not blacklisted:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## Frequently Asked Questions
+
+**Q: My phone model is NCC type approved — does that mean my specific unit is safe?**
+A: Type Approval confirms the model is technically compliant, but your specific unit could still be individually blacklisted (if it was stolen or reported fraudulent). Always run both a Type Approval check and an individual IMEI check.
+
+**Q: Can a foreign company get NCC Type Approval for their phone model in Nigeria?**
+A: Yes. Any manufacturer or authorized importer can apply for NCC Type Approval by submitting the device for technical evaluation and paying the applicable fees.
+
+**Q: I imported a phone from China directly — is it automatically NCC approved?**
+A: No. Phones imported directly without going through an NCC-approved distributor are unlikely to have Type Approval, especially lesser-known brands or OEM devices.
+
+**Q: What is the NCC helpline for Type Approval inquiries?**
+A: Contact the NCC at **0800 NCC HELP** (toll-free from all Nigerian networks) or visit ncc.gov.ng for the Type Approval inquiry form.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 18 | Ghana — Phone Import Tax & Customs Duty
+    // =========================================================
+    [
+        'slug'    => 'ghana-phone-import-tax-customs-duty-calculator',
+        'title'   => 'Ghana Phone Import Tax: Customs Duty Guide 2025',
+        'excerpt' => 'Calculate Ghana customs duty on imported smartphones. Learn GRA import tax rates, duty-free allowances, and how to declare phones at Kotoka Airport.',
+        'date'    => '2026-06-15',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## Ghana Import Tax on Mobile Phones: 2025 Overview
+
+Importing a mobile phone into Ghana — whether as a traveler arriving at **Kotoka International Airport**, through a courier service, or via commercial import — is subject to customs duties and taxes administered by the **Ghana Revenue Authority (GRA)** and enforced by **Ghana Customs Division**.
+
+Understanding Ghana's phone import tax rates helps you budget correctly, avoid unexpected charges, and stay compliant with Ghanaian customs law.
+
+## Ghana Phone Import Tax Rates (2025)
+
+Ghana's customs duties on mobile phones are calculated on the **CIF value** (Cost + Insurance + Freight) of the device. Key taxes include:
+
+| Tax Component | Rate | Applies To |
+|---|---|---|
+| Import Duty | 20% | All commercially imported phones |
+| VAT (Value Added Tax) | 15% | Applied after import duty |
+| NHIL (National Health Insurance Levy) | 2.5% | Applied on CIF value |
+| GETFund Levy | 2.5% | Applied on CIF value |
+| COVID-19 Health Recovery Levy | 1% | Applied on CIF value |
+| ECOWAS Levy | 0.5% | Regional trade levy |
+
+**Effective combined rate for commercial imports: approximately 44–48% of CIF value**
+
+> Traveler's personal allowance: One phone brought for personal use may qualify for reduced or zero duty under the **GRA traveler's exemption**. Conditions apply.
+
+## Traveler's Personal Duty-Free Allowance in Ghana
+
+Travelers arriving at Kotoka International Airport or other Ghanaian ports of entry have a duty-free allowance for personal goods:
+
+- **One mobile phone** for personal use: Generally allowed duty-free if clearly used and not for resale
+- **Value threshold**: New phones in original packaging above GHS 10,000 (~USD 650) may be assessed for duty
+- **Commercial imports**: Any quantity brought for resale requires full customs documentation and duty payment
+
+## Step-by-Step: Declaring Your Phone at Kotoka International Airport
+
+**Step 1 — Know your IMEI before arrival**
+Dial `*#06#` and note both IMEI numbers for dual-SIM devices.
+
+**Step 2 — Complete the Passenger Declaration Form**
+On arrival, complete the GRA customs declaration form and declare any new or high-value devices.
+
+**Step 3 — Proceed to the appropriate channel**
+- **Green channel (nothing to declare)**: For one personal used phone with no commercial intent
+- **Red channel (goods to declare)**: For new phones, multiple devices, or commercial imports
+
+**Step 4 — GRA customs officer assessment**
+The officer assesses your device based on:
+- Visible use (new factory-sealed vs. clearly used)
+- Number of devices
+- Declared and assessed value
+
+**Step 5 — Pay applicable duties**
+If duty is assessed, pay at the GRA customs cashier at the airport. Keep your payment receipt as proof.
+
+## How to Calculate Import Duty for a Phone Ordered Online
+
+For phones shipped to Ghana via courier (DHL, FedEx, UPS, Aramex) or through postal services:
+
+**Formula:**
+1. Determine CIF value = Item Price + Shipping Cost + Insurance
+2. Apply Import Duty: CIF × 20%
+3. Apply NHIL: CIF × 2.5%
+4. Apply GETFund: CIF × 2.5%
+5. Apply VAT: (CIF + Import Duty + Levies) × 15%
+6. Apply COVID Levy: CIF × 1%
+7. Apply ECOWAS Levy: CIF × 0.5%
+
+**Example — iPhone 15 valued at USD 799:**
+- CIF (including shipping to Ghana): ~USD 850
+- Import Duty (20%): USD 170
+- NHIL (2.5%): USD 21.25
+- GETFund (2.5%): USD 21.25
+- VAT (15% on subtotal): ~USD 160
+- Total estimated duty: ~USD 372 on a USD 850 phone
+
+## Verify Your IMEI After Import
+
+After bringing your phone into Ghana, verify it is not blacklisted and is properly registered with the NCA:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## Frequently Asked Questions
+
+**Q: Can I bring two phones into Ghana duty-free?**
+A: Typically no. The duty-free personal allowance covers one phone. A second device, especially if new, will attract duty assessment.
+
+**Q: Do phones bought from Jumia Ghana or Tonaton attract import duty?**
+A: These platforms primarily sell through local dealers who have already cleared customs. Import duty is factored into the retail price. No additional duty is payable on purchase from these platforms.
+
+**Q: What if I undervalue my phone on the customs declaration?**
+A: GRA officers have access to current market price data. Deliberate undervaluation is considered customs fraud and can result in device confiscation and fines.
+
+**Q: Is import duty the same for all phone brands in Ghana?**
+A: Yes. The duty rate applies uniformly based on the HS Code for mobile phones, regardless of brand or model.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 19 | Pakistan — PTA Tax Samsung Galaxy S24 & S25
+    // =========================================================
+    [
+        'slug'    => 'pta-tax-samsung-galaxy-s24-s25-pakistan-2025',
+        'title'   => 'PTA Tax Samsung Galaxy S24 & S25 Pakistan 2025',
+        'excerpt' => 'Exact PTA DIRBS registration tax for Samsung Galaxy S24 and S25 series in Pakistan. Calculate fees for all models before importing your Samsung device.',
+        'date'    => '2026-06-16',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## PTA Tax on Samsung Galaxy Phones in Pakistan (2025)
+
+If you are bringing a **Samsung Galaxy smartphone** into Pakistan — whether returning from abroad, receiving one as a gift, or purchasing through the grey market — you must register it with the **Pakistan Telecommunication Authority (PTA)** via the **DIRBS system**. Unregistered Samsung phones are blocked from Jazz, Zong, Telenor Pakistan, Ufone, and SCO networks after 60 days.
+
+This guide provides estimated PTA DIRBS registration tax figures for the **Galaxy S24 series** and **Galaxy S25 series** — Pakistan's most popular flagship Samsung lineup.
+
+## Samsung Galaxy S25 Series: PTA DIRBS Tax (2025)
+
+| Model | Storage | Approx. Global Price | Estimated PTA Tax (PKR) |
+|---|---|---|---|
+| Galaxy S25 | 128GB | ~USD 799 | PKR 72,000–82,000 |
+| Galaxy S25 | 256GB | ~USD 859 | PKR 78,000–88,000 |
+| Galaxy S25+ | 256GB | ~USD 999 | PKR 90,000–102,000 |
+| Galaxy S25+ | 512GB | ~USD 1,099 | PKR 99,000–112,000 |
+| Galaxy S25 Ultra | 256GB | ~USD 1,299 | PKR 116,000–130,000 |
+| Galaxy S25 Ultra | 512GB | ~USD 1,419 | PKR 127,000–142,000 |
+| Galaxy S25 Ultra | 1TB | ~USD 1,659 | PKR 148,000–165,000 |
+
+## Samsung Galaxy S24 Series: PTA DIRBS Tax (2025)
+
+| Model | Storage | Approx. Global Price | Estimated PTA Tax (PKR) |
+|---|---|---|---|
+| Galaxy S24 | 128GB | ~USD 699 | PKR 62,000–71,000 |
+| Galaxy S24 | 256GB | ~USD 759 | PKR 68,000–77,000 |
+| Galaxy S24+ | 256GB | ~USD 999 | PKR 90,000–101,000 |
+| Galaxy S24+ | 512GB | ~USD 1,119 | PKR 100,000–113,000 |
+| Galaxy S24 Ultra | 256GB | ~USD 1,299 | PKR 116,000–130,000 |
+| Galaxy S24 Ultra | 512GB | ~USD 1,419 | PKR 126,000–141,000 |
+| Galaxy S24 Ultra | 1TB | ~USD 1,659 | PKR 147,000–165,000 |
+
+> **Important:** All figures are estimates based on 2025 DIRBS tax slabs and indicative exchange rates. Exact PTA tax is calculated in real time on **dirbs.pta.gov.pk** based on the current PKR/USD rate. Verify before registering.
+
+## Mid-Range Samsung Galaxy: PTA Tax Estimates
+
+| Model | Approx. Price | Estimated PTA Tax (PKR) |
+|---|---|---|
+| Galaxy A55 5G | ~USD 449 | PKR 38,000–46,000 |
+| Galaxy A35 5G | ~USD 349 | PKR 28,000–35,000 |
+| Galaxy A25 5G | ~USD 249 | PKR 18,000–24,000 |
+| Galaxy A15 | ~USD 179 | PKR 10,000–15,000 |
+| Galaxy M Series (budget) | USD 130–200 | PKR 7,000–14,000 |
+
+## How to Register a Samsung Galaxy on PTA DIRBS
+
+**Step 1:** Find your Samsung Galaxy's IMEI — dial `*#06#` or go to Settings → About Phone → Status → IMEI Information.
+
+**Step 2:** Visit **dirbs.pta.gov.pk** and log in with your CNIC (Pakistani nationals) or passport (foreigners).
+
+**Step 3:** Click **"New Device Registration"** and enter your IMEI. The system auto-identifies your Samsung model.
+
+**Step 4:** The system displays the exact PTA registration tax in PKR.
+
+**Step 5:** Pay using JazzCash, EasyPaisa, internet banking, or debit/credit card.
+
+**Step 6:** Receive your **DIRBS Registration Certificate** by email. Your Samsung is now Compliant.
+
+## PTA-Registered vs. Non-PTA Samsung Galaxy: What's the Difference?
+
+| Feature | PTA Registered | Non-PTA (Grey Market) |
+|---|---|---|
+| Network access | Full cellular access | Blocked after 60 days |
+| Warranty | Official Samsung Pakistan warranty | No local warranty |
+| Software updates | Full official Samsung updates | Usually works via Wi-Fi |
+| Resale value | Higher — buyer has no additional cost | Lower — buyer must pay PTA tax |
+| Risk | None | High — may be blocked anytime |
+
+## Check Your Samsung's IMEI Before Buying Used
+
+Pakistan's second-hand market — especially **Hall Road Lahore**, **Hafeez Centre Lahore**, and **Saddar Karachi** — has both legitimate and non-PTA Samsung phones. Before buying:
+
+- Check DIRBS status: send IMEI to **8484** via SMS
+- Run a full international blacklist check
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## Frequently Asked Questions
+
+**Q: Is the PTA tax the same for Samsung Galaxy S24 bought in UAE vs. USA?**
+A: Yes. Tax is based on the device model's assessed value, not the country of purchase. The tax amount for an S24 Ultra is the same regardless of where you bought it.
+
+**Q: Can I use a non-PTA Samsung on Wi-Fi in Pakistan?**
+A: Yes. Blocked phones retain full Wi-Fi functionality — you can still use WhatsApp, Gmail, and other apps over Wi-Fi. Mobile data, calls, and SMS on Pakistani networks are blocked.
+
+**Q: Does PTA tax apply to Samsung Galaxy tablets as well?**
+A: Yes. Samsung Galaxy Tab models with cellular/LTE connectivity require the same DIRBS registration as smartphones.
+
+**Q: What if I already paid PTA tax and my phone is still showing Non-Compliant?**
+A: Check the DIRBS payment status on dirbs.pta.gov.pk. If payment was confirmed but status is still Non-Compliant, contact PTA support at **helpdesk@pta.gov.pk** or call 0800-55055 (toll-free).
+MD,
+    ],
+
+    // =========================================================
+    // DAY 20 | Indonesia — How to Unblock IMEI (Kominfo Guide)
+    // =========================================================
+    [
+        'slug'    => 'unblock-imei-indonesia-kominfo-bea-cukai-guide',
+        'title'   => 'How to Unblock IMEI in Indonesia: Kominfo Guide 2025',
+        'excerpt' => 'Your phone got blocked in Indonesia? Learn how to unblock your IMEI through Bea Cukai and Kominfo with this step-by-step 2025 guide for all phone types.',
+        'date'    => '2026-06-17',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## Why Your Phone Was Blocked in Indonesia
+
+If your foreign phone suddenly stopped working on Indonesian mobile networks — you can no longer make calls, send SMS, or use mobile data with a local SIM — your IMEI has likely been **blocked by Kominfo (Ministry of Communication and Information Technology)** due to unregistered status with **Bea Cukai (Indonesian Customs)**.
+
+This happens to:
+- Tourists who used an Indonesian SIM without registering at the airport
+- Online shoppers who received phones from abroad without going through customs IMEI registration
+- Expats who missed the 90-day registration window after activation
+
+The good news: **IMEI blocking in Indonesia is reversible.** You can unblock by completing the registration and paying applicable duties.
+
+## How Indonesia's IMEI Blocking System Works
+
+When a foreign IMEI is detected on Indonesian networks:
+
+1. **Detection phase (Day 1–90)**: Phone works normally on Indonesian SIMs
+2. **Warning phase**: Some operators send SMS warnings about unregistered IMEI status
+3. **Blocking enforcement (after Day 90)**: Kominfo instructs Telkomsel, Indosat, XL Axiata, and Smartfren to block the IMEI
+4. **Wi-Fi remains active**: Only cellular network access is cut; Wi-Fi apps continue to work
+
+## How to Unblock Your IMEI in Indonesia
+
+### Method 1: Visit a Bea Cukai Office (Recommended)
+
+**Step 1:** Locate the nearest Bea Cukai (DJBC) office:
+- Jakarta: Bea Cukai Soekarno-Hatta, Bea Cukai Jakarta Pusat
+- Bali: Bea Cukai Ngurah Rai, Bea Cukai Denpasar
+- Surabaya: Bea Cukai Juanda, Bea Cukai Tanjung Perak
+- Medan: Bea Cukai Kualanamu
+- Makassar: Bea Cukai Sultan Hasanuddin
+
+**Step 2:** Bring these documents:
+- Passport (original + photocopy)
+- Phone purchase receipt (original)
+- The blocked phone itself
+- Payment method (cash IDR, or debit/credit card)
+
+**Step 3:** Tell the officer you need to register an unregistered IMEI. They will enter your IMEI into the DJBC system.
+
+**Step 4:** Officer calculates applicable duty:
+- Phone under USD 500: Registration fee only (minimal or free)
+- Phone over USD 500: Import duty on excess amount (10% + 11% VAT + 2.5% PPh on the amount above USD 500)
+
+**Step 5:** Pay the duty and receive your **Bea Cukai registration certificate**.
+
+**Step 6:** Unblocking takes **2–7 working days** after payment confirmation. Your IMEI is moved to the national whitelist and cellular access is restored.
+
+### Method 2: Online Registration for Recently Blocked Phones
+
+If your phone was blocked within the last few months and you have all documentation:
+
+**Step 1:** Visit **beacukai.go.id** → IMEI Registration section
+
+**Step 2:** Log in or create an account
+
+**Step 3:** Submit IMEI registration form with your passport, IMEI, purchase receipt, and flight arrival details
+
+**Step 4:** Pay applicable duties via the portal (bank transfer, virtual account, credit card)
+
+**Step 5:** Receive confirmation and wait 2–7 working days for network access restoration
+
+## How to Check If Your IMEI Is Whitelisted After Unblocking
+
+After completing the Bea Cukai process:
+
+**Method 1:** Visit **imei.kemenperin.go.id** (Kemenperin whitelist check) and enter your IMEI to confirm whitelist status.
+
+**Method 2:** Insert your Indonesian SIM card and attempt to make a call or use mobile data. If successful, your IMEI is unblocked.
+
+**Method 3:** Run an international IMEI check:
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## Timeline: From Blocked to Unblocked
+
+| Step | Time Required |
+|---|---|
+| Visit Bea Cukai office | 1–3 hours (including waiting time) |
+| Payment processing | Same day |
+| Kominfo whitelist update | 2–7 working days |
+| Operator network restoration | Within 24 hours of whitelist update |
+| Total estimated time | 3–8 working days |
+
+## Frequently Asked Questions
+
+**Q: My phone was blocked 6 months ago — can I still unblock it?**
+A: Yes. There is no deadline after which unblocking becomes impossible. However, late registration may attract additional administrative penalties. Visit Bea Cukai as soon as possible.
+
+**Q: Can I unblock my phone without the original purchase receipt?**
+A: A purchase receipt is strongly recommended. Without it, Bea Cukai assesses your phone's value based on current market price for your model, which may result in higher duty. Bring the phone's original box or any documentation available.
+
+**Q: My IMEI was unblocked but my phone still shows no network — what should I do?**
+A: Allow up to 24 hours after the whitelist update. If still blocked, restart your phone and re-insert the SIM. If the issue persists, contact your operator directly — Telkomsel (155), Indosat (185), XL (817), Smartfren (888).
+
+**Q: Does unblocking in Indonesia cost anything for phones under USD 500?**
+A: There may be a nominal administrative fee but no import duty for phones valued under USD 500. The exact fee varies by Bea Cukai office.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 21 | Sierra Leone — Safe Used Phone Buying Guide
+    // =========================================================
+    [
+        'slug'    => 'safe-used-phone-buying-guide-sierra-leone',
+        'title'   => 'Safe Used Phone Buying Guide: Sierra Leone 2025',
+        'excerpt' => 'Complete guide to buying a used smartphone safely in Sierra Leone. IMEI checks, red flags, scam protection, and trusted market tips for 2025 buyers.',
+        'date'    => '2026-06-18',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## How to Buy a Used Phone Safely in Sierra Leone
+
+Sierra Leone's growing middle class and expanding mobile network coverage have created strong demand for affordable smartphones. The used phone market — centered in **Freetown's Congo Town**, **Lumley**, and **Bo Town's** electronics districts — offers significant savings over new retail prices, but also carries real risks.
+
+This guide gives you the complete toolkit to buy a used smartphone safely in Sierra Leone: what to check, what to ask, and what to walk away from.
+
+## Step 1: Decide What You Need Before Shopping
+
+Before visiting any market:
+
+- **Set a realistic budget** — know the current market price for your desired model (check Facebook Marketplace Sierra Leone or Salone Connect)
+- **Choose your preferred brand** — Tecno, Itel, and Infinix are popular and parts are widely available in Sierra Leone
+- **Decide on minimum specs** — minimum RAM, storage, and camera requirements for your needs
+- **List your SIM requirements** — do you need dual-SIM? Which Sierra Leone networks (Africell, Orange, QCell)?
+
+## Step 2: IMEI Verification — The Most Important Step
+
+Before handing over any money, verify the phone's IMEI.
+
+**How to get the IMEI:**
+Ask the seller to dial `*#06#` on the phone. The IMEI number appears on screen. Note it down.
+
+**What to check with the IMEI:**
+
+1. **Match to physical label** — the number on screen must match the label inside the SIM card tray and on the original box (if available)
+2. **International blacklist check** — run the IMEI through an online database:
+   - [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+   - [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+3. **Validate IMEI format** — a legitimate IMEI is exactly 15 digits. Fewer or more digits indicates a counterfeit.
+
+## Step 3: Physical Inspection Checklist
+
+Examine the phone carefully before buying:
+
+| Check | What to Look For |
+|---|---|
+| Screen condition | No cracks, dead pixels, or discoloration |
+| Battery health | Check in Settings — anything under 80% capacity is concerning |
+| Cameras | Test both front and rear cameras; check for blur or discoloration |
+| Speakers and microphone | Make a test call; check speaker and microphone clarity |
+| Charging port | Insert a cable and verify it charges without wobbling |
+| SIM tray area | Check for tampering or replaced IMEI label |
+| Buttons | Test power, volume, and home button responsiveness |
+| Wi-Fi and Bluetooth | Turn on both and confirm they detect networks |
+
+## Step 4: Test with a Local SIM Card Before Paying
+
+Insert your own Africell, Orange, or QCell SIM card into the phone before completing any payment:
+
+- Make a test call
+- Send a test SMS
+- Open a webpage using mobile data
+
+This confirms the phone is not carrier-locked to a foreign network and works on Sierra Leonean operators.
+
+## Step 5: Check for Account Locks
+
+### iPhone (iCloud Lock)
+Power off the iPhone and power it back on. If the setup screen asks for the previous owner's Apple ID and password — the phone is **iCloud locked**. A locked iPhone cannot be set up or used without the original owner's credentials. **Do not buy it.**
+
+### Android (Google FRP Lock)
+Do a factory reset. If the phone asks for the previous owner's Gmail account after reset — the phone is **FRP (Factory Reset Protection) locked**. Avoid purchasing.
+
+## Step 6: Negotiate and Document the Purchase
+
+If all checks pass:
+
+- **Negotiate the price** — in Sierra Leone's used phone markets, negotiation is expected; target 10–20% off asking price
+- **Ask for a handwritten receipt** with the seller's name, phone model, IMEI, price, and date
+- **Keep the receipt** — your only recourse if problems emerge later
+
+## Red Flags: When to Walk Away
+
+- Seller refuses to let you test with your own SIM
+- Phone is factory-sealed but priced far below market (likely stolen)
+- Seller rushes you or follows up aggressively
+- IMEI on screen does not match any physical label on the phone
+- Phone is iCloud locked or FRP locked and seller claims "it can be removed easily later"
+- Seller cannot answer basic questions about the phone's history
+
+## Trusted Buying Sources in Sierra Leone
+
+| Source | Risk Level | Tips |
+|---|---|---|
+| Authorized brand dealers (Tecno, Itel) | Low | New phones; warranty included |
+| Reputable electronics shops in Freetown | Medium-Low | Ask for receipt; IMEI check still recommended |
+| Freetown Congo Town market stalls | Medium-High | Higher risk; full IMEI verification essential |
+| Facebook Marketplace / Salone Connect | Medium-High | Meet in public place; test before paying |
+| Unknown sellers on street | Very High | Avoid entirely |
+
+## Frequently Asked Questions
+
+**Q: Is it safe to buy a refurbished iPhone in Sierra Leone?**
+A: Refurbished iPhones can be good value, but they carry higher risk. Always check for iCloud lock, run the IMEI through our international checker, and confirm the battery health is acceptable.
+
+**Q: What is the most common used phone scam in Sierra Leone?**
+A: The most common scam is selling iCloud-locked iPhones or Google FRP-locked Androids. The phone appears to work in the shop (pre-loaded demo mode or previous account not cleared), but after reset it becomes unusable.
+
+**Q: Where can I get a phone repaired if something goes wrong after purchase?**
+A: Freetown's Congo Town has established repair shops for Samsung, Tecno, Itel, and Infinix. For iPhones, find a shop that specializes in Apple devices and ask for a quote before authorizing repair.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 22 | Togo — Enregistrement IMEI (French Guide)
+    // =========================================================
+    [
+        'slug'    => 'enregistrement-imei-togo-togocel-moov-guide',
+        'title'   => 'Enregistrement IMEI Togo: Guide Togocel & Moov 2025',
+        'excerpt' => "Guide complet pour vérifier et enregistrer l'IMEI de votre téléphone au Togo avec Togocel et Moov Africa. Protégez-vous contre les appareils volés en 2025.",
+        'date'    => '2026-06-19',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## Pourquoi Vérifier l'IMEI de Votre Téléphone au Togo?
+
+Au Togo, le marché des téléphones d'occasion connaît une croissance rapide, notamment à **Lomé** dans les quartiers d'Adawolawoé et du Grand Marché. Avec cette expansion vient le risque d'acquérir des appareils volés, contrefaits ou bloqués par les opérateurs.
+
+L'**IMEI (Identifiant International d'Équipement Mobile)** est votre meilleur outil de protection. Ce numéro unique de 15 chiffres, attribué à chaque téléphone en usine, permet de vérifier:
+
+- Si l'appareil a été **signalé comme volé**
+- Si l'appareil est **sur liste noire** (blacklist) d'un opérateur
+- Si l'appareil est **contrefait** (IMEI cloné ou invalide)
+- L'identité réelle de l'appareil (marque, modèle, spécifications)
+
+*Why IMEI matters in Togo — English summary: Checking the IMEI before buying any used phone in Togo protects you from stolen, blacklisted, and counterfeit devices flooding the Lomé market.*
+
+## Comment Trouver le Numéro IMEI
+
+Pour obtenir l'IMEI d'un téléphone:
+
+- **Composez `*#06#`** sur le clavier du téléphone — l'IMEI s'affiche instantanément
+- **iPhone**: Réglages → Général → Informations → IMEI
+- **Android**: Paramètres → À propos du téléphone → IMEI
+- **Étiquette physique**: À l'intérieur du compartiment carte SIM
+- **Boîte d'origine**: L'IMEI est imprimé sur l'étiquette code-barres
+
+Les téléphones dual-SIM ont deux IMEI — notez les deux.
+
+## Étapes pour Vérifier un IMEI au Togo
+
+### Étape 1 — Obtenez l'IMEI de l'Appareil
+
+Demandez au vendeur de composer `*#06#` devant vous. L'IMEI s'affiche sur l'écran. Notez ce numéro.
+
+### Étape 2 — Vérifiez que l'IMEI Correspond aux Étiquettes Physiques
+
+Comparez l'IMEI affiché avec:
+- L'étiquette dans le compartiment carte SIM
+- L'étiquette sur la boîte d'origine (si disponible)
+
+Un écart entre l'IMEI affiché et les étiquettes physiques indique un appareil potentiellement contrefait ou falsifié.
+
+### Étape 3 — Effectuez une Vérification Internationale
+
+Le Togo participe aux accords de partage de données IMEI dans le cadre de la CEDEAO. Utilisez notre outil de vérification pour consulter les bases de données internationales:
+
+- [Vérification IMEI Gratuite / Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [Vérification Liste Noire Mondiale / WorldWide Blacklist](https://imeihub.net/service.php?slug=blacklist)
+
+### Étape 4 — Contactez Votre Opérateur
+
+Pour une confirmation locale directe, contactez le service client de **Togocel** ou **Moov Africa Togo** avec l'IMEI pour vérifier si l'appareil est bloqué sur leur réseau.
+
+## Signification des Résultats de Vérification IMEI
+
+| Résultat | Signification | Action à Prendre |
+|---|---|---|
+| Propre / Non listé | Aucun signalement de vol ou de blocage | Sûr d'acheter — vérifiez aussi les verrous de compte |
+| Liste noire / Blacklisté | Signalé comme volé ou bloqué | **Ne pas acheter** |
+| Verrouillé opérateur | Lié à un réseau étranger spécifique | Testez avec une carte SIM togolaise avant d'acheter |
+| IMEI invalide | Format IMEI non conforme | Appareil contrefait probable — **ne pas acheter** |
+
+## Comment Contacter Togocel et Moov Africa Togo
+
+### Togocel
+- **Service client**: Composez 1010 depuis votre ligne Togocel
+- **Agences principales**: Boulevard du 13 Janvier, Lomé; agences régionales à Kara, Sokodé, Atakpamé
+- **Site web**: togocel.tg
+
+### Moov Africa Togo
+- **Service client**: Composez 1414 depuis votre ligne Moov
+- **Agences**: Avenue du 24 janvier, Lomé; présence dans toutes les préfectures
+- **Site web**: moov.africa/togo
+
+## Guide d'Achat Sécurisé de Téléphone au Togo
+
+Avant d'acheter un téléphone d'occasion à Lomé ou ailleurs au Togo:
+
+- [x] Demandez à voir l'IMEI via `*#06#`
+- [x] Vérifiez que l'IMEI correspond aux étiquettes physiques
+- [x] Effectuez une vérification internationale sur imeihub.net
+- [x] Testez avec votre propre carte SIM Togocel ou Moov
+- [x] Vérifiez le verrouillage iCloud (iPhone) ou FRP Google (Android)
+- [x] Demandez un reçu d'achat écrit avec IMEI, modèle, prix et date
+
+## Comment Signaler un Téléphone Volé au Togo
+
+Si votre téléphone est volé:
+
+1. **Déposez une plainte** à la Police Nationale ou à la Gendarmerie — gardez le numéro du procès-verbal
+2. **Contactez votre opérateur** — Togocel (1010) ou Moov (1414) — pour demander le blocage de votre IMEI
+3. **Contactez l'ARCEP Togo** — l'Autorité de Régulation des Communications Électroniques et des Postes — pour escalader le blocage sur tous les réseaux togolais
+4. **Notez votre IMEI maintenant** — composez `*#06#` et enregistrez le numéro quelque part de sûr, avant tout vol
+
+## Questions Fréquentes
+
+**Q: Le Togo dispose-t-il d'un site officiel de vérification IMEI?**
+R: L'ARCEP Togo gère la conformité IMEI au niveau des opérateurs mais ne dispose pas encore d'un portail public de consultation pour les consommateurs. Utilisez notre outil de vérification international.
+
+**Q: Puis-je utiliser au Togo un téléphone signalé volé en France?**
+R: En pratique, certains appareils sur liste noire internationale fonctionnent encore sur les réseaux togolais, car le partage international de ces listes est en cours d'expansion en Afrique de l'Ouest. Cependant, acheter un tel appareil est risqué — il peut être bloqué à tout moment.
+
+**Q: Les téléphones Tecno et Itel vendus au Togo sont-ils fiables?**
+R: Oui. Tecno et Itel sont des marques légitimes et populaires en Afrique de l'Ouest avec des IMEI valides. Les risques concernent principalement les imitations de marques premium (Apple, Samsung) proposées à prix anormalement bas.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 23 | Senegal — Vérifier IMEI iPhone Occasion Dakar
+    // =========================================================
+    [
+        'slug'    => 'verifier-imei-iphone-occasion-dakar-senegal',
+        'title'   => 'Vérifier IMEI iPhone Occasion à Dakar: Guide 2025',
+        'excerpt' => "Comment vérifier l'IMEI d'un iPhone d'occasion à Dakar et au Sénégal. Guide français pour éviter les arnaques, appareils volés et verrouillés en 2025.",
+        'date'    => '2026-06-20',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## Acheter un iPhone d'Occasion à Dakar: Ce Qu'il Faut Savoir
+
+Le marché des iPhones d'occasion à Dakar est florissant, notamment au **Marché Sandaga**, à la **Médina**, et dans les boutiques du **Plateau**. Les iPhones provenant de France, de Belgique, des États-Unis et des pays du Golfe arrivent régulièrement au Sénégal, offrant des économies parfois très importantes.
+
+Cependant, ce marché comporte des risques sérieux:
+- **iPhones volés** en Europe et revendus au Sénégal
+- **iPhones verrouillés iCloud** (Activation Lock) rendus inutilisables après réinitialisation
+- **iPhones non débloqués** liés à un opérateur étranger (Orange France, Bouygues, SFR, AT&T)
+- **iPhones contrefaits** imitant la marque Apple mais fabriqués par des tiers
+
+Ce guide vous explique comment vérifier un iPhone avant tout achat à Dakar.
+
+*English summary: This guide helps buyers in Dakar, Senegal verify iPhone IMEI status before purchase — covering iCloud lock detection, blacklist checking, and operator lock verification.*
+
+## Étape 1 — Trouver le Numéro IMEI de l'iPhone
+
+**Méthode 1:** Composez `*#06#` — l'IMEI s'affiche immédiatement à l'écran.
+
+**Méthode 2:** Allez dans Réglages → Général → Informations → faites défiler jusqu'à IMEI.
+
+**Méthode 3:** Regardez dans le logement de la carte SIM — l'IMEI est parfois gravé ou collé sur le bac SIM.
+
+**Méthode 4:** L'IMEI figure sur la boîte d'origine (étiquette code-barres au dos).
+
+## Étape 2 — Vérification de la Liste Noire (Blacklist)
+
+Un iPhone peut être **fonctionnel en apparence dans la boutique** mais déjà signalé volé dans son pays d'origine. Une fois enregistré sur une base de données internationale, il peut être bloqué à tout moment.
+
+Effectuez une vérification internationale de l'IMEI:
+
+- [Vérification IMEI Gratuite](https://imeihub.net/service.php?slug=free-imei-check)
+- [Vérification Liste Noire Mondiale](https://imeihub.net/service.php?slug=blacklist)
+
+Le résultat indiquera si l'appareil:
+- Est **propre** (clean) — aucun signalement de vol
+- Est sur **liste noire** (blacklisted) — signalé volé ou bloqué
+- Est **verrouillé opérateur** (carrier locked) — lié à un réseau étranger
+
+## Étape 3 — Détecter le Verrouillage iCloud (Activation Lock)
+
+C'est le risque le plus courant avec les iPhones d'occasion à Dakar. Un iPhone verrouillé par iCloud est **totalement inutilisable** sans les identifiants Apple de l'ancien propriétaire.
+
+**Comment vérifier le verrouillage iCloud:**
+
+**Test 1 — À l'allumage:**
+Éteignez l'iPhone et rallumez-le. Si l'écran demande un identifiant Apple (Apple ID) et un mot de passe dès le démarrage — l'iPhone est verrouillé iCloud. **Ne l'achetez pas.**
+
+**Test 2 — Via les Réglages:**
+Allez dans Réglages → [Nom de l'utilisateur] en haut de l'écran. Si un compte Apple est connecté et que le vendeur ne peut pas vous le montrer en train de se déconnecter, posez des questions.
+
+**Test 3 — Simulation de réinitialisation:**
+Demandez au vendeur d'effectuer une réinitialisation (Settings → General → Reset → Erase All Content). Après la réinitialisation, si l'écran demande un Apple ID — l'appareil est verrouillé.
+
+## Étape 4 — Vérifier le Déverrouillage Opérateur
+
+Les iPhones vendus par des opérateurs étrangers (Orange France, SFR, Bouygues, AT&T, Verizon) sont souvent **verrouillés** à leur réseau d'origine. Un iPhone non débloqué n'acceptera pas une carte SIM sénégalaise.
+
+**Comment vérifier:**
+Insérez votre carte SIM Orange Sénégal, Free Sénégal, ou Expresso dans l'iPhone. S'il affiche "SIM non valide" ou "SIM non prise en charge" — l'iPhone est verrouillé.
+
+**Comment résoudre le problème:**
+Un iPhone verrouillé peut être débloqué par l'opérateur d'origine (souvent gratuit après la fin du contrat) ou via un service de déverrouillage par IMEI.
+
+## Grille Tarifaire des iPhones d'Occasion à Dakar (Référence 2025)
+
+| Modèle | État | Prix Estimé à Dakar (XOF) |
+|---|---|---|
+| iPhone 15 Pro Max | Excellent (débloqué, propre) | 900,000–1,200,000 XOF |
+| iPhone 15 | Bon état (débloqué, propre) | 600,000–800,000 XOF |
+| iPhone 14 Pro | Bon état (débloqué, propre) | 500,000–700,000 XOF |
+| iPhone 13 | Bon état (débloqué, propre) | 350,000–500,000 XOF |
+| iPhone 12 | Correct (débloqué) | 250,000–350,000 XOF |
+| iPhone 11 | Correct | 180,000–250,000 XOF |
+
+> Si le prix est significativement inférieur à ces références — posez-vous des questions. Un iPhone 15 à 300,000 XOF est probablement verrouillé iCloud, blacklisté, ou contrefait.
+
+## Liste de Vérification Avant Achat
+
+- [x] IMEI affiché via `*#06#` correspond aux étiquettes physiques
+- [x] Vérification liste noire internationale effectuée sur imeihub.net
+- [x] Test SIM sénégalaise (Orange, Free, Expresso) — appel passé avec succès
+- [x] Pas de verrouillage iCloud — iPhone configuré et fonctionnel sans demande d'Apple ID
+- [x] Pas de verrou d'activation présent après réinitialisation simulée
+- [x] Reçu écrit avec IMEI, modèle, prix, et coordonnées du vendeur
+
+## Questions Fréquentes
+
+**Q: Puis-je acheter un iPhone sur liste noire en France pour l'utiliser au Sénégal?**
+R: Techniquement possible aujourd'hui car le partage des listes noires est encore partiel en Afrique de l'Ouest. Mais risqué: ces appareils peuvent être bloqués à n'importe quel moment sur les réseaux sénégalais à mesure que les accords de partage se renforcent.
+
+**Q: Un iPhone débloqué (unlocked) est-il toujours compatible avec les SIM sénégalaises?**
+R: Oui. Un iPhone "factory unlocked" ou débloqué par l'opérateur fonctionne avec toute carte SIM dans le monde, y compris Orange Sénégal, Free et Expresso.
+
+**Q: Comment signaler un iPhone volé au Sénégal?**
+R: Déposez une plainte à la Police Nationale ou la Gendarmerie. Contactez votre opérateur (Orange: 888, Free: 300) pour signaler l'IMEI et demander le blocage. Contactez aussi l'ARTP.
+
+**Q: Est-il légal d'acheter un iPhone d'occasion importé de France au Sénégal?**
+R: Oui, tant que l'appareil n'est pas volé et que les droits de douane applicables ont été payés. Vérifiez toujours l'IMEI pour vous assurer que l'appareil est légitime.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 24 | Kenya — Communications Authority IMEI Compliance
+    // =========================================================
+    [
+        'slug'    => 'communications-authority-kenya-imei-compliance',
+        'title'   => 'Communications Authority Kenya: IMEI Check 2025',
+        'excerpt' => 'How the Communications Authority of Kenya manages national IMEI compliance, blacklists stolen phones, and coordinates with Safaricom and Airtel in 2025.',
+        'date'    => '2026-06-21',
+        'tag'     => 'Regulation',
+        'body'    => <<<'MD'
+## The Communications Authority of Kenya and IMEI Compliance
+
+The **Communications Authority of Kenya (CA)** is the primary regulatory body overseeing Kenya's telecommunications sector. Established under the Kenya Information and Communications Act, the CA's mandate includes managing the **national IMEI database** — the central registry of all mobile devices operating on Kenyan networks.
+
+Understanding how the CA's IMEI system works helps consumers make informed decisions, report stolen phones correctly, and stay compliant with Kenyan telecommunications law.
+
+## CA's National IMEI Database: How It Works
+
+The CA's national IMEI database aggregates IMEI data from three key sources:
+
+1. **Mobile operators** — Safaricom, Airtel Kenya, and Telkom Kenya report active IMEIs on their networks in real time
+2. **Kenya Revenue Authority (KRA)** — IMEI data from F88 customs declarations at ports of entry
+3. **Police reports** — stolen device IMEIs submitted via operator channels from police abstracts
+
+The database categorizes every IMEI into:
+- **Compliant (White List)** — registered, declared, and operating legally
+- **Blacklisted** — reported stolen, fraudulent, or regulatory non-compliant
+- **Flagged** — under review or provisionally blocked pending investigation
+
+## How CA Coordinates with Kenyan Mobile Operators
+
+The CA operates a technical interface with all licensed Kenyan operators. This system enables:
+
+### Real-Time IMEI Blocking
+When a stolen phone is reported and verified, the CA sends a blocking directive to all operators simultaneously. The device is removed from all networks — Safaricom, Airtel, and Telkom — within **24–48 hours**.
+
+### Network Monitoring
+Operators continuously report suspicious IMEI activity (duplicate IMEIs, cloned devices, sudden SIM swaps) to the CA for investigation.
+
+### Type Approval Enforcement
+The CA maintains a database of mobile device models that have been **type-approved** for use in Kenya. Devices not on this list can be flagged for investigation.
+
+## How to Check If Your Phone Is CA-Compliant in Kenya
+
+The CA does not currently operate a consumer-facing public IMEI check portal. To verify compliance:
+
+**Method 1: Contact your operator**
+- Safaricom: Dial 100 and ask customer care to check your IMEI status
+- Airtel Kenya: Dial 175
+- Telkom Kenya: Dial 100
+
+**Method 2: International IMEI verification**
+Use an international IMEI database to check your device against global blacklist records:
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+**Method 3: KRA iTax portal**
+If you declared your phone at the border, log in to **itax.kra.go.ke** to retrieve your IMEI declaration record.
+
+## CA Consumer Protection: What You Are Entitled To
+
+Under the Kenya Information and Communications Act, consumers whose phones are wrongly blocked have the right to:
+
+1. **File a formal dispute** with the CA's Consumer Affairs department
+2. **Receive a written explanation** of the blocking reason within 10 working days
+3. **Appeal the blocking** if evidence supports wrongful listing
+4. **Receive compensation** in confirmed cases of regulatory error
+
+**Contact the CA:**
+- Website: ca.go.ke
+- Email: info@ca.go.ke
+- Toll-free: 0800 722 345 (from all Kenyan networks)
+- Address: Waiyaki Way, Westlands, Nairobi
+
+## CA's Role in Kenya's IMEI Registration (January 2025 Mandate)
+
+Since January 2025, the CA works jointly with KRA to enforce the new IMEI declaration mandate:
+
+- CA provides the technical IMEI database infrastructure
+- KRA manages the border declaration process (F88 form)
+- Operators report new activations to the CA for compliance verification
+- Phones with undeclared IMEIs that are flagged by operators are subject to CA-directed blocking
+
+## Frequently Asked Questions
+
+**Q: Can the CA track my location using my IMEI?**
+A: The CA's IMEI database is for compliance and consumer protection purposes, not real-time tracking. Location tracking using IMEI requires a formal law enforcement order and network operator cooperation.
+
+**Q: What is the difference between the CA and KRA for IMEI purposes?**
+A: KRA handles the customs/tax aspect of IMEI declaration (F88 form, import duties). The CA manages the technical database, coordinates with operators for blocking, and handles consumer disputes about wrongful blocking.
+
+**Q: My phone was blocked after I imported it officially and paid KRA duties — who do I contact?**
+A: Contact the CA directly at 0800 722 345 with your F88 stamped form and KRA payment receipt. This is a strong case for wrongful blocking and should be resolved quickly.
+
+**Q: Does the CA share blacklist data with operators in Uganda and Tanzania?**
+A: Yes. Through the **East African Community** (EAC) regulatory cooperation frameworks, IMEI blacklist data is increasingly shared among Kenya, Uganda, Tanzania, Rwanda, and Burundi.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 25 | Myanmar — CEIR Status Types Explained
+    // =========================================================
+    [
+        'slug'    => 'ceir-myanmar-white-grey-black-list-explained',
+        'title'   => 'CEIR Myanmar: White, Grey & Black List Explained 2025',
+        'excerpt' => "Understand Myanmar's CEIR device status system. What White List, Grey List, and Black List mean for your phone — and exactly what to do for each status.",
+        'date'    => '2026-06-22',
+        'tag'     => 'Basics',
+        'body'    => <<<'MD'
+## Understanding Myanmar's CEIR Device Status System
+
+Myanmar's **Central Equipment Identity Register (CEIR)** at **ceir.gov.mm** assigns one of four status codes to every mobile device connected to Myanmar's networks. Understanding what each status means — and what action is required — is essential for every phone owner in Myanmar.
+
+The four statuses are: **White List**, **Grey List**, **Black List**, and **Unregistered**.
+
+## White List: Fully Compliant
+
+**What it means:**
+Your device is properly registered in Myanmar's national IMEI database. It has been verified as legitimate, and your ownership has been confirmed by PTD.
+
+**What it means for your phone:**
+- Full access to all Myanmar mobile networks (MPT, Telenor, Ooredoo, MyTel)
+- No restrictions on calls, SMS, or mobile data
+- No action required
+
+**How to get White List status:**
+Complete IMEI registration on ceir.gov.mm with your NRC/passport and purchase documentation. Approved devices receive White List status within 24–48 hours.
+
+## Grey List: Warning — Registration Required
+
+**What it means:**
+Your device has been identified as connected to Myanmar networks but is **not yet registered** in the CEIR database. You have been granted a grace period to complete registration.
+
+**What it means for your phone:**
+- Currently works on Myanmar networks — calls, SMS, and data function normally
+- A countdown is running toward a registration deadline
+- You will receive SMS warnings from your operator about the deadline
+- After the deadline: moved to Black List
+
+**What to do immediately:**
+1. Visit ceir.gov.mm
+2. Check your exact deadline (it appears in the status result)
+3. Complete registration before the deadline — see our full tutorial at [ceir.gov.mm Registration Tutorial Myanmar](https://imeihub.net/article.php?slug=ceir-gov-mm-registration-tutorial-myanmar)
+
+**Timeline for Grey List devices:**
+
+| Device Type | Typical Grace Period |
+|---|---|
+| New local purchase | 30–60 days from first activation |
+| Foreign phone with local SIM | 30 days from SIM activation |
+| Legacy pre-CEIR device | Extended period set by PTD announcement |
+
+## Black List: Blocked — No Network Access
+
+**What it means:**
+Your device's IMEI has been added to Myanmar's national block list. The phone cannot access any Myanmar mobile network for voice, SMS, or data.
+
+**Reasons for Black List status:**
+- Registration deadline was missed (Grey List expired)
+- Device was reported **stolen** by the original owner
+- Device has a **cloned or invalid IMEI** (counterfeit)
+- Device was used in **criminal activity** flagged by authorities
+- Device was **illegally imported** without proper customs clearance
+
+**What it means for your phone:**
+- No calls, SMS, or mobile data on MPT, Telenor, Ooredoo, or MyTel
+- Wi-Fi apps (WhatsApp, Facebook, Gmail) still work
+- The block applies regardless of which SIM card is inserted
+
+**What to do:**
+Black List status cannot be reversed through online registration. You must visit a **PTD office** in person with:
+- Original purchase receipt
+- NRC or passport
+- IMEI documentation
+- For stolen-flagged devices: evidence of legitimate ownership
+
+PTD reviews Black List appeals within 5–10 working days.
+
+## Unregistered: Action Required Now
+
+**What it means:**
+Your device IMEI is not in the CEIR database at all — it has never been registered.
+
+**What it means for your phone:**
+- Phone is currently unregistered
+- May be flagged for Grey List status at any time during the next compliance sweep
+- Risk of blocking is high
+
+**What to do:**
+Register immediately on ceir.gov.mm. Do not wait for a Grey List warning, as grace periods may be short.
+
+## Quick Reference: CEIR Status Action Guide
+
+| Status | Phone Works? | Urgency | Action Required |
+|---|---|---|---|
+| White List | Yes — fully | None | No action; maintain registration |
+| Grey List | Yes — temporarily | High | Register on ceir.gov.mm NOW |
+| Black List | No — blocked | Urgent | Visit PTD office with documents |
+| Unregistered | Yes — temporarily | High | Register on ceir.gov.mm immediately |
+
+## How to Check Your CEIR Status Right Now
+
+**Step 1:** Open a browser and go to **ceir.gov.mm**
+
+**Step 2:** Click "Device Status Check" on the homepage
+
+**Step 3:** Enter your IMEI (dial `*#06#` to retrieve it instantly)
+
+**Step 4:** View your status and take the appropriate action from the table above
+
+Also verify your device internationally for blacklist records from other countries:
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## Frequently Asked Questions
+
+**Q: Can a White List device ever be moved to Black List?**
+A: Yes. If the device is later reported stolen, or if a compliance review reveals irregularities in the registration data, a White List device can be moved to Black List. This is rare for legitimately owned devices.
+
+**Q: Does Grey List status affect call quality or signal strength?**
+A: No. Grey List status does not degrade signal or call quality. The phone functions exactly as a White List device during the grace period — only the deadline is running.
+
+**Q: I have two SIM slots — is my Grey List status tied to one SIM or the device IMEI?**
+A: Grey List status is tied to the **device IMEI**, not to a specific SIM card. Switching SIM cards does not reset or extend the Grey List grace period.
+
+**Q: Can PTD reverse a Black List from a missed deadline, or only from wrongful blacklisting?**
+A: PTD can reverse both. For missed-deadline Black Listing, you complete the registration at the PTD office (essentially a late registration), pay any applicable fees, and the IMEI is moved back to White List.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 26 | Nigeria — Free IMEI Check: How-To Guide
+    // =========================================================
+    [
+        'slug'    => 'free-imei-check-nigeria-how-to-guide-2025',
+        'title'   => 'Free IMEI Check Nigeria: How-To Guide 2025',
+        'excerpt' => 'Run a free IMEI check in Nigeria before buying any phone. Three proven methods to verify Nigerian phone status, blacklists, and NCC approval in 2025.',
+        'date'    => '2026-06-23',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## How to Check a Phone's IMEI for Free in Nigeria
+
+Before buying any used smartphone in Nigeria — whether from Computer Village in Lagos, Wuse Market in Abuja, or an online listing on Jiji.ng — a free IMEI check can reveal critical information that protects you from costly mistakes.
+
+A free IMEI check in Nigeria can tell you:
+- Whether the phone is **blacklisted** or stolen
+- Whether the device model is **NCC type-approved**
+- The phone's true **brand, model, and specifications**
+- Whether the phone is **carrier-locked** to a foreign network
+- Whether the phone is **iCloud or FRP locked**
+
+## How to Find the IMEI of Any Phone in Nigeria
+
+First, get the IMEI from the phone you want to check:
+
+- **Dial `*#06#`** on the phone keypad — IMEI appears on screen instantly (works on all phones)
+- **iPhone**: Settings → General → About → scroll to IMEI
+- **Android**: Settings → About Phone → Status → IMEI Information
+- **Physical label**: Inside the SIM card tray slot
+
+Note both IMEI 1 and IMEI 2 for dual-SIM phones.
+
+## Method 1: Free IMEI Check via imeihub.net
+
+The quickest way to run a comprehensive IMEI check in Nigeria:
+
+**Step 1:** Visit [imeihub.net](https://imeihub.net/service.php?slug=free-imei-check) and click on the Free IMEI Check service.
+
+**Step 2:** Enter the 15-digit IMEI in the search field.
+
+**Step 3:** Click "Check" and wait for results.
+
+**Step 4:** Review the information returned:
+- Device make and model
+- Country of origin
+- Network carrier it was originally sold with
+- Blacklist status (clean or flagged)
+
+This check draws from international IMEI databases — essential for catching phones stolen abroad and sold in Nigerian markets.
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## Method 2: IMEI Check via Nigerian Mobile Operator
+
+Call the customer care line of any major Nigerian operator with the IMEI:
+
+| Operator | Helpline | Available |
+|---|---|---|
+| MTN Nigeria | 180 (from MTN line) | 24/7 |
+| Airtel Nigeria | 121 | 24/7 |
+| Glo Mobile | 200 | 8am–8pm |
+| 9mobile | 200 | 8am–8pm |
+
+Ask: "Can you check if IMEI [number] is blocked or blacklisted on your network?"
+
+Operators can see if the specific IMEI is blocked on their network. For full cross-network status, combine this with the international check above.
+
+## Method 3: NCC Type Approval Database Check
+
+To verify if a phone **model** (not just the specific unit) is approved for use in Nigeria:
+
+**Step 1:** Visit **ncc.gov.ng**
+
+**Step 2:** Navigate to the Type Approval section
+
+**Step 3:** Search for the device brand and model
+
+**Step 4:** Confirm the model appears in the NCC approved database
+
+This check is especially important for unfamiliar or no-name brands, and for grey-market imports that may not have been submitted for NCC approval.
+
+## What to Do With Your IMEI Check Results
+
+| Result | What It Means | Action |
+|---|---|---|
+| Clean / Not blacklisted | No reported theft or fraud | Safe to consider — also verify physically |
+| Blacklisted | Device reported stolen or blocked | Do NOT buy — walk away |
+| Model not NCC approved | Phone model fails NCC standards | High risk of blocking — avoid |
+| Carrier locked | Tied to a foreign network | Test with Nigerian SIM before committing |
+| Invalid IMEI | Format is incorrect — not 15 valid digits | Counterfeit — do NOT buy |
+
+## Nigeria's Used Phone Market: Where Risk Is Highest
+
+| Market | City | Risk Level |
+|---|---|---|
+| Computer Village | Ikeja, Lagos | High — largest volume, most grey-market |
+| Alaba International Market | Ojo, Lagos | Very High — significant counterfeit risk |
+| Wuse Market | Abuja | Medium-High |
+| Kano Central Market | Kano | Medium — regional hub |
+| Onitsha Main Market | Onitsha | Medium |
+| Jiji.ng / OLX Nigeria | Online | Variable — always verify IMEI before meeting |
+
+## Complete Pre-Purchase Checklist for Nigerian Buyers
+
+- [x] Ask seller to dial `*#06#` in your presence
+- [x] IMEI on screen matches SIM tray label and original box
+- [x] Run free IMEI check on imeihub.net — clean result
+- [x] NCC Type Approval confirmed for the model
+- [x] Test call and SMS with your own MTN, Airtel, or Glo SIM
+- [x] iPhone: no iCloud lock visible on startup
+- [x] Android: no Google FRP lock after factory reset test
+- [x] Seller provides handwritten receipt with IMEI, price, date
+
+## Frequently Asked Questions
+
+**Q: Is the IMEI check really free in Nigeria?**
+A: Our basic IMEI check at imeihub.net is completely free and provides the core information needed for most used-phone purchases. More detailed reports (full carrier history, warranty status, etc.) may have a nominal fee.
+
+**Q: Can I check an IMEI before even meeting the seller?**
+A: Yes. Ask the seller to provide the IMEI via WhatsApp or phone call and run the check before travelling to Computer Village or wherever the transaction is planned.
+
+**Q: What if the IMEI check shows "carrier locked to AT&T" — can I use it in Nigeria?**
+A: An AT&T (USA) locked iPhone cannot use Nigerian SIMs until it is unlocked. You can request an unlock from AT&T (often free after contract end) or purchase an IMEI unlock through a service provider. Always test with a Nigerian SIM before completing the purchase.
+
+**Q: How recent is the blacklist data in the IMEI check tool?**
+A: International blacklist databases are updated regularly — typically within 24–72 hours of a theft being reported by the original operator. However, some reports take longer to propagate, especially from countries with limited blacklist-sharing agreements.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 27 | Pakistan — PTA Tax Xiaomi / Redmi / POCO
+    // =========================================================
+    [
+        'slug'    => 'pta-tax-xiaomi-redmi-poco-pakistan-2025',
+        'title'   => 'PTA Tax Xiaomi & Redmi Pakistan: 2025 Calculator',
+        'excerpt' => 'Exact PTA DIRBS registration tax for Xiaomi, Redmi, and POCO phones in Pakistan 2025. Calculate fees for budget to flagship models before importing.',
+        'date'    => '2026-06-24',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## PTA Tax on Xiaomi, Redmi, and POCO Phones in Pakistan (2025)
+
+**Xiaomi** is one of the most popular smartphone brands in Pakistan, with its **Redmi** and **POCO** sub-brands dominating the budget and mid-range segments at Karachi's Saddar, Lahore's Hall Road, and Islamabad's electronics markets. However, a significant portion of Xiaomi phones sold in Pakistan are grey-market imports that require **PTA DIRBS registration**.
+
+This guide provides estimated PTA registration taxes for Xiaomi, Redmi, and POCO phones — from budget Redmi A Series to flagship Xiaomi 14 Ultra.
+
+## Xiaomi Flagship Series: PTA DIRBS Tax (2025)
+
+| Model | Storage | Approx. Global Price | Estimated PTA Tax (PKR) |
+|---|---|---|---|
+| Xiaomi 14 Ultra | 512GB | ~USD 1,399 | PKR 124,000–140,000 |
+| Xiaomi 14 Pro | 512GB | ~USD 1,099 | PKR 99,000–112,000 |
+| Xiaomi 14 | 256GB | ~USD 849 | PKR 77,000–87,000 |
+| Xiaomi 13 Ultra | 256GB | ~USD 999 | PKR 90,000–101,000 |
+| Xiaomi 13 Pro | 256GB | ~USD 799 | PKR 72,000–82,000 |
+
+## POCO Series: PTA DIRBS Tax (2025)
+
+| Model | Storage | Approx. Global Price | Estimated PTA Tax (PKR) |
+|---|---|---|---|
+| POCO F6 Pro | 512GB | ~USD 549 | PKR 47,000–55,000 |
+| POCO F6 | 256GB | ~USD 349 | PKR 28,000–35,000 |
+| POCO X6 Pro | 256GB | ~USD 299 | PKR 23,000–29,000 |
+| POCO X6 | 256GB | ~USD 249 | PKR 18,000–24,000 |
+| POCO M6 Pro | 256GB | ~USD 179 | PKR 10,000–14,000 |
+
+## Redmi Note Series: PTA DIRBS Tax (2025)
+
+| Model | Storage | Approx. Global Price | Estimated PTA Tax (PKR) |
+|---|---|---|---|
+| Redmi Note 13 Pro+ 5G | 256GB | ~USD 349 | PKR 28,000–35,000 |
+| Redmi Note 13 Pro | 256GB | ~USD 299 | PKR 23,000–29,000 |
+| Redmi Note 13 5G | 256GB | ~USD 229 | PKR 15,000–21,000 |
+| Redmi Note 13 | 128GB | ~USD 179 | PKR 10,000–14,000 |
+| Redmi Note 12 | 128GB | ~USD 149 | PKR 8,500–12,000 |
+
+## Redmi Budget Series: PTA DIRBS Tax (2025)
+
+| Model | Storage | Approx. Global Price | Estimated PTA Tax (PKR) |
+|---|---|---|---|
+| Redmi 13C | 128GB | ~USD 129 | PKR 6,500–10,000 |
+| Redmi 13 | 128GB | ~USD 149 | PKR 8,000–12,000 |
+| Redmi A3 | 64GB | ~USD 89 | PKR 3,500–6,000 |
+| Redmi A2+ | 32GB | ~USD 79 | PKR 2,800–4,500 |
+
+> **Note:** All figures are estimates based on 2025 DIRBS tax slabs. Exchange rate fluctuations significantly affect the final PKR amount. Always verify the exact current tax on **dirbs.pta.gov.pk** by entering your specific IMEI before payment.
+
+## How to Register Your Xiaomi/Redmi/POCO on PTA DIRBS
+
+**Step 1:** Find your IMEI — dial `*#06#` or Settings → About Phone → IMEI.
+
+**Step 2:** Go to **dirbs.pta.gov.pk** and log in with your CNIC or passport.
+
+**Step 3:** Click "New Device Registration" and enter your IMEI. The system identifies your exact Xiaomi model.
+
+**Step 4:** View the calculated tax amount in PKR.
+
+**Step 5:** Pay via JazzCash, EasyPaisa, HBL internet banking, or debit/credit card.
+
+**Step 6:** Receive your DIRBS Compliance Certificate. Your Xiaomi is now compliant.
+
+**Alternatively:** Send your IMEI to **8484** via SMS for an instant DIRBS status check before registering.
+
+## Is It Worth Buying Non-PTA Xiaomi in Pakistan?
+
+| Factor | PTA-Registered Xiaomi | Non-PTA (Grey Market) Xiaomi |
+|---|---|---|
+| Network access | Full cellular on Jazz, Zong, Telenor, Ufone | Blocked after 60 days |
+| Price | Higher — includes PTA tax | Lower initial price |
+| Total cost | Fixed and transparent | Lower now + PTA tax later |
+| Resale | Easy — buyer has no PTA cost | Harder — buyer must pay PTA tax |
+| Warranty | Official Xiaomi Pakistan warranty | No local warranty |
+
+For most buyers, **PTA-registered Xiaomi phones offer better total value** because the cost is predictable and there is no risk of blocking.
+
+## Verify IMEI Before Buying Used Xiaomi in Pakistan
+
+Before purchasing any used Xiaomi, Redmi, or POCO phone in Pakistani markets:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## Frequently Asked Questions
+
+**Q: Are Xiaomi phones officially sold in Pakistan PTA-compliant?**
+A: Yes. Official Xiaomi Pakistan (distributed by Xiaomi authorized partners) sells PTA-registered phones. Grey market imports from China or UAE require separate PTA registration.
+
+**Q: Does the PTA tax for Xiaomi change frequently?**
+A: The tax slab structure is set by the government and changes with the federal budget (typically announced in June each year). Exchange rate fluctuations also affect the PKR amount daily.
+
+**Q: Can I check if a Xiaomi phone is PTA approved before buying?**
+A: Yes. Send the IMEI to 8484 via SMS on any Pakistani network. "Compliant" means PTA registered; "Non-Compliant" means not yet registered and tax is still owed.
+
+**Q: My POCO F6 was blocked — can I still use it in Pakistan?**
+A: Only on Wi-Fi. To restore cellular access, complete PTA registration on dirbs.pta.gov.pk and pay the applicable tax. Blocking is reversible upon registration.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 28 | Indonesia — Bea Cukai Soekarno-Hatta Airport Guide
+    // =========================================================
+    [
+        'slug'    => 'bea-cukai-soekarno-hatta-imei-registration-guide',
+        'title'   => 'Bea Cukai Soekarno-Hatta: IMEI Registration Guide 2025',
+        'excerpt' => 'Detailed airport guide for registering your phone IMEI at Soekarno-Hatta with Bea Cukai. Counter locations, hours, payment methods, and tips for 2025.',
+        'date'    => '2026-06-25',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## Registering Your Phone IMEI at Soekarno-Hatta Airport (CGK)
+
+**Soekarno-Hatta International Airport (CGK)** in Jakarta is Indonesia's busiest gateway and the most common entry point for travelers bringing foreign smartphones. Bea Cukai (Indonesian Customs) operates dedicated **IMEI registration counters** in the airport's customs halls — making CGK the easiest place to complete your phone registration before entering Indonesia.
+
+This guide covers everything you need to know about the Bea Cukai IMEI registration process specifically at Soekarno-Hatta.
+
+## Where Are the Bea Cukai IMEI Registration Counters at Soekarno-Hatta?
+
+IMEI registration counters are located in the **customs declaration area** of each international arrival terminal, positioned between the baggage claim carousels and the exit to the arrivals hall.
+
+| Terminal | IMEI Counter Location | Notes |
+|---|---|---|
+| Terminal 2 International | Customs hall, after baggage claim | Handles Garuda Indonesia and partner flights |
+| Terminal 3 Ultimate | Customs hall, after baggage collection | Handles most international full-service and LCC flights |
+
+Look for signs reading **"Registrasi IMEI"** or **"Bea Cukai"** — officers are typically in green or navy uniforms.
+
+## Bea Cukai Counter Operating Hours at Soekarno-Hatta
+
+Bea Cukai IMEI counters at CGK operate:
+
+- **Terminal 2**: 24 hours, 7 days a week
+- **Terminal 3**: 24 hours, 7 days a week
+
+If you arrive during peak hours (typically 06:00–10:00 and 18:00–22:00), expect queues of 15–45 minutes. Consider pre-registering online to bypass the queue.
+
+## Step-by-Step: IMEI Registration at Soekarno-Hatta
+
+**Before landing — preparation:**
+1. Dial `*#06#` on your phone and screenshot the IMEI (do this on the plane before landing)
+2. Have your purchase receipt accessible (on phone or printed)
+3. Have your passport ready
+
+**At the airport:**
+
+**Step 1:** After collecting baggage, do NOT proceed directly to the exit. Go to the **Bea Cukai counter** first.
+
+**Step 2:** Tell the officer: "Saya ingin mendaftarkan IMEI telepon saya." (I would like to register my phone's IMEI.)
+
+**Step 3:** Present your:
+- Passport (original)
+- Phone you wish to register
+- Purchase receipt
+
+**Step 4:** The officer enters your IMEI into the DJBC (Bea Cukai) system and checks your phone's value against the USD 500 threshold:
+
+- **Under USD 500**: Free registration; officer issues a clearance stamp
+- **Over USD 500**: Officer calculates duty on the amount exceeding USD 500 and provides a payment slip
+
+**Step 5:** If duty applies, pay at the **cashier counter** adjacent to the Bea Cukai desk:
+- Cash accepted: IDR (Indonesian Rupiah) and USD
+- Cards accepted: Visa, Mastercard, GPN (local Indonesian cards)
+- Mobile payment: Some counters accept GoPay or OVO via QR code
+
+**Step 6:** Collect your **Bea Cukai IMEI registration receipt**. This is your legal proof of registration — keep it.
+
+**Step 7:** Proceed to the airport exit. Your phone is now registered.
+
+## Registering Multiple Phones at Soekarno-Hatta
+
+If you are traveling with more than one foreign phone:
+
+- The **duty-free personal allowance covers one phone per traveler**
+- Additional phones are subject to full import duty even if under USD 500 each
+- Each additional phone requires a separate IMEI registration entry
+
+**Example:** A traveler with 2 iPhones (USD 999 and USD 799):
+- Phone 1: Duty on (999 - 500) = USD 499 × 25.5% = ~USD 127 duty
+- Phone 2: Full duty on USD 799 (no allowance remaining) = USD 799 × 25.5% = ~USD 204 duty
+
+## Pre-Registration Online: Skip the Queue at Soekarno-Hatta
+
+If you register online before your flight, the airport process is reduced to showing your confirmation code and paying any applicable duty — typically 5 minutes instead of 30–45.
+
+**How to pre-register:**
+1. Visit **beacukai.go.id** 7–14 days before travel
+2. Complete the IMEI registration form with flight details and IMEI
+3. Upload receipt photo
+4. Save confirmation code/email
+5. At CGK: show confirmation to Bea Cukai officer, pay if duty owed, collect stamp
+
+## Other Indonesian Airports with Bea Cukai IMEI Counters
+
+| Airport | Code | Bea Cukai IMEI Counter |
+|---|---|---|
+| Ngurah Rai, Bali | DPS | International arrivals customs hall |
+| Juanda, Surabaya | SUB | International terminal customs area |
+| Kualanamu, Medan | KNO | International arrivals customs hall |
+| Sultan Hasanuddin, Makassar | UPG | International terminal customs area |
+| Adi Soemarmo, Solo | SOC | International arrivals |
+
+## Check Your IMEI Registration Status After Airport Registration
+
+Verify your phone is properly whitelisted in Indonesia's national database:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+Also check **imei.kemenperin.go.id** to confirm your IMEI appears in the Ministry of Industry whitelist.
+
+## Frequently Asked Questions
+
+**Q: I forgot to stop at the Bea Cukai counter and walked straight out — what do I do?**
+A: Register online via beacukai.go.id or visit the nearest Bea Cukai office in Jakarta (e.g., Bea Cukai Kantor Pelayanan, Jakarta Pusat). Late registration is possible but may attract additional administrative fees.
+
+**Q: The Bea Cukai counter was closed when I arrived at 3am — what should I do?**
+A: CGK counters operate 24 hours. If you genuinely could not register (counter temporarily closed due to staffing), register at the nearest Bea Cukai office the next business day with your boarding pass as evidence of recent arrival.
+
+**Q: Does my phone need to be turned on during Bea Cukai registration?**
+A: Officers verify the IMEI but do not always need the phone on. However, having it on makes verification faster. Bring the receipt regardless.
+
+**Q: Can I register my phone IMEI at the airport departure hall instead of arrivals?**
+A: No. IMEI registration must be done at the **arrivals** customs area. The departure hall does not have this capability.
+
+**Q: What if my phone's value is exactly USD 500?**
+A: The threshold is "over USD 500." A phone valued exactly at USD 500 falls under the free registration allowance with no duty.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 29 | Ghana — NCA Approved Devices & Type Acceptance
+    // =========================================================
+    [
+        'slug'    => 'nca-approved-phones-ghana-type-acceptance-check',
+        'title'   => 'NCA Approved Phones Ghana: Type Acceptance 2025',
+        'excerpt' => "Check if your phone model is NCA type-accepted in Ghana. Learn what type approval means, which brands are covered, and consequences of using unapproved devices.",
+        'date'    => '2026-06-26',
+        'tag'     => 'Regulation',
+        'body'    => <<<'MD'
+## What Is NCA Type Acceptance in Ghana?
+
+The **National Communications Authority (NCA)** of Ghana requires all mobile device **models** sold or used commercially in Ghana to obtain **Type Acceptance** — a formal regulatory approval confirming the device meets Ghanaian and international telecommunications technical standards.
+
+Type Acceptance is a model-level approval: it applies to every unit of a specific device model (e.g., "Samsung Galaxy A55 5G"), not to individual phones. A model that has not been type-accepted by the NCA may be blocked from Ghanaian networks regardless of individual IMEI status.
+
+## Why Ghana Requires NCA Type Acceptance
+
+The NCA type acceptance programme protects:
+
+- **Network integrity** — non-standard devices can interfere with Ghana's licensed spectrum bands
+- **Consumer safety** — unapproved devices may not meet electromagnetic safety standards
+- **Market fairness** — ensures all devices sold through official channels meet the same standards
+- **Revenue protection** — type-accepted devices are imported through official channels with GRA duties paid
+
+## How to Check If a Phone Model Is NCA Type Accepted
+
+### Method 1: NCA Type Acceptance Database
+
+**Step 1:** Visit the NCA official website at **nca.org.gh**
+
+**Step 2:** Navigate to "Type Acceptance" under the licensing or regulations section
+
+**Step 3:** Search by brand name (Apple, Samsung, Tecno, Itel, Huawei) or device model
+
+**Step 4:** Confirm your specific model appears in the approved list
+
+**Step 5:** Note the **TA Certificate Number** — this is the reference for the approval
+
+### Method 2: Ask the Seller for the TA Certificate
+
+Legitimate importers and distributors hold an **NCA Type Acceptance Certificate** for every model they sell. Ask to see:
+- The TA Certificate number
+- The approval validity date
+
+Authorized dealers for major brands in Ghana (Samsung Ghana, Apple Premium Resellers, Tecno Ghana, etc.) can always provide this.
+
+### Method 3: Check Device Packaging
+
+NCA type-accepted devices sold through official channels bear an **NCA approval sticker** or have the TA Certificate number printed on packaging. The absence of any NCA marking on a locally sold device is a red flag.
+
+## NCA Type Acceptance Status for Common Brands in Ghana
+
+| Brand | Type Acceptance Status | Notes |
+|---|---|---|
+| Samsung | Approved (all mainstream models) | Official Samsung Ghana distributors |
+| Apple (iPhone) | Approved (through authorized resellers) | Apple Premium Resellers in Accra |
+| Tecno | Approved (all models sold locally) | Transsion Holdings — major presence in Ghana |
+| Itel | Approved (all models sold locally) | Transsion Holdings sub-brand |
+| Infinix | Approved (all models sold locally) | Transsion Holdings sub-brand |
+| Huawei | Approved (selected models) | Check for specific models |
+| Xiaomi / Redmi | Variable — check specific models | Grey market versions may lack approval |
+| Generic / no-name brands | Often NOT approved | Avoid purchasing |
+| Second-hand iPhones from abroad | Model approved; individual check still needed | Run IMEI check separately |
+
+## What Happens If You Use a Non-Type-Accepted Phone in Ghana?
+
+If a phone model is not NCA type-accepted:
+
+1. **NCA identifies the model** through operator IMEI monitoring and market surveys
+2. **NCA issues a directive** to operators (MTN Ghana, Vodafone Ghana, AirtelTigo) to flag IMEIs of that model
+3. **Subscribers receive warnings** via SMS about the non-compliant device
+4. **Grace period provided** — typically 30–60 days to replace the device
+5. **Blocking enforced** — IMEIs of the non-approved model are blocked across all Ghanaian networks
+
+## NCA Type Acceptance vs. Individual IMEI Blacklist in Ghana
+
+Understanding the difference is crucial:
+
+| Aspect | NCA Type Acceptance | IMEI Blacklist |
+|---|---|---|
+| What it covers | All units of a specific model | One specific device unit |
+| Reason for blocking | Model doesn't meet technical standards | Individual device stolen or fraudulent |
+| Who is affected | All buyers of that model in Ghana | Owner of the specific blacklisted IMEI |
+| Resolution | Manufacturer seeks model approval | Individual device dispute process |
+
+Always run both checks when buying any phone in Ghana. Use our individual IMEI check to cover the second risk:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## NCA Contact Information for Type Acceptance Inquiries
+
+| Contact Method | Details |
+|---|---|
+| NCA Helpline | 0800 CALL NCA (0800 2255 622) — toll-free |
+| Email | info@nca.org.gh |
+| Website | nca.org.gh |
+| Head Office | Accra, Liberation Road, PMB 77, Ministries Post Office |
+| Regional Offices | Kumasi, Tamale, Takoradi, Ho, Sunyani |
+
+## Frequently Asked Questions
+
+**Q: My phone's model is NCA type-accepted, but my specific unit was blacklisted — how?**
+A: Type Acceptance confirms the model is technically approved, but your individual phone may have been blacklisted for a separate reason (stolen report, fraud). Always run both a model-level type acceptance check and an individual IMEI check.
+
+**Q: I imported a phone from the UK as a personal gift — does it need NCA type acceptance?**
+A: For personal single-device imports, the focus is primarily on customs declaration and NCA IMEI registration. The type acceptance requirement is enforced more strictly for commercial imports. However, using a device that is technically non-compliant carries risk.
+
+**Q: Does Xiaomi have NCA type acceptance for phones sold in Ghana?**
+A: Xiaomi phones officially imported through Ghanaian authorized distributors typically have NCA approval. Grey-market Xiaomi imported from China or UAE may not. Always verify with the seller.
+
+**Q: How long does NCA type acceptance remain valid?**
+A: NCA Type Acceptance certificates typically have a validity period (often 2–5 years) after which re-approval may be required. For consumers, this primarily affects the importer/distributor, not end users of already-purchased devices.
+MD,
+    ],
+
+    // =========================================================
+    // DAY 30 | Africa — Complete IMEI Checker Country Guide
+    // =========================================================
+    [
+        'slug'    => 'imei-check-africa-complete-country-guide-2025',
+        'title'   => 'IMEI Check Africa: Complete Country Guide 2025',
+        'excerpt' => 'Complete guide to IMEI checking across Africa. Country-by-country IMEI verification portals, blacklist checks, and local regulations for 2025 phone buyers.',
+        'date'    => '2026-06-27',
+        'tag'     => 'Guide',
+        'body'    => <<<'MD'
+## IMEI Checking Across Africa: Why It Matters More Than Ever
+
+Africa's mobile phone market is one of the world's fastest-growing, with over **1 billion mobile subscribers** across the continent. As smartphone adoption accelerates and used phone trading expands, IMEI verification has become a critical consumer protection tool in every African country.
+
+This comprehensive guide covers IMEI checking requirements, national portals, and best practices for the most active phone markets across Africa in 2025.
+
+## What Is an IMEI and Why Is It Universal?
+
+The **IMEI (International Mobile Equipment Identity)** is a unique 15-digit number assigned to every mobile phone at the factory. It is standardized globally by the **GSMA** and used by mobile networks worldwide to:
+
+- Identify your specific device on any network
+- Block stolen devices from making calls or using data
+- Track and recover lost phones through law enforcement
+- Detect and block counterfeit devices with invalid or cloned IMEIs
+
+Find your IMEI instantly on any phone: dial `*#06#`
+
+## Country-by-Country IMEI Status: Africa 2025
+
+### East Africa
+
+| Country | Regulatory Body | IMEI Portal | Status |
+|---|---|---|---|
+| Kenya | Communications Authority (CA) + KRA | No public portal; operator checks | Mandatory F88 declaration since 2025 |
+| Tanzania | Tanzania Communications Regulatory Authority (TCRA) | tcra.go.tz | National IMEI database active |
+| Uganda | Uganda Communications Commission (UCC) | ucc.co.ug | IMEI registration required |
+| Rwanda | Rwanda Utilities Regulatory Authority (RURA) | rura.rw | IMEI compliance enforced |
+| Ethiopia | Ethiopian Communications Authority (ECA) | ethiotelecom.et | National IMEI system active |
+
+### West Africa
+
+| Country | Regulatory Body | IMEI Portal | Status |
+|---|---|---|---|
+| Nigeria | NCC | ncc.gov.ng | Type Approval + IMEI blacklist system |
+| Ghana | NCA | nca.org.gh | Type Acceptance + IMEI registration |
+| Senegal | ARTP | artp.sn | Regional ECOWAS IMEI framework |
+| Togo | ARCEP | arcep-togo.tg | Regional ECOWAS IMEI framework |
+| Sierra Leone | NATCOM | natcom.gov.sl | Consumer IMEI blacklist |
+| Côte d'Ivoire | ARTCI | artci.ci | National IMEI database |
+
+### Southern Africa
+
+| Country | Regulatory Body | IMEI Portal | Status |
+|---|---|---|---|
+| South Africa | ICASA | icasa.org.za | IMEI blacklist via GSMA |
+| Zimbabwe | POTRAZ | potraz.gov.zw | IMEI registration active |
+| Zambia | ZICTA | zicta.zm | National IMEI system |
+| Mozambique | INCM | incm.gov.mz | IMEI compliance framework |
+
+### North Africa
+
+| Country | Regulatory Body | IMEI Portal | Status |
+|---|---|---|---|
+| Egypt | NTRA | tra.gov.eg | IMEI registration for imported phones |
+| Morocco | ANRT | anrt.ma | IMEI compliance active |
+| Algeria | ARPT | arpt.gov.dz | National IMEI system |
+| Tunisia | INT | intt.tn | IMEI database enforced |
+
+## The International IMEI Check: Essential for All African Markets
+
+Regardless of which African country you are in, the most comprehensive protection comes from checking against **international IMEI databases** — which catch phones stolen in Europe, the USA, Australia, and the Gulf that are commonly sold in African markets.
+
+Use our free tools for instant, globally sourced results:
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+
+## The 5 Most Common IMEI Fraud Types in Africa's Phone Markets
+
+### 1. European and Gulf Stolen iPhones
+Stolen from Paris, London, Dubai, and Riyadh — these iPhones often arrive in West and East African markets within weeks of theft. They may work initially but face growing risk of blocking as international blacklist sharing expands.
+
+### 2. Chinese Grey Market Android Phones
+Phones with cloned IMEIs copied from legitimate devices — typically manufactured by smaller Chinese factories. A quick IMEI check reveals whether the IMEI matches the claimed model.
+
+### 3. iCloud-Locked iPhones
+Sold at attractive prices in markets from Lagos to Nairobi, these appear to work but cannot be set up after a factory reset. Always test setup before paying.
+
+### 4. Google FRP-Locked Android Phones
+The Android equivalent of iCloud lock. Perform a factory reset test on any used Android before completing payment.
+
+### 5. IMEI Label Tampering
+The physical IMEI sticker in the SIM tray is replaced with a different number to hide a phone's true identity. Always verify that the IMEI on screen (`*#06#`) matches the physical label.
+
+## Universal IMEI Check Checklist for African Buyers
+
+No matter which country you are in, this checklist applies before any used phone purchase:
+
+- [x] Dial `*#06#` to display IMEI on screen
+- [x] Confirm displayed IMEI matches SIM tray label and original box
+- [x] Run international IMEI check via imeihub.net
+- [x] Check local operator or regulatory portal if one exists for your country
+- [x] Test with your own local SIM card before paying (voice call + mobile data)
+- [x] Check for iCloud Lock (iPhone) or Google FRP Lock (Android)
+- [x] Ask for a purchase receipt with IMEI, price, and date
+
+## How African IMEI Blacklist Sharing Is Evolving
+
+The **GSMA** (Global System for Mobile Communications Association) operates the international **Central Equipment Identity Register (CEIR)** which facilitates IMEI blacklist sharing between countries worldwide. African participation is growing rapidly:
+
+- **2020**: Limited sharing between major African markets
+- **2022**: ECOWAS framework began coordinating West African blacklists
+- **2024**: East African Community (EAC) members formalized bilateral sharing agreements
+- **2025**: Over 30 African nations now participate in some form of GSMA international IMEI sharing
+
+This means phones stolen in Africa may be blocked internationally — and phones stolen internationally may be blocked in Africa. The ecosystem is increasingly unified.
+
+## Frequently Asked Questions
+
+**Q: Which African country has the most advanced IMEI system?**
+A: Pakistan and Myanmar lead with fully public DIRBS/CEIR portals. Among purely African nations, South Africa (through ICASA and GSMA cooperation) and Nigeria (NCC system) have the most developed frameworks.
+
+**Q: Can I use a phone blacklisted in Europe in any African country?**
+A: Fewer countries than before. As GSMA blacklist sharing expands, international blacklist records are increasingly accessible to African operators. Buying any blacklisted phone is risky — the block may be enforced at any time.
+
+**Q: Is there a single Africa-wide IMEI database?**
+A: Not yet. Individual country databases are interconnected through GSMA frameworks and bilateral/regional agreements, but a single continent-wide unified portal does not yet exist. Use our international IMEI check for the broadest coverage available.
+
+**Q: What is the best IMEI checker for Africa?**
+A: Our international IMEI check at imeihub.net queries multiple global databases simultaneously, including records from countries with active blacklist-sharing agreements with African nations.
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)
+MD,
+    ],
+
 ];

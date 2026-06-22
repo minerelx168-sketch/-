@@ -3915,4 +3915,209 @@ A two-minute check today protects you from losing GHS 500 to GHS 8,000 on a phon
 MD,
     ],
 
+    // =========================================================
+    // DAY 32 | Sierra Leone — NATCOM IMEI Registration & Stolen Phone Reporting
+    // =========================================================
+    [
+        'slug'    => 'natcom-sierra-leone-imei-registration-stolen-phone',
+        'title'   => 'NATCOM Sierra Leone: IMEI Registration & Stolen Phone Guide',
+        'excerpt' => 'Register your phone with NATCOM Sierra Leone, report a stolen device by IMEI, and verify used phones before buying. Complete 2025 guide.',
+        'date'    => '2026-06-22',
+        'tag'     => 'Regulation',
+        'body'    => <<<'MD'
+## What Is NATCOM and Why Your Phone's IMEI Matters in Sierra Leone
+
+The **National Telecommunications Commission (NATCOM)** is Sierra Leone's official regulator for all telecommunications services, operating under the Ministry of Information and Communications. Established by the **National Telecommunications Act**, NATCOM oversees mobile operators including **Africell**, **Orange Sierra Leone**, and **QCell**, and maintains the national IMEI equipment registry.
+
+Your phone's **IMEI (International Mobile Equipment Identity)** is a 15-digit number that uniquely identifies your device on mobile networks. NATCOM uses IMEI data to:
+
+- Block stolen and counterfeit phones from connecting to Sierra Leonean networks
+- Protect consumers from purchasing non-compliant or blacklisted devices
+- Prevent grey-market imports that bypass customs and safety approvals
+- Track devices involved in criminal activity at the request of law enforcement
+
+In Sierra Leone's growing smartphone market — dominated by second-hand devices imported from China, the UAE, and Europe — IMEI verification has become an essential step before any phone purchase.
+
+---
+
+## Does Sierra Leone Have Mandatory IMEI Registration?
+
+Yes. NATCOM has implemented an **Equipment Identity Register (EIR)** system that all licensed mobile operators must connect to. Under this system:
+
+- Every device that connects to Africell, Orange SL, or QCell is logged by its IMEI
+- Devices on the **blacklist** (reported stolen or counterfeit) are **automatically blocked** from all networks
+- Devices on the **greylist** may still connect but are flagged for investigation
+- Only devices with **valid, clean IMEIs** are on the whitelist and operate freely
+
+NATCOM's EIR is linked to the **GSMA's international IMEI database**, which means a phone stolen in the UK, US, or Australia can be blocked in Sierra Leone — and vice versa.
+
+---
+
+## How to Check If Your Phone Is Registered and Clean in Sierra Leone
+
+Before buying a used phone in Freetown, Bo, Kenema, or Makeni, always verify the IMEI status.
+
+### Method 1: Check the IMEI Number on the Device
+
+Dial `*#06#` on any phone to display its IMEI on screen. You can also find it on the back of the phone or inside the SIM tray (on most modern smartphones). For iPhones, go to **Settings → General → About → IMEI**.
+
+Cross-check this number against what is printed on the phone's box or paperwork. A mismatch is a serious red flag.
+
+### Method 2: Run an International IMEI Check
+
+Use **[IMEIHub's Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)** to instantly verify:
+
+- The brand and model that the IMEI is registered to (does it match what the seller claims?)
+- Whether the IMEI is a valid, properly formatted number
+- The country and network it was originally intended for
+
+For a deeper check, run the **[WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)** to query international stolen-device databases that feed into NATCOM's EIR.
+
+### Method 3: Contact Your Mobile Operator
+
+Insert a SIM card (Africell, Orange SL, or QCell) into the device. If it connects and receives signal normally, the IMEI is not on the blacklist at that moment. However, this is not a substitute for a proper IMEI check — a phone can be clean today and blacklisted tomorrow if the original owner files a report.
+
+---
+
+## How to Register a New or Imported Phone with NATCOM Sierra Leone
+
+If you purchased a phone abroad and brought it into Sierra Leone, or if you imported a device commercially, registration ensures your phone is recognised as legitimate by Sierra Leonean networks.
+
+### Step 1: Obtain Your IMEI
+
+Dial `*#06#` or check the device settings/box. Write down the full 15-digit IMEI. Dual-SIM phones have two IMEIs — note both.
+
+### Step 2: Retain Proof of Purchase
+
+Keep your official receipt, invoice, or customs clearance document. NATCOM and Sierra Leone Customs (the **National Revenue Authority, NRA**) may request these when verifying your device's origin.
+
+### Step 3: Pay Applicable Import Duties
+
+Sierra Leone applies customs duties on electronic imports. Phones imported commercially or in quantities exceeding personal use limits may attract:
+
+- **Import duty** (5–20% of CIF value depending on tariff classification)
+- **Goods and Services Tax (GST)** at 15%
+- **ECOWAS Levy** (0.5%)
+
+Personal-use devices below a set threshold (typically one handset per traveller) may be exempt from duty, but always declare the device at the airport to avoid confiscation.
+
+### Step 4: Contact NATCOM for Device Compliance
+
+For commercial importers or if your device is flagged by a mobile operator, contact NATCOM directly:
+
+- **NATCOM Freetown Office:** 3 Cardiff Street, off Lightfoot Boston Street, Freetown
+- **Phone:** +232-22-220222
+- **Email:** info@natcomsl.com
+- **Website:** natcomsl.com
+
+NATCOM can verify whether your device's IMEI is on the approved list and assist with any compliance issues.
+
+---
+
+## How to Report a Stolen Phone to NATCOM in Sierra Leone
+
+If your phone is stolen, acting quickly can prevent the thief from using or reselling the device.
+
+### Step 1: File a Police Report
+
+Go to the nearest Sierra Leone Police (SLP) station and file a formal report. Request a **case reference number** — you will need this for all subsequent steps. Provide:
+
+- Your full name and contact details
+- The phone brand, model, and colour
+- The IMEI number (from your original box, receipt, or network account)
+- Date, time, and location of the theft
+
+### Step 2: Contact Your Mobile Operator to Block the SIM
+
+Call Africell (**111**), Orange SL (**100**), or QCell (**118**) to block your SIM card immediately. This stops the thief from making calls on your account. SIM blocking is separate from IMEI blocking — both steps are necessary.
+
+### Step 3: Report the IMEI to NATCOM for Blacklisting
+
+Contact NATCOM with:
+
+- Your police report reference number
+- Your IMEI number
+- Proof of ownership (purchase receipt or screenshot from a network account showing the device)
+
+NATCOM will add your IMEI to the national blacklist. Once blacklisted, the device will lose network access on all Sierra Leonean operators — regardless of which SIM card is inserted. The IMEI will also be shared with GSMA's international database, making it harder to resell the phone in other countries.
+
+### Step 4: Monitor the IMEI Status
+
+After reporting, periodically run a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) on your stolen phone's IMEI. Once the blacklist is confirmed active, you have documented proof that the device is registered as stolen — useful for insurance claims.
+
+---
+
+## Common IMEI Fraud Schemes in Sierra Leone's Used Phone Market
+
+Used phone markets in Sierra Leone — particularly in **Freetown's Congo Town, Lumley**, and informal vendors near **PZ and Big Market** — carry risk of IMEI fraud. Here are the most common schemes to watch out for:
+
+| Scam | How It Works | How to Protect Yourself |
+|---|---|---|
+| **Cloned IMEI** | A stolen phone's software is modified to display a different, valid-looking IMEI | Check `*#06#` AND the hardware label — they must match |
+| **Dual IMEI Swap** | On dual-SIM phones, only IMEI 1 is checked; IMEI 2 is stolen/blacklisted | Always check **both** IMEIs |
+| **Wiped but Blacklisted** | Factory reset removes personal data but not the IMEI blacklist status | Always run a blacklist check — a factory reset doesn't clear it |
+| **Grey Import** | Phone designed for a different market (e.g., China variant with limited LTE bands) | Check the model number — it should match Sierra Leone's 4G bands (B3/B7/B8/B20) |
+| **iCloud/Google Locked** | Seller resets the phone but it requires the previous owner's account to set up | Run an [iCloud status check](https://imeihub.net/service.php?slug=apple-icloud) on any used iPhone |
+
+---
+
+## Penalties for Dealing in Stolen or Non-Compliant Phones in Sierra Leone
+
+Under Sierra Leone law:
+
+- **Selling a stolen phone** is a criminal offence under the Larceny Act and the Theft Act, punishable by imprisonment
+- **Importing non-compliant devices** without proper customs clearance is subject to forfeiture and fines by the NRA
+- **Using or assisting a device with a fraudulent IMEI** can attract regulatory sanctions from NATCOM
+
+These penalties apply equally to informal market vendors and registered businesses.
+
+---
+
+## Most Popular Phones in Sierra Leone and What to Check
+
+| Phone | Must-Check | How |
+|---|---|---|
+| Samsung Galaxy (any) | Knox Guard, blacklist status | [Samsung Info Check](https://imeihub.net/service.php?slug=samsung-info) |
+| iPhone (any) | iCloud ON/OFF, blacklist | [Apple iCloud Check](https://imeihub.net/service.php?slug=apple-icloud) |
+| Tecno / Infinix | IMEI validity, model match | [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) |
+| Huawei | Blacklist status | [WorldWide Blacklist](https://imeihub.net/service.php?slug=blacklist) |
+| Xiaomi / Redmi | Mi Account lock, blacklist | [Xiaomi Info Check](https://imeihub.net/service.php?slug=xiaomi-info) |
+
+---
+
+## Frequently Asked Questions
+
+**Q: Is there a direct NATCOM online portal to check IMEI status in Sierra Leone?**
+A: NATCOM Sierra Leone does not yet offer a public consumer-facing IMEI lookup portal. The most reliable way to check a phone's status is to use the [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) on IMEIHub, which queries international databases linked to NATCOM's EIR.
+
+**Q: My phone was blacklisted by mistake — how do I get it removed?**
+A: Contact NATCOM directly with proof of ownership (receipt or import documentation) and your police report if applicable. NATCOM can investigate and remove the IMEI from the blacklist if it was added in error. This process typically takes 5–15 working days.
+
+**Q: Can I use a Sierra Leonean SIM in a phone I bought in the UAE or China?**
+A: Generally yes, as long as the phone supports the LTE frequency bands used in Sierra Leone (B3, B7, B8, B20 on Africell/Orange). However, if the IMEI is on the international blacklist from the country of origin, it will be blocked on Sierra Leonean networks as well.
+
+**Q: What does NATCOM registration cost?**
+A: For individual consumers, NATCOM device registration is free. Commercial importers pay fees based on the volume of devices being registered.
+
+**Q: Is it safe to buy a phone from Africell, Orange, or QCell's official stores?**
+A: Yes — phones sold directly by licensed operators are guaranteed to be clean, registered, and compliant. The premium you pay at an official store is for that peace of mind.
+
+**Q: The seller says the phone "just came from Dubai" — should I trust it?**
+A: Not automatically. Phones genuinely imported from Dubai are common, but this claim is also used to sell stolen international handsets. Always verify the IMEI regardless of what the seller tells you.
+
+---
+
+## Verify Your Phone Before You Buy — or Before You Sell
+
+Whether you are protecting yourself as a buyer in Freetown's used phone market or preparing to sell your own device with a clean record, IMEI verification takes less than two minutes and costs nothing to start.
+
+- **[Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check)** — Confirm brand, model, and IMEI validity at no cost
+- **[WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist)** — Verify stolen status against international + NATCOM-linked databases
+- **[Apple iCloud Status](https://imeihub.net/service.php?slug=apple-icloud)** — Essential for any used iPhone
+- **[Samsung Knox Guard](https://imeihub.net/service.php?slug=samsung-info)** — Essential for any used Samsung Galaxy
+
+A quick check now is far cheaper than buying a phone that NATCOM blacklists next week.
+MD,
+    ],
+
 ];

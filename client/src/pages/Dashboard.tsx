@@ -42,6 +42,8 @@ export default function Dashboard() {
     );
   }
 
+  const balance = balanceData?.balance || "0.00";
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -86,11 +88,11 @@ export default function Dashboard() {
                 <Skeleton className="h-10 w-32" />
               ) : (
                 <div className="text-4xl font-bold text-primary">
-                  ${((balanceData?.balance || 0) / 100).toFixed(2)}
+                  ${balance}
                 </div>
               )}
               <p className="text-sm text-muted-foreground mt-2">
-                {(balanceData?.balance || 0).toLocaleString()} credits available
+                Available for IMEI checks
               </p>
             </CardContent>
           </Card>
@@ -142,27 +144,35 @@ export default function Dashboard() {
                     <TableHead>Description</TableHead>
                     <TableHead>Type</TableHead>
                     <TableHead className="text-right">Amount</TableHead>
+                    <TableHead className="text-right">Balance</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {txData.transactions.map((tx) => (
-                    <TableRow key={tx.id}>
-                      <TableCell className="text-sm text-muted-foreground">
-                        {new Date(tx.createdAt).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell className="text-sm">
-                        {tx.description || "Credit top-up"}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={tx.type === "topup" ? "default" : "secondary"}>
-                          {tx.type}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right font-medium text-green-500">
-                        +${(tx.amount / 100).toFixed(2)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {txData.transactions.map((tx) => {
+                    const amount = parseFloat(tx.amount);
+                    const isPositive = amount >= 0;
+                    return (
+                      <TableRow key={tx.id}>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {new Date(tx.createdAt).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell className="text-sm">
+                          {tx.description || tx.type}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={tx.type === "TOPUP" ? "default" : tx.type === "USAGE" ? "secondary" : "outline"}>
+                            {tx.type}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className={`text-right font-medium ${isPositive ? "text-green-500" : "text-red-500"}`}>
+                          {isPositive ? "+" : ""}${amount.toFixed(2)}
+                        </TableCell>
+                        <TableCell className="text-right text-sm text-muted-foreground">
+                          ${tx.balanceAfter}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             )}

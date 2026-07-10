@@ -33,12 +33,25 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
   // Configure body parser with larger size limit for file uploads
+  // Lemon Squeezy Webhook - must use raw body for HMAC signature verification
+  app.post("/api/lemon-webhook", express.raw({ type: "application/json" }), (req, res, next) => {
+    // Store raw body for signature verification, then parse JSON
+    if (Buffer.isBuffer(req.body)) {
+      (req as any).rawBody = req.body.toString("utf8");
+      req.body = JSON.parse((req as any).rawBody);
+    } else if (typeof req.body === "string") {
+      (req as any).rawBody = req.body;
+      req.body = JSON.parse(req.body);
+    } else {
+      (req as any).rawBody = JSON.stringify(req.body);
+    }
+    next();
+  }, handleLemonWebhook);
+
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
   registerStorageProxy(app);
   registerOAuthRoutes(app);
-  // Lemon Squeezy Webhook
-  app.post("/api/lemon-webhook", handleLemonWebhook);
 
   // tRPC API
   app.use(

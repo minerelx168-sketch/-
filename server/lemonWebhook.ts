@@ -1,23 +1,22 @@
 import { Request, Response } from "express";
 import crypto from "crypto";
-import { addCredits } from "./db";
-import { users, transactions } from "../drizzle/schema";
+import {
+  getDb,
+  getUserByOpenId,
+  getUserById,
+  issueCredits,
+  logWebhookEvent,
+  markWebhookProcessed,
+  getTopupOrderByPublicId,
+  updateTopupOrderStatus,
+} from "./db";
+import { users } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
-import { getDb } from "./db";
-import { CREDIT_PACKAGES } from "../shared/const";
+import { LEMON_VARIANT_MAP } from "../shared/const";
 
-// Build product ID → credit amount mapping from shared config
-const PRODUCT_CREDITS: Record<string, number> = {};
-for (const pkg of CREDIT_PACKAGES) {
-  PRODUCT_CREDITS[pkg.productId] = pkg.amount;
-  PRODUCT_CREDITS[pkg.variantId] = pkg.amount;
-}
-
-// Fallback: derive credits from order total (1:1 mapping in cents)
-function getCreditsFromTotal(totalCents: number): number {
-  return totalCents;
-}
-
+/**
+ * Verify Lemon Squeezy webhook signature (HMAC-SHA256).
+ */
 function verifyWebhookSignature(rawBody: string, signature: string, secret: string): boolean {
   if (!secret || !signature) return true; // Skip verification if no secret configured
   const hmac = crypto.createHmac("sha256", secret);
@@ -29,88 +28,131 @@ function verifyWebhookSignature(rawBody: string, signature: string, secret: stri
   }
 }
 
+/**
+ * Production-grade Lemon Squeezy webhook handler.
+ * Pattern: logWebhookEvent → alreadyProcessed check → process → markWebhookProcessed → return 5xx on failure
+ */
 export async function handleLemonWebhook(req: Request, res: Response) {
+  const signature = (req.headers["x-signature"] as string) || "";
+  const eventName = (req.headers["x-event-name"] as string) || "";
+  const rawBody = (req as any).rawBody || JSON.stringify(req.body);
+
+  // Generate a unique event ID from the payload
+  const data = req.body?.data;
+  const eventId = data?.id ? `${eventName}_${data.id}` : `${eventName}_${Date.now()}`;
+
+  // Verify signature
+  const webhookSecret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET || "";
+  const signatureOk = verifyWebhookSignature(rawBody, signature, webhookSecret);
+
+  // Step 1: Audit log - INSERT IGNORE (always log, even if invalid signature)
+  let webhookLog: { id: number; alreadyProcessed: boolean };
   try {
-    const signature = req.headers["x-signature"] as string || "";
-    const eventName = req.headers["x-event-name"] as string;
-    const rawBody = JSON.stringify(req.body);
+    webhookLog = await logWebhookEvent({
+      provider: "lemonsqueezy",
+      eventId,
+      eventType: eventName,
+      signatureOk,
+      rawBody,
+    });
+  } catch (err) {
+    console.error("[Webhook] Failed to log event:", err);
+    return res.status(500).json({ error: "Failed to log webhook event" });
+  }
 
-    // Verify signature if webhook secret is configured
-    const webhookSecret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET || "";
-    if (webhookSecret && signature) {
-      const isValid = verifyWebhookSignature(rawBody, signature, webhookSecret);
-      if (!isValid) {
-        console.error("[Webhook] Invalid signature");
-        return res.status(401).json({ error: "Invalid signature" });
-      }
-    }
+  // Reject invalid signature after logging
+  if (!signatureOk) {
+    console.error(`[Webhook] Invalid signature for event ${eventId}`);
+    return res.status(401).json({ error: "Invalid signature" });
+  }
 
-    console.log(`[Webhook] Received event: ${eventName}`);
+  // Step 2: Idempotency check
+  if (webhookLog.alreadyProcessed) {
+    console.log(`[Webhook] Event ${eventId} already processed (idempotent)`);
+    return res.status(200).json({ received: true, already_processed: true });
+  }
 
-    // Only process order_created events
-    if (eventName !== "order_created") {
-      return res.status(200).json({ received: true, skipped: true });
-    }
+  // Only process order_created events (payment completed)
+  if (eventName !== "order_created") {
+    // Mark as processed (non-actionable event)
+    await markWebhookProcessed("lemonsqueezy", eventId);
+    return res.status(200).json({ received: true, skipped: true });
+  }
 
-    const data = req.body.data;
+  // Step 3: Process the order
+  try {
     const attributes = data?.attributes;
-    const meta = req.body.meta;
+    const meta = req.body?.meta;
 
     if (!attributes) {
+      await markWebhookProcessed("lemonsqueezy", eventId, "Missing order attributes");
       return res.status(400).json({ error: "Missing order attributes" });
     }
 
-    // Extract order info
     const orderId = String(data.id || "");
-    const orderTotal = attributes.total; // in cents
+    const orderStatus = attributes.status;
     const userEmail = attributes.user_email;
-    const status = attributes.status;
 
-    // Get product/variant info
-    const firstOrderItem = attributes.first_order_item;
-    const productId = String(firstOrderItem?.product_id || "");
-    const variantId = String(firstOrderItem?.variant_id || "");
-
-    // Get custom data (user_id passed during checkout)
+    // Get custom data (passed during checkout)
     const customData = meta?.custom_data || {};
     const customUserId = customData.user_id;
+    const customOrderId = customData.order_id; // our topup_orders.publicId
+    const customAmount = customData.amount; // credit amount in USD
 
-    console.log(`[Webhook] Order ${orderId}: ${userEmail}, total: ${orderTotal}, product: ${productId}, variant: ${variantId}, status: ${status}`);
+    console.log(`[Webhook] Processing order ${orderId}: email=${userEmail}, status=${orderStatus}, customOrderId=${customOrderId}`);
 
-    if (status !== "paid") {
-      console.log(`[Webhook] Order ${orderId} status is ${status}, skipping credit addition`);
+    // Only process paid orders
+    if (orderStatus !== "paid") {
+      await markWebhookProcessed("lemonsqueezy", eventId);
+      console.log(`[Webhook] Order ${orderId} status=${orderStatus}, skipping`);
       return res.status(200).json({ received: true, skipped: true });
     }
 
-    // Idempotency check: skip if order already processed
+    // Determine credit amount
+    let creditAmount: number;
+    if (customAmount) {
+      creditAmount = parseFloat(customAmount);
+    } else {
+      // Fallback: derive from order total (cents → dollars)
+      const totalCents = attributes.total || 0;
+      creditAmount = totalCents / 100;
+    }
+
+    if (!creditAmount || creditAmount <= 0) {
+      await markWebhookProcessed("lemonsqueezy", eventId, "Invalid credit amount");
+      return res.status(200).json({ received: true, error: "Invalid credit amount" });
+    }
+
+    // Validate: if we have a linked order, verify the credit amount matches
+    if (customOrderId) {
+      const linkedOrder = await getTopupOrderByPublicId(customOrderId);
+      if (linkedOrder) {
+        const orderAmount = parseFloat(linkedOrder.amount);
+        if (Math.abs(orderAmount - creditAmount) > 0.01) {
+          const errMsg = `Amount mismatch: order=${orderAmount}, webhook=${creditAmount}`;
+          console.error(`[Webhook] ${errMsg}`);
+          await markWebhookProcessed("lemonsqueezy", eventId, errMsg);
+          return res.status(200).json({ received: true, error: "Amount mismatch" });
+        }
+      }
+    }
+
+    // Find user
+    let userId: number | null = null;
     const db = await getDb();
     if (!db) {
       console.error("[Webhook] Database not available");
       return res.status(500).json({ error: "Database unavailable" });
     }
 
-    const existingTx = await db.select()
-      .from(transactions)
-      .where(eq(transactions.lemonOrderId, orderId))
-      .limit(1);
-
-    if (existingTx.length > 0) {
-      console.log(`[Webhook] Order ${orderId} already processed, skipping (idempotent)`);
-      return res.status(200).json({ received: true, already_processed: true });
-    }
-
-    // Determine credit amount from product/variant mapping or fallback to total
-    let creditAmount = PRODUCT_CREDITS[productId] || PRODUCT_CREDITS[variantId];
-    if (!creditAmount) {
-      creditAmount = getCreditsFromTotal(orderTotal);
-    }
-
-    // Find user by custom_data user_id or by email
-    let userId: number | null = null;
-
     if (customUserId) {
       userId = parseInt(customUserId, 10);
-    } else if (userEmail) {
+      // Verify user exists
+      const user = await getUserById(userId);
+      if (!user) userId = null;
+    }
+
+    if (!userId && userEmail) {
       // Fallback: find user by email
       const userResult = await db.select().from(users).where(eq(users.email, userEmail)).limit(1);
       if (userResult.length > 0) {
@@ -119,19 +161,42 @@ export async function handleLemonWebhook(req: Request, res: Response) {
     }
 
     if (!userId) {
-      console.error(`[Webhook] Cannot find user for order ${orderId} (email: ${userEmail})`);
+      const errMsg = `User not found for order ${orderId} (email: ${userEmail}, customUserId: ${customUserId})`;
+      console.error(`[Webhook] ${errMsg}`);
+      await markWebhookProcessed("lemonsqueezy", eventId, errMsg);
+      // Return 200 to prevent retries - user genuinely not found
       return res.status(200).json({ received: true, error: "User not found" });
     }
 
-    // Add credits
-    const description = `Top-up $${(creditAmount / 100).toFixed(2)} via Lemon Squeezy (Order #${orderId})`;
-    await addCredits(userId, creditAmount, description, orderId, productId);
+    // Update topup_orders status if we have a linked order
+    if (customOrderId) {
+      await updateTopupOrderStatus(customOrderId, "PAID", orderId);
+    }
 
-    console.log(`[Webhook] Added ${creditAmount} credits to user ${userId} for order ${orderId}`);
+    // Issue credits
+    const { newBalance } = await issueCredits({
+      userId,
+      amount: creditAmount.toFixed(2),
+      type: "TOPUP",
+      referenceType: "TopUpOrder",
+      referenceId: customOrderId || orderId,
+      description: `Top-up $${creditAmount.toFixed(2)} via Lemon Squeezy (Order #${orderId})`,
+    });
 
-    return res.status(200).json({ received: true, credits_added: creditAmount });
-  } catch (error) {
-    console.error("[Webhook] Error processing webhook:", error);
+    // Update topup_orders status to CREDITED
+    if (customOrderId) {
+      await updateTopupOrderStatus(customOrderId, "CREDITED", orderId);
+    }
+
+    // Step 4: Mark webhook as processed
+    await markWebhookProcessed("lemonsqueezy", eventId);
+
+    console.log(`[Webhook] ✓ Credited $${creditAmount.toFixed(2)} to user ${userId}, new balance: $${newBalance}`);
+    return res.status(200).json({ received: true, credits_added: creditAmount, new_balance: newBalance });
+  } catch (error: any) {
+    // Step 5: On failure, mark error but return 5xx to trigger retry
+    console.error("[Webhook] Error processing:", error);
+    await markWebhookProcessed("lemonsqueezy", eventId, error?.message || "Unknown error");
     return res.status(500).json({ error: "Internal server error" });
   }
 }

@@ -46,10 +46,10 @@ export default function Success() {
                   <CreditCard className="h-4 w-4" /> Updated Balance
                 </div>
                 <div className="text-4xl font-bold text-primary">
-                  ${((balanceData.balance || 0) / 100).toFixed(2)}
+                  ${balanceData.balance || "0.00"}
                 </div>
                 <p className="text-sm text-muted-foreground mt-2">
-                  {(balanceData.balance || 0).toLocaleString()} credits available
+                  Available for IMEI checks
                 </p>
               </CardContent>
             </Card>

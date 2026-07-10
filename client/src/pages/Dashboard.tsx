@@ -118,10 +118,15 @@ export default function Dashboard() {
 
         {/* Transaction History */}
         <Card className="bg-card border-border/50">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <History className="h-5 w-5" /> Transaction History
             </CardTitle>
+            <Link href="/credit-history">
+              <Button variant="ghost" size="sm" className="text-xs">
+                View All
+              </Button>
+            </Link>
           </CardHeader>
           <CardContent>
             {txLoading ? (

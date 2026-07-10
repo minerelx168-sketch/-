@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import TopUp from "./pages/TopUp";
 import Dashboard from "./pages/Dashboard";
 import Success from "./pages/Success";
+import CreditHistory from "./pages/CreditHistory";
 
 function Router() {
   return (
@@ -16,6 +17,7 @@ function Router() {
       <Route path={"/topup"} component={TopUp} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/success"} component={Success} />
+      <Route path={"/credit-history"} component={CreditHistory} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>

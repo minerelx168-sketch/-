@@ -1,11 +1,10 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, credits, transactions } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
@@ -89,4 +88,49 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ===== Credit Helpers =====
+
+export async function getUserBalance(userId: number): Promise<number> {
+  const db = await getDb();
+  if (!db) return 0;
+
+  const result = await db.select().from(credits).where(eq(credits.userId, userId)).limit(1);
+  return result.length > 0 ? result[0].balance : 0;
+}
+
+export async function addCredits(userId: number, amount: number, description: string, lemonOrderId?: string, lemonProductId?: string): Promise<void> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Upsert credits balance
+  const existing = await db.select().from(credits).where(eq(credits.userId, userId)).limit(1);
+  if (existing.length > 0) {
+    await db.update(credits)
+      .set({ balance: existing[0].balance + amount })
+      .where(eq(credits.userId, userId));
+  } else {
+    await db.insert(credits).values({ userId, balance: amount });
+  }
+
+  // Record transaction
+  await db.insert(transactions).values({
+    userId,
+    amount,
+    type: "topup",
+    status: "completed",
+    description,
+    lemonOrderId: lemonOrderId || null,
+    lemonProductId: lemonProductId || null,
+  });
+}
+
+export async function getUserTransactions(userId: number, limit = 50) {
+  const db = await getDb();
+  if (!db) return [];
+
+  return db.select()
+    .from(transactions)
+    .where(eq(transactions.userId, userId))
+    .orderBy(desc(transactions.createdAt))
+    .limit(limit);
+}

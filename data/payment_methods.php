@@ -52,7 +52,7 @@ return [
     [
         'id'        => 'paypal',
         'label'     => 'PayPal',
-        'provider'  => 'paypal',
+        'provider'  => 'lemonsqueezy',
         'currency'  => 'USD',
         'fee_pct'   => 5,
         'min_usd'   => 2,

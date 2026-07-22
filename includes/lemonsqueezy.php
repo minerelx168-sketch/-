@@ -27,11 +27,18 @@ if (!function_exists('lemonsqueezy_get_checkout_url')) {
  * @param array  $cfg       The config array
  * @return string           The checkout URL to redirect the user to
  */
-function lemonsqueezy_get_checkout_url(string $publicId, float $amount, array $user, array $cfg): string
+function lemonsqueezy_get_checkout_url(string $publicId, float $chargeAmount, array $user, array $cfg): string
 {
     $store = (string) ($cfg['lemonsqueezy']['store_slug'] ?? 'imeihub');
 
-    // Product UUIDs (checkout/buy/{uuid})
+    // Fee percentage (must match data/payment_methods.php)
+    $feePct = 5;
+
+    // Reverse-calculate the base (credit) amount from the charge amount
+    // chargeAmount = baseAmount * (1 + feePct/100)
+    $baseAmount = round($chargeAmount / (1 + $feePct / 100), 2);
+
+    // Product UUIDs (checkout/buy/{uuid}) - fixed-price products
     $variantMap = [
         '5'   => '4b80693a-3ff1-4b01-ae94-7e910e1de5b6',
         '10'  => 'edbdc4a2-ec6a-40a0-8b2e-f3001e67a8f0',
@@ -44,8 +51,8 @@ function lemonsqueezy_get_checkout_url(string $publicId, float $amount, array $u
     // Pay What You Want product for custom amounts
     $pwywUuid = '2f5a4380-0651-462d-88ad-959f81ba0d77';
 
-    // Pick the right product UUID
-    $amountKey = rtrim(rtrim(number_format($amount, 2, '.', ''), '0'), '.');
+    // Pick the right product UUID using the BASE amount (before fee)
+    $amountKey = rtrim(rtrim(number_format($baseAmount, 2, '.', ''), '0'), '.');
     $uuid = $variantMap[$amountKey] ?? $pwywUuid;
 
     // Build checkout URL with query params for custom data
@@ -56,16 +63,16 @@ function lemonsqueezy_get_checkout_url(string $publicId, float $amount, array $u
     // Pass custom data so the webhook can identify the order
     $params['checkout[custom][topup_public_id]'] = $publicId;
     $params['checkout[custom][user_id]'] = (string) ($user['id'] ?? '');
-    $params['checkout[custom][amount]'] = number_format($amount, 2, '.', '');
+    $params['checkout[custom][amount]'] = number_format($baseAmount, 2, '.', '');
 
     // Pre-fill email if available
     if (!empty($user['email'])) {
         $params['checkout[email]'] = $user['email'];
     }
 
-    // For PWYW product, set the custom price (in cents)
+    // For PWYW product, set the custom price (in cents) using chargeAmount
     if ($uuid === $pwywUuid) {
-        $params['price'] = (string) ((int) round($amount * 100));
+        $params['price'] = (string) ((int) round($chargeAmount * 100));
     }
 
     return $baseUrl . '?' . http_build_query($params);

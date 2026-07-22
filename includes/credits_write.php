@@ -92,7 +92,7 @@ function credits_create_topup_order(
     if (!preg_match('/^\d+(\.\d{1,2})?$/', $amount) || (float) $amount <= 0) {
         throw new RuntimeException('Invalid top-up amount.');
     }
-    if (!in_array($provider, ['stripe', 'paypal', 'binancepay', 'crypto-trc20', 'crypto-bep20'], true)) {
+    if (!in_array($provider, ['stripe', 'paypal', 'binancepay', 'crypto-trc20', 'crypto-bep20', 'lemonsqueezy'], true)) {
         throw new RuntimeException('Unknown payment provider: ' . $provider);
     }
 

@@ -39,7 +39,7 @@ return [
     [
         'id'        => 'card',
         'label'     => 'Card',
-        'provider'  => 'stripe',
+        'provider'  => 'lemonsqueezy',
         'currency'  => 'USD',
         'fee_pct'   => 5,
         'min_usd'   => 5,

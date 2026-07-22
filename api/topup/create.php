@@ -134,10 +134,11 @@ try {
     }
 
     $url = match ($provider) {
-        'stripe'     => topup_create_stripe($order, $amountFloat, $chargeAmount, $feePct, $user, $cfg, $idempotencyKey),
-        'paypal'     => topup_create_paypal($order, $chargeAmount, $cfg),
-        'binancepay' => topup_create_binancepay($order, $chargeAmount, $cfg),
-        default      => throw new RuntimeException('Unhandled provider: ' . $provider),
+        'stripe'        => topup_create_stripe($order, $amountFloat, $chargeAmount, $feePct, $user, $cfg, $idempotencyKey),
+        'paypal'        => topup_create_paypal($order, $chargeAmount, $cfg),
+        'binancepay'    => topup_create_binancepay($order, $chargeAmount, $cfg),
+        'lemonsqueezy'  => topup_create_lemonsqueezy($order, $amountFloat, $chargeAmount, $user, $cfg),
+        default         => throw new RuntimeException('Unhandled provider: ' . $provider),
     };
 
     echo json_encode([
@@ -256,4 +257,21 @@ function topup_create_binancepay(array $order, float $amount, array $cfg): strin
     // universalUrl. The local page polls status.php and we can show our
     // own branding + countdown + "open in Binance app" deeplink.
     return $returnUrl;
+}
+
+function topup_create_lemonsqueezy(array $order, float $baseAmount, float $chargeAmount, array $user, array $cfg): string
+{
+    require_once __DIR__ . '/../../includes/lemonsqueezy.php';
+
+    $url = lemonsqueezy_get_checkout_url(
+        (string) $order['public_id'],
+        $chargeAmount,
+        $user,
+        $cfg
+    );
+
+    // Store a reference so we can look up the order from the return page
+    credits_attach_charge_id((int) $order['id'], 'ls_pending_' . $order['public_id']);
+
+    return $url;
 }

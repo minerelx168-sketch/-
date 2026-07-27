@@ -3353,4 +3353,76 @@ If your iPhone 16 Pro shows no cellular service in Pakistan:
 iPhone 16 Pro PTA tax in Pakistan for 2026 ranges from PKR 44,200 (128GB) to PKR 78,400 (1TB). The 1TB models saw a tax increase this year. Register within 60 days of arrival via dirbs.pta.gov.pk or the DIRBS app. Pre-check your iPhone 16 Pro with [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) to verify the exact model, and run [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) to confirm the device is internationally clean before paying any tax.
 MD,
     ],
+    [
+        'slug'    => 'check-imei-registered-bea-cukai-secondhand-indonesia',
+        'title'   => 'Buying a Used Phone in Indonesia? Check Bea Cukai IMEI First',
+        'excerpt' => 'Before paying for a second-hand phone in Indonesia, verify its IMEI is whitelisted with Bea Cukai — or you could buy a device that gets blocked days later.',
+        'date'    => '2026-07-27',
+        'tag'     => 'Guide',
+        'body'    => <<<MD
+## Why Second-Hand Phone Buyers in Indonesia Need to Check the IMEI First
+
+Indonesia's used-phone market — from OLX, Facebook Marketplace groups, to physical counters at ITC Roxy Mas and Mangga Dua — moves fast, and pricing is often too good to pass up. But a phone that looks perfect can still be sitting on an **unregistered IMEI**, meaning it was never cleared through the Kominfo/Bea Cukai whitelist system. Buy one of these and your SIM signal can be cut within days, even if the seller insists "it's working fine right now."
+
+This happens because Indonesia's IMEI control system doesn't block a phone the moment it enters the country — it blocks it once the Kominfo database cross-checks the device's IMEI against the operator's SIM registration and finds no valid Bea Cukai clearance. A seller who is still using the phone with their own long-registered SIM may see no problem at all, right up until you insert a new SIM under your name.
+
+### Who Should Check Before Buying
+
+| Buyer Situation | Risk Level |
+|---|---|
+| Buying from an authorised Indonesian retailer (Erafone, iBox, Digimap) | Low — IMEI pre-registered |
+| Buying "garansi resmi" (official warranty) second-hand | Low — already whitelisted |
+| Buying "garansi internasional" / grey-market import second-hand | High — may be unregistered or over the $500 threshold |
+| Buying from overseas marketplaces shipped directly to Indonesia | High — almost never pre-cleared |
+| Buying from a private seller with no original receipt | Medium-High — history unknown |
+
+## How to Check IMEI Registration Status Before You Pay
+
+**Step 1: Get the IMEI from the seller before meeting up.** Ask them to dial `*#06#` and send you a photo of the screen, or a photo of the box label. Never rely on a screenshot alone — it can be edited.
+
+**Step 2: Run a free IMEI lookup.** Use our [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) to confirm the IMEI is valid and matches the exact brand, model, and storage the seller is advertising. A mismatched model is a common resale scam in the Indonesian second-hand market.
+
+**Step 3: Check Kominfo/Bea Cukai registration status.** Visit **bcperak.beacukai.go.id** or the official IMEI check page linked from **beacukai.go.id** and enter the IMEI. The result will show one of three statuses:
+- **Terdaftar (Registered):** Safe to buy — the device is cleared for use on any Indonesian network
+- **Tidak Terdaftar (Not Registered):** Risky — the phone may lose signal after 30 days on a new SIM, or immediately if already flagged
+- **No result found:** Treat as unregistered until proven otherwise
+
+**Step 4: Run a blacklist check.** A phone can be correctly registered with Bea Cukai and still be stolen or carrier-blacklisted in its country of origin. Use our [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) to rule this out before you hand over cash.
+
+## What "Terdaftar" Actually Means
+
+A device shows as registered when one of these happened:
+- It was purchased new from an authorised Indonesian retailer (auto-registered at point of sale)
+- A previous owner registered it themselves after bringing it in from abroad and paying any applicable Bea Cukai duty (over the **USD 500** personal-use threshold)
+- It was manufactured or formally imported for the Indonesian market by the brand itself
+
+If none of these apply, the IMEI sits outside the whitelist and is a candidate for blocking the moment Kominfo's system flags the SIM pairing.
+
+## Negotiating When a Phone Shows "Not Registered"
+
+An unregistered IMEI doesn't automatically mean walk away — it means the cost of registration should come off the price, or the seller should register it before the sale completes:
+
+- **Ask the seller to complete Bea Cukai registration first** and show you the "Terdaftar" result before payment
+- **Deduct the estimated duty** (roughly 21–26% of the device's assessed value for phones over $500) from your offer if you're willing to register it yourself after purchase
+- **Get everything in writing** — a chat message confirming the IMEI status at time of sale protects you if a dispute comes up later
+
+## Common Situations in the Indonesian Resale Market
+
+### Phones Bought Duty-Free Abroad by Frequent Travellers
+
+Some sellers are flight crew, OFWs, or frequent business travellers who bring back phones under the $500 exemption repeatedly. These are usually registered correctly per trip, but ask to see proof if the phone is a flagship priced well above $500.
+
+### iPhones from Singapore/Hong Kong Grey-Market Batches
+
+A common Jakarta and Surabaya resale pattern involves iPhones brought in via personal "jastip" (shopping service) runs from Singapore. These are frequently under-declared or not declared at all. Always check the IMEI status directly rather than trusting the seller's word.
+
+### Refurbished Phones from Batam or Free Trade Zones
+
+Devices moving through Batam's special economic zone sometimes carry different registration rules than the rest of Indonesia. Confirm the IMEI shows as registered on the standard **beacukai.go.id** national database, not just a local zone record.
+
+## Summary
+
+Before buying any second-hand phone in Indonesia, get the IMEI, run it through [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) to confirm the model matches, check its Bea Cukai/Kominfo registration status at beacukai.go.id, and run a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) to rule out theft or carrier locks. A five-minute check before payment can save you from a phone that goes dark on your SIM a few weeks later.
+MD,
+    ],
 ];

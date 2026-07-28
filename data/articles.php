@@ -3425,4 +3425,63 @@ Devices moving through Batam's special economic zone sometimes carry different r
 Before buying any second-hand phone in Indonesia, get the IMEI, run it through [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) to confirm the model matches, check its Bea Cukai/Kominfo registration status at beacukai.go.id, and run a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) to rule out theft or carrier locks. A five-minute check before payment can save you from a phone that goes dark on your SIM a few weeks later.
 MD,
     ],
+    [
+        'slug'    => 'ghana-stolen-phone-blacklist-check',
+        'title'   => 'Ghana Stolen Phone Check: IMEI Blacklist Guide 2026',
+        'excerpt' => 'How to check if a phone is stolen or blacklisted in Ghana before buying, what the NCA blacklist database covers, and how to report a stolen device.',
+        'date'    => '2026-07-28',
+        'tag'     => 'Guide',
+        'body'    => <<<MD
+## Why a "Working" Phone in Ghana Can Still Be Stolen
+
+A phone that powers on, takes a SIM, and makes calls in a shop in Accra or Kumasi is not proof it is clean. Ghana's National Communications Authority (**NCA**) maintains an IMEI blacklist that network operators are required to block against, but blocking only happens after a device is **reported** — and enforcement gaps mean a stolen phone can circulate on the second-hand market for weeks or months before it stops working.
+
+This is the single biggest risk in Ghana's used-phone trade, from Kantamanto Market resellers to Jiji and Tonaton listings: the phone works today, but the moment the rightful owner files a police report and the IMEI gets flagged, the buyer is left holding a bricked device with no recourse.
+
+## How the NCA Blacklist Actually Works
+
+- **Reported stolen** &mdash; the original owner files a report with police and/or their network operator, who forwards the IMEI to the NCA's central equipment identity register.
+- **Blacklisted** &mdash; once confirmed, the IMEI is pushed to all four major networks (MTN, Telecel, AirtelTigo, and any registered MVNOs), which then reject that IMEI network-wide.
+- **Grace period risk** &mdash; because reporting is manual and not instant, a stolen phone can remain fully functional for days or weeks after the theft while the report works through the system.
+
+### What This Means for Buyers
+
+A phone showing as "clean" right now is not a permanent guarantee — but it is still the most reliable signal available, and it rules out devices that are *already* confirmed stolen, which covers the majority of theft-related resale risk.
+
+## Step-by-Step: Checking a Phone Before You Buy in Ghana
+
+- **Step 1:** Get the IMEI from the seller — dial `*#06#` on the handset or check Settings > About Phone. Never rely on a number written on a receipt or box alone; confirm it matches the device in your hand.
+- **Step 2:** Run a [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) to confirm the brand, model, and specs match what the seller is describing.
+- **Step 3:** Run a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) to see if the IMEI has been reported stolen or lost anywhere in the world, not just within Ghana.
+- **Step 4:** Ask the seller for proof of ownership — original box with matching IMEI, purchase receipt, or a prior network registration in their name.
+- **Step 5:** If anything is inconsistent, walk away. A genuine seller will not be offended by a two-minute check.
+
+## Where Ghana's Used Phone Risk Concentrates
+
+| Market Channel | Risk Level | What to Watch For |
+|---|---|---|
+| Kantamanto & Kumasi Central Market | High | High device turnover, limited seller traceability |
+| Jiji/Tonaton online listings | Medium-High | No in-person verification before payment |
+| Registered phone shops (Circle, Osu) | Lower | Shops with a fixed address have reputational risk to protect |
+| Private seller referrals | Medium | Depends entirely on the seller's own honesty |
+| Airport/traveller resale | Medium | Devices imported without full paperwork |
+
+## Reporting a Stolen Phone in Ghana
+
+If your own phone is stolen, act quickly to limit resale risk to others and improve your own recovery odds:
+
+- File a police report immediately and keep the reference number
+- Contact your network operator (MTN, Telecel, or AirtelTigo) to request an IMEI block
+- Report the IMEI and case details to the NCA where a formal reporting channel is available
+- Change passwords on any accounts (Google, Apple ID, banking apps) tied to the device
+
+## Blacklist Check vs. Registration Check: Know the Difference
+
+A blacklist check tells you whether a device has been reported stolen or lost. It does **not** tell you whether the phone is properly registered for network use in Ghana — that is a separate NCA compliance question covered in our [Ghana NCA IMEI compliance guide](https://imeihub.net/article.php?slug=ghana-nca-imei-complete-guide). Run both checks for full peace of mind: registration confirms the phone is allowed on Ghanaian networks, and a blacklist check confirms nobody else has a stronger claim to it.
+
+## Summary
+
+Before handing over cash for a used phone anywhere in Ghana, get the IMEI, run a [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) to verify the device itself, and run a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) to confirm it hasn't been reported stolen. It takes less time than haggling over price — and it is the only step that protects you from a phone that stops working the moment its real owner reports it.
+MD,
+    ],
 ];

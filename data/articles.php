@@ -3529,4 +3529,56 @@ These are three different questions, and a phone can pass one while failing anot
 CEIR only tells you whether a phone is allowed on Myanmar's networks — it does not tell you whether that phone was stolen from someone else. Before buying used in Yangon, Mandalay, or anywhere else in Myanmar, verify the IMEI directly from the device, run a [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) and a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist), and only ever interact with the real ceir.gov.mm for anything registration-related — never a link forwarded through chat.
 MD,
     ],
+    [
+        'slug'    => 'check-stolen-blacklisted-phone-kenya',
+        'title'   => 'Check If a Phone Is Stolen or Blacklisted in Kenya',
+        'excerpt' => 'Before buying used in Nairobi or Mombasa, verify the IMEI isn\'t stolen or CA-blacklisted. Free steps plus what the EIR system checks.',
+        'date'    => '2026-07-30',
+        'tag'     => 'Guide',
+        'body'    => <<<MD
+## Why a Kenyan IMEI Check Is Different From a Customs Declaration
+
+Kenya actually has **two separate IMEI systems**, and buyers frequently confuse them:
+
+1. **KRA's F88 customs declaration** — covers import duty on phones brought into the country (see our [KRA IMEI declaration guide](https://imeihub.net/article.php?slug=kra-imei-declaration-kenya) for that process).
+2. **The Communications Authority of Kenya (CA) Equipment Identity Register (EIR)** — a network-level system that blocks phones with invalid, cloned, or blacklisted IMEIs from working on any Kenyan mobile network, regardless of how the phone entered the country.
+
+This guide covers the second system: how to check whether a used phone is **stolen, reported lost, or already blocked** before you hand over cash for it in a market like Nairobi's River Road, Mombasa's Kongowea, or on classifieds like Jiji and Facebook Marketplace.
+
+## How Kenya's Network-Level Blacklist Works
+
+Safaricom, Airtel Kenya, and Telkom Kenya all share IMEI blacklist data through the CA's EIR framework. If a device's IMEI is reported stolen or is confirmed as counterfeit (an invalid or duplicated TAC), it can be **blocked from registering on any of the three networks** — not just the one it was reported on. This is a major reason a stolen phone bought cheaply can suddenly stop working with a new SIM days or weeks after purchase.
+
+### What Gets a Phone Blacklisted in Kenya
+
+- **Reported lost or stolen** by the original owner to police or their network operator
+- **Invalid or duplicated IMEI** — a sign of a counterfeit or tampered device
+- **Fraud-linked device** flagged during a mobile money or SIM-swap investigation
+
+## Step-by-Step: Checking a Used Phone Before You Buy
+
+- **Step 1:** Ask the seller to dial `*#06#` on the phone itself — do not trust an IMEI written on a receipt or box, since these can be mismatched or copied from a different device.
+- **Step 2:** Match the IMEI on-screen to the one printed on the box and, for phones with a removable tray, the SIM slot.
+- **Step 3:** Run a [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) to confirm the brand, model, and specs match what the seller is advertising — a mismatch is an early red flag on its own.
+- **Step 4:** Run a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) to see whether the IMEI has been reported lost, stolen, or blocked by a carrier anywhere — this catches devices flagged abroad as well as locally.
+- **Step 5:** Insert a local SIM and confirm the phone registers and holds a signal for a few minutes before completing payment — a device already flagged can sometimes still power on but fail to connect.
+
+## Buying Channel Risk Comparison
+
+| Source | Typical Risk | Recommended Check |
+|---|---|---|
+| Certified phone shop / carrier store | Low — usually sold with receipt and warranty | Free IMEI Check to confirm specs |
+| Established online seller with reviews | Medium | Free IMEI Check + Blacklist Check before payment |
+| Street market / unknown classifieds seller | High | Blacklist Check is mandatory, not optional |
+| "Too good to be true" price on a flagship | Very high | Assume stolen until proven otherwise |
+
+## If You've Already Bought a Blacklisted Phone
+
+If a blacklist check shows the phone is already flagged, do not attempt to swap the IMEI or "unblock" it — this is illegal in most jurisdictions and companies offering IMEI-repair or unblocking services for stolen devices are typically running a scam of their own. Instead, return the device to the seller if possible, report the transaction to local authorities, and treat the loss as a reason to only buy from verifiable sellers going forward.
+
+## Summary
+
+Kenya's F88 customs declaration and the CA's network-level blacklist are two different checks that catch two different problems — one is about import duty, the other is about whether a phone is stolen or fraudulent. Before buying secondhand anywhere in Kenya, run both a [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) and a [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) so you know exactly what you're paying for.
+MD,
+    ],
 ];

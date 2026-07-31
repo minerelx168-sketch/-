@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Bangladesh",
+    "search_interest": 9.5,
+    "market_need": 10.0,
+    "competition_gap": 9.0,
+    "overall_score": 9.6,
+    "classification": "Blue Ocean"
+  },
+  {
+    "name": "Turkey",
+    "search_interest": 9.0,
+    "market_need": 9.5,
+    "competition_gap": 7.5,
+    "overall_score": 8.9,
+    "classification": "High Volume"
+  },
+  {
+    "name": "Egypt",
+    "search_interest": 8.5,
+    "market_need": 9.5,
+    "competition_gap": 8.5,
+    "overall_score": 8.9,
+    "classification": "Blue Ocean"
+  },
+  {
+    "name": "Nigeria",
+    "search_interest": 7.5,
+    "market_need": 8.5,
+    "competition_gap": 9.5,
+    "overall_score": 8.3,
+    "classification": "Blue Ocean"
+  },
+  {
+    "name": "Indonesia",
+    "search_interest": 8.5,
+    "market_need": 9.0,
+    "competition_gap": 6.5,
+    "overall_score": 8.3,
+    "classification": "High Volume"
+  },
+  {
+    "name": "Pakistan",
+    "search_interest": 8.5,
+    "market_need": 9.0,
+    "competition_gap": 4.5,
+    "overall_score": 7.9,
+    "classification": "Red Ocean"
+  },
+  {
+    "name": "India",
+    "search_interest": 9.5,
+    "market_need": 7.5,
+    "competition_gap": 3.5,
+    "overall_score": 7.5,
+    "classification": "Red Ocean"
+  },
+  {
+    "name": "Sri Lanka",
+    "search_interest": 5.5,
+    "market_need": 8.0,
+    "competition_gap": 9.5,
+    "overall_score": 7.3,
+    "classification": "High Growth"
+  },
+  {
+    "name": "Myanmar",
+    "search_interest": 4.0,
+    "market_need": 8.0,
+    "competition_gap": 10.0,
+    "overall_score": 6.8,
+    "classification": "High Growth"
+  },
+  {
+    "name": "Ecuador",
+    "search_interest": 5.5,
+    "market_need": 7.0,
+    "competition_gap": 7.5,
+    "overall_score": 6.5,
+    "classification": "Secondary"
+  },
+  {
+    "name": "Cambodia",
+    "search_interest": 4.0,
+    "market_need": 7.5,
+    "competition_gap": 9.5,
+    "overall_score": 6.5,
+    "classification": "Niche Opportunity"
+  },
+  {
+    "name": "Thailand",
+    "search_interest": 6.5,
+    "market_need": 6.0,
+    "competition_gap": 7.0,
+    "overall_score": 6.4,
+    "classification": "Secondary"
+  },
+  {
+    "name": "Vietnam",
+    "search_interest": 6.0,
+    "market_need": 6.0,
+    "competition_gap": 7.5,
+    "overall_score": 6.3,
+    "classification": "Secondary"
+  },
+  {
+    "name": "Brazil",
+    "search_interest": 7.0,
+    "market_need": 5.0,
+    "competition_gap": 5.5,
+    "overall_score": 5.9,
+    "classification": "Secondary"
+  },
+  {
+    "name": "USA",
+    "search_interest": 8.0,
+    "market_need": 3.5,
+    "competition_gap": 2.5,
+    "overall_score": 5.1,
+    "classification": "Secondary"
+  }
+]

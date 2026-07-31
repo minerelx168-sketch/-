@@ -1,0 +1,99 @@
+{
+  "countries": [
+    {
+      "name": "Bangladesh",
+      "search_interest": 9.5,
+      "market_need": 10.0,
+      "competition_gap": 9.0
+    },
+    {
+      "name": "Turkey",
+      "search_interest": 9.0,
+      "market_need": 9.5,
+      "competition_gap": 7.5
+    },
+    {
+      "name": "Egypt",
+      "search_interest": 8.5,
+      "market_need": 9.5,
+      "competition_gap": 8.5
+    },
+    {
+      "name": "Nigeria",
+      "search_interest": 7.5,
+      "market_need": 8.5,
+      "competition_gap": 9.5
+    },
+    {
+      "name": "Indonesia",
+      "search_interest": 8.5,
+      "market_need": 9.0,
+      "competition_gap": 6.5
+    },
+    {
+      "name": "Pakistan",
+      "search_interest": 8.5,
+      "market_need": 9.0,
+      "competition_gap": 4.5
+    },
+    {
+      "name": "India",
+      "search_interest": 9.5,
+      "market_need": 7.5,
+      "competition_gap": 3.5
+    },
+    {
+      "name": "Myanmar",
+      "search_interest": 4.0,
+      "market_need": 8.0,
+      "competition_gap": 10.0
+    },
+    {
+      "name": "Sri Lanka",
+      "search_interest": 5.5,
+      "market_need": 8.0,
+      "competition_gap": 9.5
+    },
+    {
+      "name": "Ecuador",
+      "search_interest": 5.5,
+      "market_need": 7.0,
+      "competition_gap": 7.5
+    },
+    {
+      "name": "Cambodia",
+      "search_interest": 4.0,
+      "market_need": 7.5,
+      "competition_gap": 9.5
+    },
+    {
+      "name": "Thailand",
+      "search_interest": 6.5,
+      "market_need": 6.0,
+      "competition_gap": 7.0
+    },
+    {
+      "name": "Vietnam",
+      "search_interest": 6.0,
+      "market_need": 6.0,
+      "competition_gap": 7.5
+    },
+    {
+      "name": "Brazil",
+      "search_interest": 7.0,
+      "market_need": 5.0,
+      "competition_gap": 5.5
+    },
+    {
+      "name": "USA",
+      "search_interest": 8.0,
+      "market_need": 3.5,
+      "competition_gap": 2.5
+    }
+  ],
+  "weights": {
+    "search_interest": 0.4,
+    "market_need": 0.4,
+    "competition_gap": 0.2
+  }
+}

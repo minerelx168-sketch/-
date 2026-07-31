@@ -49,7 +49,7 @@ OnePlus buyers usually care about four things: regional SKU, carrier lock status
 - **Warranty Status.** Confirms remaining OnePlus manufacturer warranty and OnePlus Care+ coverage.
 - **Bootloader Status.** Where available, reports whether the bootloader has been unlocked — relevant because OnePlus is one of the few remaining flagship makers that officially supports bootloader unlocking, and a previously-unlocked bootloader may affect warranty eligibility.
 
-See current pricing on our [pricing page](/pricing.php).
+See current pricing on our [services page](/services).
 
 ## Popular OnePlus Models We Support
 

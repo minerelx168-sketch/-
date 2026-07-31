@@ -59,7 +59,7 @@ The Mi Account status is a live check — a phone that was clean at manufacture 
 
 ## Pricing & Delivery
 
-The Xiaomi Mi Account Status Check is delivered instantly through your imeihub credit balance. Credits are purchased through Stripe and support both international cards and PromptPay for Thai customers. Results appear on your dashboard within a few seconds and remain downloadable as a timestamped PDF for 90 days. See current per-check pricing on the [Xiaomi service page](/service.php?slug=xiaomi-status).
+The Xiaomi Mi Account Status Check is delivered instantly through your imeihub credit balance. Credits are purchased via card or PayPal (international cards supported). Results appear on your dashboard within a few seconds and remain downloadable as a timestamped PDF for 90 days. See current per-check pricing on the [Xiaomi service page](/service.php?slug=xiaomi-status).
 
 For a broader pre-purchase risk profile, pair this check with the [worldwide blacklist check](/service.php?slug=blacklist). If you are comparing Android brands during the shopping trip, the [Samsung Info & Knox check](/service.php?slug=samsung-info) and the [Huawei Info check](/service.php?slug=huawei-info) cover the equivalent risks on those brands.
 

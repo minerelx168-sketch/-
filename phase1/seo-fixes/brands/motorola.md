@@ -49,7 +49,7 @@ Motorola buyers typically need three things: is it blocklisted, is it carrier-lo
 - **Warranty Status.** Confirms remaining Motorola manufacturer warranty. Motorola's standard warranty is 12 months in most regions but longer in some LATAM countries.
 - **Bootloader / Software Info.** Where available, reports the bootloader lock state — relevant for developers and buyers checking whether a device has been tampered with.
 
-See current pricing on our [pricing page](/pricing.php).
+See current pricing on our [services page](/services).
 
 ## Popular Motorola Models We Support
 
@@ -86,7 +86,7 @@ If the model does not match the seller's description (a Moto G Power 5G sold as 
 ## Frequently Asked Questions
 
 **Q: How do I know if my used Motorola is carrier-locked?**
-A: Run our carrier lock check. If the device is locked, the report identifies the carrier (Verizon, T-Mobile, Boost, Cricket, MetroPCS, or Straight Talk) and provides the model-specific unlock policy. Unlocking is done through the original carrier — see our [network unlock service page](/service.php?slug=carrier-unlock) for details.
+A: Run our carrier lock check. If the device is locked, the report identifies the carrier (Verizon, T-Mobile, Boost, Cricket, MetroPCS, or Straight Talk) and provides the model-specific unlock policy. Unlocking is done through the original carrier — see our [SIM-lock status check](/service.php?slug=apple-sim-lock) for details.
 
 **Q: Can imeihub unlock my Motorola carrier lock?**
 A: No. Imeihub verifies the lock status but doesn't perform unlocks. Carrier unlocking is handled by the original carrier once the device meets their eligibility criteria (typically 6-12 months of active service and paid-off financing).

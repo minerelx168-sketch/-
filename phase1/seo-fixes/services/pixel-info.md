@@ -59,7 +59,7 @@ For units that shipped as factory-unlocked and later became attached to a carrie
 
 ## Pricing & Delivery
 
-The Google Pixel Info Check is delivered instantly through your imeihub credit balance. Credits are purchased through Stripe and support both international cards and PromptPay for Thai customers. Results appear on your dashboard within a few seconds and remain downloadable as a timestamped PDF for 90 days. See current per-check pricing on the [Pixel service page](/service.php?slug=pixel-info).
+The Google Pixel Info Check is delivered instantly through your imeihub credit balance. Credits are purchased via card or PayPal (international cards supported). Results appear on your dashboard within a few seconds and remain downloadable as a timestamped PDF for 90 days. See current per-check pricing on the [Pixel service page](/service.php?slug=pixel-info).
 
 For a broader pre-purchase profile, pair this check with the [worldwide blacklist check](/service.php?slug=blacklist). If you are comparing Android brands during your purchase decision, the [Samsung Info check](/service.php?slug=samsung-info) and the [Xiaomi Mi Account status check](/service.php?slug=xiaomi-status) cover the equivalent risks for those brands.
 

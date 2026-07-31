@@ -48,7 +48,7 @@ Three paid Xiaomi checks are available:
 - **Xiaomi full info report.** Returns manufacturer, model, region of sale, warranty start date, activation date, and Mi Account status in a single report.
 - **MIUI / HyperOS region check.** Confirms the original firmware region installed by the factory. A CN-region phone reflashed to Global will still show CN in this report, which is a common tell for grey-market imports.
 
-Xiaomi premium checks are pay-per-report via card or PromptPay. See current pricing on our [pricing page](/pricing.php). If you also need to check an Apple device from the same seller, see our [Apple iCloud lock check](/service.php?slug=apple-icloud).
+Xiaomi premium checks are pay-per-report via card, PayPal, or crypto. See current pricing on our [services page](/services). If you also need to check an Apple device from the same seller, see our [Apple iCloud lock check](/service.php?slug=apple-icloud).
 
 imeihub verifies status only. We do not remove Mi Account locks, unlock bootloaders, or flash firmware.
 

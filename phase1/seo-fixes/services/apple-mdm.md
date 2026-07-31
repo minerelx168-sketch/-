@@ -57,7 +57,7 @@ The check is read-only. It does not enroll or de-enroll the device, does not not
 
 ## Pricing & Delivery
 
-Confirmed price: **$0.35 per check**. Delivery is typically 5–30 seconds. Credits are purchased through Stripe (card worldwide, PromptPay for Thai users). At 35 cents, the check pays for itself the first time it catches a locked unit.
+Confirmed price: **$0.35 per check**. Delivery is typically 5–30 seconds. Credits are purchased via card or PayPal (international cards supported). At 35 cents, the check pays for itself the first time it catches a locked unit.
 
 Combine MDM with a [Full GSX report](/service.php?slug=apple-full-gsx) for high-value ex-corporate purchases where you want the full picture, or add a quick [Apple iCloud (ON / OFF) check](/service.php?slug=apple-icloud-status) at one cent to also verify Find My status. All Apple checks are listed at [/brand-apple](/brand-apple).
 

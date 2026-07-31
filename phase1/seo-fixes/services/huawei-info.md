@@ -59,7 +59,7 @@ Honor devices carry their own TAC ranges and are returned with a clear "Honor (s
 
 ## Pricing & Delivery
 
-The Huawei Device Info Check is delivered instantly through your imeihub credit balance. Credits are purchased through Stripe and support both international cards and PromptPay for Thai customers. Results appear on your dashboard within a few seconds and remain downloadable as a timestamped PDF for 90 days. See current per-check pricing on the [Huawei service page](/service.php?slug=huawei-info).
+The Huawei Device Info Check is delivered instantly through your imeihub credit balance. Credits are purchased via card or PayPal (international cards supported). Results appear on your dashboard within a few seconds and remain downloadable as a timestamped PDF for 90 days. See current per-check pricing on the [Huawei service page](/service.php?slug=huawei-info).
 
 For a broader risk profile before purchase, pair this check with the [worldwide blacklist check](/service.php?slug=blacklist). If you are also considering a Xiaomi or Samsung handset in the same shopping trip, the [Xiaomi Mi Account status check](/service.php?slug=xiaomi-status) and the [Samsung Info check](/service.php?slug=samsung-info) cover the equivalent risks for those brands.
 
@@ -72,7 +72,7 @@ A: Yes. The report returns the OS family the unit shipped with — EMUI (Android
 A: The report indicates the Google Mobile Services status at ship date — GMS included, HMS-only, or HarmonyOS-native. Any Huawei model launched after May 2019 shipped without official GMS, and there is no reliable way to add GMS post-launch that survives security updates. If Google Play, Gmail, or YouTube are essential to you, use the report to confirm the ship date and OS family before buying.
 
 **Q: Are Honor phones covered by this check?**
-A: Yes, in the sense that we detect them and flag them clearly as Honor rather than Huawei. However, Honor has been an independent company since November 2020 with its own warranty and support, so a full "Honor Info" report — including Honor's own account-lock and warranty status — is best served through the [Honor-specific service](/service.php?slug=honor-info) where available on the site.
+A: Yes, in the sense that we detect them and flag them clearly as Honor rather than Huawei. However, Honor has been an independent company since November 2020 with its own warranty and support, so a full "Honor Info" report — including Honor's own account-lock and warranty status — is best served through the Honor-specific service where available on the site.
 
 **Q: Can the check tell me if a Huawei phone was sold in China or globally?**
 A: Yes. The factory region code returned by the report distinguishes China (CN), Global, EU, Middle East, Latin America, and a small number of country-specific SKUs. This directly affects UI language defaults, pre-installed app store, cellular band configuration, and warranty region.

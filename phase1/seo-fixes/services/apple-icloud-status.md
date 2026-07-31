@@ -55,7 +55,7 @@ The lookup is entirely read-only. It does not touch the device, does not sign an
 
 ## Pricing & Delivery
 
-Confirmed price: **$0.01 per check**. This is the lowest per-check price imeihub offers on any Apple service. Delivery is instant, typically under three seconds. Credits are purchased via Stripe (card worldwide, PromptPay in Thailand). At one cent per lookup, you can afford to check every listing you see — and you should.
+Confirmed price: **$0.01 per check**. This is the lowest per-check price imeihub offers on any Apple service. Delivery is instant, typically under three seconds. Credits are purchased via card or PayPal (international cards supported). At one cent per lookup, you can afford to check every listing you see — and you should.
 
 For the fuller Clean/Lost verdict alongside Activation Lock status, use the [Apple iCloud (Clean / Lost) check](/service.php?slug=apple-icloud) at $0.03. For high-value purchases where you want the full picture, the [Apple Full GSX report](/service.php?slug=apple-full-gsx) is the right tier. Full pricing across all Apple services lives at [/brand-apple](/brand-apple).
 

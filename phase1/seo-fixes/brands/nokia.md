@@ -49,7 +49,7 @@ Nokia buyers usually care about three things: is it real, is it blocklisted, and
 - **Warranty Status.** Confirms remaining HMD manufacturer warranty (typically 24 months in the EU, 12 months in most other regions).
 - **HMD vs Nokia Brand Attribution.** Newer 2024+ devices may ship under the HMD name using former Nokia TAC ranges — our lookup disambiguates so you know exactly which brand you're buying.
 
-See current pricing on our [pricing page](/pricing.php).
+See current pricing on our [services page](/services).
 
 ## Popular Nokia Models We Support
 

@@ -48,7 +48,7 @@ Google Pixel adds two authentication layers that other Androids don't: Factory R
 - **Factory Reset Protection (FRP) indicator.** Flags whether a Google account has been signed into the device and needs to be signed out before resale.
 - **Warranty Status.** Confirms remaining Google warranty coverage and eligibility for Preferred Care.
 
-See current pricing on our [pricing page](/pricing.php).
+See current pricing on our [services page](/services).
 
 ## Popular Google Models We Support
 

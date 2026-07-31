@@ -68,7 +68,7 @@ You receive a rich, structured report in your dashboard, downloadable and sharea
 
 ## Pricing & Delivery
 
-Confirmed price: **$4.20 per report**. Delivery is instant in most cases (seconds), occasionally up to five minutes at peak. Credits are purchased through Stripe (card worldwide, PromptPay for Thai users). Reports remain in your account indefinitely.
+Confirmed price: **$4.20 per report**. Delivery is instant in most cases (seconds), occasionally up to five minutes at peak. Credits are purchased via card or PayPal (international cards supported). Reports remain in your account indefinitely.
 
 If the depth of GSX is more than you need, consider the cheaper [Apple Basic Info check](/service.php?slug=apple-basic) for model and warranty only, or a targeted [Apple Warranty check](/service.php?slug=apple-warranty) for coverage status alone. Full pricing for every Apple tier is on the [/brand-apple](/brand-apple) hub.
 

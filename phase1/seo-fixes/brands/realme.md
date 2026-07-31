@@ -46,7 +46,7 @@ realme shares verification infrastructure with the wider BBK family. Available p
 - **Blacklist / GSMA check.** Cross-references the IMEI against the GSMA global blacklist database.
 - **Network unlock status.** Reports whether the device is bound to a specific carrier (relevant for imported realme units sold in select markets with carrier bundles).
 
-realme premium checks are pay-per-report via card or PromptPay. See current pricing on our [pricing page](/pricing.php). If you're also checking an [OPPO](/brand.php?slug=oppo) or [vivo](/brand.php?slug=vivo) device, the same category of BBK-family checks applies.
+realme premium checks are pay-per-report via card, PayPal, or crypto. See current pricing on our [services page](/services). If you're also checking an [OPPO](/brand.php?slug=oppo) or [vivo](/brand.php?slug=vivo) device, the same category of BBK-family checks applies.
 
 imeihub is a verification service. We do not unlock realme devices, remove FRP, or bypass realme Account activation locks.
 

@@ -48,7 +48,7 @@ OPPO shares much of its verification stack with the wider BBK family (vivo, real
 - **Blacklist / GSMA check.** Cross-references the IMEI against the GSMA global blacklist database of devices reported lost or stolen.
 - **Network unlock status.** Reports whether the device is bound to a specific carrier — common for OPPO devices sold in the US, Japan, and some MENA markets.
 
-All OPPO premium checks are pay-per-report via card or PromptPay. See current pricing on our [pricing page](/pricing.php). If you're also verifying a [vivo](/brand.php?slug=vivo) or [realme](/brand.php?slug=realme) device from the same seller, the same category of checks applies since they share BBK infrastructure.
+All OPPO premium checks are pay-per-report via card, PayPal, or crypto. See current pricing on our [services page](/services). If you're also verifying a [vivo](/brand.php?slug=vivo) or [realme](/brand.php?slug=realme) device from the same seller, the same category of checks applies since they share BBK infrastructure.
 
 imeihub is a verification service. We do not unlock OPPO devices, remove FRP, or bypass ColorOS activation locks.
 

@@ -59,7 +59,7 @@ The check is read-only. It does not modify coverage, does not enroll or cancel A
 
 ## Pricing & Delivery
 
-Confirmed price: **$0.10 per check** (approximate — see the service page for current pricing). Delivery is typically under 10 seconds. Credits are purchased through Stripe (card worldwide, PromptPay for Thai users). At 10 cents per check, buyers and resellers routinely run this on every second-hand unit that crosses their path.
+Confirmed price: **$0.10 per check** (approximate — see the service page for current pricing). Delivery is typically under 10 seconds. Credits are purchased via card or PayPal (international cards supported). At 10 cents per check, buyers and resellers routinely run this on every second-hand unit that crosses their path.
 
 For a broader picture, upgrade to the [Apple Basic Info check](/service.php?slug=apple-basic) which adds model and activation data, or the [Apple Full GSX report](/service.php?slug=apple-full-gsx) for full service history. All Apple checks are listed at [/brand-apple](/brand-apple).
 

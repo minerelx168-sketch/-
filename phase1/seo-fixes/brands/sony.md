@@ -47,7 +47,7 @@ Two paid Sony checks are available:
 - **Sony Xperia full info report.** Returns manufacturer, exact model, sales region, warranty start date, and — where available — purchase country.
 - **Network unlock status.** Especially important for Xperia devices imported from Japan, since SoftBank, Docomo, and KDDI/au variants often ship carrier-locked.
 
-Sony premium checks are pay-per-report via card or PromptPay. See current pricing on our [pricing page](/pricing.php). If you're evaluating a used Xperia and also considering an iPhone in the same transaction, see our [Apple iCloud check](/service.php?slug=apple-icloud).
+Sony premium checks are pay-per-report via card, PayPal, or crypto. See current pricing on our [services page](/services). If you're evaluating a used Xperia and also considering an iPhone in the same transaction, see our [Apple iCloud check](/service.php?slug=apple-icloud).
 
 imeihub is a verification service. We do not unlock carrier locks, bypass FRP, or remove Xperia activation locks.
 

@@ -50,7 +50,7 @@ Apple devices carry unique post-sale locks a basic IMEI lookup cannot see. Our p
 - **Warranty.** Confirms AppleCare coverage dates and eligibility.
 - **Full GSX — $4.20.** The most comprehensive report we offer: purchase country, warranty, replacement history, coverage, activation date, and full technical specs pulled from Apple's Global Service Exchange.
 
-See the full menu on our [pricing page](/pricing.php) or jump straight to the [Apple iCloud service](/service.php?slug=apple-icloud).
+See the full menu on our [services page](/services) or jump straight to the [Apple iCloud service](/service.php?slug=apple-icloud).
 
 ## Popular Apple Models We Support
 

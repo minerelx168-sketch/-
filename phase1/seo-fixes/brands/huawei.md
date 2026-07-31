@@ -49,7 +49,7 @@ Beyond model identification, Huawei buyers usually need to know three things: is
 - **Network / Carrier Lock Status.** Reveals whether the device is unlocked or tied to a specific carrier such as China Mobile, Vodafone, or Etisalat.
 - **Warranty Status.** Confirms remaining Huawei manufacturer warranty and Care+ eligibility.
 
-See current pricing on our [pricing page](/pricing.php).
+See current pricing on our [services page](/services).
 
 ## Popular Huawei Models We Support
 

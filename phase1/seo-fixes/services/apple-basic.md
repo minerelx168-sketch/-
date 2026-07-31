@@ -61,7 +61,7 @@ imeihub does not scrape Apple's public pages, does not use consumer-facing tools
 
 ## Pricing & Delivery
 
-Confirmed price: **$0.10 per check**. Delivery is instant — seconds under normal load, up to a minute at peak. Credits are purchased through Stripe (card worldwide, PromptPay in Thailand). There is no monthly minimum and unused credits do not expire. Volume users can top up in bulk.
+Confirmed price: **$0.10 per check**. Delivery is instant — seconds under normal load, up to a minute at peak. Credits are purchased via card or PayPal (international cards supported). There is no monthly minimum and unused credits do not expire. Volume users can top up in bulk.
 
 Need more depth? Compare Basic Info with the full [Apple Full GSX report](/service.php?slug=apple-full-gsx) for hardware config and service history, or run a targeted [iCloud status check](/service.php?slug=apple-icloud) before any second-hand purchase. All Apple services live under the [/brand-apple](/brand-apple) hub.
 

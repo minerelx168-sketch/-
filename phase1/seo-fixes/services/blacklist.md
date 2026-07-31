@@ -61,7 +61,7 @@ A Blacklisted result means the phone is unusable on any compliant network in the
 
 ## Pricing & Delivery
 
-The Worldwide Blacklist Check is delivered instantly through your imeihub credit balance. Credits are purchased through Stripe and support both international cards and PromptPay for Thai customers. There is no monthly commitment — top up once and query IMEIs whenever you need. See current per-check pricing on the [service page](/service.php?slug=blacklist), and if you need bulk volume, contact us for a business rate.
+The Worldwide Blacklist Check is delivered instantly through your imeihub credit balance. Credits are purchased via card or PayPal (international cards supported). There is no monthly commitment — top up once and query IMEIs whenever you need. See current per-check pricing on the [service page](/service.php?slug=blacklist), and if you need bulk volume, contact us for a business rate.
 
 Results appear on your dashboard within a few seconds of purchase and remain available for download as a timestamped PDF for 90 days. If a check fails to return a result (extremely rare, but possible during upstream database maintenance windows), the credit is refunded automatically.
 

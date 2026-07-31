@@ -60,7 +60,7 @@ Knox Guard status is a live check, not a factory value — a phone that was clea
 
 ## Pricing & Delivery
 
-The Samsung Info & Knox Status Check is delivered instantly through your imeihub credit balance. Credits are purchased through Stripe and support both international cards and PromptPay for Thai customers. Results appear on your dashboard within a few seconds and remain downloadable as a timestamped PDF for 90 days. See current per-check pricing on the [Samsung service page](/service.php?slug=samsung-info).
+The Samsung Info & Knox Status Check is delivered instantly through your imeihub credit balance. Credits are purchased via card or PayPal (international cards supported). Results appear on your dashboard within a few seconds and remain downloadable as a timestamped PDF for 90 days. See current per-check pricing on the [Samsung service page](/service.php?slug=samsung-info).
 
 For a broader pre-purchase risk profile, pair this check with the [worldwide blacklist check](/service.php?slug=blacklist). If you are comparing Android brands, see the [Xiaomi Mi Account status check](/service.php?slug=xiaomi-status) and the [Google Pixel Info check](/service.php?slug=pixel-info) for the equivalent risks on those brands.
 

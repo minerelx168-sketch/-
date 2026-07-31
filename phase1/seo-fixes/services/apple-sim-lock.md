@@ -58,7 +58,7 @@ The check is read-only. It does not modify the SIM lock state, does not attempt 
 
 ## Pricing & Delivery
 
-Confirmed price: **$0.15 per check** (approximate — see the service page for current pricing, as carrier-lookup pricing occasionally shifts with upstream cost changes). Delivery is typically 10–30 seconds, longer for uncommon carriers. Credits are purchased via Stripe (card worldwide, PromptPay in Thailand).
+Confirmed price: **$0.15 per check** (approximate — see the service page for current pricing, as carrier-lookup pricing occasionally shifts with upstream cost changes). Delivery is typically 10–30 seconds, longer for uncommon carriers. Credits are purchased via card or PayPal (international cards supported).
 
 Combine SIM-Lock with the [Apple iCloud (Clean / Lost) check](/service.php?slug=apple-icloud) and the [Apple MDM check](/service.php?slug=apple-mdm) for a complete pre-purchase screen on any used iPhone. High-value transactions warrant the full [Apple Full GSX report](/service.php?slug=apple-full-gsx). All Apple checks live at [/brand-apple](/brand-apple).
 

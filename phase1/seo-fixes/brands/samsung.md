@@ -40,7 +40,7 @@ Every free Samsung lookup on imeihub returns:
 - **Base specifications** — RAM tier, screen size, and chipset family where the TAC exposes it
 - **Regional variant hint** — helps you tell a European unlocked model from a US carrier version
 
-Free checks are unlimited, need no account, and never store your IMEI. See [our full brand coverage list](/brand.php?slug=all) or run a lookup directly from the [Samsung brand page](/brand.php?slug=samsung).
+Free checks are unlimited, need no account, and never store your IMEI. See [our full brand coverage list](/brands) or run a lookup directly from the [Samsung brand page](/brand.php?slug=samsung).
 
 ## Samsung-Specific Premium Checks Available
 
@@ -50,7 +50,7 @@ For a full picture of a Samsung device — especially when buying used or import
 - **Samsung full info report.** Returns manufacturer name, model, IMEI history, sales region, warranty start date, purchase country, and — where available — activation status.
 - **Samsung blacklist / GSMA check.** Cross-references the IMEI against the GSMA global blacklist database, which catches devices reported lost or stolen in participating carrier networks.
 
-All Samsung premium checks are pay-per-report — no subscription — via card or PromptPay. See current pricing on our [pricing page](/pricing.php) before ordering. Turnaround is normally seconds to a few minutes depending on the upstream API.
+All Samsung premium checks are pay-per-report — no subscription — via card, PayPal, or crypto. See current pricing on our [services page](/services) before ordering. Turnaround is normally seconds to a few minutes depending on the upstream API.
 
 imeihub is a verification service. We report the current status of a device; we do not unlock, bypass, or remove Knox Guard, FRP (Factory Reset Protection), or carrier locks.
 

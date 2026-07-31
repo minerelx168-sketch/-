@@ -56,7 +56,7 @@ The check is read-only. It touches nothing on the device. It does not sign the d
 
 ## Pricing & Delivery
 
-Confirmed price: **$0.03 per check** (current pricing on the service page — verify at checkout). Delivery is instant, typically under five seconds. Credits are purchased via Stripe (card worldwide, PromptPay for Thai users). At three cents per check, budget-conscious resellers routinely run this on hundreds of units per week.
+Confirmed price: **$0.03 per check** (current pricing on the service page — verify at checkout). Delivery is instant, typically under five seconds. Credits are purchased via card or PayPal (international cards supported). At three cents per check, budget-conscious resellers routinely run this on hundreds of units per week.
 
 Pair the iCloud check with a quick [Apple iCloud ON/OFF status check](/service.php?slug=apple-icloud-status) for the simplest possible Find My flag, or upgrade to the [Apple Full GSX report](/service.php?slug=apple-full-gsx) for full context on high-value purchases. All Apple checks are indexed at [/brand-apple](/brand-apple).
 

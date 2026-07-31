@@ -46,7 +46,7 @@ vivo shares its verification infrastructure with the wider BBK family. Available
 - **Blacklist / GSMA check.** Cross-references the IMEI against the GSMA global blacklist database of devices reported lost or stolen.
 - **Network unlock status.** Reports whether the device is bound to a specific carrier — most relevant for imported iQOO and vivo X-series devices.
 
-vivo premium checks are pay-per-report via card or PromptPay. See current pricing on our [pricing page](/pricing.php). If you're also checking an [OPPO](/brand.php?slug=oppo) or [realme](/brand.php?slug=realme) device from the same seller, the same class of BBK-family checks applies.
+vivo premium checks are pay-per-report via card, PayPal, or crypto. See current pricing on our [services page](/services). If you're also checking an [OPPO](/brand.php?slug=oppo) or [realme](/brand.php?slug=realme) device from the same seller, the same class of BBK-family checks applies.
 
 imeihub is a verification service. We do not unlock, bypass FRP, or remove OriginOS/FuntouchOS activation locks.
 

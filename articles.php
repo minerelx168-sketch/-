@@ -7,7 +7,8 @@ usort($articles, fn($a, $b) => strcmp($b['date'], $a['date']));
 
 layout_head(
     'Articles · imeihub',
-    'Guides and explainers about IMEI numbers, blacklist checks, and buying used phones safely.'
+    'Guides and explainers about IMEI numbers, blacklist checks, and buying used phones safely.',
+    '<meta name="keywords" content="IMEI guide, what is IMEI, how to check IMEI, blacklist check guide, buying used phone, phone safety, IMEI number explained">'
 );
 ?>
     <section class="page-hero">

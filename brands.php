@@ -6,7 +6,8 @@ $brands = require __DIR__ . '/data/brands.php';
 
 layout_head(
     'Phone brands · imeihub',
-    'Browse mobile phone brands. Pick a brand to see common models and their IMEI/TAC info.'
+    'Browse mobile phone brands. Pick a brand to see common models and their IMEI/TAC info.',
+    '<meta name="keywords" content="phone brands, IMEI check by brand, Apple IMEI, Samsung IMEI, Huawei IMEI, Xiaomi IMEI, phone models, TAC lookup">'
 );
 ?>
     <section class="page-hero">

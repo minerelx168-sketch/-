@@ -81,9 +81,17 @@ try {
     unset($svc);
 }
 
+$homeDesc = 'Free IMEI checker. Pick a check, paste any 15-digit IMEI, and we instantly look up the brand, model and specs.';
+$homeTitle = $appName . ' · Free IMEI Check & Phone Info Lookup';
 layout_head(
-    $appName . ' · Free IMEI Check & Phone Info Lookup',
-    'Free IMEI checker. Pick a check, paste any 15-digit IMEI, and we instantly look up the brand, model and specs.'
+    $homeTitle,
+    $homeDesc,
+    '<meta name="keywords" content="IMEI check, IMEI checker, free IMEI lookup, phone IMEI check, check IMEI number, IMEI info, device info, phone verification">' . "\n"
+    . '<meta property="og:title" content="' . htmlspecialchars($homeTitle, ENT_QUOTES, 'UTF-8') . '">' . "\n"
+    . '<meta property="og:description" content="' . htmlspecialchars($homeDesc, ENT_QUOTES, 'UTF-8') . '">' . "\n"
+    . '<meta property="og:type" content="website">' . "\n"
+    . '<meta property="og:url" content="https://imeihub.net/">' . "\n"
+    . '<meta property="og:site_name" content="imeihub">'
 );
 ?>
     <section class="hero" id="checker">

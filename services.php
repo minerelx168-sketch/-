@@ -6,7 +6,8 @@ $services = require __DIR__ . '/data/services.php';
 
 layout_head(
     'IMEI lookup services · imeihub',
-    'All IMEI lookup services — free phone info check, blacklist, carrier, iCloud activation lock, warranty status and more.'
+    'All IMEI lookup services — free phone info check, blacklist, carrier, iCloud activation lock, warranty status and more.',
+    '<meta name="keywords" content="IMEI lookup services, IMEI check, blacklist check, iCloud check, carrier check, warranty check, phone verification, IMEI info">'
 );
 ?>
     <section class="page-hero">

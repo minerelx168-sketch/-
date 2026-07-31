@@ -11,6 +11,13 @@ declare(strict_types=1);
 
 function layout_head(string $title, string $description = '', string $extraHead = ''): void
 {
+    // SEO: Set cache-control to allow Google to cache public pages
+    if (!headers_sent()) {
+        header('Cache-Control: public, max-age=3600, s-maxage=86400');
+        header_remove('Pragma');
+        header_remove('Expires');
+    }
+
     require_once __DIR__ . '/icons.php';
     require_once __DIR__ . '/auth.php';
     require_once __DIR__ . '/admin.php';
@@ -41,6 +48,10 @@ function layout_head(string $title, string $description = '', string $extraHead 
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= $title ?></title>
 <meta name="description" content="<?= $desc ?>">
+<meta name="robots" content="index, follow">
+<?php if (strpos($extraHead, 'rel="canonical"') === false): ?>
+<link rel="canonical" href="<?= htmlspecialchars('https://' . ($_SERVER['HTTP_HOST'] ?? 'imeihub.net') . strtok($_SERVER['REQUEST_URI'] ?? '/', '?') . (isset($_GET) && !empty($_GET) ? '?' . http_build_query($_GET) : ''), ENT_QUOTES, 'UTF-8') ?>">
+<?php endif; ?>
 <?= $extraHead ?>
 <link rel="icon" href="data:image/svg+xml;charset=utf-8,<?= $favicon ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">

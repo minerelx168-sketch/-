@@ -31,10 +31,23 @@ require_once __DIR__ . '/includes/icons.php';
 $brandName  = htmlspecialchars($brand['name'], ENT_QUOTES, 'UTF-8');
 $brandColor = htmlspecialchars($brand['color'], ENT_QUOTES);
 $country    = htmlspecialchars($brand['country'], ENT_QUOTES, 'UTF-8');
-
+$brandKeywords = implode(', ', [
+    "$brandName IMEI check",
+    "$brandName IMEI lookup",
+    "check $brandName phone",
+    "$brandName serial number",
+    'IMEI checker',
+    'phone verification',
+]);
+$brandDesc = "Look up any $brandName phone by IMEI. Common $brandName models and how to find the IMEI on your device.";
 layout_head(
     "$brandName IMEI Check · imeihub",
-    "Look up any $brandName phone by IMEI. Common $brandName models and how to find the IMEI on your device."
+    $brandDesc,
+    '<meta name="keywords" content="' . htmlspecialchars($brandKeywords, ENT_QUOTES, 'UTF-8') . '">' . "\n"
+    . '<meta property="og:title" content="' . htmlspecialchars("$brandName IMEI Check · imeihub", ENT_QUOTES, 'UTF-8') . '">' . "\n"
+    . '<meta property="og:description" content="' . htmlspecialchars($brandDesc, ENT_QUOTES, 'UTF-8') . '">' . "\n"
+    . '<meta property="og:type" content="website">' . "\n"
+    . '<meta property="og:url" content="https://imeihub.net/brand.php?slug=' . htmlspecialchars($slug, ENT_QUOTES, 'UTF-8') . '">'
 );
 ?>
     <section class="page-hero">

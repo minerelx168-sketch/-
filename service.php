@@ -29,9 +29,23 @@ if (!$service) {
 
 require_once __DIR__ . '/includes/icons.php';
 $name = $service['name'];
+$seoKeywords = implode(', ', array_filter([
+    strip_tags(html_entity_decode($name)),
+    'IMEI check',
+    'IMEI lookup',
+    $slug,
+    str_replace('-', ' ', $slug),
+    'phone check',
+    'device info',
+]));
 layout_head(
     strip_tags(html_entity_decode($name)) . ' · imeihub',
-    strip_tags($service['tagline'])
+    strip_tags($service['tagline']),
+    '<meta name="keywords" content="' . htmlspecialchars($seoKeywords, ENT_QUOTES, 'UTF-8') . '">' . "\n"
+    . '<meta property="og:title" content="' . htmlspecialchars(strip_tags(html_entity_decode($name)) . ' · imeihub', ENT_QUOTES, 'UTF-8') . '">' . "\n"
+    . '<meta property="og:description" content="' . htmlspecialchars(strip_tags($service['tagline']), ENT_QUOTES, 'UTF-8') . '">' . "\n"
+    . '<meta property="og:type" content="website">' . "\n"
+    . '<meta property="og:url" content="https://imeihub.net/service.php?slug=' . htmlspecialchars($slug, ENT_QUOTES, 'UTF-8') . '">'
 );
 ?>
     <section class="page-hero">

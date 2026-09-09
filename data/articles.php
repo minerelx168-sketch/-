@@ -8,6 +8,118 @@ declare(strict_types=1);
 
 return [
     [
+        'slug'    => 'apple-imei-verification',
+        'title'   => 'Apple IMEI Verification: Can It Prove an iPhone Is Genuine?',
+        'meta_title' => 'Apple IMEI Verification: What It Can Really Tell You',
+        'excerpt' => 'Learn what Apple IMEI verification can confirm, why it cannot prove an iPhone is genuine, and which checks to use for parts, locks, and coverage.',
+        'date'    => '2026-09-09',
+        'tag'     => 'Apple',
+        'body'    => <<<'APPLE_IMEI_VERIFICATION'
+Apple IMEI verification is useful for checking whether an iPhone's cellular identifier maps to the expected device family, but it is not a one-step certificate of authenticity. A matching brand and model is helpful evidence; it does not prove that every component is genuine, that the seller owns the phone, or that the device is free from account and carrier restrictions. The safest approach is to match each question with the identifier or on-device check designed to answer it.
+
+## What an iPhone IMEI Check Can Confirm
+
+An IMEI is a cellular-device identifier. According to the [GSMA TAC database](https://imeidb.gsma.com/imei/loginpage), the first eight digits form the Type Allocation Code, or TAC, which identifies a device's make and model. That is why a basic IMEI lookup can return useful identity information before you order a more specialized report.
+
+A basic result can help you check whether:
+
+- The IMEI is in the expected 15-digit format.
+- Its TAC points to Apple and the expected iPhone model family.
+- The number copied from the phone produces the same basic identity as the device you are examining.
+
+This comparison is most useful when you read the IMEI from the iPhone itself. Apple shows the serial number, EID, IMEI/MEID and ICCID as separate fields in **Settings > General > About**. Touch and hold the IMEI to copy it, following [Apple's identifier guide](https://support.apple.com/en-us/108037). If the phone displays more than one IMEI, keep each complete number separate and check the one relevant to the cellular line or report.
+
+## Why a Matching IMEI Does Not Prove the Whole iPhone Is Genuine
+
+An IMEI lookup reports database information associated with an identifier. It does not physically inspect the logic board, display, battery, cameras, housing or packaging. Therefore, a result that says “Apple” and names the expected model should be treated as an identity match—not as proof that every part of the device is original.
+
+The same limit applies in the other direction. A mismatch deserves investigation, but it does not by itself tell you why the records differ. Possible explanations include an incorrectly copied number, checking an IMEI from a different device or box, or a lookup source that does not have the expected record. Recopy the identifier and compare the on-device details before drawing a conclusion.
+
+### IMEI and serial number answer different questions
+
+Do not substitute one identifier for the other simply because a form accepts text. Apple's current [Check Coverage](https://checkcoverage.apple.com/) service asks for a serial number and is designed to show device coverage and benefits. An Apple coverage result can help with warranty questions, but its stated purpose is not to certify ownership, physical condition or every installed part.
+
+For a coverage question, use Apple's own coverage page as the authoritative starting point. If you need different report fields, review the scope of the relevant service before ordering.
+
+## A Better Apple IMEI Verification Process
+
+Use these checks together. Each step answers a different part of the authenticity question.
+
+### 1. Copy the identifiers from Settings
+
+Open **Settings > General > About** and record:
+
+- IMEI or IMEIs.
+- Serial number.
+- Model number.
+- iOS version.
+
+Avoid relying only on a marketplace screenshot, printed label or loose box. The number on the device is the correct starting point for checking that device.
+
+### 2. Run a basic IMEI model lookup
+
+Use the [free imeihub IMEI lookup](https://imeihub.net/) to compare the returned brand and model with the phone in your hand. imeihub describes this free check as basic brand, model and specification identification. Do not interpret it as a free blacklist, iCloud or warranty report; those are separate premium services in the [imeihub service catalogue](https://imeihub.net/services.php).
+
+Check for consistency rather than hunting for a single “genuine” label:
+
+- Does the result identify Apple?
+- Does the model family agree with the phone?
+- If there are two IMEIs, did you enter one complete identifier without mixing their digits?
+- Did you copy the number from Settings rather than another device's packaging?
+
+### 3. Compare Apple's model number
+
+In **Settings > General > About**, the value beside Model Number may initially be a part number. Tap it to display the model number, then compare that number with [Apple's iPhone model list](https://support.apple.com/en-us/108044). Apple also documents the exact steps for revealing the model number in its [model-number guide](https://support.apple.com/en-us/106343).
+
+This is a direct device-side cross-check. It is more informative than judging an iPhone only by its color, camera layout or seller description.
+
+### 4. Review Parts and Service History
+
+On supported iPhones with iOS 15.2 or later, go to **Settings > General > About**. If the device has been repaired, a Parts and Service History section may appear. Apple's current guide explains labels such as Genuine, Used, Unknown and Finish Repair, with the information available depending on the iPhone model, part and software version. Read [Apple's Parts and Service History guide](https://support.apple.com/en-us/102658) before interpreting a label.
+
+This check answers a parts-and-repair question that an IMEI model lookup cannot answer. An “Unknown” message can have several causes listed by Apple; do not turn it into a broader claim that the entire phone is counterfeit.
+
+### 5. Check Activation Lock on the device
+
+Activation Lock is an account-protection issue, not an IMEI authenticity test. Apple advises buyers to make sure a used iPhone is erased and no longer linked to the previous owner's account. If the setup screen says **iPhone Locked to Owner**, Apple says not to take ownership of it. Follow [Apple's Activation Lock guidance](https://support.apple.com/en-us/108794).
+
+An online lookup does not remove Activation Lock. The previous owner must properly remove the device from their account, or an eligible owner can follow Apple's documented support process.
+
+## What to Do When the Details Do Not Match
+
+Pause the transaction or repair intake until you can explain the inconsistency. Work through the evidence in this order:
+
+- **Step 1.** Recopy the IMEI from Settings and check every digit.
+- **Step 2.** Confirm that you used an IMEI, not the serial number, EID or ICCID.
+- **Step 3.** Compare the model number with Apple's official model list.
+- **Step 4.** Check whether the lookup covers the exact information you expected.
+- **Step 5.** Ask the seller for the original purchase documentation when ownership or purchase history matters.
+- **Step 6.** If the phone can be erased with the seller present, confirm that it reaches setup without an Activation Lock warning.
+
+Do not keep ordering unrelated reports in the hope that one will “authenticate” the phone. A blacklist report answers a lost-or-stolen status question; an iCloud report answers a Find My or Activation Lock status question; a warranty report answers coverage questions. None changes the device's lock status, and none replaces the on-device checks above.
+
+## Choose the Right imeihub Check
+
+The [imeihub service catalogue](https://imeihub.net/services.php) currently separates its checks by purpose:
+
+| Question | Relevant option | Free or premium |
+| --- | --- | --- |
+| What brand and model does this IMEI map to? | Free IMEI Check | Free basic lookup |
+| What basic Apple model, color and storage data is offered? | Apple Check | Premium |
+| Is the device reported lost or stolen in covered carrier records? | WorldWide Blacklist | Premium |
+| What Find My or Activation Lock status does the selected service report? | iCloud checks | Premium |
+| What activation date and remaining warranty coverage is offered? | Apple Warranty & Activation | Premium |
+
+Review the current service description before submitting an identifier. The catalogue summary does not promise that every record will be available for every device, and a lookup does not unlock a carrier or Apple account restriction.
+
+## Verify the Device, Not Just the Number
+
+Apple IMEI verification works best as one layer of a careful identity check. Use the IMEI to compare basic make-and-model data, the Apple model number to confirm the device family, Parts and Service History to understand supported repair information, and Apple's setup flow to check for Activation Lock. Together, these checks provide a clearer answer than any identifier alone.
+
+Start with the [free imeihub IMEI lookup](https://imeihub.net/) to compare the iPhone's basic identity, then choose a premium report from the [service catalogue](https://imeihub.net/services.php) only if it answers a separate question you still need resolved.
+APPLE_IMEI_VERIFICATION,
+    ],
+    [
         'slug'    => 'samsung-tablet-imei-number',
         'title'   => 'Samsung Tablet IMEI Number: Find It or Know Why It\'s Missing',
         'meta_title' => 'Samsung Tablet IMEI Number: How to Find Yours',

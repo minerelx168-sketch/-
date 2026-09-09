@@ -8,6 +8,103 @@ declare(strict_types=1);
 
 return [
     [
+        'slug'    => 'bea-cukai-imei-tax-calculator-indonesia',
+        'title'   => 'Bea Cukai IMEI Tax Calculator: What You Will Pay',
+        'meta_title' => 'Bea Cukai IMEI Tax Calculator Indonesia (2026 Guide)',
+        'excerpt' => 'Estimate Bea Cukai import duty, PPN and PPh on a phone brought into Indonesia, and register its IMEI correctly before your SIM gets blocked.',
+        'date'    => '2026-09-09',
+        'tag'     => 'Regulation',
+        'body'    => <<<'BEA_CUKAI_IMEI_TAX'
+Bringing a phone into Indonesia from overseas triggers two separate questions: how much tax will **Bea Cukai** (the Directorate General of Customs and Excise, DJBC) charge you, and how do you register the device's IMEI so it keeps working on an Indonesian SIM. This guide walks through both, using the same formula the official Bea Cukai calculator applies.
+
+## Why Bea Cukai Cares About Your Phone's IMEI
+
+Since 2020, Indonesia has enforced IMEI-based network validation under **Peraturan Menteri Keuangan (PMK) No. 199/PMK.010/2019** and the joint regulation from the Ministries of Industry, Trade, and Communications (Permenperin/Permendag/Permenkominfo 2019). Any handset activated on an Indonesian mobile network must have its IMEI listed in the national **CEIR** (Central Equipment Identity Register) database, jointly operated by Bea Cukai, Kominfo, and the four national carriers.
+
+A phone bought abroad is not in that database by default. If you insert a local SIM without registering, the device typically works for a grace period before the network blocks cellular service — Wi-Fi still functions, but calls, SMS, and mobile data stop.
+
+## Who Needs to Register and Pay?
+
+| Traveller type | IMEI registration required? | Tax may apply? |
+| --- | --- | --- |
+| Tourist/resident carrying a personal phone from abroad, staying long-term | Yes | Yes, above the exemption threshold |
+| Traveller in transit, not clearing Indonesian customs | No | No |
+| Phone bought and already registered inside Indonesia | No | No (already taxed at point of sale) |
+| Second phone or multiple devices per traveller | Yes, each IMEI | Yes, combined value assessed |
+
+## The Bea Cukai Tax Formula
+
+Indonesia grants a **personal-effects exemption of USD 500 per traveller** on goods carried from abroad, including phones. Value above that threshold is taxed in three layers, each calculated on top of the previous one:
+
+- **Bea Masuk (import duty)** — a percentage of the customs value exceeding the USD 500 exemption.
+- **PPN (VAT)** — charged on the customs value plus the import duty already assessed.
+- **PPh (income tax, Pasal 22)** — charged on the same base as PPN, at a lower rate if you hold an **NPWP** (Indonesian tax ID) and a higher rate if you do not.
+
+So the calculation chain runs in this order:
+
+- **Dutiable value** = Declared phone value − USD 500 exemption
+- **Bea Masuk** = Dutiable value × import duty rate
+- **PPN base** = Dutiable value + Bea Masuk
+- **PPN** = PPN base × current VAT rate
+- **PPh** = PPN base × PPh rate (lower with NPWP, higher without)
+- **Total payable** = Bea Masuk + PPN + PPh
+
+**Rates change with government regulation**, so treat the percentages above as the structure, not a fixed number — always confirm the live figures on Bea Cukai's own calculator before you budget for a specific device. As a working example only:
+
+| Item | Illustrative amount |
+| --- | --- |
+| Declared phone value | USD 900 |
+| Exemption | −USD 500 |
+| Dutiable value | USD 400 |
+| Bea Masuk (illustrative rate) | Calculated on USD 400 |
+| PPN (illustrative rate) | Calculated on dutiable value + Bea Masuk |
+| PPh (with/without NPWP) | Calculated on the same base, two different rates |
+
+Do not use these placeholder figures to pay an invoice — pull the exact percentage from the official portal on the day you register, since customs rates and the exemption ceiling are both set by regulation and can be revised.
+
+## How to Register and Pay Through Bea Cukai
+
+- **Step 1.** Before or on arrival, declare the phone using the **Customs Declaration** form or the electronic customs declaration (e-CD) if you filled it in ahead of your flight.
+- **Step 2.** Visit the customs counter at the airport, or use the official Bea Cukai portal, and submit the phone's **IMEI**, **brand and model**, and **proof of purchase** (receipt or invoice) if you have it.
+- **Step 3.** Bea Cukai assesses the dutiable value and issues a tax invoice covering Bea Masuk, PPN, and PPh.
+- **Step 4.** Pay through the accepted channel (bank transfer, e-wallet, or the airport payment counter, depending on the airport).
+- **Step 5.** Once payment clears, the IMEI is submitted to CEIR and typically becomes active on local networks within 24–48 hours.
+
+Registration must generally happen **within 60 days of arrival** — after that window, Bea Cukai treats the device as unregistered and enforcement (SIM block) applies regardless of intent.
+
+Full procedure and the live calculator are published at [beacukai.go.id](https://www.beacukai.go.id/), the official DJBC website. Do not use unofficial third-party sites that ask for payment to "process" your IMEI registration — Bea Cukai does not charge a service fee beyond the assessed duty and tax.
+
+## Checking Your IMEI Before You Register
+
+Before declaring a phone, confirm it is exactly what the seller told you — the wrong model or a mismatched serial can cause delays at the customs counter, and a device with a blacklist flag from its country of origin is unlikely to pass Indonesian network validation even after tax is paid.
+
+- [Free IMEI Check](https://imeihub.net/service.php?slug=free-imei-check) — confirm brand, model, and specs match the device in hand
+- [WorldWide Blacklist Check](https://imeihub.net/service.php?slug=blacklist) — check whether the IMEI was reported lost or stolen in another country before you pay Indonesian import tax on it
+
+Running this check first avoids paying Bea Masuk, PPN, and PPh on a phone that turns out to be blacklisted or misrepresented by the seller.
+
+## Frequently Asked Questions
+
+**Q: Is the USD 500 exemption per phone or per traveller?**
+A: It is a combined personal-effects exemption per traveller covering all goods declared, not a per-device allowance — a second phone adds to the same dutiable total.
+
+**Q: What happens if I don't declare my phone at all?**
+A: The IMEI is never entered into CEIR, so the device will lose cellular service once the network detects it is unregistered. Late or after-the-fact registration can also carry an administrative penalty on top of the assessed tax.
+
+**Q: Does the NPWP discount apply to tourists without an Indonesian tax number?**
+A: No — the lower PPh rate is only available to travellers who already hold a valid NPWP. Without one, the higher rate applies.
+
+**Q: Can I check whether an IMEI is already registered in CEIR?**
+A: Yes, Kominfo and Kemenperin publish a lookup at their official IMEI portal. This confirms registration status inside Indonesia; it does not replace an international blacklist check.
+
+## Budget the Tax Before You Travel
+
+Bea Cukai's IMEI tax is predictable once you know the formula: declared value minus the USD 500 exemption, then Bea Masuk, PPN, and PPh stacked on the remainder. Confirm the current rates on the official calculator, keep your purchase receipt, and register within 60 days of arrival to avoid a blocked SIM.
+
+Before you fly, run a [free IMEI check](https://imeihub.net/service.php?slug=free-imei-check) on the phone you're bringing in — it takes a minute and confirms exactly what you'll be declaring at the counter.
+BEA_CUKAI_IMEI_TAX,
+    ],
+    [
         'slug'    => 'samsung-tablet-imei-number',
         'title'   => 'Samsung Tablet IMEI Number: Find It or Know Why It\'s Missing',
         'meta_title' => 'Samsung Tablet IMEI Number: How to Find Yours',

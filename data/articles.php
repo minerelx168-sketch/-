@@ -8,6 +8,104 @@ declare(strict_types=1);
 
 return [
     [
+        'slug' => 't-mobile-imei-check-compatibility-vs-carrier-lock',
+        'title' => 'T-Mobile IMEI Check: Compatible Does Not Mean Unlocked',
+        'meta_title' => 'T-Mobile IMEI Check: Compatibility vs. Carrier Lock',
+        'excerpt' => 'Run a T-Mobile IMEI check and understand compatibility, carrier locks, and eSIM results before switching. Know when a separate report helps.',
+        'date' => '2026-09-11',
+        'tag' => 'Guide',
+        'body' => <<<'TMOBILE_COMPATIBILITY_GUIDE'
+A **T-Mobile IMEI check** can help you assess a phone before switching networks, but a compatibility result is not a substitute for checking whether the device is carrier-locked. If one screen says the phone is compatible while another shows a restriction, you may be looking at answers to two different questions.
+
+This guide focuses on bringing an existing phone to T-Mobile in the United States: where to check, how to interpret the information, and when a separate status report is relevant.
+
+## Key Takeaways
+
+- Use T-Mobile's own checker for its network-compatibility assessment.
+- Read compatibility, blocking, and SIM or eSIM information separately.
+- For an iPhone, carrier-lock status can also be checked directly in Settings.
+- A paid SIM-lock report does not activate a phone or change its lock status.
+
+## Start with the Official T-Mobile IMEI Check
+
+Open [T-Mobile's bring-your-own-phone checker](https://www.t-mobile.com/resources/bring-your-own-phone) and enter the IMEI from your device. The page provides compatibility information and can display separate blocking and SIM-related results. Read the complete response, not just its headline.
+
+For an iPhone, open **Settings → General → About**, locate the IMEI, and touch and hold it to copy. Apple lists other places to find identifiers if Settings is unavailable in its [device-identifier guide](https://support.apple.com/en-us/108037).
+
+Before submitting, compare the field label with the identifier you copied. An IMEI, serial number, and EID are not interchangeable. Keep the labels if you save information for a support conversation.
+
+### If You Are Checking a Phone Remotely
+
+Ask for the identifier from the actual device, and compare it again when you receive the phone. An accurate lookup against the wrong handset's number does not answer your question.
+
+Keep a private record of the check date and response. Do not publish the full IMEI in a public listing or comment just to ask whether the result looks right.
+
+## How to Read Compatibility and SIM Results
+
+Use this as a reading aid, not a claim that every result will show every field:
+
+| Information shown | What to investigate next |
+| --- | --- |
+| Network compatibility | Whether the stated level meets your intended use |
+| Device blocking | Any carrier restriction described in that result |
+| SIM or eSIM support | The activation route offered for the device |
+| Missing or uncertain information | The specific field the checker could not establish |
+
+T-Mobile's checker distinguishes network compatibility from other device information, including blocking and eSIM support. If it cannot establish eSIM compatibility, it may request an EID. Follow the instructions attached to your result rather than entering another identifier into the IMEI field.
+
+### Partial Compatibility Needs a Practical Decision
+
+T-Mobile explains that a partially compatible device may lack some supported network technologies or frequencies, affecting coverage or data speeds. Its [BYOD support guide](https://www.t-mobile.com/support/devices/not-sold-by-t-mobile/bring-your-own-device-byod-guide) also notes limits to what it can guarantee for devices obtained elsewhere.
+
+Write down what matters to you before deciding: reliable service at work, coverage at home, or a particular calling feature. Then ask about those requirements explicitly. A broad compatibility label is less useful than an answer about the way you plan to use the phone.
+
+## Why an Unlocked iPhone Still Needs a Network Check
+
+On an iPhone, **Settings → General → About → Carrier Lock** shows the carrier-lock information. Apple says **“No SIM restrictions”** means the iPhone is unlocked. See [Apple's carrier-unlock guidance](https://support.apple.com/en-us/109316).
+
+That answers the carrier-lock question. It does not replace the intended network's assessment of the device. Conversely, do not infer an unlocked state simply from a compatible model.
+
+For a fuller explanation of this distinction, see [imeihub's carrier-lock guide](https://imeihub.net/article/apple-carrier-lock-check-understanding-your-iphones-sim-lock-status).
+
+### If the Phone Is Locked to Another Carrier
+
+Ask that carrier about the required unlock process. Apple states that it cannot unlock an iPhone for another network; the carrier handles the request. Avoid treating a third-party lookup receipt as confirmation that an unlock has occurred.
+
+Keep the sequence clear in your records: status checked, carrier contacted, response received, and activation attempted. This makes it easier to identify which step still needs attention.
+
+## When Is a Paid Report Useful?
+
+Start with the question you cannot yet answer. If the only question is whether T-Mobile accepts the device, begin with T-Mobile's checker. Buying an unrelated report is not a substitute.
+
+If you need an IMEI-based iPhone SIM-lock status report, imeihub lists a separate [paid Apple SIM-Lock Status check](https://imeihub.net/service.php?slug=apple-sim-lock). Its description says it returns SIM-lock status only. Do not assume it also identifies the original carrier, determines unlock eligibility, or confirms T-Mobile activation.
+
+For example, someone evaluating a phone remotely may want a status report before arranging a handover. That is a possible workflow, not proof that a paid check is necessary for every purchase. If the phone is already available and Settings answers the question, avoid ordering a redundant report.
+
+### Free Identification Is a Different Service
+
+imeihub's basic brand and model lookup is free. Its detailed reports are separate paid services; free identification should not be read as a free blacklist, iCloud, or warranty report.
+
+Before ordering, check the supported identifier, report scope, and current price. If any part is unclear, clarify it first. A lookup does not remove Activation Lock or a carrier lock.
+
+## What to Do When the Results Seem to Conflict
+
+Keep the actual responses side by side and ask:
+
+- Were both checks performed on the same device identifier?
+- Did one answer a compatibility question and the other a lock-status question?
+- Was a field unavailable, rather than reporting a definite status?
+- Which organization can explain or change the specific restriction?
+
+Send the relevant support team its own result reference and exact wording. Describe the outcome you need, such as activating the phone on T-Mobile, rather than asking only whether the phone is “clear.”
+
+## Choose the Check That Answers Your Next Question
+
+A T-Mobile IMEI check is a useful starting point for a network move. Match the identifier to the phone, separate compatibility from carrier-lock status, and resolve the specific unanswered field before proceeding.
+
+If you only need to identify the device, start with [imeihub's free IMEI lookup](https://imeihub.net/). If SIM-lock status is the remaining question, [review the paid SIM-lock report and its scope](https://imeihub.net/service.php?slug=apple-sim-lock) before ordering.
+TMOBILE_COMPATIBILITY_GUIDE,
+    ],
+    [
         'slug' => 'iphone-blacklist-check-clean-status-change',
         'title' => 'iPhone Blacklist Check: Why a Clean Result Can Change',
         'meta_title' => 'iPhone Blacklist Check: Can Clean Status Change?',

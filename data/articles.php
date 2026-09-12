@@ -8,6 +8,150 @@ declare(strict_types=1);
 
 return [
     [
+        'slug' => 'icloud-imei-check-on-off-vs-clean-lost',
+        'title' => 'iCloud IMEI Check: ON/OFF vs. Clean/Lost Results',
+        'meta_title' => 'iCloud IMEI Check: ON/OFF vs. Clean/Lost',
+        'excerpt' => 'An iCloud IMEI check can show ON/OFF or Clean/Lost. Learn what each report answers, what it cannot prove, and which check fits your next decision.',
+        'date' => '2026-09-12',
+        'tag' => 'Apple',
+        'body' => <<<'ICLOUD_STATUS_COMPARISON'
+An **iCloud IMEI check** may offer an ON/OFF result or a Clean/Lost result, but those labels do not answer exactly the same question. If you are checking a used iPhone or iPad, choosing the wrong report can leave the issue you care about unresolved. This guide explains what each result is designed to tell you, what it cannot prove, and which checks still need to happen on the device.
+
+## Key Takeaways
+
+- An **ON/OFF report** is intended to indicate whether Find My is enabled for the supplied identifier.
+- A **Clean/Lost report** is intended to return the service's Clean or Lost status for that identifier.
+- Find My and Activation Lock are connected, while Lost Mode is a separate action an owner can take.
+- Neither report removes Activation Lock, unlocks a carrier restriction, proves ownership, or replaces a hands-on setup check.
+- imeihub's basic brand-and-model lookup is free; its iCloud status reports are paid services with separate scopes.
+
+## Why iCloud IMEI Check Results Use Different Labels
+
+Online checkers package different data points into different products. The name of a report therefore matters as much as the result itself. An iCloud IMEI checker that returns ON/OFF is answering a narrower status question than one sold specifically as a Clean/Lost report.
+
+Apple's terminology provides the essential context. [Apple explains that Activation Lock turns on automatically when Find My is enabled](https://support.apple.com/en-us/108794). The feature is designed to stop another person from using an iPhone or iPad without the owner's Apple Account credentials. Lost Mode, by contrast, is an action the owner can use to lock a missing device and display contact information.
+
+Third-party labels such as Clean/Lost should be interpreted according to the exact service description. They are not a substitute for Apple's on-device messages during setup.
+
+## ON/OFF vs. Clean/Lost: What Is the Difference?
+
+| Report or check | Main question it answers | What it does not establish |
+|---|---|---|
+| Free basic IMEI lookup | Does the IMEI map to the expected brand and model? | iCloud status, ownership, blacklist status, warranty or carrier unlock |
+| iCloud ON/OFF report | Is Find My reported as ON or OFF for this identifier? | Whether the seller owns the device or whether all other risks are clear |
+| iCloud Clean/Lost report | Does the selected service return Clean or Lost? | A complete ownership history, carrier status or a permanent future guarantee |
+| Hands-on setup check | Can setup proceed without the previous owner's Apple Account? | Network blacklist, warranty and physical condition |
+
+### What an ON Result Means
+
+An ON result indicates that Find My is reported as enabled. Because Apple ties Find My to Activation Lock, treat this as a sign that the device may still be linked to an Apple Account. A buyer should not assume that an erase alone will make the device ready for a new owner.
+
+The seller should remove the device from their account through Apple's supported process. You should then verify the actual device again rather than relying on a screenshot of an earlier report.
+
+### What an OFF Result Means
+
+An OFF result indicates that Find My is reported as disabled for the submitted identifier. That is relevant to Activation Lock, but it is not a universal “safe to buy” result.
+
+An OFF result does not prove that:
+
+- the identifier belongs to the device in front of you;
+- the seller is the lawful owner;
+- the IMEI is not blocked by a carrier or network database;
+- the phone is carrier-unlocked;
+- the warranty, battery and hardware condition are acceptable.
+
+Compare the identifier in the report with the one shown in **Settings → General → About**. Apple's [identifier guide](https://support.apple.com/en-us/108037) explains where to find an iPhone or iPad IMEI and serial number. Avoid publishing the full number in a public listing or forum.
+
+### What Clean and Lost Mean in This Report Type
+
+The imeihub [iCloud Activation Lock (Clean / Lost) service](https://imeihub.net/service.php?slug=apple-icloud) is described as returning a Clean or Lost status. Use those terms only within that report's stated scope.
+
+A Clean result should not be expanded into claims the report did not make. It does not automatically mean the device has a clean network blacklist status, an active warranty, valid proof of purchase, or no carrier lock. Those are separate questions.
+
+A Lost result is a serious reason to pause. Do not try to bypass a lock or proceed on the promise that it can be removed later. Ask the seller to resolve the account status through Apple and demonstrate successful setup before money changes hands.
+
+## Which iCloud Report Should You Choose?
+
+Start with the decision you need to make, not the most detailed-looking product name.
+
+### Choose ON/OFF for a Focused Find My Question
+
+Use the [imeihub iCloud ON/OFF check](https://imeihub.net/service.php?slug=apple-icloud-status) when your immediate question is whether Find My is reported as enabled or disabled. This is the more focused option when you do not need a Clean/Lost label.
+
+### Choose Clean/Lost for That Specific Status Label
+
+Choose the Clean/Lost report when you specifically need the service's Clean or Lost result. Read the service description before ordering so you know what the output includes. Do not infer blacklist, warranty or SIM-lock information unless the selected report explicitly provides it.
+
+### Start Free When You Only Need Device Identification
+
+If you first need to confirm the device model, use imeihub's [free basic IMEI lookup](https://imeihub.net/). Brand-and-model identification can catch a mistyped or mismatched identifier, but it does not include the paid iCloud status reports.
+
+Review the current service description and displayed price before purchasing any report. A paid report supplies information; it does not remove Activation Lock or change the device's account status.
+
+## How to Use an iCloud Check Online Before Buying
+
+### Verify the Identifier First
+
+- Ask the seller to open **Settings → General → About** on the actual device.
+- Copy the IMEI carefully and confirm whether the report accepts IMEI, serial number, or both.
+- Compare the returned brand and model with the device being offered.
+- Resolve any mismatch before ordering another check or paying the seller.
+
+### Match the Report to One Question
+
+Write down the decision you are trying to make. If the question is “Is Find My reported as enabled?”, choose ON/OFF. If it is “Does this service report Clean or Lost?”, choose the Clean/Lost report. Use separate checks for blacklist, warranty or carrier-lock questions.
+
+### Confirm the Result on the Device
+
+Ask the seller to erase the device and begin setup while you are present. Apple advises a buyer not to take ownership of a used iPhone or iPad if setup asks for the previous owner's Apple Account. The device is ready for a new owner only after the former account has been removed and setup can proceed normally. Apple's [used iPhone buying guide](https://support.apple.com/en-us/104999) includes this and other physical inspection steps.
+
+Do not accept a report as a substitute for this test. Reports can help you decide what to investigate; the setup screen shows whether the actual device still demands the previous owner's credentials at that moment.
+
+## Common Interpretation Mistakes
+
+### Mistaking iCloud Status for Carrier Lock
+
+Activation Lock protects the Apple device account relationship. A carrier lock restricts which mobile network the phone can use. They are independent. An iCloud result does not unlock a SIM restriction, and a carrier-unlocked iPhone can still be protected by Activation Lock.
+
+### Treating Clean as Proof of Ownership
+
+No status label replaces proof of purchase, the seller's identity, or a documented transfer. A report reflects the data and scope of that service; it cannot reconstruct every event in the device's history.
+
+### Checking a Screenshot Instead of the Phone
+
+A screenshot may refer to another identifier or an earlier time. Enter the identifier from the actual device, confirm the model, and complete setup before the transaction.
+
+### Assuming a Report Can Remove a Lock
+
+An iCloud Activation Lock check is informational. Removing the account association requires the owner to use Apple's supported process and may require their Apple Account password or proof of purchase. imeihub does not claim that a lookup removes Activation Lock or a carrier lock.
+
+## Frequently Asked Questions
+
+### Is There a Free iCloud IMEI Checker on imeihub?
+
+imeihub offers a free basic lookup for brand and model information. Its iCloud ON/OFF and Clean/Lost checks are separate paid reports. A search phrase containing “free” should not be taken as a promise that detailed iCloud status is included at no cost.
+
+### Is Find My OFF the Same as Carrier Unlocked?
+
+No. Find My status relates to Apple's account-protection features. Carrier-lock status relates to mobile-network restrictions. Check each separately.
+
+### Can a Clean Result Guarantee the Device Will Stay Clear?
+
+No. Treat it as the result returned for the identifier and report scope at the time of the check. It is not a permanent guarantee about future reports, ownership claims, blacklist changes or hardware condition.
+
+### Can an iCloud IMEI Check Remove Activation Lock?
+
+No. A lookup only reports information. It does not remove an account, bypass Apple's security, or unlock a carrier restriction.
+
+## Choose the Check That Answers Your Real Question
+
+An iCloud IMEI check is most useful when you understand the label before ordering. Use ON/OFF for a focused Find My status question, Clean/Lost when that specific result is required, and the free basic lookup when you only need brand-and-model identification. Then confirm the seller has removed their account by testing setup on the actual device.
+
+Ready to check an identifier? Start with the [free imeihub IMEI lookup](https://imeihub.net/), or review the [ON/OFF](https://imeihub.net/service.php?slug=apple-icloud-status) and [Clean/Lost](https://imeihub.net/service.php?slug=apple-icloud) report descriptions to choose the service that matches your next decision.
+ICLOUD_STATUS_COMPARISON,
+    ],
+
+    [
         'slug' => 't-mobile-imei-check-compatibility-vs-carrier-lock',
         'title' => 'T-Mobile IMEI Check: Compatible Does Not Mean Unlocked',
         'meta_title' => 'T-Mobile IMEI Check: Compatibility vs. Carrier Lock',

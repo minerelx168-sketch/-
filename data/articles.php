@@ -8,6 +8,122 @@ declare(strict_types=1);
 
 return [
     [
+        'date' => '2026-09-13',
+        'excerpt' => 'Running an iPhone IMEI check on a Dual SIM device? Learn which identifier to use, when IMEI2 matters, and what to confirm before buying a report.',
+        'meta_title' => 'iPhone IMEI Check: IMEI or IMEI2 for Dual SIM?',
+        'slug' => 'iphone-imei-check-dual-sim-imei2',
+        'tag' => 'Apple',
+        'title' => 'iPhone IMEI Check: Which Number to Use for Dual SIM?',
+        'body' => <<<'DUAL_SIM_IMEI_GUIDE'
+An **iPhone IMEI check** gets confusing when Settings shows two device numbers. Should you enter IMEI, IMEI2, or the longer EID beside them? The useful answer depends on what you are doing: identifying the model, ordering a status report, or activating a mobile plan.
+
+Keep the labels attached to the numbers. Then follow the requirements of the specific check or carrier instead of assuming every form uses the same identifier.
+
+## Key Takeaways
+
+- A Dual SIM iPhone can have two IMEIs; seeing IMEI2 is not by itself evidence of a fault.
+- IMEI and IMEI2 are device identifiers. An EID, serial number and phone number are different fields.
+- For activation, use the identifier requested by the carrier for that setup.
+- For a paid report, confirm whether it supports the number you intend to submit and what the result covers.
+- Free model identification does not include premium blacklist, iCloud or warranty reports.
+
+## Why Can One iPhone Have Two IMEI Numbers?
+
+Dual SIM allows a compatible iPhone to use two mobile lines. Apple describes configurations involving a physical SIM and an eSIM, and supported models can also use two eSIMs. Availability depends on the model and region. See [Apple's Dual SIM guidance](https://support.apple.com/en-us/109317).
+
+AT&T's [IMEI identifier guide](https://www.att.com/wireless/imei-finder/) explains that IMEI2 identifies the second cellular connection on a Dual SIM or eSIM-capable device. Both numbers can belong to one handset. A second IMEI does not mean there are two separate phones.
+
+### Is IMEI2 Always the eSIM Number?
+
+Do not turn that label into a universal physical-SIM-versus-eSIM rule. An iPhone can support two active eSIMs, so the absence of a physical SIM does not make a second IMEI suspicious.
+
+For your particular setup, follow the carrier's activation instructions. If those instructions explicitly request IMEI2, copy that field. If they ask for a different identifier, do not substitute IMEI2 simply because you plan to use an eSIM.
+
+## Find the Numbers Without Mixing Them Up
+
+Open **Settings → General → About** and scroll to the device identifiers. Touch and hold the relevant number to copy it. Apple also documents other ways to locate identifiers when Settings is unavailable in its [iPhone and iPad identifier guide](https://support.apple.com/en-us/108037).
+
+Make a private note that keeps each label separate:
+
+| Label | How to use it in this workflow |
+| --- | --- |
+| IMEI or IMEI1 | Copy this when the form or provider requests that identifier |
+| IMEI2 | Copy this when the service or activation instructions specify the second IMEI |
+| EID | Use the dedicated EID field if the carrier requests it |
+| Serial number | Use a service that specifically accepts a serial number |
+| Phone number | Do not enter it into an IMEI lookup field |
+
+An IMEI contains 15 digits. The EID is a separate, longer identifier used in eSIM workflows. AT&T's checker asks for an IMEI and can also request an EID; these are separate inputs, not alternatives to paste into one box.
+
+### If You Are Checking a Seller's Phone Remotely
+
+Ask the seller to preserve the field labels when sharing the required identifier privately. A cropped image of an unlabeled number makes it harder to know which one you checked.
+
+When you receive the phone, compare its Settings information with your report. A valid report for a different handset or a different submitted identifier does not settle your question about this one. Avoid posting either full IMEI in a public comment or listing.
+
+## Which Number Should You Use for an iPhone IMEI Check?
+
+### For a Free Brand-and-Model Lookup
+
+Read the lookup's input requirements. If the field simply asks for an IMEI, the entry labeled IMEI in Settings is a reasonable starting point for basic identification. Compare the returned model with the device.
+
+This is a starting workflow, not a promise that every provider supports both identifiers equally. If a number produces no data, do not interpret that alone as evidence of a stolen, counterfeit or locked phone.
+
+### For a Paid Status Report
+
+Before ordering, check three things:
+
+- **Accepted input:** Does the service accept the IMEI you have, IMEI2, a serial number, or a specified combination?
+- **Question answered:** Is it checking SIM-lock status, iCloud status, blacklist records, or another field?
+- **Result scope:** Does the provider explicitly say whether the report covers only the submitted identifier or additional identifiers?
+
+Do not assume one paid order checks both IMEIs unless the service says so. Equally, do not buy two reports automatically just because two numbers appear. Clarify the scope first.
+
+For example, if your concern is whether a second carrier's plan will work, a model lookup alone will not resolve a carrier restriction. imeihub's [service catalogue](https://imeihub.net/services.php) lists separate premium SIM-lock and other status reports. Review the relevant description and price before choosing one.
+
+### For Carrier Activation or an eSIM Transfer
+
+Use the carrier's instructions for the exact activation flow. A third-party report cannot select or provision your mobile plan for you.
+
+If the carrier rejects a number, keep the field label, device model and exact response when contacting support. Ask which identifier it requires for that line. Do not erase an existing eSIM merely to try another number in an online checker.
+
+## Does IMEI2 Mean the iPhone Is Carrier-Unlocked?
+
+No. Dual SIM capability describes how the phone can use mobile lines; it does not establish permission to use a different carrier.
+
+Apple says that using two carriers requires an unlocked iPhone, while a locked device can use two plans from the same carrier. You can inspect **Settings → General → About → Carrier Lock**: Apple's [carrier-unlock guidance](https://support.apple.com/en-us/109316) says “No SIM restrictions” indicates an unlocked iPhone. Contact the carrier if an unlock is required.
+
+The existence of IMEI2 is therefore not a workaround for a carrier restriction. An IMEI lookup also does not remove Activation Lock.
+
+## What If the Two Numbers Produce Different Results?
+
+Keep both responses with their original labels. Then check whether you are comparing equivalent information.
+
+A brand-and-model result and a blacklist result are different checks. An unavailable field and an explicit negative status are different outcomes. Before drawing a conclusion:
+
+- Confirm that both numbers came from the same phone.
+- Check that the report type and provider are the same.
+- Note when each check was performed.
+- Ask the provider which identifiers and records the result covers.
+
+If a report flags a problem, investigate that response instead of choosing whichever result looks more reassuring. A result for one submitted number should not be treated as proof about an unchecked number.
+
+## When Is a Paid Check Worth Considering?
+
+A paid check can be useful when it answers a specific status question that basic identification leaves open. It may be relevant when reviewing a seller's information remotely, provided the report supports the identifier supplied and its scope matches your concern.
+
+If you already have the phone and its Carrier Lock field answers your question, a duplicate paid report may add little. For activation eligibility, ask the intended carrier. For brand and model, imeihub provides a free basic lookup.
+
+Detailed blacklist, iCloud and warranty reports are separate paid services on imeihub. Neither payment nor a successful lookup guarantees activation, proves ownership, or changes a lock status.
+
+## Match the Identifier to the Decision
+
+For a Dual SIM iPhone IMEI check, preserve the distinction between IMEI, IMEI2 and EID. Use the carrier's requested identifier for activation, confirm accepted inputs before ordering a report, and compare every result with the actual device.
+
+Start with [imeihub's free IMEI lookup](https://imeihub.net/) to identify the model, then review the [available paid reports](https://imeihub.net/services.php) if a specific status question remains unanswered.
+DUAL_SIM_IMEI_GUIDE,
+    ],
+    [
         'slug' => 'icloud-imei-check-on-off-vs-clean-lost',
         'title' => 'iCloud IMEI Check: ON/OFF vs. Clean/Lost Results',
         'meta_title' => 'iCloud IMEI Check: ON/OFF vs. Clean/Lost',
